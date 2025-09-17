@@ -1,0 +1,83 @@
+import { Button } from "@/components/ui/button"
+
+export function Footer() {
+  return (
+    <footer className="bg-gradient-to-b from-purple-900 to-blue-900 text-white py-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Main footer content */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {/* Brand section */}
+          <div className="lg:col-span-2">
+            <h3 className="text-2xl font-bold mb-4">FloreSiendo</h3>
+            <p className="text-purple-200 mb-6 leading-relaxed">
+              Facilitamos experiencias transformadoras a través de la sabiduría ancestral de las plantas amazónicas en
+              un entorno seguro y sagrado en Morelos, México.
+            </p>
+            <div className="flex gap-4">
+              <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-100 px-6 py-3 rounded-full">
+                Contactar
+              </Button>
+            </div>
+          </div>
+
+          {/* Quick links */}
+          <div>
+            <h4 className="font-semibold text-lg mb-4">Enlaces rápidos</h4>
+            <ul className="space-y-2 text-purple-200">
+              <li>
+                <a href="#inicio" className="hover:text-white transition-colors">
+                  Inicio
+                </a>
+              </li>
+              <li>
+                <a href="#sobre-nosotros" className="hover:text-white transition-colors">
+                  Sobre nosotros
+                </a>
+              </li>
+              <li>
+                <a href="#retiros" className="hover:text-white transition-colors">
+                  Retiros
+                </a>
+              </li>
+              <li>
+                <a href="#testimonios" className="hover:text-white transition-colors">
+                  Testimonios
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-white transition-colors">
+                  FAQ
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact info */}
+          <div>
+            <h4 className="font-semibold text-lg mb-4">Contacto</h4>
+            <div className="space-y-2 text-purple-200">
+              <p>Morelos, México</p>
+              <p>info@floresiendo.com</p>
+              <p>WhatsApp: +52 777 123 4567</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom section */}
+        <div className="border-t border-purple-700 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-purple-200 text-sm">© 2024 FloreSiendo. Todos los derechos reservados.</p>
+            <div className="flex gap-6 text-sm text-purple-200">
+              <a href="#privacidad" className="hover:text-white transition-colors">
+                Política de Privacidad
+              </a>
+              <a href="#terminos" className="hover:text-white transition-colors">
+                Términos y Condiciones
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
