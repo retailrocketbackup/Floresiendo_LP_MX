@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
@@ -31,13 +32,15 @@ export function HeroSection() {
           >
             Más información del retiro
           </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-white text-white hover:bg-white hover:text-purple-900 px-8 py-4 text-lg rounded-full bg-white/10 backdrop-blur-sm shadow-2xl"
-          >
-            Ver fechas disponibles
-          </Button>
+           <Link href="/agenda-llamada">
+             <Button
+               variant="outline"
+               size="lg"
+               className="border-white text-white hover:bg-white hover:text-purple-900 px-8 py-4 text-lg rounded-full bg-white/10 backdrop-blur-sm shadow-2xl"
+             >
+               Agenda tu llamada
+             </Button>
+           </Link>
         </div>
       </div>
 
