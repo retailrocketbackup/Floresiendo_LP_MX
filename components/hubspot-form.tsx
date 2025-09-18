@@ -115,7 +115,7 @@ export function HubSpotForm() {
 
           <Textarea
             name="message"
-            placeholder="¿Tienes alguna pregunta específica sobre los retiros?"
+            placeholder="¿Por qué te gustaría participar en un retiro?"
             value={formData.message}
             onChange={handleChange}
             rows={3}
