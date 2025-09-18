@@ -21,7 +21,7 @@ export default function Home() {
       <VideoSection
         title="Experiencia transformadora"
         description="Descubre testimonios reales de participantes que han vivido esta experiencia de sanación y crecimiento personal"
-        videoId="dQw4w9WgXcQ"
+        videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
       />
