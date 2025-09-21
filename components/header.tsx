@@ -11,8 +11,8 @@ export function Header() {
               <Image
                 src="/floresiendo-logo.png"
                 alt="FloreSiendo Logo"
-                width={40}
-                height={40}
+                width={56}
+                height={56}
                 className="rounded-full"
               />
               <span className="text-xl font-bold text-purple-600">FloreSiendo</span>
