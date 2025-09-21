@@ -20,45 +20,12 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick links */}
-          <div>
-            <h4 className="font-semibold text-lg mb-4">Enlaces rápidos</h4>
-            <ul className="space-y-2 text-purple-200">
-              <li>
-                <a href="#inicio" className="hover:text-white transition-colors">
-                  Inicio
-                </a>
-              </li>
-              <li>
-                <a href="#sobre-nosotros" className="hover:text-white transition-colors">
-                  Sobre nosotros
-                </a>
-              </li>
-              <li>
-                <a href="#retiros" className="hover:text-white transition-colors">
-                  Retiros
-                </a>
-              </li>
-              <li>
-                <a href="#testimonios" className="hover:text-white transition-colors">
-                  Testimonios
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-white transition-colors">
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
           {/* Contact info */}
           <div>
             <h4 className="font-semibold text-lg mb-4">Contacto</h4>
             <div className="space-y-2 text-purple-200">
               <p>Morelos, México</p>
-              <p>info@floresiendo.com</p>
-              <p>WhatsApp: +52 777 123 4567</p>
+              <p>WhatsApp: +52 618 230 1481</p>
             </div>
           </div>
         </div>
