@@ -9,7 +9,7 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <Image
-                src="/floresiendo-logo.png"
+                src="/floresiendo-logo-new.svg"
                 alt="FloreSiendo Logo"
                 width={56}
                 height={56}
