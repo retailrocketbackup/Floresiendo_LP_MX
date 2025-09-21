@@ -10,9 +10,8 @@ export default function HubSpotPage() {
       <main className="flex-1 bg-gradient-to-br from-purple-50 via-white to-purple-50">
         <div className="max-w-4xl mx-auto px-4 py-12">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Agenda tu Consulta Gratuita</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Habla directamente con nuestros facilitadores para resolver todas tus dudas sobre los retiros FloreSiendo
+              Es indispensable una breve llamada para poder participar en nuestros retiros.
             </p>
           </div>
 
