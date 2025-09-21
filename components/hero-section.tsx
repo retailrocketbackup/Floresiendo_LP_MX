@@ -19,8 +19,8 @@ export function HeroSection() {
           <Image
             src="/floresiendo-logo.png"
             alt="FloreSiendo Logo"
-            width={160}
-            height={160}
+            width={320}
+            height={320}
             className="rounded-full shadow-2xl"
           />
         </div>
