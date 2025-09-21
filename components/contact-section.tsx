@@ -8,7 +8,7 @@ export function ContactSection() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Listo para tu Transformación?</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-           Mira el video primero y conecta con nosotros para comenzar tu viaje de sanación y crecimiento personal.
+            Mira el video primero y conecta con nosotros para comenzar tu viaje de sanación y crecimiento personal.
           </p>
         </div>
 
@@ -25,15 +25,15 @@ export function ContactSection() {
           </Link>
 
           {/* Botón para agendar llamada en Calendly */}
-          <a href="https://calendly.com/ramonhenriquez/15min" target="_blank" rel="noopener noreferrer">
+          <Link href="/agendar-llamada" passHref>
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
-              style={{ backgroundColor: "#5A2D5A" }} // Changed to vibrant dark purple
+              style={{ backgroundColor: "#5A2D5A" }}
             >
               Agendar Llamada
             </Button>
-          </a>
+          </Link>
         </div>
 
         <div className="text-center mt-12">
