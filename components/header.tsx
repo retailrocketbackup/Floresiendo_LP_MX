@@ -13,15 +13,10 @@ export function Header() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-purple-600 transition-colors">
-              Inicio
-            </Link>
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white">
-              <Link href="/formulario-enviado">Agendar Consulta</Link>
-            </Button>
+
           </div>
         </div>
       </div>
