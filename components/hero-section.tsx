@@ -17,7 +17,7 @@ export function HeroSection() {
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <div className="mb-8 flex justify-center">
           <Image
-            src="/floresiendo-logo-hero.svg"
+            src="/floresiendo-logo-boton.png"
             alt="FloreSiendo Logo"
             width={400}
             height={182}
