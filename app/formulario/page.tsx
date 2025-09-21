@@ -1,11 +1,11 @@
 import { HubSpotForm } from "@/components/hubspot-form"
-import { Header } from "@/components/header"
+import { SimpleHeader } from "@/components/simple-header"
 import { Footer } from "@/components/footer"
 
 export default function FormularioPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      <Header />
+      <SimpleHeader />
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
