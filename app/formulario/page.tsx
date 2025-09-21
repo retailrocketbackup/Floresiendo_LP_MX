@@ -8,8 +8,7 @@ export default function FormularioPage() {
       <SimpleHeader />
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-
+          <div className="text-center mb-12"></div>
 
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <HubSpotForm />
