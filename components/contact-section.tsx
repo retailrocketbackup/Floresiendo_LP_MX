@@ -12,7 +12,7 @@ export function ContactSection() {
           </p>
         </div>
 
-        <div className="flex flex-row items-center justify-center gap-6 max-w-2xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-2xl mx-auto">
           {/* Botón para la página de formulario */}
           <Link href="/formulario" passHref>
             <Button
