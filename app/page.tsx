@@ -10,7 +10,7 @@ export default function Home() {
       <VideoSection
         title="IMPORTANTE VER VIDEO"
         subtitle="(48 seg.)"
-        description="Antes de solicitar información mira el video"
+        description=""
         videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
