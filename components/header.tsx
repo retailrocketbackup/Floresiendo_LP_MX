@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 export function Header() {
   return (
@@ -8,16 +8,20 @@ export function Header() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-purple-600">FloreSiendo</span>
+              <Image
+                src="/floresiendo-logo.png"
+                alt="FloreSiendo Logo"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+              <span className="text-xl font-bold text-purple-600">FloreSiendo</span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-8">
-          </nav>
+          <nav className="hidden md:flex items-center space-x-8"></nav>
 
-          <div className="flex items-center space-x-4">
-
-          </div>
+          <div className="flex items-center space-x-4"></div>
         </div>
       </div>
     </header>

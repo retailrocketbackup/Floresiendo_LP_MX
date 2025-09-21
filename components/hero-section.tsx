@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -13,6 +15,16 @@ export function HeroSection() {
 
       {/* Content overlay */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+        <div className="mb-8 flex justify-center">
+          <Image
+            src="/floresiendo-logo.png"
+            alt="FloreSiendo Logo"
+            width={120}
+            height={120}
+            className="rounded-full shadow-2xl"
+          />
+        </div>
+
         <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance drop-shadow-2xl">
           Retiros FloreSiendo 23 al 26 de Octubre
           <span className="block text-3xl md:text-4xl font-normal mt-2 text-purple-200">Cocoyoc, Morelos</span>
