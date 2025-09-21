@@ -11,7 +11,7 @@ export default function FormularioPage() {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Más Información sobre FloreSiendo</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Completa el formulario para recibir información detallada sobre nuestros retiros de sanación y
+              Completa el formulario para ser contactado por nuestro equipo de asesores para nuestros retiros de sanación y
               transformación personal.
             </p>
           </div>
