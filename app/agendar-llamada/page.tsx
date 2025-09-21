@@ -10,7 +10,7 @@ export default function AgendarLlamadaPage() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Agenda tu Llamada</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Reserva una llamada de 15 minutos para conocer más sobre nuestros retiros de transformación personal.
+            Para participar en nuestros retiros es indispensable una breve llamada.
           </p>
         </div>
 
