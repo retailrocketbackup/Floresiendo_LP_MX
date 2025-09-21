@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button"
-
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -23,6 +21,7 @@ export function HeroSection() {
         <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-2xl mx-auto text-pretty drop-shadow-lg">
           Libera tu mente del estrés y encuentra la paz en tu vida
         </p>
+      </div>
     </section>
   )
 }
