@@ -7,20 +7,25 @@ import { Play, X } from "lucide-react"
 
 interface VideoSectionProps {
   title: string
+  subtitle: string
   description: string
   videoId: string
   thumbnail?: string
   className?: string
 }
 
-export function VideoSection({ title, description, videoId, thumbnail, className = "" }: VideoSectionProps) {
+export function VideoSection({ title, subtitle, description, videoId, thumbnail, className = "" }: VideoSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
+  const youtubeThumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
 
   return (
     <section className={`py-20 px-4 ${className}`}>
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">{title}</h2>
+          <h4 className="text-xl md:text-5xl font-bold text-foreground mb-0">{title}</h4>
+          <small>{subtitle}</small>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">{description}</p>
         </div>
 
@@ -31,12 +36,16 @@ export function VideoSection({ title, description, videoId, thumbnail, className
                 <>
                   {/* Video thumbnail */}
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-blue-900/80">
-                    {thumbnail && (
+                    {!imageError ? (
                       <img
-                        src={thumbnail || "/placeholder.svg"}
+                        src={thumbnail || youtubeThumbUrl}
                         alt="Video thumbnail"
                         className="w-full h-full object-cover opacity-60"
+                        onError={() => setImageError(true)}
+                        crossOrigin="anonymous"
                       />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-purple-900 to-blue-900" />
                     )}
                   </div>
 
@@ -53,7 +62,6 @@ export function VideoSection({ title, description, videoId, thumbnail, className
 
                   {/* Video title overlay */}
                   <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-white text-2xl font-bold mb-2">{title}</h3>
                     <p className="text-white/80 text-lg">Haz clic para reproducir</p>
                   </div>
                 </>

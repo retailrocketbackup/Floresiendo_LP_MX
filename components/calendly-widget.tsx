@@ -1,21 +1,32 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import { useEffect } from "react"
 
 export function CalendlyWidget() {
   useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
+    const script = document.createElement("script")
+    script.src = "https://assets.calendly.com/assets/external/widget.js"
+    script.async = true
+    script.type = "text/javascript"
+    document.head.appendChild(script)
 
     return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+      // Cleanup
+      if (document.head.contains(script)) {
+        document.head.removeChild(script)
+      }
+    }
+  }, [])
 
   return (
-    <div className="calendly-inline-widget w-full h-full" data-url="https://calendly.com/ramonhenriquez/15min" style={{ minWidth: '320px', height: '700px' }}></div>
-  );
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="bg-white rounded-lg shadow-lg p-8">
+        <div
+          className="calendly-inline-widget"
+          data-url="https://calendly.com/ramonhenriquez/15min"
+          style={{ minWidth: "320px", height: "700px" }}
+        ></div>
+      </div>
+    </div>
+  )
 }

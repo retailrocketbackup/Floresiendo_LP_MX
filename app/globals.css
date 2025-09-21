@@ -76,7 +76,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  /* Updated font variables to use RocknRoll One */
+  --font-sans: var(--font-rocknroll-one);
   --font-mono: var(--font-geist-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
