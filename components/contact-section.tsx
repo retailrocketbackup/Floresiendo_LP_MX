@@ -37,7 +37,7 @@ export function ContactSection() {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">O contáctanos directamente por WhatsApp:</p>
+          <p className="text-gray-600 mb-4">O contáctanos directamente por:</p>
           <div className="flex justify-center items-center">
             <a
               href="https://wa.me/526182301481"
