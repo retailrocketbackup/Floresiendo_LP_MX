@@ -8,8 +8,8 @@ export default function Home() {
     <main>
       <HeroSection />
       <VideoSection
-        title="Experiencia transformadora"
-        description="Descubre testimonios reales de participantes que han vivido esta experiencia de sanación y crecimiento personal"
+        title="¡¡MIRA EL VIDEO (48 segundos)!!"
+        description="Antes de solicitar información mira el video"
         videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
