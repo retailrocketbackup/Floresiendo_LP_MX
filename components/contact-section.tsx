@@ -18,7 +18,7 @@ export function ContactSection() {
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90"
-              style={{ backgroundColor: "#8B5A8C" }}
+              style={{ backgroundColor: "#B47BB8" }}
             >
               Más Información
             </Button>
@@ -29,7 +29,7 @@ export function ContactSection() {
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90"
-              style={{ backgroundColor: "#8B5A8C" }}
+              style={{ backgroundColor: "#B47BB8" }}
             >
               Agendar Llamada
             </Button>
