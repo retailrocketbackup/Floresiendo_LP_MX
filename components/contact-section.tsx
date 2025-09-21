@@ -12,12 +12,13 @@ export function ContactSection() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-6 max-w-md mx-auto">
+        <div className="flex flex-row items-center justify-center gap-6 max-w-2xl mx-auto">
           {/* Botón para la página de formulario */}
-          <Link href="/formulario" passHref className="w-full">
+          <Link href="/formulario" passHref className="flex-1">
             <Button
               size="lg"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 text-lg rounded-full"
+              className="w-full py-4 text-lg rounded-full text-white hover:opacity-90"
+              style={{ backgroundColor: "#868AB0" }}
             >
               Más Información
             </Button>
@@ -28,12 +29,12 @@ export function ContactSection() {
             href="https://calendly.com/ramonhenriquez/15min"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full"
+            className="flex-1"
           >
             <Button
               size="lg"
-              variant="outline"
-              className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground py-4 text-lg rounded-full bg-transparent"
+              className="w-full py-4 text-lg rounded-full text-white hover:opacity-90"
+              style={{ backgroundColor: "#868AB0" }}
             >
               Agendar Llamada
             </Button>
