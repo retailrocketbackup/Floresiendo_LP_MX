@@ -13,11 +13,6 @@ export function Footer() {
               Facilitamos experiencias transformadoras a través de la sabiduría ancestral de las plantas amazónicas en
               un entorno seguro y sagrado en Morelos, México.
             </p>
-            <div className="flex gap-4">
-              <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-100 px-6 py-3 rounded-full">
-                Contactar
-              </Button>
-            </div>
           </div>
 
           {/* Contact info */}
