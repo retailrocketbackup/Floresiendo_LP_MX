@@ -16,15 +16,6 @@ export function Header() {
             <Link href="/" className="text-gray-700 hover:text-purple-600 transition-colors">
               Inicio
             </Link>
-            <Link href="/#retiros" className="text-gray-700 hover:text-purple-600 transition-colors">
-              Retiros
-            </Link>
-            <Link href="/#testimonios" className="text-gray-700 hover:text-purple-600 transition-colors">
-              Testimonios
-            </Link>
-            <Link href="/#contacto" className="text-gray-700 hover:text-purple-600 transition-colors">
-              Contacto
-            </Link>
           </nav>
 
           <div className="flex items-center space-x-4">
