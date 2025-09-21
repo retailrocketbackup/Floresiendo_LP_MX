@@ -15,8 +15,9 @@ interface VideoSectionProps {
 
 export function VideoSection({ title, description, videoId, thumbnail, className = "" }: VideoSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
-  const youtubeThumbUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+  const youtubeThumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
 
   return (
     <section className={`py-20 px-4 ${className}`}>
@@ -33,11 +34,17 @@ export function VideoSection({ title, description, videoId, thumbnail, className
                 <>
                   {/* Video thumbnail */}
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-blue-900/80">
-                    <img
-                      src={thumbnail || youtubeThumbUrl}
-                      alt="Video thumbnail"
-                      className="w-full h-full object-cover opacity-60"
-                    />
+                    {!imageError ? (
+                      <img
+                        src={thumbnail || youtubeThumbUrl}
+                        alt="Video thumbnail"
+                        className="w-full h-full object-cover opacity-60"
+                        onError={() => setImageError(true)}
+                        crossOrigin="anonymous"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-purple-900 to-blue-900" />
+                    )}
                   </div>
 
                   {/* Play button overlay */}
