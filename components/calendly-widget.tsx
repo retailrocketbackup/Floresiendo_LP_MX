@@ -26,17 +26,6 @@ export function CalendlyWidget() {
           data-url="https://calendly.com/ramonhenriquez/15min"
           style={{ minWidth: "320px", height: "700px" }}
         ></div>
-        <div className="text-sm text-gray-500 text-center mt-4">
-          Si el calendario no se carga,
-          <a
-            href="https://calendly.com/ramonhenriquez/15min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-purple-600 hover:text-purple-800 ml-1"
-          >
-            haz clic aquí para agendar directamente
-          </a>
-        </div>
       </div>
     </div>
   )
