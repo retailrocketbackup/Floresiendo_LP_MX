@@ -7,13 +7,14 @@ import { Play, X } from "lucide-react"
 
 interface VideoSectionProps {
   title: string
+  subtitle: string
   description: string
   videoId: string
   thumbnail?: string
   className?: string
 }
 
-export function VideoSection({ title, description, videoId, thumbnail, className = "" }: VideoSectionProps) {
+export function VideoSection({ title, subtitle, description, videoId, thumbnail, className = "" }: VideoSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [imageError, setImageError] = useState(false)
 
