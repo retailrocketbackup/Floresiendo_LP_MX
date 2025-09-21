@@ -17,11 +17,11 @@ export function HeroSection() {
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <div className="mb-8 flex justify-center">
           <Image
-            src="/floresiendo-logo.png"
+            src="/floresiendo-logo-hero.svg"
             alt="FloreSiendo Logo"
             width={400}
-            height={400}
-            className="rounded-full shadow-2xl"
+            height={182}
+            className="shadow-2xl"
           />
         </div>
 
