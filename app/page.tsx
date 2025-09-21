@@ -9,7 +9,8 @@ export default function Home() {
       <HeroSection />
       <VideoSection
         title="IMPORTANTE VER VIDEO"
-        description="(48 segundos) Antes de solicitar información mira el video"
+        subtitle="(48 seg.)"
+        description="Antes de solicitar información mira el video"
         videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
