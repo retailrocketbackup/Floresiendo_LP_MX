@@ -1,5 +1,5 @@
-import { HubSpotForm } from "./hubspot-form"
-import { CalendlyWidget } from "./calendly-widget"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function ContactSection() {
   return (
@@ -8,38 +8,45 @@ export function ContactSection() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Listo para tu Transformación?</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Conecta con nosotros para comenzar tu viaje de sanación y crecimiento personal
+            Conecta con nosotros para comenzar tu viaje de sanación y crecimiento personal.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div>
-            <HubSpotForm />
-          </div>
-          <div>
-            <CalendlyWidget />
-          </div>
+        <div className="flex flex-col items-center gap-6 max-w-md mx-auto">
+          {/* Botón para la página de formulario */}
+          <Link href="/formulario" passHref className="w-full">
+            <Button
+              size="lg"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 text-lg rounded-full"
+            >
+              Más Información
+            </Button>
+          </Link>
+
+          {/* Botón para agendar llamada en Calendly */}
+          <a
+            href="https://calendly.com/ramonhenriquez/15min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full"
+          >
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground py-4 text-lg rounded-full bg-transparent"
+            >
+              Agendar Llamada
+            </Button>
+          </a>
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">¿Prefieres contactarnos directamente?</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <p className="text-gray-600 mb-4">O contáctanos directamente por WhatsApp:</p>
+          <div className="flex justify-center items-center">
             <a
-              href="mailto:info@floresiendo.com"
-              className="flex items-center space-x-2 text-primary hover:text-primary/80"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-              <span>info@floresiendo.com</span>
-            </a>
-            <a
-              href="https://wa.me/525512345678"
+              href="https://wa.me/526182301481"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center space-x-2 text-green-600 hover:text-green-500"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
