@@ -8,7 +8,7 @@ export function SimpleHeader() {
         <div className="flex justify-center">
           <Link href="/" className="flex items-center">
             <Image
-              src="/floresiendo-logo-complete.svg"
+              src="/floresiendo-logo.svg"
               alt="FloreSiendo Logo"
               width={400}
               height={182}
