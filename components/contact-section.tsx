@@ -17,8 +17,8 @@ export function ContactSection() {
           <Link href="/formulario" passHref>
             <Button
               size="lg"
-              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90"
-              style={{ backgroundColor: "#6B4C6D" }} // Changed to darker purple color
+              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
+              style={{ backgroundColor: "#5A2D5A" }} // Changed to vibrant dark purple
             >
               Más Información
             </Button>
@@ -28,8 +28,8 @@ export function ContactSection() {
           <a href="https://calendly.com/ramonhenriquez/15min" target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
-              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90"
-              style={{ backgroundColor: "#6B4C6D" }} // Changed to darker purple color
+              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
+              style={{ backgroundColor: "#5A2D5A" }} // Changed to vibrant dark purple
             >
               Agendar Llamada
             </Button>
