@@ -18,7 +18,7 @@ export function ContactSection() {
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90"
-              style={{ backgroundColor: "#B47BB8" }}
+              style={{ backgroundColor: "#6B4C6D" }} // Changed to darker purple color
             >
               Más Información
             </Button>
@@ -29,7 +29,7 @@ export function ContactSection() {
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90"
-              style={{ backgroundColor: "#B47BB8" }}
+              style={{ backgroundColor: "#6B4C6D" }} // Changed to darker purple color
             >
               Agendar Llamada
             </Button>
