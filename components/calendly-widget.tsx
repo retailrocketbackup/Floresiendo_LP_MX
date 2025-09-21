@@ -21,10 +21,6 @@ export function CalendlyWidget() {
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">Agenda tu Llamada de 15 Minutos</h2>
-        <p className="text-gray-600 mb-6 text-center">
-          Habla directamente con nosotros para resolver todas tus dudas sobre nuestros retiros de transformación.
-        </p>
         <div
           className="calendly-inline-widget"
           data-url="https://calendly.com/ramonhenriquez/15min"
