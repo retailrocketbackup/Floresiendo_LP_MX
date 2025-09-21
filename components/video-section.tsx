@@ -60,7 +60,6 @@ export function VideoSection({ title, description, videoId, thumbnail, className
 
                   {/* Video title overlay */}
                   <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-white text-2xl font-bold mb-2">{title}</h3>
                     <p className="text-white/80 text-lg">Haz clic para reproducir</p>
                   </div>
                 </>
