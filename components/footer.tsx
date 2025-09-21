@@ -5,7 +5,7 @@ export function Footer() {
         {/* Main footer content */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
           {/* Brand section */}
-          <div className="md:max-w-md">
+          <div className="md:max-w-md text-center md:text-left">
             <h3 className="text-2xl font-bold mb-4">FloreSiendo</h3>
             <p className="text-purple-200 mb-6 leading-relaxed">
               Facilitamos experiencias transformadoras a través de la sabiduría ancestral de las plantas amazónicas en
@@ -14,7 +14,7 @@ export function Footer() {
           </div>
 
           {/* Contact info */}
-          <div className="text-right">
+          <div className="text-center md:text-right">
             <h4 className="font-semibold text-lg mb-4">Contacto</h4>
             <div className="space-y-2 text-purple-200">
               <p>Morelos, México</p>
