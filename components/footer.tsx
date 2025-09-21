@@ -17,8 +17,10 @@ export function Footer() {
           <div className="text-center md:text-right">
             <h4 className="font-semibold text-lg mb-4">Contacto</h4>
             <div className="space-y-2 text-purple-200">
-              <p>Morelos, México</p>
-              <p>WhatsApp: +52 618 230 1481</p>
+            <p className="text-purple-200 mb-6 leading-relaxed">
+              Facilitamos experiencias transformadoras a través de la sabiduría ancestral de las plantas amazónicas en
+              un entorno seguro y sagrado en Morelos, México.
+            </p>
             </div>
           </div>
         </div>
