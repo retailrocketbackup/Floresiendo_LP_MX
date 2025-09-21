@@ -26,7 +26,7 @@ export function Footer() {
         {/* Bottom section */}
         <div className="border-t border-purple-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-purple-200 text-sm">© 2024 FloreSiendo. Todos los derechos reservados.</p>
+            <p className="text-purple-200 text-sm">© 2025 FloreSiendo. Todos los derechos reservados.</p>
             <div className="flex gap-6 text-sm text-purple-200">
               <a href="#privacidad" className="hover:text-white transition-colors">
                 Política de Privacidad
