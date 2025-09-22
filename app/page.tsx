@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/hero-section"
 import { VideoSection } from "@/components/video-section"
+import { TestimonialsSection } from "@/components/testimonials-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 
@@ -15,6 +16,7 @@ export default function Home() {
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
       />
+       <TestimonialsSection />
       <ContactSection />
       <Footer />
     </main>
