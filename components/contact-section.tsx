@@ -1,5 +1,5 @@
-import { HubSpotForm } from "./hubspot-form"
-import { CalendlyWidget } from "./calendly-widget"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function ContactSection() {
   return (
@@ -8,21 +8,36 @@ export function ContactSection() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Listo para tu Transformación?</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Conecta con nosotros para comenzar tu viaje de sanación y crecimiento personal
+            Mira el video primero y conecta con nosotros para comenzar tu viaje de sanación y crecimiento personal.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div>
-            <HubSpotForm />
-          </div>
-          <div>
-            <CalendlyWidget />
-          </div>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-2xl mx-auto">
+          {/* Botón para la página de formulario */}
+          <Link href="/formulario" passHref>
+            <Button
+              size="lg"
+              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
+              style={{ backgroundColor: "#5A2D5A" }} // Changed to vibrant dark purple
+            >
+              Más Información
+            </Button>
+          </Link>
+
+          {/* Botón para agendar llamada en Calendly */}
+          <Link href="/agendar-llamada" passHref>
+            <Button
+              size="lg"
+              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
+              style={{ backgroundColor: "#5A2D5A" }}
+            >
+              Agendar Llamada
+            </Button>
+          </Link>
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">O contáctanos directamente por WhatsApp:</p>
+          <p className="text-gray-600 mb-4">O contáctanos directamente por:</p>
           <div className="flex justify-center items-center">
             <a
               href="https://wa.me/526182301481"

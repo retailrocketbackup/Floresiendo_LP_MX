@@ -1,14 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
+import { RocknRoll_One } from "next/font/google"
 import { Suspense } from "react"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 
+const rocknrollOne = RocknRoll_One({
+  subsets: ["latin"],
+  weight: "400", // RocknRoll One only has one weight
+})
+
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
+  title: "FloreSiendo - Retiros de Transformación",
+  description: "Descubre tu potencial interior con nuestros retiros de transformación personal",
   generator: "v0.app",
 }
 
@@ -18,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="es">
+      <body className={`font-sans ${rocknrollOne.className}`}>
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         <Analytics />
       </body>
