@@ -1,14 +1,14 @@
 import { HeroSection } from "@/components/hero-section"
-// import { VideoSection } from "@/components/video-section"
-// import { TestimonialsSection } from "@/components/testimonials-section"
-// import { ContactSection } from "@/components/contact-section"
+import { VideoSection } from "@/components/video-section"
+import { TestimonialsSection } from "@/components/testimonials-section"
+import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
     <main>
       <HeroSection />
-      {/* <VideoSection
+      <VideoSection
         title="IMPORTANTE VER VIDEO"
         subtitle="(48 seg.)"
         description=""
@@ -17,7 +17,9 @@ export default function Home() {
         className="bg-background"
       />
        <TestimonialsSection />
-      <ContactSection /> */}
+      <ContactSection
+        funnel="testimonios"
+       />
       <Footer />
     </main>
   )
