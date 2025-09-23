@@ -19,9 +19,9 @@ export function HeroSection() {
           <Image
             src="/floresiendo-logo-boton.png"
             alt="FloreSiendo Logo"
-            width={400}
-            height={182}
-            className="shadow-2xl"
+            width={971}   // El ancho REAL del archivo de imagen
+            height={989}  // El alto REAL del archivo de imagen
+            className="shadow-2xl w-full max-w-xs h-auto" // Controla el tamaño VISUAL
           />
         </div>
 
