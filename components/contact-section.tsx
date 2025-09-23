@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-export function ContactSection() {
+interface ContactSectionProps {
+  funnel: string
+}
+
+export function ContactSection({ funnel }: ContactSectionProps) {
   return (
     <section className="py-20 bg-gradient-to-b from-purple-50 to-white">
       <div className="container mx-auto px-4">
@@ -14,7 +18,7 @@ export function ContactSection() {
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 max-w-2xl mx-auto">
           {/* Botón para la página de formulario */}
-          <Link href="/formulario" passHref>
+          <Link href={`/formulario-${funnel}`} passHref>
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
@@ -25,7 +29,7 @@ export function ContactSection() {
           </Link>
 
           {/* Botón para agendar llamada en Calendly */}
-          <Link href="/agendar-llamada" passHref>
+          <Link href={`/agendar-llamada-${funnel}`} passHref>
             <Button
               size="lg"
               className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
