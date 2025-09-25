@@ -36,19 +36,31 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
         if (isCalendlyScheduled) {
           console.log('🎯 Calendly scheduling event detected!', event.data);
 
-          // Extract user data from Calendly if available
+          // Extract user data from Calendly - try multiple data structures
           const payload = event.data.payload || event.data;
-          const inviteeData = payload.invitee || payload.invitee_data || {};
+          console.log('📅 Full event data structure:', JSON.stringify(event.data, null, 2));
 
-          console.log('📅 Raw Calendly payload:', payload);
+          // Try different possible locations for user data
+          const inviteeData =
+            payload.invitee ||
+            payload.invitee_data ||
+            payload.event?.invitee ||
+            event.data.invitee ||
+            {};
+
+          // Also check if there's form data in the payload
+          const formData = payload.form_data || payload.formData || {};
+
           console.log('📅 Raw invitee data:', inviteeData);
+          console.log('📅 Form data:', formData);
 
+          // Extract user data from multiple possible sources
           const userData = {
-            email: inviteeData.email,
-            first_name: inviteeData.first_name || inviteeData.firstName,
-            last_name: inviteeData.last_name || inviteeData.lastName,
-            // Calendly sometimes provides name as a single field
-            name: inviteeData.name || inviteeData.full_name,
+            email: inviteeData.email || formData.email || payload.email,
+            first_name: inviteeData.first_name || inviteeData.firstName || formData.first_name || formData.name?.split(' ')[0],
+            last_name: inviteeData.last_name || inviteeData.lastName || formData.last_name || formData.name?.split(' ').slice(1).join(' '),
+            phone: inviteeData.phone || formData.phone,
+            name: inviteeData.name || inviteeData.full_name || formData.name,
           };
 
           // Split name if first/last not provided separately
@@ -58,10 +70,11 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
             userData.last_name = nameParts.slice(1).join(' ');
           }
 
-          console.log('📅 Calendly event data extracted:', {
+          console.log('📅 Calendly user data extracted:', {
             hasEmail: !!userData.email,
             hasFirstName: !!userData.first_name,
             hasLastName: !!userData.last_name,
+            hasPhone: !!userData.phone,
             hasName: !!userData.name,
             funnel,
             eventType: payload.event_type?.name,

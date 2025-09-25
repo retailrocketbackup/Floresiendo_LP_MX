@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 // Meta Conversions API endpoint
 const CAPI_URL = 'https://graph.facebook.com/v18.0';
-const PIXEL_ID = '30721758817438946';
+const PIXEL_ID = '1500366924641250';
 
 export async function POST(request: NextRequest) {
   console.log('🌐 CAPI API: Received request');
@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
     console.log('📨 CAPI API: Request body received', {
       event_name: body.event_name,
       funnel: body.custom_data?.funnel,
+      hasUserData: !!body.user_data,
+      userDataFields: body.user_data ? Object.keys(body.user_data).filter(key => body.user_data[key]) : [],
       timestamp: new Date().toISOString()
     });
 
@@ -102,6 +104,12 @@ export async function POST(request: NextRequest) {
       funnel: body.custom_data?.funnel,
       events_received: capiResult.events_received,
       fbtrace_id: capiResult.fbtrace_id,
+      sentUserData: {
+        hasEmail: !!(body.user_data?.em && eventData.data[0].user_data.em),
+        hasPhone: !!(body.user_data?.ph && eventData.data[0].user_data.ph),
+        hasFirstName: !!(body.user_data?.fn && eventData.data[0].user_data.fn),
+        hasLastName: !!(body.user_data?.ln && eventData.data[0].user_data.ln)
+      },
       timestamp: new Date().toISOString()
     });
 
