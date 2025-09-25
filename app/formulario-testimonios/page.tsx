@@ -16,7 +16,7 @@ export default function FormularioPage() {
       </div>
 
       
-      <HubSpotForm /> 
+      <HubSpotForm funnel="testimonios" /> 
       <Footer />
     </div>
   )

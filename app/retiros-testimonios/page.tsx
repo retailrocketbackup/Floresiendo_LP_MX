@@ -15,8 +15,11 @@ export default function Home() {
         videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
+        funnel="testimonios"
       />
-       <TestimonialsSection />
+       <TestimonialsSection
+        funnel="testimonios"
+       />
       <ContactSection
         funnel="testimonios"
        />

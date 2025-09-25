@@ -14,7 +14,7 @@ export default function AgendarLlamadaPage() {
           </p>
         </div>
 
-        <CalendlyWidget />
+        <CalendlyWidget funnel="video" />
       </div>
       <Footer />
     </div>

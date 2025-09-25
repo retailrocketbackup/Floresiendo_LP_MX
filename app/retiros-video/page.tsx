@@ -14,6 +14,7 @@ export default function Home() {
         videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
         className="bg-background"
+        funnel="video"
       />
       <ContactSection
         funnel="video"
