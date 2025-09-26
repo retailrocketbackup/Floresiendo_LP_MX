@@ -38,13 +38,13 @@ Your Meta Pixel and Conversions API (CAPI) tracking is now implemented. Here's w
 
 Create `.env.local` file:
 
-```bash
+\`\`\`bash
 # Required for CAPI
 META_CAPI_ACCESS_TOKEN=your_token_here
 
 # Optional: For testing
 META_CAPI_TEST_EVENT_CODE=TEST12345
-```
+\`\`\`
 
 #### 3. Deploy to Vercel
 
@@ -67,10 +67,10 @@ Add the environment variable in Vercel dashboard:
 #### What You Should See
 
 **In Browser Console:**
-```
+\`\`\`
 Pixel event tracked: ViewContent {funnel: "video", content_type: "video"}
 CAPI event tracked: ViewContent {...}
-```
+\`\`\`
 
 **In Facebook Events Manager:**
 - Events appearing in real-time
