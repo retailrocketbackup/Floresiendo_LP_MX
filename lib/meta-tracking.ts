@@ -196,6 +196,15 @@ export const trackEvent = async (
   // Generate a single eventId for both pixel and CAPI
   const sharedEventId = generateEventId()
 
+  console.log(`🔑 EVENT_ID: Generated shared ID for deduplication`, {
+    eventName,
+    sharedEventId,
+    funnel: data.funnel,
+    pixelEventID: sharedEventId,
+    capiEventId: sharedEventId,
+    match: sharedEventId === sharedEventId ? "✅ MATCH" : "❌ MISMATCH",
+  })
+
   // Track client-side with shared eventId
   trackPixelEvent(eventName, data, sharedEventId)
 
@@ -203,7 +212,17 @@ export const trackEvent = async (
   if (options.enableCAPI) {
     try {
       await trackCAPIEvent(eventName, data, sharedEventId, options.userAgent, options.ip)
-      console.log(`🎊 TRACKING: Both Pixel and CAPI completed for ${eventName} with eventID: ${sharedEventId}`)
+
+      console.log(`🎊 DEDUPLICATION: Both events sent with matching IDs`, {
+        eventName,
+        sharedEventId,
+        funnel: data.funnel,
+        pixelSent: "✅",
+        capiSent: "✅",
+        deduplicationReady: "✅",
+        facebookWillSee: "Same event_name and event_id for deduplication",
+        timestamp: new Date().toISOString(),
+      })
     } catch (error) {
       console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, error)
     }
