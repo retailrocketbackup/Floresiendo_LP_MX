@@ -23,10 +23,10 @@ const generateEventId = (): string => {
 }
 
 // Client-side Meta Pixel tracking
-export const trackPixelEvent = (eventName: string, data: TrackingData) => {
+export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?: string) => {
   if (typeof window !== "undefined") {
     if (window.fbq) {
-      const eventId = generateEventId()
+      const finalEventId = eventId || generateEventId()
       const eventData = {
         ...data,
         custom_data: {
@@ -35,15 +35,17 @@ export const trackPixelEvent = (eventName: string, data: TrackingData) => {
         },
       }
 
-      window.fbq("track", eventName, eventData, { eventID: eventId })
+      window.fbq("track", eventName, eventData, { eventID: finalEventId })
       console.log(`✅ PIXEL: ${eventName} tracked successfully`, {
         event: eventName,
-        eventID: eventId,
+        eventID: finalEventId,
         funnel: data.funnel,
         content_type: data.content_type,
         timestamp: new Date().toISOString(),
         data: eventData,
       })
+
+      return finalEventId
     } else {
       console.warn(`⚠️ PIXEL: fbq not loaded - ${eventName} not tracked`, {
         event: eventName,
@@ -54,11 +56,12 @@ export const trackPixelEvent = (eventName: string, data: TrackingData) => {
   } else {
     console.log(`🔧 PIXEL: Server-side environment detected - ${eventName} skipped`)
   }
+  return null
 }
 
 // Standard funnel events
 export const trackViewContent = (funnel: string, contentType: string) => {
-  trackPixelEvent("ViewContent", {
+  return trackPixelEvent("ViewContent", {
     funnel,
     content_type: contentType,
     content_name: `${contentType}_${funnel}`,
@@ -66,14 +69,14 @@ export const trackViewContent = (funnel: string, contentType: string) => {
 }
 
 export const trackLead = (funnel: string, leadData?: Partial<TrackingData>) => {
-  trackPixelEvent("Lead", {
+  return trackPixelEvent("Lead", {
     funnel,
     ...leadData,
   })
 }
 
 export const trackSchedule = (funnel: string) => {
-  trackPixelEvent("Schedule", {
+  return trackPixelEvent("Schedule", {
     funnel,
     content_type: "appointment",
     value: 0, // Free consultation
@@ -81,19 +84,25 @@ export const trackSchedule = (funnel: string) => {
 }
 
 // Server-side CAPI tracking function
-export const trackCAPIEvent = async (eventName: string, data: TrackingData, userAgent?: string, ip?: string) => {
+export const trackCAPIEvent = async (
+  eventName: string,
+  data: TrackingData,
+  eventId: string,
+  userAgent?: string,
+  ip?: string,
+) => {
   console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
     event: eventName,
     funnel: data.funnel,
     content_type: data.content_type,
+    eventID: eventId,
   })
 
   try {
-    const eventId = generateEventId()
     const payload = {
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
-      event_id: eventId,
+      event_id: eventId, // Using the same eventId from pixel
       action_source: "website",
       user_data: {
         em: data.email ? normalizeEmail(data.email) : undefined,
@@ -148,6 +157,7 @@ export const trackCAPIEvent = async (eventName: string, data: TrackingData, user
     console.error(`❌ CAPI: Tracking error for ${eventName}`, {
       event: eventName,
       funnel: data.funnel,
+      eventID: eventId,
       error: error instanceof Error ? error.message : error,
       timestamp: new Date().toISOString(),
     })
@@ -183,14 +193,17 @@ export const trackEvent = async (
     timestamp: new Date().toISOString(),
   })
 
-  // Always track client-side
-  trackPixelEvent(eventName, data)
+  // Generate a single eventId for both pixel and CAPI
+  const sharedEventId = generateEventId()
 
-  // Track server-side if enabled
+  // Track client-side with shared eventId
+  trackPixelEvent(eventName, data, sharedEventId)
+
+  // Track server-side if enabled with the same eventId
   if (options.enableCAPI) {
     try {
-      await trackCAPIEvent(eventName, data, options.userAgent, options.ip)
-      console.log(`🎊 TRACKING: Both Pixel and CAPI completed for ${eventName}`)
+      await trackCAPIEvent(eventName, data, sharedEventId, options.userAgent, options.ip)
+      console.log(`🎊 TRACKING: Both Pixel and CAPI completed for ${eventName} with eventID: ${sharedEventId}`)
     } catch (error) {
       console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, error)
     }
