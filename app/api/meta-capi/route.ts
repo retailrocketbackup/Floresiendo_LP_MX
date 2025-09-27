@@ -9,7 +9,14 @@ export async function POST(request: NextRequest) {
   console.log("🌐 CAPI API: Received request")
 
   try {
-    const body = await request.json()
+    let body
+    try {
+      body = await request.json()
+      console.log("📨 CAPI API: Successfully parsed request body")
+    } catch (parseError) {
+      console.error("❌ CAPI API: Failed to parse request body", parseError)
+      return NextResponse.json({ error: "Invalid JSON in request body", details: parseError.message }, { status: 400 })
+    }
 
     console.log("📨 CAPI API: Request body received", {
       event_name: body.event_name,
@@ -21,6 +28,12 @@ export async function POST(request: NextRequest) {
 
     // Get environment variables
     const accessToken = process.env.META_CAPI_ACCESS_TOKEN
+
+    console.log("🔑 CAPI API: Environment check", {
+      hasAccessToken: !!accessToken,
+      tokenLength: accessToken ? accessToken.length : 0,
+      tokenPrefix: accessToken ? accessToken.substring(0, 10) + "..." : "undefined",
+    })
 
     if (!accessToken) {
       console.error("❌ CAPI API: META_CAPI_ACCESS_TOKEN not configured")
@@ -35,7 +48,15 @@ export async function POST(request: NextRequest) {
 
     console.log("✅ CAPI API: Access token found, preparing request to Meta")
 
-    const clientIP = extractClientIP(request)
+    let clientIP
+    try {
+      clientIP = extractClientIP(request)
+      console.log("🔍 CAPI API: IP extraction successful", { clientIP })
+    } catch (ipError) {
+      console.error("❌ CAPI API: IP extraction failed", ipError)
+      clientIP = "127.0.0.1" // fallback
+    }
+
     const userAgent = request.headers.get("user-agent") || ""
 
     console.log("🔍 CAPI API: Client info extracted", {
@@ -50,44 +71,67 @@ export async function POST(request: NextRequest) {
       return crypto.createHash("sha256").update(data.toLowerCase().trim()).digest("hex")
     }
 
-    // Prepare event data for CAPI
-    const eventData = {
-      data: [
-        {
-          event_name: body.event_name,
-          event_time: body.event_time,
-          event_id: body.event_id,
-          action_source: "website",
-          event_source_url: request.headers.get("referer") || "",
-          user_data: {
-            client_ip_address: clientIP,
-            client_user_agent: userAgent,
-            fbc: extractFBC(request),
-            fbp: extractFBP(request),
-            // Hash PII if provided
-            ...(body.user_data?.em && { em: [hashData(body.user_data.em)] }),
-            ...(body.user_data?.ph && { ph: [hashData(body.user_data.ph.replace(/\D/g, ""))] }),
-            ...(body.user_data?.fn && { fn: [hashData(body.user_data.fn)] }),
-            ...(body.user_data?.ln && { ln: [hashData(body.user_data.ln)] }),
+    let eventData
+    try {
+      eventData = {
+        data: [
+          {
+            event_name: body.event_name,
+            event_time: body.event_time,
+            event_id: body.event_id,
+            action_source: "website",
+            event_source_url: request.headers.get("referer") || "",
+            user_data: {
+              client_ip_address: clientIP,
+              client_user_agent: userAgent,
+              fbc: extractFBC(request),
+              fbp: extractFBP(request),
+              // Hash PII if provided
+              ...(body.user_data?.em && { em: [hashData(body.user_data.em)] }),
+              ...(body.user_data?.ph && { ph: [hashData(body.user_data.ph.replace(/\D/g, ""))] }),
+              ...(body.user_data?.fn && { fn: [hashData(body.user_data.fn)] }),
+              ...(body.user_data?.ln && { ln: [hashData(body.user_data.ln)] }),
+            },
+            custom_data: body.custom_data,
           },
-          custom_data: body.custom_data,
-        },
-      ],
+        ],
+      }
+      console.log("📦 CAPI API: Event data prepared successfully")
+    } catch (dataError) {
+      console.error("❌ CAPI API: Failed to prepare event data", dataError)
+      return NextResponse.json({ error: "Failed to prepare event data", details: dataError.message }, { status: 500 })
     }
 
-    // Send to Meta CAPI
-    const capiResponse = await fetch(`${CAPI_URL}/${PIXEL_ID}/events?access_token=${accessToken}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventData),
-    })
+    let capiResponse
+    let capiResult
+    try {
+      console.log("🚀 CAPI API: Sending request to Meta...")
+      capiResponse = await fetch(`${CAPI_URL}/${PIXEL_ID}/events?access_token=${accessToken}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      })
 
-    const capiResult = await capiResponse.json()
+      console.log("📡 CAPI API: Received response from Meta", {
+        status: capiResponse.status,
+        statusText: capiResponse.statusText,
+        ok: capiResponse.ok,
+      })
+
+      capiResult = await capiResponse.json()
+      console.log("📄 CAPI API: Parsed Meta response", capiResult)
+    } catch (fetchError) {
+      console.error("❌ CAPI API: Failed to communicate with Meta", fetchError)
+      return NextResponse.json(
+        { error: "Failed to communicate with Meta API", details: fetchError.message },
+        { status: 500 },
+      )
+    }
 
     if (!capiResponse.ok) {
-      console.error("CAPI request failed:", capiResult)
+      console.error("❌ CAPI API: Meta rejected the request:", capiResult)
       return NextResponse.json({ error: "Failed to send event to Meta CAPI", details: capiResult }, { status: 400 })
     }
 
@@ -113,8 +157,20 @@ export async function POST(request: NextRequest) {
       message: `Successfully tracked ${body.event_name} for funnel: ${body.custom_data?.funnel}`,
     })
   } catch (error) {
-    console.error("CAPI API route error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("❌ CAPI API: Unexpected error occurred", {
+      error: error.message,
+      stack: error.stack,
+      name: error.name,
+      timestamp: new Date().toISOString(),
+    })
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        message: error.message,
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 },
+    )
   }
 }
 
