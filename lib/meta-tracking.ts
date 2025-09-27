@@ -183,7 +183,20 @@ export const trackCAPIEvent = async (
       body: JSON.stringify(payload),
     })
 
-    const result = await response.json()
+    let result
+    try {
+      result = await response.json()
+    } catch (parseError) {
+      // If JSON parsing fails, get the raw text to see what the server actually returned
+      const responseText = await response.text()
+      console.error(`❌ CAPI: Failed to parse response as JSON`, {
+        status: response.status,
+        statusText: response.statusText,
+        responseText: responseText.substring(0, 200) + "...",
+        parseError: parseError instanceof Error ? parseError.message : parseError,
+      })
+      throw new Error(`CAPI server returned non-JSON response: ${response.status} ${response.statusText}`)
+    }
 
     if (!response.ok) {
       console.error(`❌ CAPI: Request failed (${response.status})`, {
