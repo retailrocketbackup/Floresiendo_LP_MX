@@ -9,26 +9,72 @@ interface HubSpotFormProps {
 
 export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
   useEffect(() => {
-    console.log('🔧 Loading HubSpot form for funnel:', funnel);
+    console.log("🔧 Loading HubSpot form for funnel:", funnel)
 
     const script = document.createElement("script")
     script.src = "https://js.hsforms.net/forms/embed/50499487.js"
     script.defer = true
     document.head.appendChild(script)
 
-    // Track Lead event when form page loads (reliable approach)
-    trackEvent('Lead', {
-      funnel,
-      content_type: 'form_page_view',
-      content_name: `hubspot_form_${funnel}`,
-    }, { enableCAPI: true });
+    const handleHubSpotEvent = (event: MessageEvent) => {
+      // Check if it's a HubSpot form submission
+      if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormSubmit") {
+        console.log("📋 HubSpot form submitted!", event.data)
 
-    console.log('📋 Lead event tracked for form page view');
+        // Extract form data
+        const formData = event.data.data || {}
+        const submissionData = formData.submissionValues || {}
+
+        console.log("📋 Form submission data:", submissionData)
+
+        // Extract user data from form submission
+        const userData = {
+          email: submissionData.email,
+          first_name: submissionData.firstname || submissionData.first_name,
+          last_name: submissionData.lastname || submissionData.last_name,
+          phone: submissionData.phone,
+        }
+
+        console.log("📋 Extracted user data:", userData)
+
+        // Track Lead event with actual user data from form submission
+        trackEvent(
+          "Lead",
+          {
+            funnel,
+            content_type: "form_submission",
+            content_name: `hubspot_form_${funnel}`,
+            email: userData.email,
+            first_name: userData.first_name,
+            last_name: userData.last_name,
+            phone: userData.phone,
+          },
+          { enableCAPI: true },
+        )
+
+        console.log("📋 Lead event tracked with user data")
+      }
+    }
+
+    // Listen for HubSpot form events
+    if (typeof window !== "undefined") {
+      window.addEventListener("message", handleHubSpotEvent)
+    }
+
+    // trackEvent('Lead', {
+    //   funnel,
+    //   content_type: 'form_page_view',
+    //   content_name: `hubspot_form_${funnel}`,
+    // }, { enableCAPI: true });
 
     return () => {
       const existingScript = document.querySelector('script[src="https://js.hsforms.net/forms/embed/50499487.js"]')
       if (existingScript) {
         document.head.removeChild(existingScript)
+      }
+
+      if (typeof window !== "undefined") {
+        window.removeEventListener("message", handleHubSpotEvent)
       }
     }
   }, [funnel])
