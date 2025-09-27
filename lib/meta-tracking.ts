@@ -143,36 +143,43 @@ export const trackCAPIEvent = async (
     const fbclid = getFbclid()
     const fbp = getFbp()
 
+    const userData: any = {}
+
+    if (data.email) userData.em = normalizeEmail(data.email)
+    if (data.phone) userData.ph = normalizePhone(data.phone)
+    if (data.first_name) userData.fn = data.first_name.toLowerCase().trim()
+    if (data.last_name) userData.ln = data.last_name.toLowerCase().trim()
+    if (ip) userData.client_ip_address = ip
+    if (userAgent) userData.client_user_agent = userAgent
+    if (fbp) userData.fbp = fbp
+    if (fbclid) userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+
+    const customData: any = {
+      funnel: data.funnel,
+      source: "floresiendo_lp",
+    }
+
+    if (data.content_type) customData.content_type = data.content_type
+    if (data.content_name) customData.content_name = data.content_name
+    if (data.currency) customData.currency = data.currency
+    if (data.value !== undefined) customData.value = data.value
+
     const payload = {
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
       event_id: eventId, // Using the same eventId from pixel
       action_source: "website",
-      user_data: {
-        em: data.email ? normalizeEmail(data.email) : undefined,
-        ph: data.phone ? normalizePhone(data.phone) : undefined,
-        fn: data.first_name ? data.first_name.toLowerCase().trim() : undefined,
-        ln: data.last_name ? data.last_name.toLowerCase().trim() : undefined,
-        client_ip_address: ip,
-        client_user_agent: userAgent,
-        fbp: fbp || undefined,
-        fbc: fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined,
-      },
-      custom_data: {
-        funnel: data.funnel,
-        content_type: data.content_type,
-        content_name: data.content_name,
-        currency: data.currency || "MXN",
-        value: data.value,
-        source: "floresiendo_lp",
-      },
+      user_data: userData,
+      custom_data: customData,
     }
 
-    console.log(`📤 CAPI: Sending payload with enhanced matching data`, {
+    console.log(`📤 CAPI: Sending clean payload (no undefined values)`, {
       ...payload,
       fbclid_captured: !!fbclid,
       fbp_captured: !!fbp,
-      fbc_formatted: payload.user_data.fbc ? "Yes" : "No",
+      fbc_formatted: userData.fbc ? "Yes" : "No",
+      user_data_fields: Object.keys(userData),
+      custom_data_fields: Object.keys(customData),
     })
 
     const response = await fetch("/api/meta-capi", {
