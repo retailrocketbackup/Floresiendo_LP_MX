@@ -270,6 +270,9 @@ export const trackEvent = async (
     funnel: data.funnel,
     enableCAPI: options.enableCAPI,
     timestamp: new Date().toISOString(),
+    windowExists: typeof window !== "undefined",
+    fbqExists: typeof window !== "undefined" && !!window.fbq,
+    currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
 
   // Generate a single eventId for both pixel and CAPI
@@ -291,12 +294,15 @@ export const trackEvent = async (
   })
 
   // Track client-side with shared eventId
-  trackPixelEvent(eventName, data, sharedEventId)
+  const pixelResult = trackPixelEvent(eventName, data, sharedEventId)
+  console.log(`📱 PIXEL: Tracking result`, { pixelResult, eventSent: !!pixelResult })
 
   // Track server-side if enabled with the same eventId
   if (options.enableCAPI) {
     try {
-      await trackCAPIEvent(eventName, data, sharedEventId, options.userAgent, options.ip)
+      console.log(`🚀 CAPI: About to call trackCAPIEvent`)
+      const capiResult = await trackCAPIEvent(eventName, data, sharedEventId, options.userAgent, options.ip)
+      console.log(`✅ CAPI: trackCAPIEvent completed successfully`, capiResult)
 
       console.log(`🎊 DEDUPLICATION: Both events sent with matching IDs and enhanced data`, {
         eventName,
@@ -310,9 +316,29 @@ export const trackEvent = async (
         timestamp: new Date().toISOString(),
       })
     } catch (error) {
-      console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, error)
+      console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, {
+        error: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined,
+      })
     }
   } else {
     console.log(`📍 TRACKING: Only Pixel tracking enabled for ${eventName}`)
   }
+
+  console.log(`🏁 TRACKING: Completed tracking attempt for ${eventName}`)
+}
+
+export const testTracking = () => {
+  console.log(`🧪 TEST: Starting tracking test`)
+  trackEvent(
+    "Lead",
+    {
+      funnel: "test",
+      content_type: "test_event",
+      email: "test@example.com",
+    },
+    {
+      enableCAPI: true,
+    },
+  )
 }
