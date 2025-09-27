@@ -184,27 +184,40 @@ export const trackCAPIEvent = async (
     })
 
     let result
-    try {
-      result = await response.json()
-    } catch (parseError) {
-      // If JSON parsing fails, get the raw text to see what the server actually returned
-      const responseText = await response.text()
-      console.error(`❌ CAPI: Failed to parse response as JSON`, {
-        status: response.status,
-        statusText: response.statusText,
-        responseText: responseText.substring(0, 200) + "...",
-        parseError: parseError instanceof Error ? parseError.message : parseError,
-      })
-      throw new Error(`CAPI server returned non-JSON response: ${response.status} ${response.statusText}`)
-    }
+    const contentType = response.headers.get("content-type")
 
     if (!response.ok) {
+      // For error responses, try to get the error message
+      let errorMessage
+      try {
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorData.message || `HTTP ${response.status}`
+        } else {
+          errorMessage = await response.text()
+        }
+      } catch (readError) {
+        errorMessage = `HTTP ${response.status} ${response.statusText}`
+      }
+
       console.error(`❌ CAPI: Request failed (${response.status})`, {
         status: response.status,
         statusText: response.statusText,
-        error: result,
+        error: errorMessage,
       })
-      throw new Error(`CAPI request failed: ${response.statusText}`)
+      throw new Error(`CAPI request failed: ${errorMessage}`)
+    }
+
+    // For successful responses, parse as JSON
+    try {
+      result = await response.json()
+    } catch (parseError) {
+      console.error(`❌ CAPI: Failed to parse successful response as JSON`, {
+        status: response.status,
+        contentType,
+        parseError: parseError instanceof Error ? parseError.message : parseError,
+      })
+      throw new Error(`CAPI server returned invalid JSON response`)
     }
 
     console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
