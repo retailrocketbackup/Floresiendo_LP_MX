@@ -16,7 +16,15 @@ interface VideoSectionProps {
   funnel?: string
 }
 
-export function VideoSection({ title, subtitle, description, videoId, thumbnail, className = "", funnel = "unknown" }: VideoSectionProps) {
+export function VideoSection({
+  title,
+  subtitle,
+  description,
+  videoId,
+  thumbnail,
+  className = "",
+  funnel = "unknown",
+}: VideoSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [imageError, setImageError] = useState(false)
 
@@ -56,15 +64,19 @@ export function VideoSection({ title, subtitle, description, videoId, thumbnail,
                     <Button
                       size="lg"
                       onClick={() => {
-                        setIsPlaying(true);
-                        trackEvent('ViewContent',
+                        setIsPlaying(true)
+                        trackEvent(
+                          "ViewContent",
                           {
                             funnel,
-                            content_type: 'video',
-                            content_name: `video_${funnel}`
+                            content_type: "video",
+                            content_name: `video_${funnel}`,
                           },
-                          { enableCAPI: true }
-                        );
+                          {
+                            enableCAPI: true,
+                            userAgent: navigator.userAgent,
+                          },
+                        )
                       }}
                       className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 rounded-full w-20 h-20 p-0"
                     >
