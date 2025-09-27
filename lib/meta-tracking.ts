@@ -183,15 +183,41 @@ export const trackCAPIEvent = async (
       body: JSON.stringify(payload),
     })
 
-    const result = await response.json()
+    let result
+    const contentType = response.headers.get("content-type")
 
     if (!response.ok) {
+      // For error responses, try to get the error message
+      let errorMessage
+      try {
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorData.message || `HTTP ${response.status}`
+        } else {
+          errorMessage = await response.text()
+        }
+      } catch (readError) {
+        errorMessage = `HTTP ${response.status} ${response.statusText}`
+      }
+
       console.error(`❌ CAPI: Request failed (${response.status})`, {
         status: response.status,
         statusText: response.statusText,
-        error: result,
+        error: errorMessage,
       })
-      throw new Error(`CAPI request failed: ${response.statusText}`)
+      throw new Error(`CAPI request failed: ${errorMessage}`)
+    }
+
+    // For successful responses, parse as JSON
+    try {
+      result = await response.json()
+    } catch (parseError) {
+      console.error(`❌ CAPI: Failed to parse successful response as JSON`, {
+        status: response.status,
+        contentType,
+        parseError: parseError instanceof Error ? parseError.message : parseError,
+      })
+      throw new Error(`CAPI server returned invalid JSON response`)
     }
 
     console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
