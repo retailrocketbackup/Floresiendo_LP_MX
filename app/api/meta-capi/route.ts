@@ -1,6 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { createHash } from "crypto"
 
 const FACEBOOK_PIXEL_ID = "1500366924641250"
+
+function hashPII(value: string | undefined): string | undefined {
+  if (!value || typeof value !== "string") return undefined
+
+  // Normalize and hash the value
+  const normalized = value.toLowerCase().trim()
+  return createHash("sha256").update(normalized).digest("hex")
+}
 
 export async function POST(request: NextRequest) {
   console.log("[v0] CAPI: Route handler started")
@@ -19,6 +28,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing access token" }, { status: 500 })
     }
 
+    const hashedUserData = {
+      ...body.user_data,
+      em: hashPII(body.user_data?.em),
+      ph: hashPII(body.user_data?.ph),
+      fn: hashPII(body.user_data?.fn),
+      ln: hashPII(body.user_data?.ln),
+      // Keep non-PII data as-is
+      client_ip_address: body.user_data?.client_ip_address,
+      client_user_agent: body.user_data?.client_user_agent,
+      fbp: body.user_data?.fbp,
+      fbc: body.user_data?.fbc,
+    }
+
+    // Remove undefined values
+    Object.keys(hashedUserData).forEach((key) => {
+      if (hashedUserData[key] === undefined) {
+        delete hashedUserData[key]
+      }
+    })
+
     const facebookData = {
       data: [
         {
@@ -26,7 +55,7 @@ export async function POST(request: NextRequest) {
           event_time: body.event_time,
           event_id: body.event_id,
           action_source: "website",
-          user_data: body.user_data || {},
+          user_data: hashedUserData,
           custom_data: body.custom_data || {},
           event_source_url: body.event_source_url,
         },
@@ -34,7 +63,7 @@ export async function POST(request: NextRequest) {
       test_event_code: body.test_event_code, // Optional: for testing in Events Manager
     }
 
-    console.log("[v0] CAPI: Sending data to Facebook:", JSON.stringify(facebookData, null, 2))
+    console.log("[v0] CAPI: Sending data to Facebook with hashed PII:", JSON.stringify(facebookData, null, 2))
 
     const facebookUrl = `https://graph.facebook.com/v18.0/${FACEBOOK_PIXEL_ID}/events`
     const response = await fetch(facebookUrl, {
