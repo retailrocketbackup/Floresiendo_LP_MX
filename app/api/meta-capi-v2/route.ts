@@ -23,6 +23,31 @@ export async function POST(request: NextRequest) {
   try {
     console.log("[v0] CAPI v2 endpoint called")
 
+    console.log("[v0] META_PIXEL_ID:", process.env.META_PIXEL_ID ? "✅ Set" : "❌ Missing")
+    console.log("[v0] META_CAPI_ACCESS_TOKEN:", process.env.META_CAPI_ACCESS_TOKEN ? "✅ Set" : "❌ Missing")
+
+    if (!process.env.META_PIXEL_ID) {
+      console.error("[v0] ❌ META_PIXEL_ID environment variable is missing!")
+      return NextResponse.json(
+        {
+          success: false,
+          error: "META_PIXEL_ID environment variable is required",
+        },
+        { status: 500 },
+      )
+    }
+
+    if (!process.env.META_CAPI_ACCESS_TOKEN) {
+      console.error("[v0] ❌ META_CAPI_ACCESS_TOKEN environment variable is missing!")
+      return NextResponse.json(
+        {
+          success: false,
+          error: "META_CAPI_ACCESS_TOKEN environment variable is required",
+        },
+        { status: 500 },
+      )
+    }
+
     const body = await request.json()
     console.log("[v0] Request payload:", JSON.stringify(body, null, 2))
 
