@@ -1,9 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import crypto from "crypto"
-
-function hashSHA256(data: string): string {
-  return crypto.createHash("sha256").update(data.toLowerCase().trim()).digest("hex")
-}
 
 export async function POST(request: NextRequest) {
   console.log("[v0] CAPI endpoint called")
@@ -13,31 +8,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log("[v0] Request body parsed:", JSON.stringify(body, null, 2))
 
-    const userData: any = {}
-
-    // Hash PII data as required by Facebook
-    if (body.user_data?.em) {
-      userData.em = hashSHA256(body.user_data.em)
-      console.log("[v0] Hashed email")
-    }
-    if (body.user_data?.ph) {
-      userData.ph = hashSHA256(body.user_data.ph)
-      console.log("[v0] Hashed phone")
-    }
-    if (body.user_data?.fn) {
-      userData.fn = hashSHA256(body.user_data.fn)
-      console.log("[v0] Hashed first name")
-    }
-    if (body.user_data?.ln) {
-      userData.ln = hashSHA256(body.user_data.ln)
-      console.log("[v0] Hashed last name")
-    }
-
-    // Keep non-PII data as-is
-    if (body.user_data?.client_ip_address) userData.client_ip_address = body.user_data.client_ip_address
-    if (body.user_data?.client_user_agent) userData.client_user_agent = body.user_data.client_user_agent
-    if (body.user_data?.fbp) userData.fbp = body.user_data.fbp
-    if (body.user_data?.fbc) userData.fbc = body.user_data.fbc
+    const userData = body.user_data || {}
+    console.log("[v0] User data prepared:", JSON.stringify(userData, null, 2))
 
     const facebookPayload = {
       data: [
