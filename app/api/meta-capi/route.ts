@@ -28,8 +28,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing access token" }, { status: 500 })
     }
 
+    console.log("[v0] CAPI: Processing user data for hashing", body.user_data)
+
     const hashedUserData = {
-      ...body.user_data,
+      // Hash PII data
       em: hashPII(body.user_data?.em),
       ph: hashPII(body.user_data?.ph),
       fn: hashPII(body.user_data?.fn),
@@ -46,6 +48,15 @@ export async function POST(request: NextRequest) {
       if (hashedUserData[key] === undefined) {
         delete hashedUserData[key]
       }
+    })
+
+    console.log("[v0] CAPI: User data after hashing:", {
+      originalKeys: Object.keys(body.user_data || {}),
+      hashedKeys: Object.keys(hashedUserData),
+      hasEmail: !!hashedUserData.em,
+      hasPhone: !!hashedUserData.ph,
+      hasFbp: !!hashedUserData.fbp,
+      hasFbc: !!hashedUserData.fbc,
     })
 
     const facebookData = {
@@ -66,6 +77,8 @@ export async function POST(request: NextRequest) {
     console.log("[v0] CAPI: Sending data to Facebook with hashed PII:", JSON.stringify(facebookData, null, 2))
 
     const facebookUrl = `https://graph.facebook.com/v18.0/${FACEBOOK_PIXEL_ID}/events`
+    console.log("[v0] CAPI: Sending to Facebook API...")
+
     const response = await fetch(facebookUrl, {
       method: "POST",
       headers: {
@@ -78,7 +91,7 @@ export async function POST(request: NextRequest) {
     })
 
     const responseData = await response.json()
-    console.log("[v0] CAPI: Facebook response:", responseData)
+    console.log("[v0] CAPI: Facebook API Response:", response.status, responseData)
 
     if (!response.ok) {
       console.log("[v0] CAPI: Facebook API error:", response.status, responseData)
@@ -98,13 +111,17 @@ export async function POST(request: NextRequest) {
       message: "Event sent to Facebook CAPI successfully",
       facebook_response: responseData,
       event_name: body.event_name,
+      events_received: responseData.events_received,
+      fbtrace_id: responseData.fbtrace_id,
     })
   } catch (error) {
     console.log("[v0] CAPI: Error caught:", error)
+    console.log("[v0] CAPI: Error stack:", error instanceof Error ? error.stack : "No stack trace")
     return NextResponse.json(
       {
         error: "Internal server error",
         message: error instanceof Error ? error.message : "Unknown error",
+        stack: error instanceof Error ? error.stack : undefined,
       },
       { status: 500 },
     )
