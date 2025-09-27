@@ -145,14 +145,25 @@ export const trackCAPIEvent = async (
 
     const userData: any = {}
 
+    // Always include user agent for website events (required by Facebook)
+    if (userAgent) {
+      userData.client_user_agent = userAgent
+    }
+
+    // Always include IP if available
+    if (ip) {
+      userData.client_ip_address = ip
+    }
+
+    // Include Facebook identifiers if available
+    if (fbp) userData.fbp = fbp
+    if (fbclid) userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+
+    // Include personal data if available (and hash server-side)
     if (data.email) userData.em = normalizeEmail(data.email)
     if (data.phone) userData.ph = normalizePhone(data.phone)
     if (data.first_name) userData.fn = data.first_name.toLowerCase().trim()
     if (data.last_name) userData.ln = data.last_name.toLowerCase().trim()
-    if (ip) userData.client_ip_address = ip
-    if (userAgent) userData.client_user_agent = userAgent
-    if (fbp) userData.fbp = fbp
-    if (fbclid) userData.fbc = `fb.1.${Date.now()}.${fbclid}`
 
     const customData: any = {
       funnel: data.funnel,
@@ -169,17 +180,21 @@ export const trackCAPIEvent = async (
       event_time: Math.floor(Date.now() / 1000),
       event_id: eventId, // Using the same eventId from pixel
       action_source: "website",
+      event_source_url: typeof window !== "undefined" ? window.location.href : undefined,
       user_data: userData,
       custom_data: customData,
     }
 
-    console.log(`📤 CAPI: Sending clean payload (no undefined values)`, {
+    console.log(`📤 CAPI: Sending payload with required website fields`, {
       ...payload,
       fbclid_captured: !!fbclid,
       fbp_captured: !!fbp,
       fbc_formatted: userData.fbc ? "Yes" : "No",
       user_data_fields: Object.keys(userData),
       custom_data_fields: Object.keys(customData),
+      has_user_agent: !!userData.client_user_agent,
+      has_ip: !!userData.client_ip_address,
+      has_event_source_url: !!payload.event_source_url,
     })
 
     const response = await fetch("/api/meta-capi", {

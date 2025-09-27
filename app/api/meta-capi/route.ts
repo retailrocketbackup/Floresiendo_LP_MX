@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
           event_time: body.event_time,
           event_id: body.event_id,
           action_source: body.action_source,
+          event_source_url: body.event_source_url, // Required for website events
           user_data: hashedUserData,
           custom_data: body.custom_data || {},
         },
