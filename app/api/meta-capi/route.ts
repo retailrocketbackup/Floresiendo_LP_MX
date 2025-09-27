@@ -35,19 +35,13 @@ export async function POST(request: NextRequest) {
 
     console.log("✅ CAPI API: Access token found, preparing request to Meta")
 
-    // Extract client information
-    const forwarded = request.headers.get("x-forwarded-for")
-    const clientIP = forwarded
-      ? forwarded.split(",")[0].trim()
-      : request.headers.get("x-real-ip") ||
-        request.headers.get("cf-connecting-ip") || // Cloudflare
-        "127.0.0.1"
+    const clientIP = extractClientIP(request)
     const userAgent = request.headers.get("user-agent") || ""
 
     console.log("🔍 CAPI API: Client info extracted", {
       clientIP,
+      ipVersion: isIPv6(clientIP) ? "IPv6" : "IPv4",
       userAgent: userAgent.substring(0, 50) + "...",
-      forwarded,
       hasUserAgent: !!userAgent,
     })
 
@@ -122,6 +116,75 @@ export async function POST(request: NextRequest) {
     console.error("CAPI API route error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
+}
+
+function extractClientIP(request: NextRequest): string {
+  // Get all possible IP sources
+  const forwarded = request.headers.get("x-forwarded-for")
+  const realIP = request.headers.get("x-real-ip")
+  const cfConnectingIP = request.headers.get("cf-connecting-ip") // Cloudflare
+  const remoteAddr = request.headers.get("remote-addr")
+
+  // Collect all potential IPs
+  const potentialIPs: string[] = []
+
+  if (forwarded) {
+    // x-forwarded-for can contain multiple IPs, first one is the original client
+    potentialIPs.push(...forwarded.split(",").map((ip) => ip.trim()))
+  }
+
+  if (realIP) potentialIPs.push(realIP)
+  if (cfConnectingIP) potentialIPs.push(cfConnectingIP)
+  if (remoteAddr) potentialIPs.push(remoteAddr)
+
+  // Filter out invalid IPs and prioritize IPv6
+  const validIPs = potentialIPs.filter((ip) => isValidIP(ip))
+
+  // Prioritize IPv6 addresses as recommended by Facebook
+  const ipv6Address = validIPs.find((ip) => isIPv6(ip))
+  if (ipv6Address) {
+    console.log("🌐 Using IPv6 address:", ipv6Address)
+    return ipv6Address
+  }
+
+  // Fall back to IPv4
+  const ipv4Address = validIPs.find((ip) => !isIPv6(ip))
+  if (ipv4Address) {
+    console.log("🌐 Using IPv4 address:", ipv4Address)
+    return ipv4Address
+  }
+
+  // Ultimate fallback
+  return "127.0.0.1"
+}
+
+function isIPv6(ip: string): boolean {
+  // IPv6 addresses contain colons
+  return ip.includes(":")
+}
+
+function isValidIP(ip: string): boolean {
+  if (!ip || ip === "unknown") return false
+
+  // Basic IPv4 validation
+  const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/
+  if (ipv4Regex.test(ip)) {
+    const parts = ip.split(".")
+    return parts.every((part) => {
+      const num = Number.parseInt(part, 10)
+      return num >= 0 && num <= 255
+    })
+  }
+
+  // Basic IPv6 validation (simplified)
+  const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/
+  if (ipv6Regex.test(ip)) return true
+
+  // IPv6 with IPv4 suffix (e.g., ::ffff:192.168.1.1)
+  const ipv6WithIpv4Regex = /^::ffff:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+  if (ipv6WithIpv4Regex.test(ip)) return true
+
+  return false
 }
 
 // Extract Facebook Click ID from cookies
