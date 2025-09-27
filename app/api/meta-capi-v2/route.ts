@@ -23,21 +23,24 @@ export async function POST(request: NextRequest) {
   try {
     console.log("[v0] CAPI v2 endpoint called")
 
-    console.log("[v0] META_PIXEL_ID:", process.env.META_PIXEL_ID ? "✅ Set" : "❌ Missing")
-    console.log("[v0] META_CAPI_ACCESS_TOKEN:", process.env.META_CAPI_ACCESS_TOKEN ? "✅ Set" : "❌ Missing")
+    const PIXEL_ID = process.env.META_PIXEL_ID || "TU_PIXEL_ID_AQUI"
+    const ACCESS_TOKEN = process.env.META_CAPI_ACCESS_TOKEN
 
-    if (!process.env.META_PIXEL_ID) {
-      console.error("[v0] ❌ META_PIXEL_ID environment variable is missing!")
+    console.log("[v0] META_PIXEL_ID:", PIXEL_ID ? "✅ Set" : "❌ Missing")
+    console.log("[v0] META_CAPI_ACCESS_TOKEN:", ACCESS_TOKEN ? "✅ Set" : "❌ Missing")
+
+    if (!PIXEL_ID || PIXEL_ID === "TU_PIXEL_ID_AQUI") {
+      console.error("[v0] ❌ META_PIXEL_ID needs to be configured!")
       return NextResponse.json(
         {
           success: false,
-          error: "META_PIXEL_ID environment variable is required",
+          error: "Please replace 'TU_PIXEL_ID_AQUI' with your actual Facebook Pixel ID",
         },
         { status: 500 },
       )
     }
 
-    if (!process.env.META_CAPI_ACCESS_TOKEN) {
+    if (!ACCESS_TOKEN) {
       console.error("[v0] ❌ META_CAPI_ACCESS_TOKEN environment variable is missing!")
       return NextResponse.json(
         {
@@ -104,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     // Enviar a Facebook
     const facebookResponse = await fetch(
-      `https://graph.facebook.com/v21.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
+      `https://graph.facebook.com/v21.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`,
       {
         method: "POST",
         headers: {
