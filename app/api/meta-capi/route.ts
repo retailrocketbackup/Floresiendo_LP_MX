@@ -1,4 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { createHash } from "crypto"
+
+function hashSHA256(data: string): string {
+  return createHash("sha256").update(data.toLowerCase().trim()).digest("hex")
+}
 
 export async function POST(request: NextRequest) {
   console.log("[v0] CAPI endpoint called")
@@ -9,7 +14,30 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Request body parsed:", JSON.stringify(body, null, 2))
 
     const userData = body.user_data || {}
-    console.log("[v0] User data prepared:", JSON.stringify(userData, null, 2))
+
+    const hashedUserData: any = {}
+
+    if (userData.em) {
+      hashedUserData.em = hashSHA256(userData.em)
+      console.log("[v0] Hashed email")
+    }
+
+    if (userData.ph) {
+      hashedUserData.ph = hashSHA256(userData.ph)
+      console.log("[v0] Hashed phone")
+    }
+
+    if (userData.fn) {
+      hashedUserData.fn = hashSHA256(userData.fn)
+      console.log("[v0] Hashed first name")
+    }
+
+    if (userData.ln) {
+      hashedUserData.ln = hashSHA256(userData.ln)
+      console.log("[v0] Hashed last name")
+    }
+
+    console.log("[v0] Hashed user data prepared:", JSON.stringify(hashedUserData, null, 2))
 
     const facebookPayload = {
       data: [
@@ -18,7 +46,7 @@ export async function POST(request: NextRequest) {
           event_time: body.event_time,
           event_id: body.event_id,
           action_source: body.action_source,
-          user_data: userData,
+          user_data: hashedUserData, // Using hashed user data
           custom_data: body.custom_data || {},
         },
       ],
