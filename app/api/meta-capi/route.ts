@@ -1,8 +1,19 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { createHash } from "crypto"
 
-function hashSHA256(data: string): string {
-  return createHash("sha256").update(data.toLowerCase().trim()).digest("hex")
+async function hashSHA256(data: string): Promise<string> {
+  try {
+    console.log("[v0] Hashing data with Web Crypto API")
+    const encoder = new TextEncoder()
+    const dataBuffer = encoder.encode(data.toLowerCase().trim())
+    const hashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+    console.log("[v0] Successfully hashed data")
+    return hashHex
+  } catch (error) {
+    console.error("[v0] Error hashing data:", error)
+    throw new Error(`Failed to hash data: ${error}`)
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -14,30 +25,40 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Request body parsed:", JSON.stringify(body, null, 2))
 
     const userData = body.user_data || {}
+    console.log("[v0] User data extracted:", JSON.stringify(userData, null, 2))
 
     const hashedUserData: any = {}
 
     if (userData.em) {
-      hashedUserData.em = hashSHA256(userData.em)
-      console.log("[v0] Hashed email")
+      console.log("[v0] Hashing email...")
+      hashedUserData.em = await hashSHA256(userData.em)
+      console.log("[v0] Email hashed successfully")
     }
 
     if (userData.ph) {
-      hashedUserData.ph = hashSHA256(userData.ph)
-      console.log("[v0] Hashed phone")
+      console.log("[v0] Hashing phone...")
+      hashedUserData.ph = await hashSHA256(userData.ph)
+      console.log("[v0] Phone hashed successfully")
     }
 
     if (userData.fn) {
-      hashedUserData.fn = hashSHA256(userData.fn)
-      console.log("[v0] Hashed first name")
+      console.log("[v0] Hashing first name...")
+      hashedUserData.fn = await hashSHA256(userData.fn)
+      console.log("[v0] First name hashed successfully")
     }
 
     if (userData.ln) {
-      hashedUserData.ln = hashSHA256(userData.ln)
-      console.log("[v0] Hashed last name")
+      console.log("[v0] Hashing last name...")
+      hashedUserData.ln = await hashSHA256(userData.ln)
+      console.log("[v0] Last name hashed successfully")
     }
 
-    console.log("[v0] Hashed user data prepared:", JSON.stringify(hashedUserData, null, 2))
+    if (userData.client_ip_address) hashedUserData.client_ip_address = userData.client_ip_address
+    if (userData.client_user_agent) hashedUserData.client_user_agent = userData.client_user_agent
+    if (userData.fbp) hashedUserData.fbp = userData.fbp
+    if (userData.fbc) hashedUserData.fbc = userData.fbc
+
+    console.log("[v0] Final hashed user data:", JSON.stringify(hashedUserData, null, 2))
 
     const facebookPayload = {
       data: [
@@ -46,13 +67,13 @@ export async function POST(request: NextRequest) {
           event_time: body.event_time,
           event_id: body.event_id,
           action_source: body.action_source,
-          user_data: hashedUserData, // Using hashed user data
+          user_data: hashedUserData,
           custom_data: body.custom_data || {},
         },
       ],
     }
 
-    console.log("[v0] Facebook payload prepared:", JSON.stringify(facebookPayload, null, 2))
+    console.log("[v0] Sending to Facebook:", JSON.stringify(facebookPayload, null, 2))
 
     const facebookResponse = await fetch(
       `https://graph.facebook.com/v21.0/1500366924641250/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
@@ -84,7 +105,6 @@ export async function POST(request: NextRequest) {
       success: true,
       message: "Event sent to Facebook successfully",
       facebook_response: facebookResult,
-      received_data: body,
     })
   } catch (error) {
     console.error("[v0] CAPI endpoint error:", error)
@@ -92,6 +112,7 @@ export async function POST(request: NextRequest) {
       {
         error: "Internal server error",
         details: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
       },
       { status: 500 },
     )
