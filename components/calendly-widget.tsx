@@ -82,21 +82,6 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
             userData: userData, // Show actual values for debugging
           })
 
-          // Track Schedule event when appointment is booked with user data
-          trackEvent(
-            "Schedule",
-            {
-              funnel,
-              content_type: "appointment",
-              content_name: `calendly_${funnel}`,
-              value: 0,
-              email: userData.email,
-              first_name: userData.first_name,
-              last_name: userData.last_name,
-            },
-            { enableCAPI: true },
-          )
-
           // Track the specific funnel event for detailed analytics
           const specificEventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
           trackEvent(
