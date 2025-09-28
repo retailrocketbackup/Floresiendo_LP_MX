@@ -9,8 +9,6 @@ interface HubSpotFormProps {
 
 export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
   useEffect(() => {
-    console.log("[v0] Loading HubSpot form for funnel:", funnel)
-
     const script = document.createElement("script")
     script.src = "https://js.hsforms.net/forms/embed/50499487.js"
     script.defer = true
@@ -26,46 +24,16 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
       { enableCAPI: true },
     )
 
-    console.log("[v0] Lead event tracked on form load")
-
     const handleHubSpotEvent = (event: MessageEvent) => {
-      console.log("[v0] ===== HUBSPOT EVENT DEBUG =====")
-      console.log("[v0] Full event object:", event)
-      console.log("[v0] Event origin:", event.origin)
-      console.log("[v0] Event data:", event.data)
-      console.log("[v0] Event data type:", typeof event.data)
-
-      // Log all properties of event.data if it's an object
-      if (event.data && typeof event.data === "object") {
-        console.log("[v0] Event data keys:", Object.keys(event.data))
-        console.log("[v0] Event data values:", Object.values(event.data))
-
-        // Check for common HubSpot properties
-        if (event.data.type) console.log("[v0] Event type:", event.data.type)
-        if (event.data.eventName) console.log("[v0] Event name:", event.data.eventName)
-        if (event.data.id) console.log("[v0] Event id:", event.data.id)
-        if (event.data.data) console.log("[v0] Event nested data:", event.data.data)
-      }
-      console.log("[v0] ================================")
-
       if (
         event.data &&
-        (event.data.type === "hsFormCallback" ||
-          event.data.eventName ||
-          event.data.type === "hsFormReady" ||
-          event.data.type === "hsFormSubmit")
+        (event.data.type === "hsFormCallback" || event.data.eventName || event.data.type === "hsFormReady")
       ) {
-        console.log("[v0] HubSpot event detected:", event.data)
-
         // Check if it's a form submission
         if (event.data.eventName === "onFormSubmit" || event.data.type === "hsFormSubmit") {
-          console.log("[v0] HubSpot form submitted!", event.data)
-
           // Extract form data
           const formData = event.data.data || {}
           const submissionData = formData.submissionValues || {}
-
-          console.log("[v0] Form submission data:", submissionData)
 
           // Extract user data from form submission
           const userData = {
@@ -74,8 +42,6 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
             last_name: submissionData.lastname || submissionData.last_name,
             phone: submissionData.phone,
           }
-
-          console.log("[v0] Extracted user data:", userData)
 
           // Track Lead event with actual user data from form submission
           trackEvent(
@@ -91,8 +57,6 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
             },
             { enableCAPI: true },
           )
-
-          console.log("[v0] Lead event tracked with user data")
         }
       }
     }
