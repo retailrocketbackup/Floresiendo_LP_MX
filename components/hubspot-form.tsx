@@ -9,8 +9,6 @@ interface HubSpotFormProps {
 
 export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
   useEffect(() => {
-    console.log("[v0] Loading HubSpot form for funnel:", funnel)
-
     const script = document.createElement("script")
     script.src = "https://js.hsforms.net/forms/embed/50499487.js"
     script.defer = true
@@ -26,29 +24,16 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
       { enableCAPI: true },
     )
 
-    console.log("[v0] Lead event tracked on form load")
-
     const handleHubSpotEvent = (event: MessageEvent) => {
-      console.log("[v0] Received message event:", event.data)
-
       if (
         event.data &&
-        (event.data.type === "hsFormCallback" ||
-          event.data.eventName ||
-          event.data.type === "hsFormReady" ||
-          event.data.type === "hsFormSubmit")
+        (event.data.type === "hsFormCallback" || event.data.eventName || event.data.type === "hsFormReady")
       ) {
-        console.log("[v0] HubSpot event detected:", event.data)
-
         // Check if it's a form submission
         if (event.data.eventName === "onFormSubmit" || event.data.type === "hsFormSubmit") {
-          console.log("[v0] HubSpot form submitted!", event.data)
-
           // Extract form data
           const formData = event.data.data || {}
           const submissionData = formData.submissionValues || {}
-
-          console.log("[v0] Form submission data:", submissionData)
 
           // Extract user data from form submission
           const userData = {
@@ -57,8 +42,6 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
             last_name: submissionData.lastname || submissionData.last_name,
             phone: submissionData.phone,
           }
-
-          console.log("[v0] Extracted user data:", userData)
 
           // Track Lead event with actual user data from form submission
           trackEvent(
@@ -74,8 +57,6 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
             },
             { enableCAPI: true },
           )
-
-          console.log("[v0] Lead event tracked with user data")
         }
       }
     }
