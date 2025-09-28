@@ -29,7 +29,24 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
     console.log("[v0] Lead event tracked on form load")
 
     const handleHubSpotEvent = (event: MessageEvent) => {
-      console.log("[v0] Received message event:", event.data)
+      console.log("[v0] ===== HUBSPOT EVENT DEBUG =====")
+      console.log("[v0] Full event object:", event)
+      console.log("[v0] Event origin:", event.origin)
+      console.log("[v0] Event data:", event.data)
+      console.log("[v0] Event data type:", typeof event.data)
+
+      // Log all properties of event.data if it's an object
+      if (event.data && typeof event.data === "object") {
+        console.log("[v0] Event data keys:", Object.keys(event.data))
+        console.log("[v0] Event data values:", Object.values(event.data))
+
+        // Check for common HubSpot properties
+        if (event.data.type) console.log("[v0] Event type:", event.data.type)
+        if (event.data.eventName) console.log("[v0] Event name:", event.data.eventName)
+        if (event.data.id) console.log("[v0] Event id:", event.data.id)
+        if (event.data.data) console.log("[v0] Event nested data:", event.data.data)
+      }
+      console.log("[v0] ================================")
 
       if (
         event.data &&
