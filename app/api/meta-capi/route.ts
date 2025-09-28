@@ -29,6 +29,11 @@ export async function POST(request: NextRequest) {
 
     const hashedUserData: any = {}
 
+    if (userData.external_id) {
+      hashedUserData.external_id = userData.external_id
+      console.log("[v0] External ID preserved:", userData.external_id)
+    }
+
     if (userData.em) {
       console.log("[v0] Hashing email...")
       hashedUserData.em = await hashSHA256(userData.em)
