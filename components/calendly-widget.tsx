@@ -16,61 +16,62 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
     document.head.appendChild(script)
 
     // Listen for Calendly events with comprehensive debugging
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const handleCalendlyEvent = (event: MessageEvent) => {
         // Log ALL Calendly messages to debug what's happening
-        if (event.origin?.includes('calendly') || event.data?.event?.includes('calendly')) {
-          console.log('🔍 Calendly Message received:', {
+        if (event.origin?.includes("calendly") || event.data?.event?.includes("calendly")) {
+          console.log("🔍 Calendly Message received:", {
             event: event.data.event,
             origin: event.origin,
-            data: event.data
-          });
+            data: event.data,
+          })
         }
 
         // Try multiple possible Calendly event patterns
         const isCalendlyScheduled =
-          event.data.event === 'calendly.event_scheduled' ||
-          event.data.event === 'calendly.event_booked' ||
-          event.data.type === 'calendly_event_scheduled';
+          event.data.event === "calendly.event_scheduled" ||
+          event.data.event === "calendly.event_booked" ||
+          event.data.type === "calendly_event_scheduled"
 
         if (isCalendlyScheduled) {
-          console.log('🎯 Calendly scheduling event detected!', event.data);
+          console.log("🎯 Calendly scheduling event detected!", event.data)
 
           // Extract user data from Calendly - try multiple data structures
-          const payload = event.data.payload || event.data;
-          console.log('📅 Full event data structure:', JSON.stringify(event.data, null, 2));
+          const payload = event.data.payload || event.data
+          console.log("📅 Full event data structure:", JSON.stringify(event.data, null, 2))
 
           // Try different possible locations for user data
           const inviteeData =
-            payload.invitee ||
-            payload.invitee_data ||
-            payload.event?.invitee ||
-            event.data.invitee ||
-            {};
+            payload.invitee || payload.invitee_data || payload.event?.invitee || event.data.invitee || {}
 
           // Also check if there's form data in the payload
-          const formData = payload.form_data || payload.formData || {};
+          const formData = payload.form_data || payload.formData || {}
 
-          console.log('📅 Raw invitee data:', inviteeData);
-          console.log('📅 Form data:', formData);
+          console.log("📅 Raw invitee data:", inviteeData)
+          console.log("📅 Form data:", formData)
 
           // Extract user data from multiple possible sources
           const userData = {
             email: inviteeData.email || formData.email || payload.email,
-            first_name: inviteeData.first_name || inviteeData.firstName || formData.first_name || formData.name?.split(' ')[0],
-            last_name: inviteeData.last_name || inviteeData.lastName || formData.last_name || formData.name?.split(' ').slice(1).join(' '),
+            first_name:
+              inviteeData.first_name || inviteeData.firstName || formData.first_name || formData.name?.split(" ")[0],
+            last_name:
+              inviteeData.last_name ||
+              inviteeData.lastName ||
+              formData.last_name ||
+              formData.name?.split(" ").slice(1).join(" "),
             phone: inviteeData.phone || formData.phone,
             name: inviteeData.name || inviteeData.full_name || formData.name,
-          };
+          }
 
           // Split name if first/last not provided separately
           if (userData.name && !userData.first_name && !userData.last_name) {
-            const nameParts = userData.name.split(' ');
-            userData.first_name = nameParts[0];
-            userData.last_name = nameParts.slice(1).join(' ');
+            const nameParts = userData.name.split(" ")
+            userData.first_name = nameParts[0]
+            userData.last_name = nameParts.slice(1).join(" ")
           }
 
-          console.log('📅 Calendly user data extracted:', {
+          console.log("📅 Calendly user data extracted:", {
             hasEmail: !!userData.email,
             hasFirstName: !!userData.first_name,
             hasLastName: !!userData.last_name,
@@ -78,30 +79,31 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
             hasName: !!userData.name,
             funnel,
             eventType: payload.event_type?.name,
-            userData: userData  // Show actual values for debugging
-          });
+            userData: userData, // Show actual values for debugging
+          })
 
-          // Track Schedule event when appointment is booked with user data
-          trackEvent('Schedule',
+          // Track the specific funnel event for detailed analytics
+          const specificEventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
+          trackEvent(
+            specificEventName,
             {
               funnel,
-              content_type: 'appointment',
+              content_type: "appointment",
               content_name: `calendly_${funnel}`,
               value: 0,
               email: userData.email,
               first_name: userData.first_name,
               last_name: userData.last_name,
             },
-            { enableCAPI: true }
-          );
+            { enableCAPI: true },
+          )
         }
-      };
-
-      (window as any).addEventListener('message', handleCalendlyEvent);
+      }
+      ;(window as any).addEventListener("message", handleCalendlyEvent)
 
       return () => {
-        (window as any).removeEventListener('message', handleCalendlyEvent);
-      };
+        ;(window as any).removeEventListener("message", handleCalendlyEvent)
+      }
     }
 
     return () => {

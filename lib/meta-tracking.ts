@@ -351,13 +351,12 @@ export const trackEvent = async (
     currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
 
-  // Determine specific event name based on funnel
   let finalEventName = eventName
   if (eventName === "Lead") {
     finalEventName = data.funnel.includes("video") ? "Lead_Video" : "Lead_Testimonios"
-  } else if (eventName === "Schedule") {
-    finalEventName = data.funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
   }
+  // Keep Schedule events as they are - don't transform them
+  // This allows both "Schedule" and "Schedule_Video" to be tracked separately
 
   // Generate shared IDs for both pixel and CAPI
   const sharedEventId = generateEventId()
