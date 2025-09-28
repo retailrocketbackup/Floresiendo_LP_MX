@@ -173,14 +173,18 @@ export const trackCAPIEvent = async (
   eventId: string,
   userAgent?: string,
   ip?: string,
-  externalId?: string, // Added external_id parameter
+  externalId?: string,
 ) => {
   console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
     event: eventName,
     funnel: data.funnel,
     content_type: data.content_type,
     eventID: eventId,
-    external_id: externalId, // Added external_id to initial logging
+    external_id: externalId,
+    hasEmail: !!data.email,
+    hasPhone: !!data.phone,
+    hasUserAgent: !!userAgent,
+    hasIP: !!ip,
   })
 
   try {
@@ -194,25 +198,44 @@ export const trackCAPIEvent = async (
       userData.external_id = finalExternalId
     }
 
-    // Always include user agent for website events (required by Facebook)
     if (userAgent) {
       userData.client_user_agent = userAgent
+      console.log("[v0] User agent included for enhanced matching")
+    } else {
+      console.warn("[v0] User agent missing - this reduces matching quality")
     }
 
-    // Always include IP if available
     if (ip) {
       userData.client_ip_address = ip
+      console.log("[v0] IP address included for enhanced matching")
     }
 
     // Include Facebook identifiers if available
-    if (fbp) userData.fbp = fbp
-    if (fbclid) userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+    if (fbp) {
+      userData.fbp = fbp
+      console.log("[v0] FBP cookie included for enhanced matching")
+    }
+    if (fbclid) {
+      userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+      console.log("[v0] FBCLID included for enhanced matching")
+    }
 
-    // Include personal data if available (and hash server-side)
-    if (data.email) userData.em = normalizeEmail(data.email)
-    if (data.phone) userData.ph = normalizePhone(data.phone)
-    if (data.first_name) userData.fn = data.first_name.toLowerCase().trim()
-    if (data.last_name) userData.ln = data.last_name.toLowerCase().trim()
+    if (data.email) {
+      userData.em = normalizeEmail(data.email)
+      console.log("[v0] Email included for matching")
+    }
+    if (data.phone) {
+      userData.ph = normalizePhone(data.phone)
+      console.log("[v0] Phone included for matching")
+    }
+    if (data.first_name) {
+      userData.fn = data.first_name.toLowerCase().trim()
+      console.log("[v0] First name included for matching")
+    }
+    if (data.last_name) {
+      userData.ln = data.last_name.toLowerCase().trim()
+      console.log("[v0] Last name included for matching")
+    }
 
     const customData: any = {
       funnel: data.funnel,
@@ -234,10 +257,10 @@ export const trackCAPIEvent = async (
       custom_data: customData,
     }
 
-    console.log(`📤 CAPI: Sending payload with enhanced deduplication`, {
+    console.log(`📤 CAPI: Sending payload with enhanced matching data`, {
       ...payload,
-      external_id_sent: !!finalExternalId, // Added external_id status to logging
-      deduplication_method: "event_id + external_id (DOUBLE PROTECTION)", // Updated deduplication method description
+      external_id_sent: !!finalExternalId,
+      deduplication_method: "event_id + external_id (DOUBLE PROTECTION)",
       fbclid_captured: !!fbclid,
       fbp_captured: !!fbp,
       fbc_formatted: userData.fbc ? "Yes" : "No",
@@ -246,6 +269,11 @@ export const trackCAPIEvent = async (
       has_user_agent: !!userData.client_user_agent,
       has_ip: !!userData.client_ip_address,
       has_event_source_url: !!payload.event_source_url,
+      has_email: !!userData.em,
+      has_phone: !!userData.ph,
+      has_first_name: !!userData.fn,
+      has_last_name: !!userData.ln,
+      matching_parameters_count: Object.keys(userData).length,
     })
 
     const response = await fetch("/api/meta-capi", {
