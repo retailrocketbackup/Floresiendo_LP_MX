@@ -1,81 +1,119 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-const FACEBOOK_PIXEL_ID = "1500366924641250"
+async function hashSHA256(data: string): Promise<string> {
+  try {
+    console.log("[v0] Hashing data with Web Crypto API")
+    const encoder = new TextEncoder()
+    const dataBuffer = encoder.encode(data.toLowerCase().trim())
+    const hashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+    console.log("[v0] Successfully hashed data")
+    return hashHex
+  } catch (error) {
+    console.error("[v0] Error hashing data:", error)
+    throw new Error(`Failed to hash data: ${error}`)
+  }
+}
 
 export async function POST(request: NextRequest) {
-  console.log("[v0] CAPI: Route handler started")
+  console.log("[v0] CAPI endpoint called")
 
   try {
-    console.log("[v0] CAPI: About to parse request body")
+    console.log("[v0] Parsing request body...")
     const body = await request.json()
-    console.log("[v0] CAPI: Request body parsed successfully", body)
+    console.log("[v0] Request body parsed:", JSON.stringify(body, null, 2))
 
-    console.log("[v0] CAPI: Checking environment variable")
-    const accessToken = process.env.META_CAPI_ACCESS_TOKEN
-    console.log("[v0] CAPI: Access token exists:", !!accessToken)
+    const userData = body.user_data || {}
+    console.log("[v0] User data extracted:", JSON.stringify(userData, null, 2))
 
-    if (!accessToken) {
-      console.log("[v0] CAPI: No access token found")
-      return NextResponse.json({ error: "Missing access token" }, { status: 500 })
+    const hashedUserData: any = {}
+
+    if (userData.em) {
+      console.log("[v0] Hashing email...")
+      hashedUserData.em = await hashSHA256(userData.em)
+      console.log("[v0] Email hashed successfully")
     }
 
-    const facebookData = {
+    if (userData.ph) {
+      console.log("[v0] Hashing phone...")
+      hashedUserData.ph = await hashSHA256(userData.ph)
+      console.log("[v0] Phone hashed successfully")
+    }
+
+    if (userData.fn) {
+      console.log("[v0] Hashing first name...")
+      hashedUserData.fn = await hashSHA256(userData.fn)
+      console.log("[v0] First name hashed successfully")
+    }
+
+    if (userData.ln) {
+      console.log("[v0] Hashing last name...")
+      hashedUserData.ln = await hashSHA256(userData.ln)
+      console.log("[v0] Last name hashed successfully")
+    }
+
+    if (userData.client_ip_address) hashedUserData.client_ip_address = userData.client_ip_address
+    if (userData.client_user_agent) hashedUserData.client_user_agent = userData.client_user_agent
+    if (userData.fbp) hashedUserData.fbp = userData.fbp
+    if (userData.fbc) hashedUserData.fbc = userData.fbc
+
+    console.log("[v0] Final hashed user data:", JSON.stringify(hashedUserData, null, 2))
+
+    const facebookPayload = {
       data: [
         {
           event_name: body.event_name,
           event_time: body.event_time,
           event_id: body.event_id,
-          action_source: "website",
-          user_data: body.user_data || {},
+          action_source: body.action_source,
+          event_source_url: body.event_source_url, // Required for website events
+          user_data: hashedUserData,
           custom_data: body.custom_data || {},
-          event_source_url: body.event_source_url,
         },
       ],
-      test_event_code: body.test_event_code, // Optional: for testing in Events Manager
     }
 
-    console.log("[v0] CAPI: Sending data to Facebook:", JSON.stringify(facebookData, null, 2))
+    console.log("[v0] Sending to Facebook:", JSON.stringify(facebookPayload, null, 2))
 
-    const facebookUrl = `https://graph.facebook.com/v18.0/${FACEBOOK_PIXEL_ID}/events`
-    const response = await fetch(facebookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const facebookResponse = await fetch(
+      `https://graph.facebook.com/v21.0/1500366924641250/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(facebookPayload),
       },
-      body: JSON.stringify({
-        ...facebookData,
-        access_token: accessToken,
-      }),
-    })
+    )
 
-    const responseData = await response.json()
-    console.log("[v0] CAPI: Facebook response:", responseData)
+    const facebookResult = await facebookResponse.json()
+    console.log("[v0] Facebook response:", JSON.stringify(facebookResult, null, 2))
 
-    if (!response.ok) {
-      console.log("[v0] CAPI: Facebook API error:", response.status, responseData)
+    if (!facebookResponse.ok) {
+      console.error("[v0] Facebook API error:", facebookResult)
       return NextResponse.json(
         {
+          success: false,
           error: "Facebook API error",
-          status: response.status,
-          details: responseData,
+          details: facebookResult,
         },
-        { status: 500 },
+        { status: 400 },
       )
     }
 
-    console.log("[v0] CAPI: Successfully sent to Facebook")
     return NextResponse.json({
       success: true,
-      message: "Event sent to Facebook CAPI successfully",
-      facebook_response: responseData,
-      event_name: body.event_name,
+      message: "Event sent to Facebook successfully",
+      facebook_response: facebookResult,
     })
   } catch (error) {
-    console.log("[v0] CAPI: Error caught:", error)
+    console.error("[v0] CAPI endpoint error:", error)
     return NextResponse.json(
       {
         error: "Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error",
+        details: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
       },
       { status: 500 },
     )

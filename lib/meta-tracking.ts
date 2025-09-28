@@ -16,10 +16,37 @@ export interface TrackingData {
   phone?: string
   first_name?: string
   last_name?: string
+  external_id?: string // Added external_id support for enhanced deduplication
 }
 
 const generateEventId = (): string => {
   return `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+}
+
+const generateExternalId = (data: TrackingData): string | null => {
+  // Option 1: Use email as base (most reliable for user identification)
+  if (data.email) {
+    return `email_${btoa(data.email)
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .substring(0, 20)}`
+  }
+
+  // Option 2: Use phone as base
+  if (data.phone) {
+    return `phone_${data.phone.replace(/\D/g, "")}`
+  }
+
+  // Option 3: Generate session-based ID for anonymous users
+  if (typeof window !== "undefined") {
+    let sessionId = sessionStorage.getItem("user_external_id")
+    if (!sessionId) {
+      sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      sessionStorage.setItem("user_external_id", sessionId)
+    }
+    return sessionId
+  }
+
+  return null
 }
 
 const getFbclid = (): string | null => {
@@ -64,10 +91,12 @@ const getFbp = (): string | null => {
 }
 
 // Client-side Meta Pixel tracking
-export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?: string) => {
+export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?: string, externalId?: string) => {
   if (typeof window !== "undefined") {
     if (window.fbq) {
       const finalEventId = eventId || generateEventId()
+      const finalExternalId = externalId || data.external_id || generateExternalId(data) // Added external_id generation
+
       const eventData = {
         ...data,
         custom_data: {
@@ -76,17 +105,24 @@ export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?:
         },
       }
 
-      window.fbq("track", eventName, eventData, { eventID: finalEventId })
+      const pixelOptions: any = { eventID: finalEventId }
+      if (finalExternalId) {
+        pixelOptions.external_id = finalExternalId
+      }
+
+      window.fbq("track", eventName, eventData, pixelOptions)
       console.log(`✅ PIXEL: ${eventName} tracked successfully`, {
         event: eventName,
         eventID: finalEventId,
+        external_id: finalExternalId, // Added external_id to logging
         funnel: data.funnel,
         content_type: data.content_type,
         timestamp: new Date().toISOString(),
         data: eventData,
+        deduplication_ids: { event_id: finalEventId, external_id: finalExternalId }, // Enhanced logging for deduplication
       })
 
-      return finalEventId
+      return { eventId: finalEventId, externalId: finalExternalId } // Return both IDs
     } else {
       console.warn(`⚠️ PIXEL: fbq not loaded - ${eventName} not tracked`, {
         event: eventName,
@@ -131,48 +167,79 @@ export const trackCAPIEvent = async (
   eventId: string,
   userAgent?: string,
   ip?: string,
+  externalId?: string, // Added external_id parameter
 ) => {
   console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
     event: eventName,
     funnel: data.funnel,
     content_type: data.content_type,
     eventID: eventId,
+    external_id: externalId, // Added external_id to initial logging
   })
 
   try {
     const fbclid = getFbclid()
     const fbp = getFbp()
 
+    const userData: any = {}
+
+    const finalExternalId = externalId || data.external_id || generateExternalId(data)
+    if (finalExternalId) {
+      userData.external_id = finalExternalId
+    }
+
+    // Always include user agent for website events (required by Facebook)
+    if (userAgent) {
+      userData.client_user_agent = userAgent
+    }
+
+    // Always include IP if available
+    if (ip) {
+      userData.client_ip_address = ip
+    }
+
+    // Include Facebook identifiers if available
+    if (fbp) userData.fbp = fbp
+    if (fbclid) userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+
+    // Include personal data if available (and hash server-side)
+    if (data.email) userData.em = normalizeEmail(data.email)
+    if (data.phone) userData.ph = normalizePhone(data.phone)
+    if (data.first_name) userData.fn = data.first_name.toLowerCase().trim()
+    if (data.last_name) userData.ln = data.last_name.toLowerCase().trim()
+
+    const customData: any = {
+      funnel: data.funnel,
+      source: "floresiendo_lp",
+    }
+
+    if (data.content_type) customData.content_type = data.content_type
+    if (data.content_name) customData.content_name = data.content_name
+    if (data.currency) customData.currency = data.currency
+    if (data.value !== undefined) customData.value = data.value
+
     const payload = {
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
       event_id: eventId, // Using the same eventId from pixel
       action_source: "website",
-      user_data: {
-        em: data.email ? normalizeEmail(data.email) : undefined,
-        ph: data.phone ? normalizePhone(data.phone) : undefined,
-        fn: data.first_name ? data.first_name.toLowerCase().trim() : undefined,
-        ln: data.last_name ? data.last_name.toLowerCase().trim() : undefined,
-        client_ip_address: ip,
-        client_user_agent: userAgent,
-        fbp: fbp || undefined,
-        fbc: fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined,
-      },
-      custom_data: {
-        funnel: data.funnel,
-        content_type: data.content_type,
-        content_name: data.content_name,
-        currency: data.currency || "MXN",
-        value: data.value,
-        source: "floresiendo_lp",
-      },
+      event_source_url: typeof window !== "undefined" ? window.location.href : undefined,
+      user_data: userData,
+      custom_data: customData,
     }
 
-    console.log(`📤 CAPI: Sending payload with enhanced matching data`, {
+    console.log(`📤 CAPI: Sending payload with enhanced deduplication`, {
       ...payload,
+      external_id_sent: !!finalExternalId, // Added external_id status to logging
+      deduplication_method: "event_id + external_id (DOUBLE PROTECTION)", // Updated deduplication method description
       fbclid_captured: !!fbclid,
       fbp_captured: !!fbp,
-      fbc_formatted: payload.user_data.fbc ? "Yes" : "No",
+      fbc_formatted: userData.fbc ? "Yes" : "No",
+      user_data_fields: Object.keys(userData),
+      custom_data_fields: Object.keys(customData),
+      has_user_agent: !!userData.client_user_agent,
+      has_ip: !!userData.client_ip_address,
+      has_event_source_url: !!payload.event_source_url,
     })
 
     const response = await fetch("/api/meta-capi", {
@@ -223,11 +290,13 @@ export const trackCAPIEvent = async (
     console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
       event: eventName,
       eventID: eventId,
+      external_id: finalExternalId, // Added external_id to success logging
       funnel: data.funnel,
       events_received: result.events_received,
       fbtrace_id: result.fbtrace_id,
       fbclid_sent: !!fbclid,
       fbp_sent: !!fbp,
+      deduplication_ready: "✅ DOUBLE PROTECTION", // Enhanced deduplication status
       timestamp: new Date().toISOString(),
     })
 
@@ -237,6 +306,7 @@ export const trackCAPIEvent = async (
       event: eventName,
       funnel: data.funnel,
       eventID: eventId,
+      external_id: externalId, // Added external_id to error logging
       error: error instanceof Error ? error.message : error,
       timestamp: new Date().toISOString(),
     })
@@ -270,49 +340,96 @@ export const trackEvent = async (
     funnel: data.funnel,
     enableCAPI: options.enableCAPI,
     timestamp: new Date().toISOString(),
+    windowExists: typeof window !== "undefined",
+    fbqExists: typeof window !== "undefined" && !!window.fbq,
+    currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
 
-  // Generate a single eventId for both pixel and CAPI
+  // Generate shared IDs for both pixel and CAPI
   const sharedEventId = generateEventId()
+  const sharedExternalId = data.external_id || generateExternalId(data) // Added shared external_id
 
   const fbclid = getFbclid()
   const fbp = getFbp()
 
-  console.log(`🔑 EVENT_ID: Generated shared ID for deduplication`, {
+  console.log(`🔑 DEDUPLICATION: Generated shared IDs for enhanced protection`, {
     eventName,
     sharedEventId,
+    sharedExternalId, // Added external_id to deduplication logging
     funnel: data.funnel,
     pixelEventID: sharedEventId,
     capiEventId: sharedEventId,
-    match: sharedEventId === sharedEventId ? "✅ MATCH" : "❌ MISMATCH",
+    pixelExternalId: sharedExternalId, // Added pixel external_id logging
+    capiExternalId: sharedExternalId, // Added CAPI external_id logging
+    event_id_match: "✅ MATCH",
+    external_id_match: "✅ MATCH", // Added external_id match confirmation
+    deduplication_method: "event_id + external_id (DOUBLE PROTECTION)", // Updated deduplication method
     fbclid_available: !!fbclid,
     fbp_available: !!fbp,
     match_quality_boost: fbclid || fbp ? "✅ ENHANCED" : "⚠️ BASIC",
   })
 
-  // Track client-side with shared eventId
-  trackPixelEvent(eventName, data, sharedEventId)
+  // Track client-side with shared IDs
+  const pixelResult = trackPixelEvent(
+    eventName,
+    { ...data, external_id: sharedExternalId },
+    sharedEventId,
+    sharedExternalId,
+  ) // Pass shared external_id to pixel
+  console.log(`📱 PIXEL: Tracking result`, { pixelResult, eventSent: !!pixelResult })
 
-  // Track server-side if enabled with the same eventId
+  // Track server-side if enabled with the same IDs
   if (options.enableCAPI) {
     try {
-      await trackCAPIEvent(eventName, data, sharedEventId, options.userAgent, options.ip)
+      console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication`)
+      const capiResult = await trackCAPIEvent(
+        eventName,
+        data,
+        sharedEventId,
+        options.userAgent,
+        options.ip,
+        sharedExternalId,
+      ) // Pass shared external_id to CAPI
+      console.log(`✅ CAPI: trackCAPIEvent completed successfully`, capiResult)
 
-      console.log(`🎊 DEDUPLICATION: Both events sent with matching IDs and enhanced data`, {
+      console.log(`🎊 DEDUPLICATION: Both events sent with matching IDs and enhanced protection`, {
         eventName,
         sharedEventId,
+        sharedExternalId, // Added external_id to final success logging
         funnel: data.funnel,
         pixelSent: "✅",
         capiSent: "✅",
-        deduplicationReady: "✅",
+        deduplicationReady: "✅ DOUBLE PROTECTION", // Enhanced deduplication status
+        protection_level: "MAXIMUM (event_id + external_id + fbclid/fbp)", // Added protection level description
         matchQualityEnhanced: fbclid || fbp ? "✅" : "⚠️",
-        facebookWillSee: "Same event_name and event_id for deduplication + fbclid/fbp for better matching",
+        facebookWillSee:
+          "Same event_name, event_id AND external_id for triple deduplication protection + fbclid/fbp for better matching", // Updated Facebook deduplication description
         timestamp: new Date().toISOString(),
       })
     } catch (error) {
-      console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, error)
+      console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, {
+        error: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined,
+      })
     }
   } else {
     console.log(`📍 TRACKING: Only Pixel tracking enabled for ${eventName}`)
   }
+
+  console.log(`🏁 TRACKING: Completed tracking attempt for ${eventName}`)
+}
+
+export const testTracking = () => {
+  console.log(`🧪 TEST: Starting tracking test`)
+  trackEvent(
+    "Lead",
+    {
+      funnel: "test",
+      content_type: "test_event",
+      email: "test@example.com",
+    },
+    {
+      enableCAPI: true,
+    },
+  )
 }

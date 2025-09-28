@@ -25,14 +25,20 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
                 className="w-full h-full object-cover"
                 controls
                 poster="/testimonio-video-1.jpg"
-                onPlay={() => trackEvent('ViewContent',
-                  {
-                    funnel,
-                    content_type: 'testimonial',
-                    content_name: `testimonial_${funnel}`
-                  },
-                  { enableCAPI: true }
-                )}
+                onPlay={() =>
+                  trackEvent(
+                    "ViewContent",
+                    {
+                      funnel,
+                      content_type: "testimonial",
+                      content_name: `testimonial_${funnel}`,
+                    },
+                    {
+                      enableCAPI: true,
+                      userAgent: navigator.userAgent,
+                    },
+                  )
+                }
               >
                 <source src="/testimonial-video-1.mp4" type="video/mp4" />
                 Tu navegador no soporta el elemento de video.
@@ -51,14 +57,20 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
                 className="w-full h-full object-cover"
                 controls
                 poster="/testimonio-video-2.jpg"
-                onPlay={() => trackEvent('ViewContent',
-                  {
-                    funnel,
-                    content_type: 'testimonial',
-                    content_name: `testimonial_${funnel}`
-                  },
-                  { enableCAPI: true }
-                )}
+                onPlay={() =>
+                  trackEvent(
+                    "ViewContent",
+                    {
+                      funnel,
+                      content_type: "testimonial",
+                      content_name: `testimonial_${funnel}`,
+                    },
+                    {
+                      enableCAPI: true,
+                      userAgent: navigator.userAgent,
+                    },
+                  )
+                }
               >
                 <source src="/testimonial-video-2.mp4" type="video/mp4" />
                 Tu navegador no soporta el elemento de video.
