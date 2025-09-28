@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log("[v0] Request body parsed:", JSON.stringify(body, null, 2))
 
+    const clientIP =
+      request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || request.ip || "unknown"
+    console.log("[v0] Client IP captured:", clientIP)
+
     const userData = body.user_data || {}
     console.log("[v0] User data extracted:", JSON.stringify(userData, null, 2))
 
@@ -58,12 +62,31 @@ export async function POST(request: NextRequest) {
       console.log("[v0] Last name hashed successfully")
     }
 
-    if (userData.client_ip_address) hashedUserData.client_ip_address = userData.client_ip_address
+    if (userData.client_ip_address) {
+      hashedUserData.client_ip_address = userData.client_ip_address
+    } else if (clientIP !== "unknown") {
+      hashedUserData.client_ip_address = clientIP
+      console.log("[v0] Using server-captured IP address")
+    }
+
     if (userData.client_user_agent) hashedUserData.client_user_agent = userData.client_user_agent
     if (userData.fbp) hashedUserData.fbp = userData.fbp
     if (userData.fbc) hashedUserData.fbc = userData.fbc
 
     console.log("[v0] Final hashed user data:", JSON.stringify(hashedUserData, null, 2))
+
+    console.log("[v0] Matching parameters summary:", {
+      email: !!hashedUserData.em,
+      phone: !!hashedUserData.ph,
+      first_name: !!hashedUserData.fn,
+      last_name: !!hashedUserData.ln,
+      ip_address: !!hashedUserData.client_ip_address,
+      user_agent: !!hashedUserData.client_user_agent,
+      fbp: !!hashedUserData.fbp,
+      fbc: !!hashedUserData.fbc,
+      external_id: !!hashedUserData.external_id,
+      total_parameters: Object.keys(hashedUserData).length,
+    })
 
     const facebookPayload = {
       data: [
