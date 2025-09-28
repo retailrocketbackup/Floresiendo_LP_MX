@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { RocknRoll_One } from "next/font/google"
 import { Suspense } from "react"
 import { Analytics } from "@vercel/analytics/react"
-import Script from 'next/script'
+import Script from "next/script"
 import "./globals.css"
 
 const rocknrollOne = RocknRoll_One({
@@ -51,10 +51,38 @@ export default function RootLayout({
             `}
         </Script>
         <noscript>
-          <img height="1" width="1" style={{display: 'none'}}
-               src="https://www.facebook.com/tr?id=1500366924641250&ev=PageView&noscript=1"
-        /></noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=1500366924641250&ev=PageView&noscript=1"
+          />
+        </noscript>
         {/* -- Fin del código del Píxel -- */}
+
+        <Script id="hubspot-tracking" strategy="afterInteractive">
+          {`
+            (function(h,u,b,s,p,o,t){
+              h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+              h._hjSettings={hjid:50499487,hjsv:6};
+              o=u.createElement(b);o.async=1;
+              o.src=s+h._hjSettings.hjid+t+h._hjSettings.hjsv;
+              p=u.getElementsByTagName(b)[0];
+              p.parentNode.insertBefore(o,p);
+            })(window,document,'script','https://static.hotjar.com/c/hotjar-','.js?sv=');
+            
+            // HubSpot tracking code
+            var _hsq = _hsq || [];
+            _hsq.push(['setPortalId', 50499487]);
+            (function(d,s,i,r) {
+              if (d.getElementById(i)){return;}
+              var n = d.createElement(s),e = d.getElementsByTagName(s)[0];
+              n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/50499487.js';
+              e.parentNode.insertBefore(n, e);
+            })(document, "script", "hs-analytics", 300000);
+          `}
+        </Script>
+        {/* -- Fin del código de HubSpot -- */}
       </head>
       <body className={`font-sans ${rocknrollOne.className}`}>
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
