@@ -146,14 +146,20 @@ export const trackViewContent = (funnel: string, contentType: string) => {
 }
 
 export const trackLead = (funnel: string, leadData?: Partial<TrackingData>) => {
-  return trackPixelEvent("Lead", {
+  // Create specific event names based on funnel
+  const eventName = funnel.includes("video") ? "Lead_Video" : "Lead_Testimonios"
+
+  return trackPixelEvent(eventName, {
     funnel,
     ...leadData,
   })
 }
 
 export const trackSchedule = (funnel: string) => {
-  return trackPixelEvent("Schedule", {
+  // Create specific event names based on funnel
+  const eventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
+
+  return trackPixelEvent(eventName, {
     funnel,
     content_type: "appointment",
     value: 0, // Free consultation
@@ -345,6 +351,14 @@ export const trackEvent = async (
     currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
 
+  // Determine specific event name based on funnel
+  let finalEventName = eventName
+  if (eventName === "Lead") {
+    finalEventName = data.funnel.includes("video") ? "Lead_Video" : "Lead_Testimonios"
+  } else if (eventName === "Schedule") {
+    finalEventName = data.funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
+  }
+
   // Generate shared IDs for both pixel and CAPI
   const sharedEventId = generateEventId()
   const sharedExternalId = data.external_id || generateExternalId(data) // Added shared external_id
@@ -369,33 +383,34 @@ export const trackEvent = async (
     match_quality_boost: fbclid || fbp ? "✅ ENHANCED" : "⚠️ BASIC",
   })
 
-  // Track client-side with shared IDs
+  // Track client-side with shared IDs using final event name
   const pixelResult = trackPixelEvent(
-    eventName,
+    finalEventName,
     { ...data, external_id: sharedExternalId },
     sharedEventId,
     sharedExternalId,
-  ) // Pass shared external_id to pixel
+  )
   console.log(`📱 PIXEL: Tracking result`, { pixelResult, eventSent: !!pixelResult })
 
-  // Track server-side if enabled with the same IDs
+  // Track server-side if enabled with the same IDs using final event name
   if (options.enableCAPI) {
     try {
       console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication`)
       const capiResult = await trackCAPIEvent(
-        eventName,
+        finalEventName,
         data,
         sharedEventId,
         options.userAgent,
         options.ip,
         sharedExternalId,
-      ) // Pass shared external_id to CAPI
+      )
       console.log(`✅ CAPI: trackCAPIEvent completed successfully`, capiResult)
 
       console.log(`🎊 DEDUPLICATION: Both events sent with matching IDs and enhanced protection`, {
-        eventName,
+        originalEvent: eventName,
+        finalEvent: finalEventName,
         sharedEventId,
-        sharedExternalId, // Added external_id to final success logging
+        sharedExternalId,
         funnel: data.funnel,
         pixelSent: "✅",
         capiSent: "✅",
@@ -407,16 +422,16 @@ export const trackEvent = async (
         timestamp: new Date().toISOString(),
       })
     } catch (error) {
-      console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${eventName}`, {
+      console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${finalEventName}`, {
         error: error instanceof Error ? error.message : error,
         stack: error instanceof Error ? error.stack : undefined,
       })
     }
   } else {
-    console.log(`📍 TRACKING: Only Pixel tracking enabled for ${eventName}`)
+    console.log(`📍 TRACKING: Only Pixel tracking enabled for ${finalEventName}`)
   }
 
-  console.log(`🏁 TRACKING: Completed tracking attempt for ${eventName}`)
+  console.log(`🏁 TRACKING: Completed tracking attempt for ${finalEventName}`)
 }
 
 export const testTracking = () => {

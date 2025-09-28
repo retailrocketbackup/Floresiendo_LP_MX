@@ -28,7 +28,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-purple-200 text-sm">© 2025 FloreSiendo. Todos los derechos reservados.</p>
             <div className="flex gap-6 text-sm text-purple-200">
-              <a href="#privacidad" className="hover:text-white transition-colors">
+              <a href="/politica-privacidad" className="hover:text-white transition-colors">
                 Política de Privacidad
               </a>
               <a href="#terminos" className="hover:text-white transition-colors">
