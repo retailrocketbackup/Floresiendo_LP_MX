@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { trackEvent } from "@/lib/meta-tracking"
+import { trackEvent, trackViewContent } from "@/lib/meta-tracking"
 
 interface HubSpotFormProps {
   funnel?: string
@@ -9,20 +9,14 @@ interface HubSpotFormProps {
 
 export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
   useEffect(() => {
+    console.log(`[v0] Loading HubSpot form for funnel: ${funnel}`)
+
     const script = document.createElement("script")
     script.src = "https://js.hsforms.net/forms/embed/50499487.js"
     script.defer = true
     document.head.appendChild(script)
 
-    trackEvent(
-      "Lead",
-      {
-        funnel,
-        content_type: "form_page_view",
-        content_name: `hubspot_form_${funnel}`,
-      },
-      { enableCAPI: true },
-    )
+    trackViewContent(funnel, "form_page_view")
 
     const handleHubSpotEvent = (event: MessageEvent) => {
       if (
@@ -31,6 +25,8 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
       ) {
         // Check if it's a form submission
         if (event.data.eventName === "onFormSubmit" || event.data.type === "hsFormSubmit") {
+          console.log(`[v0] HubSpot form submitted for funnel: ${funnel}`)
+
           // Extract form data
           const formData = event.data.data || {}
           const submissionData = formData.submissionValues || {}
@@ -43,20 +39,25 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
             phone: submissionData.phone,
           }
 
-          // Track Lead event with actual user data from form submission
-          trackEvent(
-            "Lead",
-            {
-              funnel,
-              content_type: "form_submission",
-              content_name: `hubspot_form_${funnel}`,
-              email: userData.email,
-              first_name: userData.first_name,
-              last_name: userData.last_name,
-              phone: userData.phone,
-            },
-            { enableCAPI: true },
-          )
+          console.log(`[v0] Extracted user data from HubSpot form:`, userData)
+
+          if (userData.email || userData.phone || userData.first_name) {
+            trackEvent(
+              "Lead",
+              {
+                funnel,
+                content_type: "form_submission",
+                content_name: `hubspot_form_${funnel}`,
+                email: userData.email,
+                first_name: userData.first_name,
+                last_name: userData.last_name,
+                phone: userData.phone,
+              },
+              { enableCAPI: true },
+            )
+          } else {
+            console.warn(`[v0] No user data available for Lead tracking`)
+          }
         }
       }
     }
