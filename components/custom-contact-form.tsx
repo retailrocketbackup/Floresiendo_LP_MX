@@ -50,13 +50,28 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
 
       console.log("[v0] Lead event tracked successfully")
 
-      // Allow form to submit naturally for HubSpot capture
-      // Create a new form submission without preventDefault
-      const form = e.target as HTMLFormElement
-      const formDataForSubmit = new FormData(form)
+      const hubspotFormData = new FormData()
+      hubspotFormData.append("email", formData.email)
+      hubspotFormData.append("firstname", formData.firstname)
+      hubspotFormData.append("lastname", formData.lastname)
+      hubspotFormData.append("phone", formData.phone)
+      hubspotFormData.append("message", formData.message)
 
-      // Submit to a dummy endpoint or let it submit naturally
-      // HubSpot will capture this automatically
+      hubspotFormData.append("funnel_source", funnel)
+      hubspotFormData.append("landing_page", window.location.href)
+      hubspotFormData.append("lead_score_base", funnel === "video" ? "10" : "8")
+
+      const hubspotResponse = await fetch(
+        "https://forms.hubspot.com/uploads/form/v2/50499487/9ec9c638-6169-46b5-bf03-716245b5e62b",
+        {
+          method: "POST",
+          body: hubspotFormData,
+          mode: "no-cors", // HubSpot forms require no-cors mode
+        },
+      )
+
+      console.log("[v0] Form submitted to HubSpot successfully")
+
       setTimeout(() => {
         setIsSubmitted(true)
         setIsSubmitting(false)
@@ -87,7 +102,11 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
 
   return (
     <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-      <form onSubmit={handleSubmit} action="#" method="post" className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <input type="hidden" name="funnel_source" value={funnel} />
+        <input type="hidden" name="landing_page" value={typeof window !== "undefined" ? window.location.href : ""} />
+        <input type="hidden" name="lead_score_base" value={funnel === "video" ? "10" : "8"} />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-2">
