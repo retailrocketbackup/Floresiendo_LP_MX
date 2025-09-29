@@ -104,8 +104,8 @@ export async function POST(request: NextRequest) {
 
     console.log("[v0] Sending to Facebook:", JSON.stringify(facebookPayload, null, 2))
 
-    const pixelId = process.env.META_PIXEL_ID
-    const accessToken = process.env.META_CAPI_ACCESS_TOKEN
+    const pixelId = process.env.META_PIXEL_ID?.trim()
+    const accessToken = process.env.META_CAPI_ACCESS_TOKEN?.trim()
 
     if (!pixelId || !accessToken) {
       console.error("[v0] Missing required environment variables")
