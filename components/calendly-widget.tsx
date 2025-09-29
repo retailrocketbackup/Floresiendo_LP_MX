@@ -85,23 +85,6 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
           // Track the specific funnel event for detailed analytics
           const specificEventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
 
-          const userAgent = navigator.userAgent
-          const fbpCookie = document.cookie.split("; ").find((row) => row.startsWith("_fbp="))
-          const fbp = fbpCookie ? fbpCookie.split("=")[1] : null
-
-          const urlParams = new URLSearchParams(window.location.search)
-          const fbclid = urlParams.get("fbclid") || sessionStorage.getItem("fbclid")
-          if (fbclid && !sessionStorage.getItem("fbclid")) {
-            sessionStorage.setItem("fbclid", fbclid)
-          }
-
-          console.log("📅 Enhanced tracking data captured:", {
-            userAgent: !!userAgent,
-            fbp: !!fbp,
-            fbclid: !!fbclid,
-            phone: !!userData.phone,
-          })
-
           trackEvent(
             specificEventName,
             {
@@ -116,9 +99,6 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
             },
             {
               enableCAPI: true,
-              userAgent: userAgent,
-              fbp: fbp,
-              fbclid: fbclid,
             },
           )
         }

@@ -33,16 +33,6 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
     setIsSubmitting(true)
 
     try {
-      const userAgent = navigator.userAgent
-      const fbp = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("_fbp="))
-        ?.split("=")[1]
-      const fbc = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("_fbc="))
-        ?.split("=")[1]
-
       const fbclid = getFbclid()
       console.log("[v0] Custom form fbclid captured:", fbclid)
 
@@ -57,9 +47,6 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           first_name: formData.firstname,
           last_name: formData.lastname,
           phone: formData.phone,
-          userAgent,
-          fbp,
-          fbc,
         },
         {
           enableCAPI: true,
