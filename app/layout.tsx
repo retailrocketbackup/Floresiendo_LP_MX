@@ -46,7 +46,7 @@ export default function RootLayout({
               s.parentNode.insertBefore(t, s)
             }(window, document, 'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+              fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID || "3072175881743894"}');
               fbq('track', 'PageView');
             `}
         </Script>
@@ -55,7 +55,7 @@ export default function RootLayout({
             height="1"
             width="1"
             style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
+            src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID || "3072175881743894"}&ev=PageView&noscript=1`}
           />
         </noscript>
         {/* -- Fin del código del Píxel -- */}
