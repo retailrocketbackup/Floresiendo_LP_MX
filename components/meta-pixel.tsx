@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 declare global {
   interface Window {
     fbq: any
+    _fbPixelInitialized?: boolean
   }
 }
 
@@ -22,6 +23,12 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
       return
     }
 
+    if (window._fbPixelInitialized) {
+      console.log("[MetaPixel] Already initialized, skipping")
+      setIsLoaded(true)
+      return
+    }
+
     const waitForFbq = (timeout = 10000): Promise<void> => {
       return new Promise((resolve, reject) => {
         const startTime = Date.now()
@@ -32,7 +39,7 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
           } else if (Date.now() - startTime > timeout) {
             reject(new Error("Timeout waiting for fbq"))
           } else {
-            setTimeout(checkFbq, 100) // Check every 100ms
+            setTimeout(checkFbq, 100)
           }
         }
 
@@ -40,11 +47,18 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
       })
     }
 
-    // Check if already loaded
-    if (window.fbq && typeof window.fbq === "function") {
-      console.log("[MetaPixel] Already loaded, initializing with ID:", pixelId)
-      window.fbq("init", pixelId)
-      window.fbq("track", "PageView")
+    const existingScript = document.querySelector('script[src*="fbevents.js"]')
+
+    if (existingScript && window.fbq && typeof window.fbq === "function") {
+      console.log("[MetaPixel] Script already loaded, initializing once")
+
+      if (!window._fbPixelInitialized) {
+        window.fbq("init", pixelId)
+        window.fbq("track", "PageView")
+        window._fbPixelInitialized = true
+        console.log("[MetaPixel] Successfully initialized with ID:", pixelId)
+      }
+
       setIsLoaded(true)
       return
     }
@@ -65,11 +79,13 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
       try {
         await waitForFbq()
 
-        // Initialize pixel
-        window.fbq("init", pixelId)
-        window.fbq("track", "PageView")
+        if (!window._fbPixelInitialized) {
+          window.fbq("init", pixelId)
+          window.fbq("track", "PageView")
+          window._fbPixelInitialized = true
+          console.log("[MetaPixel] Successfully initialized with ID:", pixelId)
+        }
 
-        console.log("[MetaPixel] Successfully initialized with ID:", pixelId)
         setIsLoaded(true)
         setError(null)
       } catch (err) {
@@ -83,15 +99,12 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
       setError("Failed to load Facebook script")
     }
 
-    // Add script to document
     document.head.appendChild(script)
 
-    // Cleanup function
     return () => {
-      // Don't remove script on unmount to avoid re-loading
+      // Intentionally empty - preserve singleton state
     }
   }, [pixelId])
 
-  // This component doesn't render anything visible
   return null
 }
