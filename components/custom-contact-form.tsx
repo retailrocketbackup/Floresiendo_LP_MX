@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { trackEvent, getFbclid } from "@/lib/meta-tracking"
 
 interface CustomContactFormProps {
   funnel?: string
@@ -33,42 +32,6 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
     setIsSubmitting(true)
 
     try {
-      const userAgent = navigator.userAgent
-      const fbp = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("_fbp="))
-        ?.split("=")[1]
-      const fbc = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("_fbc="))
-        ?.split("=")[1]
-
-      const fbclid = getFbclid()
-      console.log("[v0] Custom form fbclid captured:", fbclid)
-
-      // Fire Lead event first with enhanced data
-      await trackEvent(
-        "Lead",
-        {
-          funnel,
-          content_type: "form_submission",
-          content_name: `custom_form_${funnel}`,
-          email: formData.email,
-          first_name: formData.firstname,
-          last_name: formData.lastname,
-          phone: formData.phone,
-          userAgent,
-          fbp,
-          fbc,
-        },
-        {
-          enableCAPI: true,
-          fbclid: fbclid || undefined, // Pass fbclid parameter to trackEvent
-        },
-      )
-
-      console.log("[v0] Lead event tracked successfully with enhanced data and fbclid")
-
       const hubspotFormData = new FormData()
       hubspotFormData.append("email", formData.email)
       hubspotFormData.append("firstname", formData.firstname)
@@ -85,18 +48,16 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
         {
           method: "POST",
           body: hubspotFormData,
-          mode: "no-cors", // HubSpot forms require no-cors mode
+          mode: "no-cors",
         },
       )
-
-      console.log("[v0] Form submitted to HubSpot successfully")
 
       setTimeout(() => {
         setIsSubmitted(true)
         setIsSubmitting(false)
       }, 1000)
     } catch (error) {
-      console.error("[v0] Error submitting form:", error)
+      console.error("Error submitting form:", error)
       setIsSubmitting(false)
     }
   }

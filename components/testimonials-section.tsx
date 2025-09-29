@@ -1,7 +1,5 @@
 "use client"
 
-import { trackEvent } from "@/lib/meta-tracking"
-
 interface TestimonialsSectionProps {
   funnel?: string
 }
@@ -21,25 +19,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
           {/* Video 1 */}
           <div className="w-full max-w-sm">
             <div className="aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden shadow-lg">
-              <video
-                className="w-full h-full object-cover"
-                controls
-                poster="/testimonio-video-1.jpg"
-                onPlay={() =>
-                  trackEvent(
-                    "ViewContent",
-                    {
-                      funnel,
-                      content_type: "testimonial",
-                      content_name: `testimonial_${funnel}`,
-                    },
-                    {
-                      enableCAPI: true,
-                      userAgent: navigator.userAgent,
-                    },
-                  )
-                }
-              >
+              <video className="w-full h-full object-cover" controls poster="/testimonio-video-1.jpg">
                 <source src="/testimonial-video-1.mp4" type="video/mp4" />
                 Tu navegador no soporta el elemento de video.
               </video>
@@ -53,25 +33,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
           {/* Video 2 */}
           <div className="w-full max-w-sm">
             <div className="aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden shadow-lg">
-              <video
-                className="w-full h-full object-cover"
-                controls
-                poster="/testimonio-video-2.jpg"
-                onPlay={() =>
-                  trackEvent(
-                    "ViewContent",
-                    {
-                      funnel,
-                      content_type: "testimonial",
-                      content_name: `testimonial_${funnel}`,
-                    },
-                    {
-                      enableCAPI: true,
-                      userAgent: navigator.userAgent,
-                    },
-                  )
-                }
-              >
+              <video className="w-full h-full object-cover" controls poster="/testimonio-video-2.jpg">
                 <source src="/testimonial-video-2.mp4" type="video/mp4" />
                 Tu navegador no soporta el elemento de video.
               </video>

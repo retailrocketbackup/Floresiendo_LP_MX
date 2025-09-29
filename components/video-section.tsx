@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Play, X } from "lucide-react"
-import { trackEvent } from "@/lib/meta-tracking"
 
 interface VideoSectionProps {
   title: string
@@ -63,21 +62,7 @@ export function VideoSection({
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Button
                       size="lg"
-                      onClick={() => {
-                        setIsPlaying(true)
-                        trackEvent(
-                          "ViewContent",
-                          {
-                            funnel,
-                            content_type: "video",
-                            content_name: `video_${funnel}`,
-                          },
-                          {
-                            enableCAPI: true,
-                            userAgent: navigator.userAgent,
-                          },
-                        )
-                      }}
+                      onClick={() => setIsPlaying(true)}
                       className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 rounded-full w-20 h-20 p-0"
                     >
                       <Play className="w-8 h-8 ml-1" fill="currentColor" />
