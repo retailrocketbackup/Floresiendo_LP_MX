@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { trackEvent } from "@/lib/meta-tracking"
+import { trackEvent, getFbclid } from "@/lib/meta-tracking"
 
 interface CustomContactFormProps {
   funnel?: string
@@ -43,6 +43,9 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
         .find((row) => row.startsWith("_fbc="))
         ?.split("=")[1]
 
+      const fbclid = getFbclid()
+      console.log("[v0] Custom form fbclid captured:", fbclid)
+
       // Fire Lead event first with enhanced data
       await trackEvent(
         "Lead",
@@ -58,10 +61,13 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           fbp,
           fbc,
         },
-        { enableCAPI: true },
+        {
+          enableCAPI: true,
+          fbclid: fbclid || undefined, // Pass fbclid parameter to trackEvent
+        },
       )
 
-      console.log("[v0] Lead event tracked successfully with enhanced data")
+      console.log("[v0] Lead event tracked successfully with enhanced data and fbclid")
 
       const hubspotFormData = new FormData()
       hubspotFormData.append("email", formData.email)

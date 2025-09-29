@@ -49,7 +49,7 @@ const generateExternalId = (data: TrackingData): string | null => {
   return null
 }
 
-const getFbclid = (): string | null => {
+export const getFbclid = (): string | null => {
   if (typeof window === "undefined") return null
 
   // First check if fbclid is in current URL
