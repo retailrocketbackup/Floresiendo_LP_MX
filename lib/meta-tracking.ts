@@ -203,6 +203,26 @@ export const trackCAPIEvent = async (
       userData.external_id = finalExternalId
     }
 
+    if (data.email) {
+      userData.em = data.email
+      console.log("[v0] Email included for CAPI hashing")
+    }
+
+    if (data.phone) {
+      userData.ph = data.phone
+      console.log("[v0] Phone included for CAPI hashing")
+    }
+
+    if (data.first_name) {
+      userData.fn = data.first_name
+      console.log("[v0] First name included for CAPI hashing")
+    }
+
+    if (data.last_name) {
+      userData.ln = data.last_name
+      console.log("[v0] Last name included for CAPI hashing")
+    }
+
     if (userAgent) {
       userData.client_user_agent = userAgent
       console.log("[v0] User agent included for enhanced matching")
