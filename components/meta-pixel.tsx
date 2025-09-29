@@ -22,8 +22,26 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
       return
     }
 
+    const waitForFbq = (timeout = 10000): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        const startTime = Date.now()
+
+        const checkFbq = () => {
+          if (window.fbq && typeof window.fbq === "function") {
+            resolve()
+          } else if (Date.now() - startTime > timeout) {
+            reject(new Error("Timeout waiting for fbq"))
+          } else {
+            setTimeout(checkFbq, 100) // Check every 100ms
+          }
+        }
+
+        checkFbq()
+      })
+    }
+
     // Check if already loaded
-    if (window.fbq) {
+    if (window.fbq && typeof window.fbq === "function") {
       console.log("[MetaPixel] Already loaded, initializing with ID:", pixelId)
       window.fbq("init", pixelId)
       window.fbq("track", "PageView")
@@ -31,20 +49,21 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
       return
     }
 
+    if (!window.fbq) {
+      window.fbq = () => {
+        ;(window.fbq.q = window.fbq.q || []).push(arguments)
+      }
+      window.fbq.l = +new Date()
+    }
+
     // Load Facebook Pixel script
     const script = document.createElement("script")
     script.async = true
     script.src = "https://connect.facebook.net/en_US/fbevents.js"
 
-    script.onload = () => {
+    script.onload = async () => {
       try {
-        // Initialize fbq function
-        window.fbq =
-          window.fbq ||
-          (() => {
-            ;(window.fbq.q = window.fbq.q || []).push(arguments)
-          })
-        window.fbq.l = +new Date()
+        await waitForFbq()
 
         // Initialize pixel
         window.fbq("init", pixelId)
