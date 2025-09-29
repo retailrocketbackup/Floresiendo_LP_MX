@@ -104,8 +104,22 @@ export async function POST(request: NextRequest) {
 
     console.log("[v0] Sending to Facebook:", JSON.stringify(facebookPayload, null, 2))
 
+    const pixelId = process.env.META_PIXEL_ID
+    const accessToken = process.env.META_CAPI_ACCESS_TOKEN
+
+    if (!pixelId || !accessToken) {
+      console.error("[v0] Missing required environment variables")
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Server configuration error: Missing Meta credentials",
+        },
+        { status: 500 },
+      )
+    }
+
     const facebookResponse = await fetch(
-      `https://graph.facebook.com/v21.0/${process.env.NEXT_PUBLIC_META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
+      `https://graph.facebook.com/v21.0/${pixelId}/events?access_token=${accessToken}`,
       {
         method: "POST",
         headers: {
