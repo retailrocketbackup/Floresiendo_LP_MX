@@ -42,16 +42,6 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
           console.log(`[v0] Extracted user data from HubSpot form:`, userData)
 
           if (userData.email || userData.phone || userData.first_name) {
-            const userAgent = navigator.userAgent
-            const fbp = document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("_fbp="))
-              ?.split("=")[1]
-            const fbc = document.cookie
-              .split("; ")
-              .find((row) => row.startsWith("_fbc="))
-              ?.split("=")[1]
-
             const fbclid = getFbclid()
             console.log("[v0] HubSpot form fbclid captured:", fbclid)
 
@@ -65,9 +55,6 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
                 first_name: userData.first_name,
                 last_name: userData.last_name,
                 phone: userData.phone,
-                userAgent,
-                fbp,
-                fbc,
               },
               {
                 enableCAPI: true,
