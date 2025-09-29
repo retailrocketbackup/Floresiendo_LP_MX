@@ -17,19 +17,53 @@ async function hashSHA256(data: string): Promise<string> {
 }
 
 export async function POST(request: NextRequest) {
-  console.log("[v0] CAPI endpoint called")
+  console.log("🚨 [v0] CAPI ENDPOINT CALLED - Starting debug analysis")
+
+  console.log("[v0] Environment variables check:", {
+    META_PIXEL_ID: process.env.META_PIXEL_ID ? "✅ Present" : "❌ Missing",
+    META_CAPI_ACCESS_TOKEN: process.env.META_CAPI_ACCESS_TOKEN ? "✅ Present" : "❌ Missing",
+    pixelIdValue: process.env.META_PIXEL_ID,
+    tokenLength: process.env.META_CAPI_ACCESS_TOKEN?.length || 0,
+  })
 
   try {
     console.log("[v0] Parsing request body...")
     const body = await request.json()
-    console.log("[v0] Request body parsed:", JSON.stringify(body, null, 2))
+
+    console.log("🔍 [v0] FULL REQUEST BODY ANALYSIS:", {
+      eventName: body.event_name,
+      eventTime: body.event_time,
+      eventId: body.event_id,
+      actionSource: body.action_source,
+      eventSourceUrl: body.event_source_url,
+      hasUserData: !!body.user_data,
+      hasCustomData: !!body.custom_data,
+      userDataKeys: body.user_data ? Object.keys(body.user_data) : [],
+      customDataKeys: body.custom_data ? Object.keys(body.custom_data) : [],
+      fullBody: JSON.stringify(body, null, 2),
+    })
 
     const clientIP =
       request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || request.ip || "unknown"
     console.log("[v0] Client IP captured:", clientIP)
 
     const userData = body.user_data || {}
-    console.log("[v0] User data extracted:", JSON.stringify(userData, null, 2))
+    console.log("📊 [v0] USER DATA DETAILED ANALYSIS:", {
+      hasEmail: !!userData.em,
+      hasPhone: !!userData.ph,
+      hasFirstName: !!userData.fn,
+      hasLastName: !!userData.ln,
+      hasExternalId: !!userData.external_id,
+      hasUserAgent: !!userData.client_user_agent,
+      hasClientIp: !!userData.client_ip_address,
+      hasFbp: !!userData.fbp,
+      hasFbc: !!userData.fbc,
+      emailValue: userData.em ? `${userData.em.substring(0, 3)}***` : "none",
+      phoneValue: userData.ph ? `${userData.ph.substring(0, 3)}***` : "none",
+      userAgentLength: userData.client_user_agent?.length || 0,
+      allUserDataKeys: Object.keys(userData),
+      rawUserData: JSON.stringify(userData, null, 2),
+    })
 
     const hashedUserData: any = {}
 
@@ -73,9 +107,9 @@ export async function POST(request: NextRequest) {
     if (userData.fbp) hashedUserData.fbp = userData.fbp
     if (userData.fbc) hashedUserData.fbc = userData.fbc
 
-    console.log("[v0] Final hashed user data:", JSON.stringify(hashedUserData, null, 2))
+    console.log("✅ [v0] FINAL HASHED USER DATA:", JSON.stringify(hashedUserData, null, 2))
 
-    console.log("[v0] Matching parameters summary:", {
+    console.log("📈 [v0] MATCHING PARAMETERS SUMMARY:", {
       email: !!hashedUserData.em,
       phone: !!hashedUserData.ph,
       first_name: !!hashedUserData.fn,
@@ -102,24 +136,41 @@ export async function POST(request: NextRequest) {
       ],
     }
 
-    console.log("[v0] Sending to Facebook:", JSON.stringify(facebookPayload, null, 2))
+    const facebookUrl = `https://graph.facebook.com/v21.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`
+    console.log("🚀 [v0] SENDING TO FACEBOOK:", {
+      url: `https://graph.facebook.com/v21.0/${process.env.META_PIXEL_ID}/events`,
+      pixelId: process.env.META_PIXEL_ID,
+      hasAccessToken: !!process.env.META_CAPI_ACCESS_TOKEN,
+      payload: JSON.stringify(facebookPayload, null, 2),
+    })
 
-    const facebookResponse = await fetch(
-      `https://graph.facebook.com/v21.0/${process.env.META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(facebookPayload),
+    const facebookResponse = await fetch(facebookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    )
+      body: JSON.stringify(facebookPayload),
+    })
 
     const facebookResult = await facebookResponse.json()
-    console.log("[v0] Facebook response:", JSON.stringify(facebookResult, null, 2))
+
+    console.log("📥 [v0] FACEBOOK RESPONSE ANALYSIS:", {
+      status: facebookResponse.status,
+      statusText: facebookResponse.statusText,
+      ok: facebookResponse.ok,
+      headers: Object.fromEntries(facebookResponse.headers.entries()),
+      result: JSON.stringify(facebookResult, null, 2),
+    })
 
     if (!facebookResponse.ok) {
-      console.error("[v0] Facebook API error:", facebookResult)
+      console.error("❌ [v0] FACEBOOK API ERROR DETAILED:", {
+        status: facebookResponse.status,
+        statusText: facebookResponse.statusText,
+        error: facebookResult,
+        pixelIdUsed: process.env.META_PIXEL_ID,
+        tokenPresent: !!process.env.META_CAPI_ACCESS_TOKEN,
+        payloadSent: facebookPayload,
+      })
       return NextResponse.json(
         {
           success: false,
@@ -130,13 +181,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    console.log("🎉 [v0] SUCCESS - Event sent to Facebook successfully!")
     return NextResponse.json({
       success: true,
       message: "Event sent to Facebook successfully",
       facebook_response: facebookResult,
     })
   } catch (error) {
-    console.error("[v0] CAPI endpoint error:", error)
+    console.error("💥 [v0] CAPI ENDPOINT CRITICAL ERROR:", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      type: typeof error,
+      constructor: error?.constructor?.name,
+    })
     return NextResponse.json(
       {
         error: "Internal server error",

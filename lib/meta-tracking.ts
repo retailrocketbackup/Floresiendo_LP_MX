@@ -389,11 +389,18 @@ export const trackEvent = async (
     currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
 
+  console.log("[v0] DEBUG: Environment check", {
+    NEXT_PUBLIC_META_PIXEL_ID: typeof window !== "undefined" ? process.env.NEXT_PUBLIC_META_PIXEL_ID : "server-side",
+    windowLocation: typeof window !== "undefined" ? window.location.href : "server-side",
+    userAgent: typeof window !== "undefined" ? navigator.userAgent.substring(0, 50) + "..." : "server-side",
+  })
+
   let finalUserAgent = options.userAgent
   let finalIp = options.ip
 
   if (options.enableCAPI && (!finalUserAgent || !finalIp)) {
     try {
+      console.log("[v0] DEBUG: Getting technical data...")
       const technicalData = await getTechnicalData()
       finalUserAgent = finalUserAgent || technicalData.userAgent
       finalIp = finalIp || technicalData.clientIp
@@ -416,6 +423,13 @@ export const trackEvent = async (
   // Keep Schedule events as they are - don't transform them
   // This allows both "Schedule" and "Schedule_Video" to be tracked separately
 
+  console.log("[v0] DEBUG: Event name transformation", {
+    originalEventName: eventName,
+    finalEventName: finalEventName,
+    funnel: data.funnel,
+    funnelIncludesVideo: data.funnel.includes("video"),
+  })
+
   // Generate shared IDs for both pixel and CAPI
   const sharedEventId = generateEventId()
   const sharedExternalId = data.external_id || generateExternalId(data) // Added shared external_id
@@ -426,15 +440,15 @@ export const trackEvent = async (
   console.log(`🔑 DEDUPLICATION: Generated shared IDs for enhanced protection`, {
     eventName,
     sharedEventId,
-    sharedExternalId, // Added external_id to deduplication logging
+    sharedExternalId,
     funnel: data.funnel,
     pixelEventID: sharedEventId,
     capiEventId: sharedEventId,
-    pixelExternalId: sharedExternalId, // Added pixel external_id logging
-    capiExternalId: sharedExternalId, // Added CAPI external_id logging
+    pixelExternalId: sharedExternalId,
+    capiExternalId: sharedExternalId,
     event_id_match: "✅ MATCH",
-    external_id_match: "✅ MATCH", // Added external_id match confirmation
-    deduplication_method: "event_id + external_id (DOUBLE PROTECTION)", // Updated deduplication method
+    external_id_match: "✅ MATCH",
+    deduplication_method: "event_id + external_id (DOUBLE PROTECTION)",
     fbclid_available: !!fbclid,
     fbp_available: !!fbp,
     match_quality_boost: fbclid || fbp ? "✅ ENHANCED" : "⚠️ BASIC",
@@ -442,6 +456,14 @@ export const trackEvent = async (
       userAgent: !!finalUserAgent,
       clientIp: !!finalIp && finalIp !== "unknown",
     },
+  })
+
+  console.log("[v0] DEBUG: About to call trackPixelEvent", {
+    finalEventName,
+    dataKeys: Object.keys(data),
+    sharedEventId,
+    sharedExternalId,
+    windowFbqExists: typeof window !== "undefined" && !!window.fbq,
   })
 
   // Track client-side with shared IDs using final event name
@@ -457,12 +479,23 @@ export const trackEvent = async (
   if (options.enableCAPI) {
     try {
       console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication and technical data`)
+
+      console.log("[v0] DEBUG: CAPI call parameters", {
+        finalEventName,
+        dataKeys: Object.keys(data),
+        sharedEventId,
+        finalUserAgent: finalUserAgent ? "present" : "missing",
+        finalIp: finalIp ? "present" : "missing",
+        sharedExternalId: sharedExternalId ? "present" : "missing",
+        fbclidOption: options.fbclid ? "present" : "missing",
+      })
+
       const capiResult = await trackCAPIEvent(
         finalEventName,
         data,
         sharedEventId,
-        finalUserAgent, // Use auto-captured or provided user agent
-        finalIp, // Use auto-captured or provided IP
+        finalUserAgent,
+        finalIp,
         sharedExternalId,
         options.fbclid,
       )
@@ -491,6 +524,8 @@ export const trackEvent = async (
       console.error(`⚠️ TRACKING: CAPI failed but Pixel succeeded for ${finalEventName}`, {
         error: error instanceof Error ? error.message : error,
         stack: error instanceof Error ? error.stack : undefined,
+        errorType: typeof error,
+        errorConstructor: error?.constructor?.name,
       })
     }
   } else {
