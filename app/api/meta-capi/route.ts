@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Sending to Facebook:", JSON.stringify(facebookPayload, null, 2))
 
     const facebookResponse = await fetch(
-      `https://graph.facebook.com/v21.0/1500366924641250/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
+      `https://graph.facebook.com/v21.0/${process.env.NEXT_PUBLIC_META_PIXEL_ID}/events?access_token=${process.env.META_CAPI_ACCESS_TOKEN}`,
       {
         method: "POST",
         headers: {
