@@ -22,12 +22,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID
+
   return (
     <html lang="es">
       <head>
         {/* -- 2. Pega el código base del Píxel de Meta aquí -- */}
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
+            console.log('[v0] 🎯 Initializing Meta Pixel with ID: ${pixelId}');
             !function (f, b, e, v, n, t, s) {
               if (f.fbq) return;
               n = f.fbq = function () {
@@ -46,8 +49,15 @@ export default function RootLayout({
               s.parentNode.insertBefore(t, s)
             }(window, document, 'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+              
+            if ('${pixelId}' && '${pixelId}' !== 'undefined') {
+              console.log('[v0] ✅ Meta Pixel initializing with ID: ${pixelId}');
+              fbq('init', '${pixelId}');
               fbq('track', 'PageView');
+              console.log('[v0] 📊 PageView event sent');
+            } else {
+              console.error('[v0] ❌ Meta Pixel ID is missing or undefined');
+            }
             `}
         </Script>
         <noscript>
@@ -55,7 +65,7 @@ export default function RootLayout({
             height="1"
             width="1"
             style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
+            src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
           />
         </noscript>
         {/* -- Fin del código del Píxel -- */}
