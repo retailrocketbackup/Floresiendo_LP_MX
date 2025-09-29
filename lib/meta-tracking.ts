@@ -49,7 +49,7 @@ const generateExternalId = (data: TrackingData): string | null => {
   return null
 }
 
-const getFbclid = (): string | null => {
+export const getFbclid = (): string | null => {
   if (typeof window === "undefined") return null
 
   // First check if fbclid is in current URL
@@ -174,6 +174,7 @@ export const trackCAPIEvent = async (
   userAgent?: string,
   ip?: string,
   externalId?: string,
+  fbclid?: string, // Added fbclid as optional parameter
 ) => {
   console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
     event: eventName,
@@ -185,11 +186,15 @@ export const trackCAPIEvent = async (
     hasPhone: !!data.phone,
     hasUserAgent: !!userAgent,
     hasIP: !!ip,
+    fbclid_passed: !!fbclid, // Added fbclid parameter logging
   })
 
   try {
-    const fbclid = getFbclid()
+    const finalFbclid = fbclid || getFbclid()
     const fbp = getFbp()
+
+    console.log("[v0] FBCLID source:", fbclid ? "passed parameter" : "getFbclid()")
+    console.log("[v0] Final FBCLID used:", finalFbclid)
 
     const userData: any = {}
 
@@ -215,26 +220,9 @@ export const trackCAPIEvent = async (
       userData.fbp = fbp
       console.log("[v0] FBP cookie included for enhanced matching")
     }
-    if (fbclid) {
-      userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+    if (finalFbclid) {
+      userData.fbc = `fb.1.${Date.now()}.${finalFbclid}`
       console.log("[v0] FBCLID included for enhanced matching")
-    }
-
-    if (data.email) {
-      userData.em = normalizeEmail(data.email)
-      console.log("[v0] Email included for matching")
-    }
-    if (data.phone) {
-      userData.ph = normalizePhone(data.phone)
-      console.log("[v0] Phone included for matching")
-    }
-    if (data.first_name) {
-      userData.fn = data.first_name.toLowerCase().trim()
-      console.log("[v0] First name included for matching")
-    }
-    if (data.last_name) {
-      userData.ln = data.last_name.toLowerCase().trim()
-      console.log("[v0] Last name included for matching")
     }
 
     const customData: any = {
@@ -261,7 +249,7 @@ export const trackCAPIEvent = async (
       ...payload,
       external_id_sent: !!finalExternalId,
       deduplication_method: "event_id + external_id (DOUBLE PROTECTION)",
-      fbclid_captured: !!fbclid,
+      fbclid_captured: !!finalFbclid, // Use finalFbclid for logging
       fbp_captured: !!fbp,
       fbc_formatted: userData.fbc ? "Yes" : "No",
       user_data_fields: Object.keys(userData),
@@ -324,13 +312,13 @@ export const trackCAPIEvent = async (
     console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
       event: eventName,
       eventID: eventId,
-      external_id: finalExternalId, // Added external_id to success logging
+      external_id: finalExternalId,
       funnel: data.funnel,
       events_received: result.events_received,
       fbtrace_id: result.fbtrace_id,
-      fbclid_sent: !!fbclid,
+      fbclid_sent: !!finalFbclid, // Use finalFbclid for success logging
       fbp_sent: !!fbp,
-      deduplication_ready: "✅ DOUBLE PROTECTION", // Enhanced deduplication status
+      deduplication_ready: "✅ DOUBLE PROTECTION",
       timestamp: new Date().toISOString(),
     })
 
@@ -367,17 +355,39 @@ export const trackEvent = async (
     enableCAPI?: boolean
     userAgent?: string
     ip?: string
+    fbclid?: string // Added fbclid as optional parameter
   } = {},
 ) => {
   console.log(`🎯 TRACKING: Starting dual tracking for ${eventName}`, {
     event: eventName,
     funnel: data.funnel,
     enableCAPI: options.enableCAPI,
+    fbclid_passed: !!options.fbclid, // Added fbclid parameter logging
     timestamp: new Date().toISOString(),
     windowExists: typeof window !== "undefined",
     fbqExists: typeof window !== "undefined" && !!window.fbq,
     currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
+
+  let finalUserAgent = options.userAgent
+  let finalIp = options.ip
+
+  if (options.enableCAPI && (!finalUserAgent || !finalIp)) {
+    try {
+      const technicalData = await getTechnicalData()
+      finalUserAgent = finalUserAgent || technicalData.userAgent
+      finalIp = finalIp || technicalData.clientIp
+
+      console.log("[v0] Technical data auto-captured for CAPI:", {
+        userAgent: finalUserAgent ? "✅" : "❌",
+        clientIp: finalIp ? "✅" : "❌",
+        userAgentLength: finalUserAgent?.length || 0,
+        ipAddress: finalIp,
+      })
+    } catch (error) {
+      console.warn("[v0] Failed to auto-capture technical data:", error)
+    }
+  }
 
   let finalEventName = eventName
   if (eventName === "Lead") {
@@ -408,6 +418,10 @@ export const trackEvent = async (
     fbclid_available: !!fbclid,
     fbp_available: !!fbp,
     match_quality_boost: fbclid || fbp ? "✅ ENHANCED" : "⚠️ BASIC",
+    technical_data_available: {
+      userAgent: !!finalUserAgent,
+      clientIp: !!finalIp && finalIp !== "unknown",
+    },
   })
 
   // Track client-side with shared IDs using final event name
@@ -422,14 +436,15 @@ export const trackEvent = async (
   // Track server-side if enabled with the same IDs using final event name
   if (options.enableCAPI) {
     try {
-      console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication`)
+      console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication and technical data`)
       const capiResult = await trackCAPIEvent(
         finalEventName,
         data,
         sharedEventId,
-        options.userAgent,
-        options.ip,
+        finalUserAgent, // Use auto-captured or provided user agent
+        finalIp, // Use auto-captured or provided IP
         sharedExternalId,
+        options.fbclid,
       )
       console.log(`✅ CAPI: trackCAPIEvent completed successfully`, capiResult)
 
@@ -441,11 +456,15 @@ export const trackEvent = async (
         funnel: data.funnel,
         pixelSent: "✅",
         capiSent: "✅",
-        deduplicationReady: "✅ DOUBLE PROTECTION", // Enhanced deduplication status
-        protection_level: "MAXIMUM (event_id + external_id + fbclid/fbp)", // Added protection level description
+        deduplicationReady: "✅ DOUBLE PROTECTION",
+        protection_level: "MAXIMUM (event_id + external_id + fbclid/fbp + IP + UserAgent)", // Updated protection level
         matchQualityEnhanced: fbclid || fbp ? "✅" : "⚠️",
+        technicalDataSent: {
+          userAgent: !!finalUserAgent,
+          clientIp: !!finalIp && finalIp !== "unknown",
+        }, // Added technical data status
         facebookWillSee:
-          "Same event_name, event_id AND external_id for triple deduplication protection + fbclid/fbp for better matching", // Updated Facebook deduplication description
+          "Same event_name, event_id AND external_id for triple deduplication protection + fbclid/fbp + IP/UserAgent for maximum matching",
         timestamp: new Date().toISOString(),
       })
     } catch (error) {
@@ -459,6 +478,46 @@ export const trackEvent = async (
   }
 
   console.log(`🏁 TRACKING: Completed tracking attempt for ${finalEventName}`)
+}
+
+// Function to capture technical data automatically
+const getTechnicalData = async (): Promise<{ userAgent: string; clientIp: string }> => {
+  const userAgent = typeof window !== "undefined" ? navigator.userAgent : "unknown"
+
+  let clientIp = "unknown"
+
+  try {
+    // Check if we already have IP cached in this session
+    const cachedIp = typeof window !== "undefined" ? sessionStorage.getItem("client_ip") : null
+
+    if (cachedIp) {
+      console.log("[v0] Using cached client IP:", cachedIp)
+      clientIp = cachedIp
+    } else {
+      // Fetch IP from our API route
+      const ipResponse = await fetch("/api/get-client-ip")
+      const ipData = await ipResponse.json()
+      clientIp = ipData.ip || "unknown"
+
+      // Cache IP for this session to avoid repeated API calls
+      if (typeof window !== "undefined" && clientIp !== "unknown") {
+        sessionStorage.setItem("client_ip", clientIp)
+      }
+
+      console.log("[v0] Fetched and cached client IP:", clientIp)
+    }
+  } catch (error) {
+    console.warn("[v0] Failed to get client IP:", error)
+    clientIp = "unknown"
+  }
+
+  console.log("[v0] Technical data captured:", {
+    userAgent: userAgent.substring(0, 100) + "...",
+    clientIp,
+    source: clientIp !== "unknown" ? "cache" : "api",
+  })
+
+  return { userAgent, clientIp }
 }
 
 export const testTracking = () => {

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { trackEvent, trackViewContent } from "@/lib/meta-tracking"
+import { trackEvent, trackViewContent, getFbclid } from "@/lib/meta-tracking"
 
 interface HubSpotFormProps {
   funnel?: string
@@ -52,6 +52,9 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
               .find((row) => row.startsWith("_fbc="))
               ?.split("=")[1]
 
+            const fbclid = getFbclid()
+            console.log("[v0] HubSpot form fbclid captured:", fbclid)
+
             trackEvent(
               "Lead",
               {
@@ -66,7 +69,10 @@ export function HubSpotForm({ funnel = "unknown" }: HubSpotFormProps) {
                 fbp,
                 fbc,
               },
-              { enableCAPI: true },
+              {
+                enableCAPI: true,
+                fbclid: fbclid || undefined, // Pass fbclid parameter to trackEvent
+              },
             )
           } else {
             console.warn(`[v0] No user data available for Lead tracking`)
