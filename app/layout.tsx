@@ -30,7 +30,6 @@ export default function RootLayout({
         {/* -- 2. Pega el código base del Píxel de Meta aquí -- */}
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
-            console.log('[v0] 🎯 Initializing Meta Pixel with ID: ${pixelId}');
             !function (f, b, e, v, n, t, s) {
               if (f.fbq) return;
               n = f.fbq = function () {
@@ -42,6 +41,7 @@ export default function RootLayout({
               n.loaded = !0;
               n.version = '2.0';
               n.queue = [];
+              n.disablePushState = true;
               t = b.createElement(e);
               t.async = !0;
               t.src = v;
@@ -50,14 +50,12 @@ export default function RootLayout({
             }(window, document, 'script',
               'https://connect.facebook.net/en_US/fbevents.js');
               
-            if ('${pixelId}' && '${pixelId}' !== 'undefined') {
-              console.log('[v0] ✅ Meta Pixel initializing with ID: ${pixelId}');
-              fbq('init', '${pixelId}');
-              fbq('track', 'PageView');
-              console.log('[v0] 📊 PageView event sent');
-            } else {
-              console.error('[v0] ❌ Meta Pixel ID is missing or undefined');
-            }
+            window.addEventListener('load', function() {
+              if ('${pixelId}' && '${pixelId}' !== 'undefined') {
+                fbq('init', '${pixelId}');
+                fbq('track', 'PageView');
+              }
+            });
             `}
         </Script>
         <noscript>
