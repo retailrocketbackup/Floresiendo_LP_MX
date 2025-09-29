@@ -95,7 +95,7 @@ export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?:
   if (typeof window !== "undefined") {
     if (window.fbq) {
       const finalEventId = eventId || generateEventId()
-      const finalExternalId = externalId || data.external_id || generateExternalId(data) // Added external_id generation
+      const finalExternalId = externalId || data.external_id || generateExternalId(data)
 
       const eventData = {
         ...data,
@@ -110,19 +110,36 @@ export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?:
         pixelOptions.external_id = finalExternalId
       }
 
-      window.fbq("track", eventName, eventData, pixelOptions)
-      console.log(`✅ PIXEL: ${eventName} tracked successfully`, {
+      const standardEvents = [
+        "ViewContent",
+        "Lead",
+        "Purchase",
+        "AddToCart",
+        "InitiateCheckout",
+        "CompleteRegistration",
+        "Schedule",
+      ]
+      const isStandardEvent = standardEvents.includes(eventName)
+
+      if (isStandardEvent) {
+        window.fbq("track", eventName, eventData, pixelOptions)
+      } else {
+        window.fbq("trackCustom", eventName, eventData, pixelOptions)
+      }
+
+      console.log(`✅ PIXEL: ${eventName} tracked successfully (${isStandardEvent ? "standard" : "custom"} event)`, {
         event: eventName,
+        eventType: isStandardEvent ? "standard" : "custom",
         eventID: finalEventId,
-        external_id: finalExternalId, // Added external_id to logging
+        external_id: finalExternalId,
         funnel: data.funnel,
         content_type: data.content_type,
         timestamp: new Date().toISOString(),
         data: eventData,
-        deduplication_ids: { event_id: finalEventId, external_id: finalExternalId }, // Enhanced logging for deduplication
+        deduplication_ids: { event_id: finalEventId, external_id: finalExternalId },
       })
 
-      return { eventId: finalEventId, externalId: finalExternalId } // Return both IDs
+      return { eventId: finalEventId, externalId: finalExternalId }
     } else {
       console.warn(`⚠️ PIXEL: fbq not loaded - ${eventName} not tracked`, {
         event: eventName,
@@ -312,7 +329,7 @@ export const trackCAPIEvent = async (
     console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
       event: eventName,
       eventID: eventId,
-      external_id: finalExternalId,
+      external_id: externalId,
       funnel: data.funnel,
       events_received: result.events_received,
       fbtrace_id: result.fbtrace_id,
