@@ -369,6 +369,26 @@ export const trackEvent = async (
     currentUrl: typeof window !== "undefined" ? window.location.href : "server-side",
   })
 
+  let finalUserAgent = options.userAgent
+  let finalIp = options.ip
+
+  if (options.enableCAPI && (!finalUserAgent || !finalIp)) {
+    try {
+      const technicalData = await getTechnicalData()
+      finalUserAgent = finalUserAgent || technicalData.userAgent
+      finalIp = finalIp || technicalData.clientIp
+
+      console.log("[v0] Technical data auto-captured for CAPI:", {
+        userAgent: finalUserAgent ? "✅" : "❌",
+        clientIp: finalIp ? "✅" : "❌",
+        userAgentLength: finalUserAgent?.length || 0,
+        ipAddress: finalIp,
+      })
+    } catch (error) {
+      console.warn("[v0] Failed to auto-capture technical data:", error)
+    }
+  }
+
   let finalEventName = eventName
   if (eventName === "Lead") {
     finalEventName = data.funnel.includes("video") ? "Lead_Video" : "Lead_Testimonios"
@@ -398,6 +418,10 @@ export const trackEvent = async (
     fbclid_available: !!fbclid,
     fbp_available: !!fbp,
     match_quality_boost: fbclid || fbp ? "✅ ENHANCED" : "⚠️ BASIC",
+    technical_data_available: {
+      userAgent: !!finalUserAgent,
+      clientIp: !!finalIp && finalIp !== "unknown",
+    },
   })
 
   // Track client-side with shared IDs using final event name
@@ -412,15 +436,15 @@ export const trackEvent = async (
   // Track server-side if enabled with the same IDs using final event name
   if (options.enableCAPI) {
     try {
-      console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication`)
+      console.log(`🚀 CAPI: About to call trackCAPIEvent with enhanced deduplication and technical data`)
       const capiResult = await trackCAPIEvent(
         finalEventName,
         data,
         sharedEventId,
-        options.userAgent,
-        options.ip,
+        finalUserAgent, // Use auto-captured or provided user agent
+        finalIp, // Use auto-captured or provided IP
         sharedExternalId,
-        options.fbclid, // Pass fbclid parameter to trackCAPIEvent
+        options.fbclid,
       )
       console.log(`✅ CAPI: trackCAPIEvent completed successfully`, capiResult)
 
@@ -432,11 +456,15 @@ export const trackEvent = async (
         funnel: data.funnel,
         pixelSent: "✅",
         capiSent: "✅",
-        deduplicationReady: "✅ DOUBLE PROTECTION", // Enhanced deduplication status
-        protection_level: "MAXIMUM (event_id + external_id + fbclid/fbp)", // Added protection level description
+        deduplicationReady: "✅ DOUBLE PROTECTION",
+        protection_level: "MAXIMUM (event_id + external_id + fbclid/fbp + IP + UserAgent)", // Updated protection level
         matchQualityEnhanced: fbclid || fbp ? "✅" : "⚠️",
+        technicalDataSent: {
+          userAgent: !!finalUserAgent,
+          clientIp: !!finalIp && finalIp !== "unknown",
+        }, // Added technical data status
         facebookWillSee:
-          "Same event_name, event_id AND external_id for triple deduplication protection + fbclid/fbp for better matching", // Updated Facebook deduplication description
+          "Same event_name, event_id AND external_id for triple deduplication protection + fbclid/fbp + IP/UserAgent for maximum matching",
         timestamp: new Date().toISOString(),
       })
     } catch (error) {
@@ -450,6 +478,46 @@ export const trackEvent = async (
   }
 
   console.log(`🏁 TRACKING: Completed tracking attempt for ${finalEventName}`)
+}
+
+// Function to capture technical data automatically
+const getTechnicalData = async (): Promise<{ userAgent: string; clientIp: string }> => {
+  const userAgent = typeof window !== "undefined" ? navigator.userAgent : "unknown"
+
+  let clientIp = "unknown"
+
+  try {
+    // Check if we already have IP cached in this session
+    const cachedIp = typeof window !== "undefined" ? sessionStorage.getItem("client_ip") : null
+
+    if (cachedIp) {
+      console.log("[v0] Using cached client IP:", cachedIp)
+      clientIp = cachedIp
+    } else {
+      // Fetch IP from our API route
+      const ipResponse = await fetch("/api/get-client-ip")
+      const ipData = await ipResponse.json()
+      clientIp = ipData.ip || "unknown"
+
+      // Cache IP for this session to avoid repeated API calls
+      if (typeof window !== "undefined" && clientIp !== "unknown") {
+        sessionStorage.setItem("client_ip", clientIp)
+      }
+
+      console.log("[v0] Fetched and cached client IP:", clientIp)
+    }
+  } catch (error) {
+    console.warn("[v0] Failed to get client IP:", error)
+    clientIp = "unknown"
+  }
+
+  console.log("[v0] Technical data captured:", {
+    userAgent: userAgent.substring(0, 100) + "...",
+    clientIp,
+    source: clientIp !== "unknown" ? "cache" : "api",
+  })
+
+  return { userAgent, clientIp }
 }
 
 export const testTracking = () => {
