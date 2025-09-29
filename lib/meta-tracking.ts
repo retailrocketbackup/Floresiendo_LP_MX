@@ -92,7 +92,15 @@ const getFbp = (): string | null => {
 
 // Client-side Meta Pixel tracking
 export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?: string, externalId?: string) => {
+  console.log("[v0] trackPixelEvent called", {
+    eventName,
+    funnel: data.funnel,
+    windowExists: typeof window !== "undefined",
+  })
+
   if (typeof window !== "undefined") {
+    console.log("[v0] Window exists, checking fbq...", { fbqExists: !!window.fbq, fbqType: typeof window.fbq })
+
     if (window.fbq) {
       const finalEventId = eventId || generateEventId()
       const finalExternalId = externalId || data.external_id || generateExternalId(data)
@@ -121,10 +129,20 @@ export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?:
       ]
       const isStandardEvent = standardEvents.includes(eventName)
 
+      console.log("[v0] About to call fbq", {
+        eventName,
+        isStandardEvent,
+        method: isStandardEvent ? "track" : "trackCustom",
+        eventData,
+        pixelOptions,
+      })
+
       if (isStandardEvent) {
         window.fbq("track", eventName, eventData, pixelOptions)
+        console.log("[v0] Called fbq('track', ...)")
       } else {
         window.fbq("trackCustom", eventName, eventData, pixelOptions)
+        console.log("[v0] Called fbq('trackCustom', ...)")
       }
 
       console.log(`✅ PIXEL: ${eventName} tracked successfully (${isStandardEvent ? "standard" : "custom"} event)`, {
@@ -145,6 +163,8 @@ export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?:
         event: eventName,
         funnel: data.funnel,
         message: "Meta Pixel script may not be loaded properly",
+        windowFbq: window.fbq,
+        windowKeys: Object.keys(window).filter((k) => k.includes("fb")),
       })
     }
   } else {
