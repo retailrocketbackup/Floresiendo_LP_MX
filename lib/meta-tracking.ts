@@ -174,6 +174,7 @@ export const trackCAPIEvent = async (
   userAgent?: string,
   ip?: string,
   externalId?: string,
+  fbclid?: string, // Added fbclid as optional parameter
 ) => {
   console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
     event: eventName,
@@ -185,11 +186,15 @@ export const trackCAPIEvent = async (
     hasPhone: !!data.phone,
     hasUserAgent: !!userAgent,
     hasIP: !!ip,
+    fbclid_passed: !!fbclid, // Added fbclid parameter logging
   })
 
   try {
-    const fbclid = getFbclid()
+    const finalFbclid = fbclid || getFbclid()
     const fbp = getFbp()
+
+    console.log("[v0] FBCLID source:", fbclid ? "passed parameter" : "getFbclid()")
+    console.log("[v0] Final FBCLID used:", finalFbclid)
 
     const userData: any = {}
 
@@ -215,26 +220,9 @@ export const trackCAPIEvent = async (
       userData.fbp = fbp
       console.log("[v0] FBP cookie included for enhanced matching")
     }
-    if (fbclid) {
-      userData.fbc = `fb.1.${Date.now()}.${fbclid}`
+    if (finalFbclid) {
+      userData.fbc = `fb.1.${Date.now()}.${finalFbclid}`
       console.log("[v0] FBCLID included for enhanced matching")
-    }
-
-    if (data.email) {
-      userData.em = normalizeEmail(data.email)
-      console.log("[v0] Email included for matching")
-    }
-    if (data.phone) {
-      userData.ph = normalizePhone(data.phone)
-      console.log("[v0] Phone included for matching")
-    }
-    if (data.first_name) {
-      userData.fn = data.first_name.toLowerCase().trim()
-      console.log("[v0] First name included for matching")
-    }
-    if (data.last_name) {
-      userData.ln = data.last_name.toLowerCase().trim()
-      console.log("[v0] Last name included for matching")
     }
 
     const customData: any = {
@@ -261,7 +249,7 @@ export const trackCAPIEvent = async (
       ...payload,
       external_id_sent: !!finalExternalId,
       deduplication_method: "event_id + external_id (DOUBLE PROTECTION)",
-      fbclid_captured: !!fbclid,
+      fbclid_captured: !!finalFbclid, // Use finalFbclid for logging
       fbp_captured: !!fbp,
       fbc_formatted: userData.fbc ? "Yes" : "No",
       user_data_fields: Object.keys(userData),
@@ -324,13 +312,13 @@ export const trackCAPIEvent = async (
     console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
       event: eventName,
       eventID: eventId,
-      external_id: finalExternalId, // Added external_id to success logging
+      external_id: finalExternalId,
       funnel: data.funnel,
       events_received: result.events_received,
       fbtrace_id: result.fbtrace_id,
-      fbclid_sent: !!fbclid,
+      fbclid_sent: !!finalFbclid, // Use finalFbclid for success logging
       fbp_sent: !!fbp,
-      deduplication_ready: "✅ DOUBLE PROTECTION", // Enhanced deduplication status
+      deduplication_ready: "✅ DOUBLE PROTECTION",
       timestamp: new Date().toISOString(),
     })
 
@@ -367,12 +355,14 @@ export const trackEvent = async (
     enableCAPI?: boolean
     userAgent?: string
     ip?: string
+    fbclid?: string // Added fbclid as optional parameter
   } = {},
 ) => {
   console.log(`🎯 TRACKING: Starting dual tracking for ${eventName}`, {
     event: eventName,
     funnel: data.funnel,
     enableCAPI: options.enableCAPI,
+    fbclid_passed: !!options.fbclid, // Added fbclid parameter logging
     timestamp: new Date().toISOString(),
     windowExists: typeof window !== "undefined",
     fbqExists: typeof window !== "undefined" && !!window.fbq,
@@ -430,6 +420,7 @@ export const trackEvent = async (
         options.userAgent,
         options.ip,
         sharedExternalId,
+        options.fbclid, // Pass fbclid parameter to trackCAPIEvent
       )
       console.log(`✅ CAPI: trackCAPIEvent completed successfully`, capiResult)
 
