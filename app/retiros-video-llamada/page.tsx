@@ -9,7 +9,7 @@ export default function RetirosVideoLlamada() {
       <HeroSection />
       <VideoSection
         title="IMPORTANTE VER VIDEO"
-        subtitle="(48 seg.)"
+        subtitle="(48 segundos)"
         description=""
         videoId="pxB7OjWx3KE"
         thumbnail="/placeholder.svg?key=gw58i"
