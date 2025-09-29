@@ -4,6 +4,7 @@ import { RocknRoll_One } from "next/font/google"
 import { Suspense } from "react"
 import { Analytics } from "@vercel/analytics/react"
 import Script from "next/script"
+import MetaPixel from "../components/meta-pixel"
 import "./globals.css"
 
 const rocknrollOne = RocknRoll_One({
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID || ""} />
         <Script id="hubspot-tracking" strategy="afterInteractive">
           {`
             (function(h,u,b,s,p,o,t){
