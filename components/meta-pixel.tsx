@@ -38,9 +38,13 @@ export function MetaPixel({ pixelId }: MetaPixelProps) {
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
           
-          fbq('init', '${pixelId}');
+          fbq('init', '` +
+          pixelId +
+          `');
           fbq('track', 'PageView');
-          console.log('[v0] Meta Pixel initialized with ID: ${pixelId}');
+          console.log('[v0] Meta Pixel initialized with ID: ` +
+          pixelId +
+          `');
         `}
       </Script>
 
