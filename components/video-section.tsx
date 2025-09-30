@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Play, X } from "lucide-react"
+import { trackViewContent } from "@/lib/meta-pixel"
 
 interface VideoSectionProps {
   title: string
@@ -28,6 +29,17 @@ export function VideoSection({
   const [imageError, setImageError] = useState(false)
 
   const youtubeThumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+
+  const handlePlayVideo = () => {
+    setIsPlaying(true)
+    trackViewContent({
+      content_name: funnel === "video-llamada" ? "Retiros Video Llamada" : "Retiros Video Formulario",
+      content_type: "video",
+      content_ids: [videoId],
+      value: 25.0,
+      currency: "USD",
+    })
+  }
 
   return (
     <section className={`py-20 px-4 ${className}`}>
@@ -62,7 +74,7 @@ export function VideoSection({
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Button
                       size="lg"
-                      onClick={() => setIsPlaying(true)}
+                      onClick={handlePlayVideo}
                       className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/50 rounded-full w-20 h-20 p-0"
                     >
                       <Play className="w-8 h-8 ml-1" fill="currentColor" />
