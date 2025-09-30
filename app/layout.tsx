@@ -23,10 +23,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || ""
+
   return (
     <html lang="es">
       <head>
-        <MetaPixel />
+        <MetaPixel pixelId={pixelId} />
 
         <Script id="hubspot-tracking" strategy="afterInteractive">
           {`

@@ -5,15 +5,24 @@ import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
 import { pageview } from "@/lib/meta-pixel"
 
-const PIXEL_ID = "3072175881743946"
+interface MetaPixelProps {
+  pixelId: string
+}
 
-export function MetaPixel() {
+export function MetaPixel({ pixelId }: MetaPixelProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  console.log("[v0] MetaPixel received pixelId:", pixelId)
 
   useEffect(() => {
     pageview()
   }, [pathname, searchParams])
+
+  if (!pixelId) {
+    console.error("[Meta Pixel] - No Pixel ID provided")
+    return null
+  }
 
   return (
     <>
@@ -31,7 +40,7 @@ export function MetaPixel() {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '${PIXEL_ID}');
+            fbq('init', '${pixelId}');
             fbq('track', 'PageView');
           `,
         }}
@@ -43,7 +52,7 @@ export function MetaPixel() {
           height="1"
           width="1"
           style={{ display: "none" }}
-          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
+          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
           alt=""
         />
       </noscript>
