@@ -3,16 +3,27 @@
 import { useEffect } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
-import { META_PIXEL_ID, pageview } from "@/lib/meta-pixel"
+import { pageview } from "@/lib/meta-pixel"
 
 export function MetaPixel() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
+
   useEffect(() => {
     // Track pageview on route change
     pageview()
   }, [pathname, searchParams])
+
+  useEffect(() => {
+    console.log("[v0] META_PIXEL_ID:", META_PIXEL_ID)
+  }, [META_PIXEL_ID])
+
+  if (!META_PIXEL_ID) {
+    console.error("[Meta Pixel] - Missing NEXT_PUBLIC_META_PIXEL_ID environment variable")
+    return null
+  }
 
   const pixelScript = `
     !function(f,b,e,v,n,t,s)
