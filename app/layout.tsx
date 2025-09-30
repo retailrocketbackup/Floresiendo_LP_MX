@@ -4,7 +4,6 @@ import { RocknRoll_One } from "next/font/google"
 import { Suspense } from "react"
 import { Analytics } from "@vercel/analytics/react"
 import Script from "next/script"
-import { MetaPixel } from "@/components/meta-pixel"
 import { MetaPixelScript } from "@/components/meta-pixel-script"
 import { MetaPixelInit } from "@/components/meta-pixel-init"
 import "./globals.css"
@@ -31,8 +30,6 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <MetaPixelScript pixelId={pixelId} />
-
-        <MetaPixel pixelId={pixelId} />
 
         <Script id="hubspot-tracking" strategy="afterInteractive">
           {`
