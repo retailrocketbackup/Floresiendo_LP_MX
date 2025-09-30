@@ -5,6 +5,8 @@ import { Suspense } from "react"
 import { Analytics } from "@vercel/analytics/react"
 import Script from "next/script"
 import { MetaPixel } from "@/components/meta-pixel"
+import { MetaPixelScript } from "@/components/meta-pixel-script"
+import { MetaPixelInit } from "@/components/meta-pixel-init"
 import "./globals.css"
 
 const rocknrollOne = RocknRoll_One({
@@ -28,6 +30,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        <MetaPixelScript pixelId={pixelId} />
+
         <MetaPixel pixelId={pixelId} />
 
         <Script id="hubspot-tracking" strategy="afterInteractive">
@@ -55,6 +59,7 @@ export default function RootLayout({
         {/* -- Fin del código de HubSpot -- */}
       </head>
       <body className={`font-sans ${rocknrollOne.className}`}>
+        <MetaPixelInit pixelId={pixelId} />
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         <Analytics />
       </body>
