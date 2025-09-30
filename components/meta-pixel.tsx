@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
 
@@ -11,19 +11,22 @@ interface MetaPixelProps {
 export function MetaPixel({ pixelId }: MetaPixelProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false)
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.fbq && pixelId) {
+    if (isScriptLoaded && typeof window !== "undefined" && window.fbq && pixelId) {
+      console.log("[v0] Initializing Meta Pixel with ID:", pixelId)
       window.fbq("init", pixelId)
       window.fbq("track", "PageView")
     }
-  }, [pixelId])
+  }, [pixelId, isScriptLoaded])
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.fbq) {
+    if (isScriptLoaded && typeof window !== "undefined" && window.fbq) {
+      console.log("[v0] Tracking PageView for:", pathname)
       window.fbq("track", "PageView")
     }
-  }, [pathname, searchParams])
+  }, [pathname, searchParams, isScriptLoaded])
 
   if (!pixelId) {
     console.error("[Meta Pixel] - No Pixel ID provided")
@@ -35,6 +38,10 @@ export function MetaPixel({ pixelId }: MetaPixelProps) {
       <Script
         id="meta-pixel-base"
         strategy="afterInteractive"
+        onLoad={() => {
+          console.log("[v0] Meta Pixel script loaded")
+          setIsScriptLoaded(true)
+        }}
         dangerouslySetInnerHTML={{
           __html: `
             !function(f,b,e,v,n,t,s)
