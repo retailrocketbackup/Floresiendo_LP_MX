@@ -10,8 +10,6 @@ declare global {
   }
 }
 
-export const META_PIXEL_ID = "3072175881743946"
-
 export const pageview = () => {
   if (typeof window !== "undefined" && window.fbq) {
     window.fbq("track", "PageView")

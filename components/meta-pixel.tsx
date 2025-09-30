@@ -3,7 +3,6 @@
 import { useEffect } from "react"
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
-import { pageview } from "@/lib/meta-pixel"
 
 interface MetaPixelProps {
   pixelId: string
@@ -13,10 +12,17 @@ export function MetaPixel({ pixelId }: MetaPixelProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  console.log("[v0] MetaPixel received pixelId:", pixelId)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fbq && pixelId) {
+      window.fbq("init", pixelId)
+      window.fbq("track", "PageView")
+    }
+  }, [pixelId])
 
   useEffect(() => {
-    pageview()
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "PageView")
+    }
   }, [pathname, searchParams])
 
   if (!pixelId) {
@@ -26,13 +32,11 @@ export function MetaPixel({ pixelId }: MetaPixelProps) {
 
   return (
     <>
-      {/* Meta Pixel Base Code */}
       <Script
-        id="meta-pixel-init"
+        id="meta-pixel-base"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
-          __html:
-            `
+          __html: `
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -41,10 +45,6 @@ export function MetaPixel({ pixelId }: MetaPixelProps) {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '` +
-            pixelId +
-            `');
-            fbq('track', 'PageView');
           `,
         }}
       />
