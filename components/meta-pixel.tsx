@@ -1,10 +1,25 @@
+"use client"
+
+import { useEffect } from "react"
+import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
 
-interface MetaPixelScriptProps {
+interface MetaPixelProps {
   pixelId: string
 }
 
-export function MetaPixelScript({ pixelId }: MetaPixelScriptProps) {
+export function MetaPixel({ pixelId }: MetaPixelProps) {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    // Track page views on route changes
+    if (typeof window !== "undefined" && window.fbq) {
+      console.log("[v0] Tracking PageView for:", pathname)
+      window.fbq("track", "PageView")
+    }
+  }, [pathname, searchParams])
+
   if (!pixelId) {
     console.error("[Meta Pixel] - No Pixel ID provided")
     return null
@@ -12,7 +27,7 @@ export function MetaPixelScript({ pixelId }: MetaPixelScriptProps) {
 
   return (
     <>
-      <Script id="meta-pixel-base" strategy="afterInteractive">
+      <Script id="meta-pixel" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -25,6 +40,7 @@ export function MetaPixelScript({ pixelId }: MetaPixelScriptProps) {
           
           fbq('init', '${pixelId}');
           fbq('track', 'PageView');
+          console.log('[v0] Meta Pixel initialized with ID: ${pixelId}');
         `}
       </Script>
 
