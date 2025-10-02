@@ -26,7 +26,7 @@ export function HeroSection() {
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance drop-shadow-2xl">
-          Retiros FloreSiendo 23 al 26 de Octubre
+          Retiros FloreSiendo 6 al 9 de Noviembre
           <span className="block text-3xl md:text-4xl font-normal mt-2 text-purple-200">Cocoyoc, Morelos</span>
         </h1>
 
