@@ -18,7 +18,7 @@ export default function RetirosVideoLlamada() {
       />
       <ContactSectionCall
         funnel="video"
-        title="¿Listo para una Conversación Personal?"
+        title="¿Listo para conversar?"
         subtitle="Agenda una llamada gratuita de 15 minutos para conocer más sobre nuestros retiros y resolver todas tus dudas."
         buttonText="Agendar Llamada Gratuita"
       />
