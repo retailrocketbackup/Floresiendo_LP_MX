@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer"
 export default function RetirosVideoFormulario() {
   return (
     <main>
-      <HeroSection />
+      <HeroSection showCTA={true} ctaText="Solicitar Información" ctaLink="/formulario-video" />
       <VideoSection
         title="IMPORTANTE VER VIDEO"
         subtitle="(48 seg.)"

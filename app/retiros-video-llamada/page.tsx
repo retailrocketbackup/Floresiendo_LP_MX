@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer"
 export default function RetirosVideoLlamada() {
   return (
     <main>
-      <HeroSection />
+      <HeroSection showCTA={true} ctaText="Agendar Llamada Gratuita" ctaLink="/agendar-llamada-video" />
       <VideoSection
         title="IMPORTANTE VER VIDEO"
         subtitle="(48 segundos)"
