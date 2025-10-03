@@ -72,6 +72,16 @@ export async function POST(request: NextRequest) {
     const name = inviteeData.resource?.name || ""
     const eventUri = inviteeData.resource?.event
 
+    // Extraer teléfono de questions_and_answers
+    let phone = ""
+    const questionsAndAnswers = inviteeData.resource?.questions_and_answers || []
+    for (const qa of questionsAndAnswers) {
+      if (qa.question.toLowerCase().includes("teléfono") || qa.question.toLowerCase().includes("phone")) {
+        phone = qa.answer || ""
+        break
+      }
+    }
+
     // Separar nombre en first_name y last_name
     const nameParts = name.split(" ")
     const firstName = nameParts[0] || ""
@@ -98,9 +108,10 @@ export async function POST(request: NextRequest) {
       funnel = "testimonios"
     }
 
-    console.log("[Calendly Webhook] Processing Schedule_Video event", {
+    console.log("[Calendly Webhook] Processing Schedule event", {
       email,
       name,
+      phone: phone ? "present" : "missing",
       funnel,
     })
 
@@ -120,6 +131,12 @@ export async function POST(request: NextRequest) {
       userData.ln = await hashSHA256(lastName)
     }
 
+    if (phone) {
+      // Limpiar el teléfono (solo números)
+      const cleanPhone = phone.replace(/\D/g, "")
+      userData.ph = await hashSHA256(cleanPhone)
+    }
+
     // Capturar IP y User Agent del request original si están disponibles
     const clientIP =
       request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || request.ip || "unknown"
@@ -136,12 +153,13 @@ export async function POST(request: NextRequest) {
     // Generar event ID único
     const eventId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
-    // Disparar evento Schedule_Video con CAPI
-const metaEventName = funnel === "video" ? "Schedule_Video" : "Schedule_Testimonios"
+    // Disparar evento Schedule con CAPI
+    const metaEventName = funnel === "video" ? "Schedule_Video" : "Schedule_Testimonios"
 
     console.log("[Calendly Webhook] Sending to Meta CAPI:", {
-      eventName,
+      eventName: metaEventName,
       hasEmail: !!userData.em,
+      hasPhone: !!userData.ph,
       hasFirstName: !!userData.fn,
       hasLastName: !!userData.ln,
       hasIP: !!userData.client_ip_address,
