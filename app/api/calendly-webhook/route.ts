@@ -165,18 +165,29 @@ export async function POST(request: NextRequest) {
       hasIP: !!userData.client_ip_address,
     })
 
-    await trackCAPIEvent(
-      metaEventName,
-      {
-        funnel,
-        content_type: "appointment",
-        value: 0,
+// Enviar directamente a Meta CAPI con todos los datos hasheados
+    const response = await fetch("https://www.escuelafloresiendomexico.com/api/meta-capi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      eventId,
-      userAgent !== "unknown" ? userAgent : undefined,
-      clientIP !== "unknown" ? clientIP : undefined,
-      userData.external_id,
-    )
+      body: JSON.stringify({
+        event_name: metaEventName,
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: eventId,
+        action_source: "website",
+        event_source_url: "https://www.escuelafloresiendomexico.com/agendar-llamada-video",
+        user_data: userData,
+        custom_data: {
+          funnel,
+          content_type: "appointment",
+          value: 0,
+        },
+      }),
+    })
+
+const result = await response.json()
+console.log("[Calendly Webhook] Meta CAPI response:", result)
 
     console.log("[Calendly Webhook] Successfully processed webhook")
 
