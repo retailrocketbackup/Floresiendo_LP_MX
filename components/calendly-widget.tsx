@@ -1,88 +1,64 @@
+// components/calendly-widget.tsx
 "use client"
 
-import { useEffect } from "react"
-import { trackEvent } from "@/lib/meta-tracking"
+import { useEffect, useState } from "react";
+import { useSearchParams } from 'next/navigation';
+import { trackEvent } from "@/lib/meta-tracking";
 
 interface CalendlyWidgetProps {
-  funnel?: string
+  funnel?: string;
 }
 
 export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
+  const searchParams = useSearchParams();
+  const [calendlyUrl, setCalendlyUrl] = useState("https://calendly.com/ramonhenriquez/15min");
+
   useEffect(() => {
-    console.log("[v0] CalendlyWidget mounted with funnel:", funnel)
+    // Leemos los datos que vienen en la URL
+    const fbp = searchParams.get('fbp');
+    const fbclid = searchParams.get('fbclid');
 
-    const script = document.createElement("script")
-    script.src = "https://assets.calendly.com/assets/external/widget.js"
-    script.async = true
-    script.type = "text/javascript"
-    document.head.appendChild(script)
+    const url = new URL(calendlyUrl);
 
-    console.log("[v0] Calendly script added to page")
+    // Los inyectamos como parámetros UTM en la URL de Calendly
+    if (fbp) url.searchParams.set('utm_source', fbp);
+    if (fbclid) url.searchParams.set('utm_medium', fbclid);
 
-    if (typeof window !== "undefined") {
-      const handleCalendlyEvent = (event: MessageEvent) => {
-        console.log("[v0] Message event received:", {
-          origin: event.origin,
-          eventType: event.data?.event,
-          fullData: event.data,
-        })
+    setCalendlyUrl(url.toString());
 
-        // Only process Calendly scheduling events
-        if (event.data.event === "calendly.event_scheduled") {
-          console.log("[v0] Calendly appointment scheduled!", { funnel })
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.head.appendChild(script);
 
-          // Track the specific funnel event
-          const eventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios"
-
-          console.log("[v0] About to call trackEvent with:", {
-            eventName,
-            funnel,
-            enableCAPI: true,
-          })
-
-          // Track without user data (Option 3: Privacy-focused tracking)
-          trackEvent(
-            eventName,
-            {
-              funnel,
-              content_type: "appointment",
-              content_name: `calendly_${funnel}`,
-              value: 0,
-            },
-            {
-              enableCAPI: true,
-            },
-          )
-
-          console.log("[v0] trackEvent call completed")
-        }
+    const handleCalendlyEvent = (event: MessageEvent) => {
+      if (event.data.event === "calendly.event_scheduled") {
+        const eventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios";
+        // Llamamos a trackEvent SIN enableCAPI: true.
+        // El webhook del servidor se encargará del evento de servidor.
+        trackEvent(eventName, { funnel });
       }
+    };
 
-      console.log("[v0] Adding message event listener")
-      window.addEventListener("message", handleCalendlyEvent)
-
-      return () => {
-        console.log("[v0] Removing message event listener")
-        window.removeEventListener("message", handleCalendlyEvent)
-      }
-    }
+    window.addEventListener("message", handleCalendlyEvent);
 
     return () => {
+      window.removeEventListener("message", handleCalendlyEvent);
       if (document.head.contains(script)) {
-        document.head.removeChild(script)
+        document.head.removeChild(script);
       }
-    }
-  }, [funnel])
+    };
+  }, [funnel, searchParams, calendlyUrl]);
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="bg-white rounded-lg shadow-lg p-8">
         <div
           className="calendly-inline-widget"
-          data-url="https://calendly.com/ramonhenriquez/15min"
+          data-url={calendlyUrl}
           style={{ minWidth: "320px", height: "700px" }}
         ></div>
       </div>
     </div>
-  )
+  );
 }

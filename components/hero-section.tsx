@@ -1,10 +1,6 @@
 // components/hero-section.tsx
-"use client"; // Muy importante para que funcione en el navegador
-
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { getFbp, getFbclid } from "@/lib/meta-tracking"; // Importamos las funciones
+import { SmartLink } from "@/components/SmartLink"; // <-- Cambio #1: Importamos SmartLink
 
 interface HeroSectionProps {
   showCTA?: boolean;
@@ -17,24 +13,8 @@ export function HeroSection({
   ctaText = "Agendar Llamada Gratuita",
   ctaLink = "/formulario-video",
 }: HeroSectionProps) {
-  // Estado para guardar el enlace final y enriquecido
-  const [finalCtaLink, setFinalCtaLink] = useState(ctaLink);
-
-  useEffect(() => {
-    // Esta lógica se ejecuta en el navegador del usuario
-    const fbp = getFbp();
-    const fbclid = getFbclid();
-    const url = new URL(ctaLink, window.location.origin);
-
-    if (fbp) url.searchParams.set('fbp', fbp);
-    if (fbclid) url.searchParams.set('fbclid', fbclid);
-
-    setFinalCtaLink(url.pathname + url.search);
-  }, [ctaLink]); // Se actualiza si el ctaLink cambia
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* ... El resto de tu código HTML/JSX se mantiene exactamente igual ... */}
       <div className="absolute inset-0">
         <img
           src="/cosmic-spiritual-background.jpg"
@@ -43,7 +23,9 @@ export function HeroSection({
         />
         <div className="absolute inset-0 bg-black/20" />
       </div>
+
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+        {/* ... (todo el contenido visual se queda igual) ... */}
         <div className="mb-8 flex justify-center">
           <Image
             src="/floresiendo-logo-boton.png"
@@ -65,8 +47,8 @@ export function HeroSection({
           Libera tu mente del estrés y encuentra la paz en tu vida
         </p>
         {showCTA && (
-          // Usamos el enlace final y enriquecido que creamos
-          <Link href={finalCtaLink}> 
+          // Cambio #2: Usamos SmartLink en lugar de Link
+          <SmartLink href={ctaLink}>
             <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none">
               {ctaText}
               <svg
@@ -85,7 +67,7 @@ export function HeroSection({
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </button>
-          </Link>
+          </SmartLink>
         )}
       </div>
     </section>
