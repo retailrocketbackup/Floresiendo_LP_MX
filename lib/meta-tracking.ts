@@ -16,7 +16,7 @@ export interface TrackingData {
   phone?: string
   first_name?: string
   last_name?: string
-  external_id?: string // Added external_id support for enhanced deduplication
+  external_id?: string | null // Added external_id support for enhanced deduplication
 }
 
 const generateEventId = (): string => {
@@ -74,7 +74,7 @@ export const getFbclid = (): string | null => {
   return null
 }
 
-const getFbp = (): string | null => {
+export const getFbp = (): string | null => {
   if (typeof window === "undefined") return null
 
   // Get Facebook Browser ID from _fbp cookie
@@ -91,7 +91,7 @@ const getFbp = (): string | null => {
 }
 
 // Client-side Meta Pixel tracking
-export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?: string, externalId?: string) => {
+export const trackPixelEvent = (eventName: string, data: TrackingData, eventId?: string, externalId?: string | null) => {
   if (typeof window !== "undefined") {
     if (window.fbq) {
       const finalEventId = eventId || generateEventId()
@@ -188,10 +188,10 @@ export const trackCAPIEvent = async (
   eventName: string,
   data: TrackingData,
   eventId: string,
-  userAgent?: string,
-  ip?: string,
-  externalId?: string,
-  fbclid?: string, // Added fbclid as optional parameter
+  userAgent?: string | null,
+  ip?: string | null,
+  externalId?: string | null,
+  fbclid?: string | null,
 ) => {
   console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
     event: eventName,

@@ -1,16 +1,17 @@
-import Image from "next/image"
-import Link from "next/link"
+// components/hero-section.tsx
+import Image from "next/image";
+import { SmartLink } from "@/components/SmartLink"; // <-- Cambio #1: Importamos SmartLink
 
 interface HeroSectionProps {
-  showCTA?: boolean
-  ctaText?: string
-  ctaLink?: string
+  showCTA?: boolean;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
-export function HeroSection({ 
-  showCTA = false, 
+export function HeroSection({
+  showCTA = false,
   ctaText = "Agendar Llamada Gratuita",
-  ctaLink = "/formulario-video"
+  ctaLink = "/formulario-video",
 }: HeroSectionProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -24,7 +25,7 @@ export function HeroSection({
       </div>
 
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-        {/* Logo reducido 40% */}
+        {/* ... (todo el contenido visual se queda igual) ... */}
         <div className="mb-8 flex justify-center">
           <Image
             src="/floresiendo-logo-boton.png"
@@ -34,23 +35,20 @@ export function HeroSection({
             className="shadow-2xl w-full max-w-[192px] h-auto"
           />
         </div>
-
         <h1 className="text-4xl md:text-4xl font-bold mb-6 text-balance drop-shadow-2xl">
-          Retiros FloreSiendo 
+          Retiros FloreSiendo
           <br />
           6 al 9 de Noviembre
           <span className="block text-3xl md:text-4xl font-normal mt-2 text-purple-200">
             Cocoyoc, Morelos
           </span>
         </h1>
-
         <p className="text-2xl md:text-4xl mb-8 text-purple-100 max-w-2xl mx-auto text-pretty drop-shadow-lg font-semibold">
           Libera tu mente del estrés y encuentra la paz en tu vida
         </p>
-
-        {/* Botón CTA dinámico - solo se muestra si showCTA es true */}
         {showCTA && (
-          <Link href={ctaLink}>
+          // Cambio #2: Usamos SmartLink en lugar de Link
+          <SmartLink href={ctaLink}>
             <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none">
               {ctaText}
               <svg
@@ -69,9 +67,9 @@ export function HeroSection({
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </button>
-          </Link>
+          </SmartLink>
         )}
       </div>
     </section>
-  )
+  );
 }

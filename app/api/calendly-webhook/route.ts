@@ -1,208 +1,128 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { trackCAPIEvent } from "@/lib/meta-tracking"
-import crypto from "crypto"
+// app/api/calendly-webhook/route.ts
 
-// Función para verificar la firma del webhook
-function verifyWebhookSignature(payload: string, signature: string, signingKey: string): boolean {
-  const expectedSignature = crypto.createHmac("sha256", signingKey).update(payload).digest("base64")
-  return signature === expectedSignature
-}
+import { type NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 
-// Función para hashear datos
-async function hashSHA256(data: string): Promise<string> {
-  const encoder = new TextEncoder()
-  const dataBuffer = encoder.encode(data.toLowerCase().trim())
-  const hashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+// Función para hashear datos en formato SHA256
+function hashSHA256(data: string): string {
+  return crypto.createHash('sha256').update(data.toLowerCase().trim()).digest('hex');
 }
 
 export async function POST(request: NextRequest) {
-  console.log("[Calendly Webhook] Received webhook")
+  console.log("[Calendly Webhook] Received webhook");
 
   try {
-    // Obtener el payload raw para verificar firma
-    const rawBody = await request.text()
-    const signature = request.headers.get("calendly-webhook-signature") || ""
-    const signingKey = process.env.CALENDLY_WEBHOOK_SIGNING_KEY
+    const body = await request.json();
+    console.log("[Calendly Webhook] Event type:", body.event);
 
-    // Verificar firma del webhook
-    if (signingKey && !verifyWebhookSignature(rawBody, signature, signingKey)) {
-      console.error("[Calendly Webhook] Invalid signature")
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 })
-    }
-
-    const body = JSON.parse(rawBody)
-    console.log("[Calendly Webhook] Event type:", body.event)
-
-    // Solo procesamos eventos de invitee.created
     if (body.event !== "invitee.created") {
-      console.log("[Calendly Webhook] Ignoring non-creation event")
-      return NextResponse.json({ received: true })
+      return NextResponse.json({ message: "Ignoring non-creation event" });
     }
 
-    // Extraer el URI del invitee del payload
-    const inviteeUri = body.payload?.uri
+    const inviteeUri = body.payload?.uri;
     if (!inviteeUri) {
-      console.error("[Calendly Webhook] No invitee URI found")
-      return NextResponse.json({ error: "No invitee URI" }, { status: 400 })
+      console.error("[Calendly Webhook] No invitee URI found in payload");
+      return NextResponse.json({ error: "No invitee URI" }, { status: 400 });
     }
 
-    console.log("[Calendly Webhook] Fetching invitee details from:", inviteeUri)
-
-    // Hacer petición a Calendly para obtener detalles completos del invitee
-    const accessToken = process.env.CALENDLY_ACCESS_TOKEN
+    console.log("[Calendly Webhook] Fetching full invitee details from:", inviteeUri);
+    const accessToken = process.env.CALENDLY_ACCESS_TOKEN;
     const inviteeResponse = await fetch(inviteeUri, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-    })
+    });
 
     if (!inviteeResponse.ok) {
-      console.error("[Calendly Webhook] Failed to fetch invitee:", await inviteeResponse.text())
-      return NextResponse.json({ error: "Failed to fetch invitee" }, { status: 500 })
+      const errorText = await inviteeResponse.text();
+      console.error("[Calendly Webhook] Failed to fetch invitee details from Calendly:", errorText);
+      return NextResponse.json({ error: "Failed to fetch invitee details", details: errorText }, { status: 500 });
     }
 
-    const inviteeData = await inviteeResponse.json()
-    console.log("[Calendly Webhook] Invitee data received")
+    const inviteeData = await inviteeResponse.json();
+    console.log("[Calendly Webhook] Invitee details received successfully");
 
-    // Extraer datos del invitee
-    const email = inviteeData.resource?.email
-    const name = inviteeData.resource?.name || ""
-    const eventUri = inviteeData.resource?.event
+    // --- 1. EXTRAER TODA LA INFORMACIÓN ---
 
-    // Extraer teléfono de questions_and_answers
-    let phone = ""
-    const questionsAndAnswers = inviteeData.resource?.questions_and_answers || []
+    const email = inviteeData.resource?.email;
+    const name = inviteeData.resource?.name || "";
+    const nameParts = name.split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+    let phone = "";
+    const questionsAndAnswers = inviteeData.resource?.questions_and_answers || [];
     for (const qa of questionsAndAnswers) {
-      if (qa.question.toLowerCase().includes("teléfono") || qa.question.toLowerCase().includes("phone")) {
-        phone = qa.answer || ""
-        break
+      if (qa.question.toLowerCase().includes("teléfono")) {
+        phone = qa.answer || "";
+        break;
       }
     }
 
-    // Separar nombre en first_name y last_name
-    const nameParts = name.split(" ")
-    const firstName = nameParts[0] || ""
-    const lastName = nameParts.slice(1).join(" ") || ""
+    const tracking = inviteeData.resource?.tracking || {};
+    const fbp = tracking.utm_source || null;
+    const fbc = tracking.utm_medium || null;
+    const eventSourceUrl = tracking.utm_campaign || "https://www.escuelafloresiendomexico.com/agendar-llamada-video";
 
-    // Obtener información adicional del evento si está disponible
-    let eventDetails = null
-    if (eventUri) {
-      const eventResponse = await fetch(eventUri, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      if (eventResponse.ok) {
-        eventDetails = await eventResponse.json()
-      }
-    }
+    const clientIP = inviteeData.resource?.ip_address || request.headers.get("x-forwarded-for") || null;
+    const userAgent = request.headers.get("user-agent");
 
-    // Determinar el funnel basado en el event type o URL
-    const eventName = eventDetails?.resource?.name || ""
-    let funnel = "video" // default
-    if (eventName.toLowerCase().includes("testimonios")) {
-      funnel = "testimonios"
-    }
+    // --- 2. PREPARAR EL PAYLOAD PARA META ---
+    const userData: any = {};
+    
+    if (email) userData.em = hashSHA256(email);
+    if (firstName) userData.fn = hashSHA256(firstName);
+    if (lastName) userData.ln = hashSHA256(lastName);
+    if (phone) userData.ph = hashSHA256(phone.replace(/\D/g, ''));
+    
+    if (clientIP) userData.client_ip_address = clientIP;
+    if (userAgent) userData.client_user_agent = userAgent;
+    if (fbp) userData.fbp = fbp;
+    if (fbc) userData.fbc = fbc;
 
-    console.log("[Calendly Webhook] Processing Schedule event", {
-      email,
-      name,
-      phone: phone ? "present" : "missing",
-      funnel,
-    })
+    // --- 3. ENVIAR EL EVENTO DIRECTAMENTE A META ---
+    const metaPixelId = process.env.META_PIXEL_ID;
+    const metaAccessToken = process.env.META_ACCESS_TOKEN;
+    const eventId = `calendly_${body.payload.uri.split('/').pop()}`;
 
-    // Preparar user_data para Meta
-    const userData: any = {}
-
-    if (email) {
-      userData.em = await hashSHA256(email)
-      userData.external_id = `email_${btoa(email).replace(/[^a-zA-Z0-9]/g, "").substring(0, 20)}`
-    }
-
-    if (firstName) {
-      userData.fn = await hashSHA256(firstName)
-    }
-
-    if (lastName) {
-      userData.ln = await hashSHA256(lastName)
-    }
-
-    if (phone) {
-      // Limpiar el teléfono (solo números)
-      const cleanPhone = phone.replace(/\D/g, "")
-      userData.ph = await hashSHA256(cleanPhone)
-    }
-
-    // Capturar IP y User Agent del request original si están disponibles
-    const clientIP =
-      request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || request.ip || "unknown"
-    const userAgent = request.headers.get("user-agent") || "unknown"
-
-    if (clientIP !== "unknown") {
-      userData.client_ip_address = clientIP
-    }
-
-    if (userAgent !== "unknown") {
-      userData.client_user_agent = userAgent
-    }
-
-    // Generar event ID único
-    const eventId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-
-    // Disparar evento Schedule con CAPI
-    const metaEventName = funnel === "video" ? "Schedule_Video" : "Schedule_Testimonios"
-
-    console.log("[Calendly Webhook] Sending to Meta CAPI:", {
-      eventName: metaEventName,
-      hasEmail: !!userData.em,
-      hasPhone: !!userData.ph,
-      hasFirstName: !!userData.fn,
-      hasLastName: !!userData.ln,
-      hasIP: !!userData.client_ip_address,
-    })
-
-// Enviar directamente a Meta CAPI con todos los datos hasheados
-    const response = await fetch("https://www.escuelafloresiendomexico.com/api/meta-capi", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        event_name: metaEventName,
-        event_time: Math.floor(Date.now() / 1000),
-        event_id: eventId,
+    const metaPayload = {
+      data: [{
+        event_name: "Schedule_Video",
+        event_time: Math.floor(new Date(body.created_at).getTime() / 1000),
         action_source: "website",
-        event_source_url: "https://www.escuelafloresiendomexico.com/agendar-llamada-video",
+        event_id: eventId,
+        event_source_url: eventSourceUrl,
         user_data: userData,
-        custom_data: {
-          funnel,
-          content_type: "appointment",
-          value: 0,
-        },
-      }),
-    })
+      }],
+    };
 
-const result = await response.json()
-console.log("[Calendly Webhook] Meta CAPI response:", result)
+    // La línea corregida está aquí:
+    console.log("[Calendly Webhook] Sending final payload to Meta CAPI. FBP found:", !!fbp, "FBC found:", !!fbc);
 
-    console.log("[Calendly Webhook] Successfully processed webhook")
+    const metaUrl = `https://graph.facebook.com/v19.0/${metaPixelId}/events?access_token=${metaAccessToken}`;
 
-    return NextResponse.json({
-      success: true,
-      message: "Webhook processed successfully",
-    })
+    const metaResponse = await fetch(metaUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(metaPayload),
+    });
+
+    if (!metaResponse.ok) {
+      const errorData = await metaResponse.json();
+      console.error("[Calendly Webhook] Error sending event to Meta:", errorData);
+      throw new Error(`Meta API responded with status ${metaResponse.status}`);
+    }
+
+    const metaResult = await metaResponse.json();
+    console.log("[Calendly Webhook] Successfully sent event to Meta:", metaResult);
+
+    return NextResponse.json({ success: true, message: "Webhook processed and event sent to Meta" });
+
   } catch (error) {
-    console.error("[Calendly Webhook] Error processing webhook:", error)
+    console.error("[Calendly Webhook] CRITICAL ERROR in webhook processing:", error);
     return NextResponse.json(
-      {
-        error: "Internal server error",
-        details: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 },
-    )
+      { error: "Internal server error", details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
   }
 }

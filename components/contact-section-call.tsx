@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+// components/contact-section-call.tsx
+import { Button } from "@/components/ui/button";
+import { SmartLink } from "@/components/SmartLink"; // <-- Cambio #1: Importamos SmartLink
 
 interface ContactSectionCallProps {
-  funnel: string
-  title?: string
-  subtitle?: string
-  buttonText?: string
+  funnel: string;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
 }
 
 export function ContactSectionCall({
@@ -21,9 +22,9 @@ export function ContactSectionCall({
           <h2 className="text-4xl font-bold text-gray-900 mb-4">{title}</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">{subtitle}</p>
         </div>
-
         <div className="flex flex-col items-center justify-center max-w-md mx-auto">
-          <Link href={`/agendar-llamada-${funnel}`} passHref>
+          {/* Cambio #2: Usamos SmartLink en lugar de Link */}
+          <SmartLink href={`/agendar-llamada-${funnel}`} passHref>
             <Button
               size="lg"
               className="w-80 py-6 text-xl rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
@@ -31,9 +32,9 @@ export function ContactSectionCall({
             >
               {buttonText}
             </Button>
-          </Link>
+          </SmartLink>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,0 +1,8 @@
+{
+  "url": "https://www.escuelafloresiendomexico.com/api/calendly-webhook",
+  "events": [
+    "invitee.created"
+  ],
+  "organization": "https://api.calendly.com/organizations/4ea16fee-dbff-4319-aaa3-b3b4180014cb",
+  "scope": "organization"
+}
