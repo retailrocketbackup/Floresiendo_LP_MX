@@ -2,18 +2,16 @@
 "use client"; 
 
 import Image from "next/image";
-import { SmartLink } from "@/components/SmartLink";
+import Link from "next/link";
 
 interface HeroSectionProps {
   showCTA?: boolean;
-  ctaText?: string;
-  ctaLink?: string;
+  ctaLink?: string; // Nota: quitamos ctaText porque ahora está definido aquí
 }
 
 export function HeroSection({
   showCTA = false,
-  ctaText = "Agendar Llamada Gratuita",
-  ctaLink = "/formulario-video",
+  ctaLink = "#", // Un enlace por defecto
 }: HeroSectionProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -36,24 +34,22 @@ export function HeroSection({
             className="shadow-2xl w-full max-w-[192px] h-auto"
           />
         </div>
-        <h1 className="text-4xl md:text-4xl font-bold mb-6 text-balance drop-shadow-2xl">
-          Retiros FloreSiendo
-          <br />
-          6 al 9 de Noviembre
-          <span className="block text-3xl md:text-4xl font-normal mt-2 text-purple-200">
-            Cocoyoc, Morelos
-          </span>
+
+        {/* --- INICIO DEL NUEVO COPYWRITING --- */}
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance drop-shadow-2xl">
+          ¿Terminas el día sintiéndote vacío y sin propósito?
         </h1>
-        <p className="text-2xl md:text-4xl mb-8 text-purple-100 max-w-2xl mx-auto text-pretty drop-shadow-lg font-semibold">
-          Libera tu mente del estrés y encuentra la paz en tu vida
+        <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
+          Esa rutina de horarios, jefes y responsabilidades no tiene por qué ser tu única realidad. Entendemos ese sentimiento de tocar fondo.
         </p>
+        {/* --- FIN DEL NUEVO COPYWRITING --- */}
+
         {showCTA && (
-          <SmartLink href={ctaLink}>
+          <Link href={ctaLink}>
             <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none">
-              {ctaText}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+              Inicia tu transformación ↓ {/* Nuevo texto del botón */}
             </button>
-          </SmartLink>
+          </Link>
         )}
       </div>
     </section>
