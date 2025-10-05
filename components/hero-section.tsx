@@ -48,7 +48,7 @@ export function HeroSection({
         {showCTA && (
           <Link href={ctaLink}>
             <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none">
-              Quiero iniciar mi transformación ↓
+              Iniciar mi transformación ↓
             </button>
           </Link>
         )}
