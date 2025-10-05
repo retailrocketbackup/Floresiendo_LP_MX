@@ -2,7 +2,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from 'next/navigation';
+import { getFbp, getFbclid } from "@/lib/meta-tracking"; // <-- Importamos las funciones
 import { trackEvent } from "@/lib/meta-tracking";
 
 interface CalendlyWidgetProps {
@@ -10,22 +10,21 @@ interface CalendlyWidgetProps {
 }
 
 export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
-  const searchParams = useSearchParams();
   const [calendlyUrl, setCalendlyUrl] = useState("https://calendly.com/ramonhenriquez/15min");
 
   useEffect(() => {
-    // Leemos los datos que vienen en la URL
-    const fbp = searchParams.get('fbp');
-    const fbclid = searchParams.get('fbclid');
+    // Ahora captura las cookies directamente aquí, en lugar de leerlas de la URL
+    const fbp = getFbp();
+    const fbclid = getFbclid();
 
     const url = new URL(calendlyUrl);
 
-    // Los inyectamos como parámetros UTM en la URL de Calendly
     if (fbp) url.searchParams.set('utm_source', fbp);
     if (fbclid) url.searchParams.set('utm_medium', fbclid);
 
     setCalendlyUrl(url.toString());
 
+    // El resto de la lógica para cargar el script y escuchar eventos se mantiene igual
     const script = document.createElement("script");
     script.src = "https://assets.calendly.com/assets/external/widget.js";
     script.async = true;
@@ -34,8 +33,6 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
     const handleCalendlyEvent = (event: MessageEvent) => {
       if (event.data.event === "calendly.event_scheduled") {
         const eventName = funnel.includes("video") ? "Schedule_Video" : "Schedule_Testimonios";
-        // Llamamos a trackEvent SIN enableCAPI: true.
-        // El webhook del servidor se encargará del evento de servidor.
         trackEvent(eventName, { funnel });
       }
     };
@@ -48,7 +45,7 @@ export function CalendlyWidget({ funnel = "unknown" }: CalendlyWidgetProps) {
         document.head.removeChild(script);
       }
     };
-  }, [funnel, searchParams, calendlyUrl]);
+  }, [funnel, calendlyUrl]);
 
   return (
     <div className="w-full max-w-4xl mx-auto">
