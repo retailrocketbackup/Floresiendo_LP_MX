@@ -37,7 +37,11 @@ export function HeroSection({
           ¿Terminas el día sintiéndote vacío y sin propósito?
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
-          Esa rutina de horarios, jefes y responsabilidades no tiene por qué ser tu única realidad. Entendemos ese sentimiento de tocar fondo.
+          Has sido guiado hasta aquí por una razón. 
+        <br/>
+          Por eso hemos creado una experiencia de 4 días para desconectar de la rutina y reconectar con tu propósito. 
+        <br/>  
+          Un retiro diseñado para tu transformación.
         </p>
         {showCTA && (
           <Link href={ctaLink}>
