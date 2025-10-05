@@ -3,7 +3,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 
-// Función para hashear datos (usaremos el crypto nativo de Node.js que es más simple aquí)
+// Función para hashear datos en formato SHA256
 function hashSHA256(data: string): string {
   return crypto.createHash('sha256').update(data.toLowerCase().trim()).digest('hex');
 }
@@ -21,12 +21,11 @@ export async function POST(request: NextRequest) {
 
     const inviteeUri = body.payload?.uri;
     if (!inviteeUri) {
-      console.error("[Calendly Webhook] No invitee URI found");
+      console.error("[Calendly Webhook] No invitee URI found in payload");
       return NextResponse.json({ error: "No invitee URI" }, { status: 400 });
     }
 
-    console.log("[Calendly Webhook] Fetching invitee details from:", inviteeUri);
-    
+    console.log("[Calendly Webhook] Fetching full invitee details from:", inviteeUri);
     const accessToken = process.env.CALENDLY_ACCESS_TOKEN;
     const inviteeResponse = await fetch(inviteeUri, {
       headers: {
@@ -37,16 +36,15 @@ export async function POST(request: NextRequest) {
 
     if (!inviteeResponse.ok) {
       const errorText = await inviteeResponse.text();
-      console.error("[Calendly Webhook] Failed to fetch invitee:", errorText);
-      return NextResponse.json({ error: "Failed to fetch invitee", details: errorText }, { status: 500 });
+      console.error("[Calendly Webhook] Failed to fetch invitee details from Calendly:", errorText);
+      return NextResponse.json({ error: "Failed to fetch invitee details", details: errorText }, { status: 500 });
     }
 
     const inviteeData = await inviteeResponse.json();
-    console.log("[Calendly Webhook] Invitee data received");
+    console.log("[Calendly Webhook] Invitee details received successfully");
 
-    // --- INICIO DE LA LÓGICA CORREGIDA ---
+    // --- 1. EXTRAER TODA LA INFORMACIÓN ---
 
-    // 1. EXTRAER DATOS DEL USUARIO (PII)
     const email = inviteeData.resource?.email;
     const name = inviteeData.resource?.name || "";
     const nameParts = name.split(" ");
@@ -61,35 +59,31 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 2. EXTRAER DATOS DEL NAVEGADOR (¡CAMBIO CLAVE!)
     const tracking = inviteeData.resource?.tracking || {};
-    const fbp = tracking.utm_source || null; // Aquí viene la cookie _fbp
-    const fbclid = tracking.utm_medium || null; // Aquí viene la cookie _fbc
+    const fbp = tracking.utm_source || null;
+    const fbc = tracking.utm_medium || null;
     const eventSourceUrl = tracking.utm_campaign || "https://www.escuelafloresiendomexico.com/agendar-llamada-video";
 
-    // 3. OBTENER IP Y USER AGENT CORRECTOS (¡CAMBIO CLAVE!)
     const clientIP = inviteeData.resource?.ip_address || request.headers.get("x-forwarded-for") || null;
-    const userAgent = request.headers.get("user-agent"); // El user-agent de Calendly es una aproximación aceptable
+    const userAgent = request.headers.get("user-agent");
 
-    // --- PREPARAR EL PAYLOAD PARA META ---
+    // --- 2. PREPARAR EL PAYLOAD PARA META ---
     const userData: any = {};
     
-    // Hashear y añadir PII
     if (email) userData.em = hashSHA256(email);
     if (firstName) userData.fn = hashSHA256(firstName);
     if (lastName) userData.ln = hashSHA256(lastName);
     if (phone) userData.ph = hashSHA256(phone.replace(/\D/g, ''));
     
-    // Añadir datos del navegador
     if (clientIP) userData.client_ip_address = clientIP;
     if (userAgent) userData.client_user_agent = userAgent;
     if (fbp) userData.fbp = fbp;
-    if (fbclid) userData.fbc = fbclid; // Pasamos el valor completo de la cookie _fbc que capturamos
+    if (fbc) userData.fbc = fbc;
 
-    // --- ENVIAR EL EVENTO DIRECTAMENTE A META ---
+    // --- 3. ENVIAR EL EVENTO DIRECTAMENTE A META ---
     const metaPixelId = process.env.META_PIXEL_ID;
     const metaAccessToken = process.env.META_ACCESS_TOKEN;
-    const eventId = `calendly_${body.payload.uri.split('/').pop()}`; // ID de evento único y repetible
+    const eventId = `calendly_${body.payload.uri.split('/').pop()}`;
 
     const metaPayload = {
       data: [{
@@ -100,10 +94,10 @@ export async function POST(request: NextRequest) {
         event_source_url: eventSourceUrl,
         user_data: userData,
       }],
-      // test_event_code: process.env.META_TEST_CODE, // Descomentar para probar
     };
 
-    console.log("[Calendly Webhook] Sending final payload to Meta CAPI. FBP:", fbp ? 'Present' : 'Missing', 'FBCLID:', fbclid ? 'Present' : 'Missing');
+    // La línea corregida está aquí:
+    console.log("[Calendly Webhook] Sending final payload to Meta CAPI. FBP found:", !!fbp, "FBC found:", !!fbc);
 
     const metaUrl = `https://graph.facebook.com/v19.0/${metaPixelId}/events?access_token=${metaAccessToken}`;
 
@@ -125,7 +119,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, message: "Webhook processed and event sent to Meta" });
 
   } catch (error) {
-    console.error("[Calendly Webhook] CRITICAL ERROR:", error);
+    console.error("[Calendly Webhook] CRITICAL ERROR in webhook processing:", error);
     return NextResponse.json(
       { error: "Internal server error", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
