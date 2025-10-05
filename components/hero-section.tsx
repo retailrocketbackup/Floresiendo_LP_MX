@@ -41,8 +41,6 @@ export function HeroSection({
         <br/>
           Hemos creado una experiencia de 4 días 
         <br/>  
-          Para que te detengas y descubras tu propósito
-        <br/>  
           Un retiro diseñado para tu transformación
         </p>
         {showCTA && (
