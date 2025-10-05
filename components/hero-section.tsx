@@ -37,16 +37,18 @@ export function HeroSection({
           ¿Terminas el día sintiéndote vacío y sin propósito?
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
-          Has sido guiado hasta aquí por una razón. 
+          Has sido guiado hasta aquí por una razón 
         <br/>
-          Por eso hemos creado una experiencia de 4 días para desconectar de la rutina y reconectar con tu propósito. 
+          Hemos creado una experiencia de 4 días 
         <br/>  
-          Un retiro diseñado para tu transformación.
+          Para que te detengas y descubras tu propósito
+        <br/>  
+          Un retiro diseñado para tu transformación
         </p>
         {showCTA && (
           <Link href={ctaLink}>
             <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none">
-              Inicia tu transformación ↓
+              Quiero iniciar mi transformación ↓
             </button>
           </Link>
         )}
