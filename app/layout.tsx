@@ -67,7 +67,7 @@ export default function RootLayout({
           {`
             (function(h,u,b,s,p,o,t){
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-              h._hjSettings={hjid:50499487,hjsv:6};
+              h._hjSettings={hjid:6538146,hjsv:6};
               o=u.createElement(b);o.async=1;
               o.src=s+h._hjSettings.hjid+t+h._hjSettings.hjsv;
               p=u.getElementsByTagName(b)[0];
