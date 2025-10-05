@@ -1,6 +1,8 @@
 // components/hero-section.tsx
+"use client"; 
+
 import Image from "next/image";
-import { SmartLink } from "@/components/SmartLink"; // <-- Cambio #1: Importamos SmartLink
+import { SmartLink } from "@/components/SmartLink";
 
 interface HeroSectionProps {
   showCTA?: boolean;
@@ -17,7 +19,7 @@ export function HeroSection({
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src="/cosmic-spiritual-background.webp"
+          src="/cosmic-spiritual-background.webp" 
           alt="Cosmic spiritual background with person walking toward mandala galaxy"
           className="w-full h-full object-cover"
         />
@@ -25,13 +27,12 @@ export function HeroSection({
       </div>
 
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-        {/* ... (todo el contenido visual se queda igual) ... */}
         <div className="mb-8 flex justify-center">
           <Image
-            src="/floresiendo-logo-boton.png"
+            src="/floresiendo-logo-boton.webp" 
             alt="FloreSiendo Logo"
-            width={971}
-            height={989}
+            width={400} 
+            height={400} 
             className="shadow-2xl w-full max-w-[192px] h-auto"
           />
         </div>
@@ -47,25 +48,10 @@ export function HeroSection({
           Libera tu mente del estrés y encuentra la paz en tu vida
         </p>
         {showCTA && (
-          // Cambio #2: Usamos SmartLink en lugar de Link
           <SmartLink href={ctaLink}>
             <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none">
               {ctaText}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-6 h-6"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
             </button>
           </SmartLink>
         )}
