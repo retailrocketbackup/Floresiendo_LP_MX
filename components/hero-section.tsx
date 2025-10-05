@@ -39,9 +39,9 @@ export function HeroSection({
         <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
           Has sido guiado hasta aquí por una razón 
         <br/>
-          Hemos creado una experiencia de 4 días 
+          Encuentra la paz y conecta con tu propósito 
         <br/>  
-          Un retiro diseñado para tu transformación
+          Un retiro de 4 días diseñado para tu transformación
         </p>
         {showCTA && (
           <Link href={ctaLink}>
