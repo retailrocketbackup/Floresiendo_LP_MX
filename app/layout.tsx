@@ -1,3 +1,5 @@
+// app/layout.tsx
+
 import type React from "react"
 import type { Metadata } from "next"
 import { RocknRoll_One } from "next/font/google"
@@ -25,8 +27,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        {/* -- 2. Pega el código base del Píxel de Meta aquí -- */}
-        <Script id="meta-pixel" strategy="afterInteractive">
+        {/* -- Píxel de Meta con carga perezosa -- */}
+        <Script id="meta-pixel" strategy="lazyOnload">
           {`
             !function (f, b, e, v, n, t, s) {
               if (f.fbq) return;
@@ -60,7 +62,8 @@ export default function RootLayout({
         </noscript>
         {/* -- Fin del código del Píxel -- */}
 
-        <Script id="hubspot-tracking" strategy="afterInteractive">
+        {/* -- HubSpot/Hotjar con carga perezosa -- */}
+        <Script id="hubspot-tracking" strategy="lazyOnload">
           {`
             (function(h,u,b,s,p,o,t){
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -70,8 +73,7 @@ export default function RootLayout({
               p=u.getElementsByTagName(b)[0];
               p.parentNode.insertBefore(o,p);
             })(window,document,'script','https://static.hotjar.com/c/hotjar-','.js?sv=');
-            
-            // HubSpot tracking code
+
             var _hsq = _hsq || [];
             _hsq.push(['setPortalId', 50499487]);
             (function(d,s,i,r) {
