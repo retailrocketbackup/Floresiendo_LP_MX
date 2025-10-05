@@ -39,7 +39,7 @@ export function HeroSection({
         <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
           Has sido guiado hasta aquí por una razón 
         <br/>
-          Encuentra la paz en el día a día
+          Encuentra la paz en tu día a día
         <br/>   
           Dirige tu vida con propósito 
         <br/>  
