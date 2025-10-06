@@ -39,7 +39,7 @@ export function HeroSection({
         <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
           Has sido guiado hasta aquí por una razón. 
         <br/>  
-          Encuentra la paz en tu día a día y dirige tu vida con propósito, en un retiro de 4 dias diseñado para tu transformación
+          Encuentra la paz en tu día a día y dirige tu vida con propósito, en un retiro de 3 noches diseñado para tu transformación.
         </p>
         {showCTA && (
           <Link href={ctaLink}>
