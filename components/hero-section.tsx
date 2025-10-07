@@ -51,7 +51,7 @@ export function HeroSection({ ctaLink }: HeroSectionProps) {
         </p>
         {/* Párrafo de transición añadido */}
         <p className="text-lg md:text-xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty">
-         Encuentra la paz en tu día a día y dirige tu vida con propósito, en un retiro de 3 noches diseñado para tu transformación.
+         Encuentra la paz mental y dirige tu vida con propósito, en un retiro de 3 noches diseñado para tu transformación.
         </p>
         
         {/* Botón siempre visible */}
