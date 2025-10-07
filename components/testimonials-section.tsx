@@ -88,7 +88,6 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
               className="w-full h-full object-cover"
               autoPlay
               muted={isMuted}
-              playsInline
               poster="/miniatura-edgar.webp"
               onPlay={() => {
                 setIsPlaying(true);
