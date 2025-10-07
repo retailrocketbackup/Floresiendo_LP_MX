@@ -67,8 +67,10 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
     <section className="py-16 px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Una transformación real: La historia de Edgar
+          <h2 className="text-3xl md:text-2xl font-bold text-foreground mb-4">
+            Una transformación real: 
+          <br/>  
+          La historia de Edgar
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
             Escucha de primera mano cómo fue el proceso para cerrar ciclos y encontrar una mejor versión de sí mismo.
