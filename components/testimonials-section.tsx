@@ -77,7 +77,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 justify-center items-center max-w-md mx-auto">
+        <div className="flex flex-col gap-8 justify-center items-center max-w-sm mx-auto">
           <div 
             onClick={toggleMute}
             className="relative w-full aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden shadow-2xl cursor-pointer"
