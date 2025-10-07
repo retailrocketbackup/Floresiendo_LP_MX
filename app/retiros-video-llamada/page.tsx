@@ -1,38 +1,28 @@
 // app/retiros-video-llamada/page.tsx
 
 import { HeroSection } from "@/components/hero-section";
-import { VideoSection } from "@/components/video-section";
-import { ContactSectionCall } from "@/components/contact-section-call";
+import { TestimonialsSection } from "@/components/testimonials-section";
+import { CustomContactForm } from "@/components/custom-contact-form";
 import { Footer } from "@/components/footer";
-import { CalendlyWidget } from "@/components/calendly-widget";
 
 export default function RetirosVideoLlamada() {
   return (
     <main>
-      <HeroSection 
-        showCTA={true} 
-        ctaLink="#agendar"
-      />
+      {/* Llamada simplificada y el ctaLink apunta al ID correcto */}
+      <HeroSection ctaLink="#testimonios" />
 
-      <VideoSection
-        title="IMPORTANTE VER VIDEO"
-        subtitle="(48 segundos)"
-        description=""
-        videoId="pxB7OjWx3KE"
-        thumbnail="https://img.youtube.com/vi/pxB7OjWx3KE/maxresdefault.jpg"
-        className="bg-background"
-        funnel="video-llamada"
-      />
-      
-      <section id="agendar" className="py-20 bg-gray-50">
-        <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">Da el Siguiente Paso</h2>
-        <CalendlyWidget funnel="video" />
+      {/* La sección de testimonios ahora tiene el ID correcto */}
+      <section id="testimonios" className="py-20 bg-gray-50">
+        <TestimonialsSection funnel="video" />
       </section>
 
-      <ContactSectionCall
-        funnel="video"
-        buttonText="Agendar Mi Llamada Gratuita"
-      />
+      <section id="contacto" className="py-20 bg-gray-50">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Interesado/a? Da el primer paso</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Déjanos tus datos y uno de nuestros guías se pondrá en contacto contigo a la brevedad.</p>
+        </div>
+        <CustomContactForm funnel="video" />
+      </section>
 
       <Footer />
     </main>
