@@ -72,7 +72,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
           <br/>  
           La historia de Edgar
           </h2>
-          <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
+          <p className="text-base md:text-xl text-muted-purple-900 max-w-3xl mx-auto text-pretty">
             Escucha de primera mano cómo fue el proceso para cerrar ciclos y encontrar una mejor versión de sí mismo.
           </p>
         </div>
