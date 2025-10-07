@@ -64,15 +64,15 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
   };
 
   return (
-    <section className="py-4 px-4 bg-gray-50">
+    <section className="py-16 px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+        <div className="text-center mb-12">
+          <h2 className="text-xl md:text-3xl font-bold text-foreground mb-4">
             Una transformación real: 
           <br/>  
           La historia de Edgar
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
+          <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
             Escucha de primera mano cómo fue el proceso para cerrar ciclos y encontrar una mejor versión de sí mismo.
           </p>
         </div>
