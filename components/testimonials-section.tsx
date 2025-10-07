@@ -66,8 +66,8 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
   return (
     <section className="py-4 px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-2xl font-bold text-foreground mb-4">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
             Una transformación real: 
           <br/>  
           La historia de Edgar
@@ -77,7 +77,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 justify-center items-center max-w-xl mx-auto">
+        <div className="flex flex-col gap-8 justify-center items-center max-w-md mx-auto">
           <div 
             onClick={toggleMute}
             className="relative w-full aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden shadow-2xl cursor-pointer"
