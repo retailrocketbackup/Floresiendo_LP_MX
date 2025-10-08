@@ -11,16 +11,13 @@ interface CustomContactFormProps {
 
 export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps) {
   const [formData, setFormData] = useState({
-    email: "",
     firstname: "",
     lastname: "",
     phone: "",
-    message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
@@ -30,16 +27,13 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
     setIsSubmitting(true)
 
     try {
-      // --- INICIO DE LA SIMPLIFICACIÓN ---
-      // Delegamos toda la captura de datos del navegador (IP, User Agent, fbp, fbc)
-      // a la función trackEvent. Solo le pasamos los datos del formulario.
+      // 1. Enviar el nuevo evento "Whatsapp_Mexico" a la CAPI de Meta
       await trackEvent(
-        "Lead_Mexico", // Usamos el nombre que definimos
+        "Whatsapp_Mexico",
         {
           funnel,
           content_type: "form_submission",
           content_name: `custom_form_${funnel}`,
-          email: formData.email,
           first_name: formData.firstname,
           last_name: formData.lastname,
           phone: formData.phone,
@@ -48,10 +42,9 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           enableCAPI: true,
         },
       )
-      console.log("[v0] Lead_Mexico event tracked successfully.");
-      // --- FIN DE LA SIMPLIFICACIÓN ---
+      console.log("[v0] Whatsapp_Mexico event tracked successfully.");
 
-      // El envío a HubSpot se mantiene igual
+      // 2. Enviar los datos a HubSpot
       const hubspotFormData = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         hubspotFormData.append(key, value);
@@ -65,31 +58,24 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
       )
       console.log("[v0] Form submitted to HubSpot successfully");
 
-      setIsSubmitted(true);
+      // 3. Crear el enlace de WhatsApp personalizado y redirigir
+      const userName = encodeURIComponent(formData.firstname);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=+526182301481&text=Hola%20Ramon,%20me%20puedes%20dar%20mas%20informaci%C3%B3n%20sobre%20los%20Retiros%20de%20Floresiendo,%20Me%20llamo%20${userName}.`;
+      
+      window.location.href = whatsappUrl;
 
     } catch (error) {
       console.error("[v0] Error submitting form:", error);
-    } finally {
-        setIsSubmitting(false);
+      // Si algo falla, detenemos el spinner para que el usuario pueda reintentar.
+      setIsSubmitting(false);
     }
   }
 
-  if (isSubmitted) {
-    return (
-      <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg text-center">
-        <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">¡Gracias por contactarnos!</h3>
-        <p className="text-gray-600">Hemos recibido tu información. Uno de nuestros guías se pondrá en contacto contigo a la brevedad.</p>
-      </div>
-    )
-  }
-
+  // Como ahora redirigimos al usuario, ya no necesitamos el mensaje de "Gracias".
+  // El return ahora solo contiene el formulario.
   return (
     <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* ... (El resto de tu formulario JSX se mantiene igual) ... */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
@@ -100,26 +86,28 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
             <input type="text" id="lastname" name="lastname" required value={formData.lastname} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors" placeholder="Tu apellido" />
           </div>
         </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-          <input type="email" id="email" name="email" required value={formData.email} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors" placeholder="tu@email.com" />
-        </div>
-        <div>
+        <div className="md:col-span-2">
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
-          <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors" placeholder="+52 (555) 123-4567" />
+          <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors" placeholder="+52 123 456 7890" />
         </div>
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Mensaje (opcional)</label>
-          <textarea id="message" name="message" rows={4} value={formData.message} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors resize-none" placeholder="Cuéntanos cómo podemos ayudarte..."></textarea>
-        </div>
-        <button type="submit" disabled={isSubmitting} className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center">
-          {isSubmitting ? (
-            <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-              Enviando...
-            </>
-          ) : ( "Enviar Mensaje" )}
-        </button>
+<div className="flex justify-center pt-4">
+  <button 
+    type="submit" 
+    disabled={isSubmitting} 
+    className="w-24 h-24 bg-transparent border-none rounded-full transition-transform duration-200 flex items-center justify-center disabled:cursor-not-allowed transform hover:scale-110"
+    aria-label="Iniciar Conversación por WhatsApp"
+  >
+    {isSubmitting ? (
+      <svg className="animate-spin h-10 w-10 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+    ) : (
+      <img 
+        src="/whatsapp-button.png" 
+        alt="Iniciar Conversación en WhatsApp" 
+        className="w-full h-full"
+      />
+    )}
+  </button>
+</div>
       </form>
     </div>
   );

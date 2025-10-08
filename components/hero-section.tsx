@@ -61,7 +61,7 @@ export function HeroSection({ ctaLink }: HeroSectionProps) {
         >
           "Es volver a nacer..."
           <br />
-          Mira el testimonio de Edgar ↓
+          Conoce la historia de Edgar ↓
         </button>
       </div>
     </section>
