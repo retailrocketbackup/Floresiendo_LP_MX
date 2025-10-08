@@ -12,14 +12,17 @@ export function AboutSection() {
           </h2>
         </div>
 
-          <div className="space-y-6 text-lg text-gray-50 max-w-3xl mx-auto text-pretty leading-relaxed">
-            <p>
-              Nuestros retiros espirituales son un espacio para dejar atrás lo que duele, sanar desde la raíz y volver a sentirte en paz contigo misma. Es una oportunidad para reconectar con tu alegría, tu confianza y tu fuerza interior en un entorno de respeto, calidez y acompañamiento real.
-            </p>
-            <p>
-              Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial. Nuestra fortaleza es una metodología única que une lo terapéutico y lo espiritual sin dogmas, siempre facilitada por guías profesionales en un espacio de total seguridad.
-            </p>
-          </div>
+        <div className="space-y-6 text-lg text-gray-50 max-w-3xl mx-auto text-pretty leading-relaxed">
+          <p>
+            Nuestros retiros son un espacio para dejar atrás lo que duele, sanar desde la raíz y volver a sentirte en paz contigo misma.
+          </p>
+          <p>
+            Es una oportunidad para reconectar con tu alegría, tu confianza y tu fuerza interior en un entorno de respeto, calidez y acompañamiento real.
+          </p>
+          <p>
+            Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial en un espacio de total seguridad, guiados por profesionales y sin dogmas.
+          </p>
+        </div>
       </div>
     </section>
   );
