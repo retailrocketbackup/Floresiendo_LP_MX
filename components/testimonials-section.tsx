@@ -126,9 +126,9 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
             {/* Botón del final del video (se queda igual) */}
             {isVideoFinished && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center animate-fade-in">
-                <Link href="#contacto" className="z-10">
+                <Link href="#about" className="z-10">
                   <button className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-lg hover:shadow-2xl transition-all scale-100 hover:scale-105">
-                    Da el primer paso: Contáctanos
+                    Nuestros Retiros, Tu Casa ↓
                   </button>
                 </Link>
               </div>
