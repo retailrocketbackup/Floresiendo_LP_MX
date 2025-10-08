@@ -3,6 +3,7 @@
 import { HeroSection } from "@/components/hero-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { CustomContactForm } from "@/components/custom-contact-form";
+import { AboutSection } from "@/components/about-section";
 import { Footer } from "@/components/footer";
 
 export default function RetirosVideoLlamada() {
@@ -15,6 +16,8 @@ export default function RetirosVideoLlamada() {
       <section id="testimonios" className="bg-gray-50">
         <TestimonialsSection funnel="video" />
       </section>
+
+      <AboutSection />
 
       <section id="contacto" className="bg-gray-50">
         <div className="text-center mb-12">
