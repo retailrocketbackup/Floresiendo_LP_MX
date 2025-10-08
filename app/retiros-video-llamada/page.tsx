@@ -23,15 +23,14 @@ export default function RetirosVideoLlamada() {
 
       <section id="contacto" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Interesado/a? Da el primer paso</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Déjanos tus datos y uno de nuestros guías se pondrá en contacto contigo a la brevedad.</p>
+          <h2 className="text-4xl font-bold text-purple-900 mb-4">¿Interesado/a? Da el primer paso</h2>
+          <p className="text-xl text-muted-purple-900 max-w-2xl mx-auto">Llena tus datos y presiona el ícono de WhatsApp para iniciar una conversación directa con uno de nuestros facilitadores.</p>
         </div>
         <CustomContactForm funnel="video" />
       </section>
 
-      <section className="min-h-screen flex flex-col justify-center">
-        <Footer />
-      </section>
+      <Footer />
+
     </main>
   );
 }
