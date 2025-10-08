@@ -44,7 +44,7 @@ export function HeroSection({ ctaLink }: HeroSectionProps) {
           />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance drop-shadow-2xl">
-          ¿Terminas el día sintiéndote vacío y sin propósito?
+          ¿Terminas el día sintiéndo un vacío y sin propósito?
         </h1>
         <p className="text-xl md:text-2xl mb-6 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
           Estas aqui por una razón, no es casualidad.
