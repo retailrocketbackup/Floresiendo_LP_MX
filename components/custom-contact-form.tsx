@@ -10,31 +10,30 @@ interface CustomContactFormProps {
 }
 
 export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps) {
+  // --- CAMBIO 1: Estado del formulario actualizado para lada y número ---
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
-    phone: "",
+    countryCode: "+52", // México por defecto
+    phoneNumber: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false) // Re-introducimos este estado
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // Este efecto se activará cuando isSubmitted cambie a true
   useEffect(() => {
     if (isSubmitted) {
       const userName = encodeURIComponent(formData.firstname);
       const whatsappUrl = `https://api.whatsapp.com/send?phone=+526182301481&text=Hola%20Ramon,%20me%20puedes%20dar%20mas%20informaci%C3%B3n%20sobre%20los%20Retiros%20de%20Floresiendo,%20Me%20llamo%20${userName}.`;
       
-      // Esperamos 3 segundos antes de redirigir para que el usuario pueda leer el mensaje.
       const redirectTimeout = setTimeout(() => {
         window.location.href = whatsappUrl;
       }, 3000);
 
-      // Limpieza por si el usuario navega a otro lado antes de la redirección
       return () => clearTimeout(redirectTimeout);
     }
   }, [isSubmitted, formData.firstname]);
@@ -43,8 +42,10 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
     e.preventDefault()
     setIsSubmitting(true)
 
+    // --- CAMBIO 2: Unir lada y número antes de enviar ---
+    const fullPhoneNumber = `${formData.countryCode}${formData.phoneNumber}`;
+
     try {
-      // 1. Enviar evento a CAPI
       await trackEvent(
         "Whatsapp_Mexico",
         {
@@ -53,16 +54,15 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           content_name: `custom_form_${funnel}`,
           first_name: formData.firstname,
           last_name: formData.lastname,
-          phone: formData.phone,
+          phone: fullPhoneNumber, // Enviamos el número completo
         },
         { enableCAPI: true }
       );
       
-      // 2. Enviar datos a HubSpot
       const hubspotFormData = new FormData();
-      Object.entries(formData).forEach(([key, value]) => {
-        hubspotFormData.append(key, value);
-      });
+      hubspotFormData.append("firstname", formData.firstname);
+      hubspotFormData.append("lastname", formData.lastname);
+      hubspotFormData.append("phone", fullPhoneNumber); // Enviamos el número completo
       hubspotFormData.append("funnel_source", funnel);
       hubspotFormData.append("landing_page", window.location.href);
 
@@ -71,17 +71,15 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
         { method: "POST", body: hubspotFormData, mode: "no-cors" }
       );
 
-      // 3. Al tener éxito, mostramos el mensaje de agradecimiento
       setIsSubmitting(false);
       setIsSubmitted(true);
 
     } catch (error) {
       console.error("[v0] Error submitting form:", error);
-      setIsSubmitting(false); // Si hay un error, solo detenemos el spinner
+      setIsSubmitting(false);
     }
   }
 
-  // Si el formulario ya se envió, muestra el mensaje de agradecimiento
   if (isSubmitted) {
     return (
       <div className="max-w-2xl mx-auto p-8 text-center transition-opacity duration-500 ease-in">
@@ -93,7 +91,6 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
     )
   }
 
-  // Si no, muestra el formulario
   return (
     <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -107,27 +104,55 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
             <input type="text" id="lastname" name="lastname" required value={formData.lastname} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors" placeholder="Tu apellido" />
           </div>
         </div>
-        <div className="md:col-span-2">
+
+        {/* --- CAMBIO 3: Nuevo campo de teléfono con selector de lada --- */}
+        <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
-          <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors" placeholder="+52 123 456 7890" />
+          <div className="flex items-center gap-2">
+            <select
+              name="countryCode"
+              id="countryCode"
+              value={formData.countryCode}
+              onChange={handleInputChange}
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors bg-gray-50"
+            >
+              <option value="+52">🇲🇽 +52</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+54">🇦🇷 +54</option>
+              <option value="+598">🇺🇾 +598</option>
+            </select>
+            <input
+              type="tel"
+              id="phoneNumber"
+              name="phoneNumber"
+              required
+              value={formData.phoneNumber}
+              onChange={handleInputChange}
+              className="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
+              placeholder="Tu número"
+            />
+          </div>
         </div>
+        
+        {/* --- CAMBIO 4: Nuevo diseño del botón de WhatsApp --- */}
         <div className="flex justify-center pt-4">
-          <button 
-            type="submit" 
-            disabled={isSubmitting} 
-            className="bg-transparent border-none transition-transform duration-200 flex items-center justify-center disabled:cursor-not-allowed transform hover:scale-110 disabled:opacity-50"
-            aria-label="Iniciar Conversación por WhatsApp"
-          >
-            {isSubmitting ? (
-              <svg className="animate-spin h-10 w-10 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            ) : (
-              <img 
-                src="/whatsapp-button.png" 
-                alt="Iniciar Conversación en WhatsApp" 
-                className="h-14 w-auto"
-              />
-            )}
-          </button>
+            <button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className="bg-green-500 hover:bg-green-600 disabled:bg-green-300 w-auto px-6 py-3 rounded-full transition-all duration-300 flex items-center justify-center disabled:cursor-not-allowed transform hover:scale-105 shadow-2xl hover:shadow-green-500/50 animate-pulse hover:animate-none"
+                aria-label="Iniciar Conversación por WhatsApp"
+            >
+                {isSubmitting ? (
+                    <svg className="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                ) : (
+                    <img 
+                        src="/whatsapp-button.png" 
+                        alt="Iniciar Conversación en WhatsApp" 
+                        className="h-12 w-auto"
+                    />
+                )}
+            </button>
         </div>
       </form>
     </div>
