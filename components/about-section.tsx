@@ -14,13 +14,10 @@ export function AboutSection() {
 
           <div className="space-y-6 text-lg text-gray-50 max-w-3xl mx-auto text-pretty leading-relaxed">
             <p>
-              Desde 2022, Escuela FloreSiendo es una escuela internacional con presencia en México, Europa y Sudamérica, dedicada a la expansión de la consciencia y al florecimiento de tu ser.
+              Este es un viaje de transformación para liberar las cargas del pasado, sanar desde la raíz y florecer en la persona que siempre has sabido que puedes ser. Es tu oportunidad para reconectar con tu alegría, tu fuerza y tu poder personal en un entorno lleno de amor y respeto.
             </p>
             <p>
-              En espacios seguros y profesionales, facilitamos profundos procesos de sanación. Nuestra metodología única integra lo terapéutico y lo espiritual, pero se mantiene completamente libre de dogmas.
-            </p>
-            <p>
-              Nuestros retiros están diseñados para acompañarte a reconectar con tu maestría interior y liberar tu máximo potencial, uniéndote a una comunidad global de crecimiento.
+              Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial. Nuestra fortaleza es una metodología única que une lo terapéutico y lo espiritual sin dogmas, siempre facilitada por guías profesionales en un espacio de total seguridad.
             </p>
           </div>
       </div>
