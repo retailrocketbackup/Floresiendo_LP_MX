@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-purple-900 to-blue-900 text-white py-16 px-4">
+    <footer className="bg-gradient-to-b from-purple-900 to-blue-900 text-white py-16 px-4 min-h-screen flex items-center">
       <div className="max-w-6xl mx-auto">
         {/* Main footer content */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
