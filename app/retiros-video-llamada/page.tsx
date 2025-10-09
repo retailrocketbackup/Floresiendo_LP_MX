@@ -24,7 +24,7 @@ export default function RetirosVideoLlamada() {
       <section id="contacto" className="bg-gray-50 min-h-screen flex flex-col px-4 pt-20 pb-12">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-purple-900 mb-4">¿Interesado/a? Da el primer paso</h2>
-          <p className="text-xl text-muted-purple-900 max-w-2xl mx-auto">Llena tus datos y presiona el ícono de WhatsApp para conversar con uno de nuestros facilitadores.</p>
+          <p className="text-xl text-muted-purple-900 max-w-2xl mx-auto">El viaje más importante empieza con una conversación. Déjanos tus datos y escríbenos por WhatsApp para conocerte y guiarte.</p>
         </div>
         <CustomContactForm funnel="video" />
       </section>
