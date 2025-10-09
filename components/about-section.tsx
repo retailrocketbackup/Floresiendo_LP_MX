@@ -12,7 +12,7 @@ export function AboutSection() {
           </h2>
         </div>
 
-        <div className="space-y-6 text-lg text-gray-50 max-w-3xl mx-auto text-pretty leading-relaxed text-justify">
+        <div className="space-y-8 text-xl text-gray-50 max-w-3xl mx-auto text-pretty leading-relaxed text-justify">
           <p>
             Nuestros retiros son un espacio para dejar atrás lo que duele, sanar desde la raíz y volver a sentir paz en tu interior.
           </p>
@@ -20,7 +20,10 @@ export function AboutSection() {
             Es una oportunidad para reconectar con tu alegría, tu confianza y tu fuerza interior en un entorno de respeto, calidez y acompañamiento real.
           </p>
           <p>
-            Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial en un espacio de total seguridad, guiados por profesionales y sin dogmas.
+            Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial.
+          </p>
+          <p>
+            Lo logramos en un espacio de total seguridad, guiados por profesionales y a través de una metodología única y libre de dogmas.
           </p>
         </div>
       </div>
