@@ -73,7 +73,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
           La historia de Edgar
           </h2>
           <p className="text-base md:text-xl text-muted-purple-900 max-w-3xl mx-auto text-pretty">
-            Así pudo cerrar ciclos y encontrar una mejor versión de el:
+          "Vuelves a nacer. Es una sensación increíble, no hay palabras para describir."
           </p>
         </div>
 

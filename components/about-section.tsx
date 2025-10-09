@@ -20,10 +20,7 @@ export function AboutSection() {
             Es una oportunidad para reconectar con tu alegría, tu confianza y tu fuerza interior en un entorno de respeto, calidez y acompañamiento real.
           </p>
           <p>
-            Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial.
-          </p>
-          <p>
-            Lo logramos en un espacio de total seguridad, guiados por profesionales y a través de una metodología única y libre de dogmas.
+            Como escuela internacional, hemos acompañado a cientos de personas de México, Europa y Sudamérica a liberar su máximo potencial. Lo logramos en un espacio de total seguridad, acompañdos por profesionales con más de 10 años de expériencia, a través de una metodología única y libre de dogmas.
           </p>
         </div>
       </div>

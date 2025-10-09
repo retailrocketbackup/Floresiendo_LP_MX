@@ -44,14 +44,14 @@ export function HeroSection({ ctaLink }: HeroSectionProps) {
           />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance drop-shadow-2xl">
-          ¿Terminas el día sintiéndo un vacío y sin propósito?
+          ¿Terminas el día sintiendo un vacío y sin propósito?
         </h1>
         <p className="text-xl md:text-2xl mb-6 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
-          Estas aqui por una razón, no es casualidad.
+          No es casualidad que estes AQUI y AHORA.
         </p>
         {/* Párrafo de transición añadido */}
         <p className="text-lg md:text-xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty">
-         Encuentra la paz mental y dirige tu vida con propósito, en un retiro de 3 noches diseñado para tu transformación.
+         A veces, para avanzar, primero hay que detenerse. En 3 noches que pueden transformar el resto de tu vida. Encuentra la paz mental y dirige tu vida con propósito.
         </p>
         
         {/* Botón siempre visible */}
