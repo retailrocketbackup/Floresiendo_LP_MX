@@ -64,7 +64,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
   };
 
   return (
-    <section className="py-4 px-4 bg-gray-50">
+    <section className="px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-6">
           <h2 className="text-xl md:text-3xl font-bold text-purple-900 mb-4">
