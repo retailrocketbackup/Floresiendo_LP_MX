@@ -17,7 +17,7 @@ export default function RetirosVideoLlamada() {
         <TestimonialsSection funnel="video" />
       </section>
 
-      <section id="about" className="min-h-screen flex flex-col justify-center px-4 pt-16 md:pt-20">
+      <section id="about" className="bg-purple-900 min-h-screen flex flex-col justify-center py-20 px-4">
         <AboutSection />
       </section>
 
