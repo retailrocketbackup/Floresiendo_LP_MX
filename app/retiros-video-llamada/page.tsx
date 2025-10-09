@@ -13,9 +13,9 @@ export default function RetirosVideoLlamada() {
       <HeroSection ctaLink="#testimonios" />
 
       {/* La sección de testimonios ahora tiene el ID correcto */}
-      <section id="testimonios" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4 pt-16 md:pt-20">
-        <TestimonialsSection funnel="video" />
-      </section>
+    <section id="testimonios" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4">
+      <TestimonialsSection funnel="video" />
+    </section>
 
       <section id="about" className="bg-purple-900 min-h-screen flex flex-col justify-center py-20 px-4">
         <AboutSection />
