@@ -1,11 +1,10 @@
 // components/testimonials-section.tsx
 "use client"
 
-import { useState, useRef, useEffect } from "react"; // Importamos useRef
+import { useState, useRef, useEffect } from "react";
 import { trackEvent } from "@/lib/meta-tracking";
 import Link from "next/link";
-import { Volume2, VolumeX, Play, Pause } from "lucide-react"; // Importamos Play y Pause
-
+import { Volume2, VolumeX, Play, Pause } from "lucide-react";
 
 interface TestimonialsSectionProps {
   funnel?: string;
@@ -14,45 +13,65 @@ interface TestimonialsSectionProps {
 export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionProps) {
   const [isVideoFinished, setIsVideoFinished] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-
-  // 1. Nuevo estado para controlar el ícono de Play/Pausa
-  const [isPlaying, setIsPlaying] = useState(true); 
-  // Referencia directa al elemento de video
+  const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const trackingProgress = useRef({
+    fired25: false,
+    fired50: false,
+    fired75: false,
+    fired100: false,
+  });
+
   useEffect(() => {
     const video = videoRef.current;
+    if (!video) return;
 
-    // Esta es la misma lógica de tu función handleVideoEnd
-    const onVideoEnd = () => {
-      setIsVideoFinished(true);
-      setIsPlaying(false);
-    };
+    const handleTimeUpdate = () => {
+      const percentage = (video.currentTime / video.duration) * 100;
 
-    // Nos aseguramos de que el video exista antes de añadir el "listener"
-    if (video) {
-      video.addEventListener('ended', onVideoEnd);
-    }
-
-    // Función de limpieza: elimina el "listener" si el componente se desmonta
-    return () => {
-      if (video) {
-        video.removeEventListener('ended', onVideoEnd);
+      // Track 25% con el nuevo nombre de evento
+      if (percentage >= 25 && !trackingProgress.current.fired25) {
+        trackEvent("EdgarVideoProgress_25", { funnel, content_name: `testimonial_edgar_${funnel}` }, { enableCAPI: true });
+        trackingProgress.current.fired25 = true;
+      }
+      // Track 50% con el nuevo nombre de evento
+      if (percentage >= 50 && !trackingProgress.current.fired50) {
+        trackEvent("EdgarVideoProgress_50", { funnel, content_name: `testimonial_edgar_${funnel}` }, { enableCAPI: true });
+        trackingProgress.current.fired50 = true;
+      }
+      // Track 75% con el nuevo nombre de evento
+      if (percentage >= 75 && !trackingProgress.current.fired75) {
+        trackEvent("EdgarVideoProgress_75", { funnel, content_name: `testimonial_edgar_${funnel}` }, { enableCAPI: true });
+        trackingProgress.current.fired75 = true;
       }
     };
-  }, []);
 
-  const handleVideoEnd = () => {
-    setIsVideoFinished(true);
-    setIsPlaying(false);
-  };
+    const handleVideoEnd = () => {
+      setIsVideoFinished(true);
+      setIsPlaying(false);
+      // Track 100% con el nuevo nombre de evento
+      if (!trackingProgress.current.fired100) {
+        trackEvent("EdgarVideoProgress_100", { funnel, content_name: `testimonial_edgar_${funnel}` }, { enableCAPI: true });
+        trackingProgress.current.fired100 = true;
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('ended', handleVideoEnd);
+
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('ended', handleVideoEnd);
+    };
+  }, [funnel]);
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
   };
 
-  // 2. Nueva función para el botón de Play/Pausa
   const togglePlayPause = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Importante: Evita que este clic también cambie el estado del sonido
+    e.stopPropagation();
     const video = videoRef.current;
     if (video) {
       if (video.paused) {
@@ -68,22 +87,22 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-6">
           <h2 className="text-xl md:text-3xl font-bold text-purple-900 mb-4">
-            Una transformación real: 
-          <br/>  
-          La historia de Edgar
+            Una transformación real:
+            <br />
+            La historia de Edgar
           </h2>
           <p className="text-base md:text-xl text-muted-purple-900 max-w-3xl mx-auto text-pretty">
-          "Vuelves a nacer. Es una sensación increíble, no hay palabras para describir."
+            "Vuelves a nacer. Es una sensación increíble, no hay palabras para describir."
           </p>
         </div>
 
         <div className="flex flex-col gap-8 justify-center items-center max-w-sm mx-auto">
-          <div 
+          <div
             onClick={toggleMute}
             className="relative w-full aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden shadow-2xl cursor-pointer"
           >
             <video
-              ref={videoRef} // Añadimos la referencia para poder controlarlo
+              ref={videoRef}
               id="testimonialVideo"
               className="w-full h-full object-cover"
               autoPlay
@@ -96,21 +115,19 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
                   content_type: "testimonial",
                   content_name: `testimonial_edgar_${funnel}`,
                 });
-              }}   // Actualiza el ícono cuando se reproduce
-              onPause={() => setIsPlaying(false)} // Actualiza el ícono cuando se pausa
-          >
+              }}
+              onPause={() => setIsPlaying(false)}
+            >
               <source src="/TestimonioEdgarFinal2.mp4" type="video/mp4" />
               Tu navegador no soporta el elemento de video.
             </video>
 
-            {/* Indicador de sonido (se queda igual) */}
             {!isVideoFinished && (
               <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full pointer-events-none">
                 {isMuted ? <VolumeX className="h-6 w-6 text-white" /> : <Volume2 className="h-6 w-6 text-white" />}
               </div>
             )}
-
-            {/* 3. Nuevo Botón de Play/Pausa */}
+            
             {!isVideoFinished && (
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
                     <button
@@ -122,8 +139,7 @@ export function TestimonialsSection({ funnel = "unknown" }: TestimonialsSectionP
                     </button>
                 </div>
             )}
-
-            {/* Botón del final del video (se queda igual) */}
+            
             {isVideoFinished && (
               <div className="absolute inset-0 bg-black/60 flex items-center justify-center animate-fade-in">
                 <Link href="#about" className="z-10">
