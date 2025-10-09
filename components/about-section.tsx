@@ -4,7 +4,7 @@
 export function AboutSection() {
   return (
     // Usamos un fondo blanco para crear un contraste limpio entre las secciones grises.
-    <section className="px-4 bg-purple-900">
+    <section>
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-50 mb-4">
