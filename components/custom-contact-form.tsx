@@ -38,47 +38,52 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
     }
   }, [isSubmitted, formData.firstname]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+      const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault()
+      setIsSubmitting(true)
 
-    // --- CAMBIO 2: Unir lada y número antes de enviar ---
-    const fullPhoneNumber = `${formData.countryCode}${formData.phoneNumber}`;
+      const fullPhoneNumber = `${formData.countryCode}${formData.phoneNumber}`
 
-    try {
-      await trackEvent(
-        "Whatsapp_Mexico",
-        {
-          funnel,
-          content_type: "form_submission",
-          content_name: `custom_form_${funnel}`,
-          first_name: formData.firstname,
-          last_name: formData.lastname,
-          phone: fullPhoneNumber, // Enviamos el número completo
-        },
-        { enableCAPI: true }
-      );
-      
-      const hubspotFormData = new FormData();
-      hubspotFormData.append("firstname", formData.firstname);
-      hubspotFormData.append("lastname", formData.lastname);
-      hubspotFormData.append("phone", fullPhoneNumber); // Enviamos el número completo
-      hubspotFormData.append("funnel_source", funnel);
-      hubspotFormData.append("landing_page", window.location.href);
+      try {
+        // 1. El tracking de Meta se queda igual
+        await trackEvent(
+          "Whatsapp_Mexico",
+          {
+            funnel,
+            content_type: "form_submission",
+            content_name: `custom_form_${funnel}`,
+            first_name: formData.firstname,
+            last_name: formData.lastname,
+            phone: fullPhoneNumber,
+          },
+          { enableCAPI: true }
+        )
 
-      await fetch(
-        "https://forms.hubspot.com/uploads/form/v2/50499487/9ec9c638-6169-46b5-bf03-716245b5e62b",
-        { method: "POST", body: hubspotFormData, mode: "no-cors" }
-      );
+        // 2. Prepara los datos para tu nueva API
+        const contactData = {
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          phone: fullPhoneNumber,
+          funnel_source: funnel,
+          landing_page: window.location.href,
+        }
 
-      setIsSubmitting(false);
-      setIsSubmitted(true);
+        // 3. Llama a TU PROPIA API, no a la de HubSpot
+        await fetch("/api/hubspot-contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactData),
+        })
 
-    } catch (error) {
-      console.error("[v0] Error submitting form:", error);
-      setIsSubmitting(false);
+        setIsSubmitting(false)
+        setIsSubmitted(true)
+      } catch (error) {
+        console.error("[v0] Error submitting form:", error)
+        setIsSubmitting(false)
+      }
     }
-  }
 
   if (isSubmitted) {
     return (
