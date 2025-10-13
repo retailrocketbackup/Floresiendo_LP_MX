@@ -157,7 +157,7 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
             <>
               <span className="text-lg">Quiero dar el primer paso</span>
               <img 
-                src="/whatsapp-icon.png" 
+                src="/whatsapp-icon.webp" 
                 alt="ícono de WhatsApp" 
                 className="h-6 w-6 ml-3"
               />

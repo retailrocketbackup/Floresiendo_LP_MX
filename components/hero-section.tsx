@@ -3,33 +3,24 @@
 
 import Image from "next/image";
 
-// La única propiedad que necesita es el enlace al que hará scroll
+// 1. Cambiamos lo que el componente espera recibir.
+// Ahora espera una función llamada 'onCtaClick'.
 interface HeroSectionProps {
-  ctaLink: string;
+  onCtaClick: () => void;
 }
 
-export function HeroSection({ ctaLink }: HeroSectionProps) {
-
-  const handleButtonClick = () => {
-    const targetSection = document.getElementById(ctaLink.substring(1)); // Quita el '#' del enlace
-    targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    const videoElement = document.getElementById('testimonialVideo') as HTMLVideoElement;
-    if (videoElement) {
-      videoElement.muted = true;
-      setTimeout(() => {
-        videoElement.play();
-      }, 300);
-    }
-  };
-
+export function HeroSection({ onCtaClick }: HeroSectionProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
-        <img
+        {/* Optimización de imagen que hicimos antes */}
+        <Image
           src="/cosmic-spiritual-background.webp" 
           alt="Fondo cósmico espiritual"
-          className="w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-black/70" /> 
       </div>
@@ -38,8 +29,8 @@ export function HeroSection({ ctaLink }: HeroSectionProps) {
           <Image
             src="/floresiendo-logo-boton.webp" 
             alt="FloreSiendo Logo"
-            width={400} 
-            height={400} 
+            width={192} 
+            height={192}
             className="shadow-2xl w-full max-w-[192px] h-auto"
           />
         </div>
@@ -49,14 +40,13 @@ export function HeroSection({ ctaLink }: HeroSectionProps) {
         <p className="text-xl md:text-2xl mb-6 text-purple-100 max-w-3xl mx-auto text-pretty drop-shadow-lg">
           No es casualidad que estes AQUI y AHORA.
         </p>
-        {/* Párrafo de transición añadido */}
         <p className="text-lg md:text-xl mb-8 text-purple-100 max-w-3xl mx-auto text-pretty">
          A veces, para avanzar, primero hay que detenerse. En 3 noches que pueden transformar el resto de tu vida. Encuentra la paz mental y dirige tu vida con propósito.
         </p>
         
-        {/* Botón siempre visible */}
+        {/* 2. El 'onClick' del botón ahora llama a la nueva función 'onCtaClick' */}
         <button
-          onClick={handleButtonClick}
+          onClick={onCtaClick}
           className="inline-flex items-center justify-center gap-2 px-8 py-4 text-xl font-bold bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none max-w-xs whitespace-normal leading-tight"
         >
           "Es volver a nacer..."
