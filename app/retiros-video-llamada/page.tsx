@@ -1,5 +1,5 @@
 // app/retiros-video-llamada/page.tsx
-"use client"; // <--- ¡MUY IMPORTANTE AÑADIR ESTA LÍNEA!
+"use client";
 
 import { useState } from "react";
 import { HeroSection } from "@/components/hero-section";
@@ -9,25 +9,30 @@ import { AboutSection } from "@/components/about-section";
 import { Footer } from "@/components/footer";
 
 export default function RetirosVideoLlamada() {
-  // 1. Creamos nuestro "interruptor". Por defecto está apagado (false).
   const [playVideo, setPlayVideo] = useState(false);
 
-  // 2. Esta es la función que el botón del Hero usará para encender el interruptor.
   const handleHeroButtonClick = () => {
     setPlayVideo(true);
-    // Hacemos scroll suavemente a la sección de testimonios
     const targetSection = document.getElementById("testimonios");
     targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  // Esta nueva función permite que el video se reproduzca desde la miniatura
+  const handleThumbnailClick = () => {
+    setPlayVideo(true);
+  };
+
   return (
     <main>
-      {/* 3. Le pasamos la función al componente HeroSection */}
       <HeroSection onCtaClick={handleHeroButtonClick} />
 
       <section id="testimonios" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4">
-        {/* 4. Le pasamos el estado del interruptor a la TestimonialsSection */}
-        <TestimonialsSection funnel="video" shouldPlay={playVideo} />
+        {/* Ahora le pasamos la nueva función al componente */}
+        <TestimonialsSection
+          funnel="video"
+          shouldPlay={playVideo}
+          onThumbnailClick={handleThumbnailClick}
+        />
       </section>
 
       <section id="about" className="bg-purple-900 min-h-screen flex flex-col justify-center py-20 px-4">

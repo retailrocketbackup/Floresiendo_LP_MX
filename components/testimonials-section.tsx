@@ -4,17 +4,15 @@
 import { Play } from "lucide-react";
 import Image from "next/image";
 
-// 1. Cambiamos lo que el componente espera recibir.
-// Ahora espera una variable booleana 'shouldPlay'.
 interface TestimonialsSectionProps {
   funnel?: string;
   shouldPlay: boolean;
+  onThumbnailClick: () => void; // Prop para manejar el clic en la miniatura
 }
 
-// 2. Este es el ID de tu video de Vimeo.
-const VIMEO_VIDEO_ID = "1126936015"; 
+const VIMEO_VIDEO_ID = "1126936015";
 
-export function TestimonialsSection({ funnel = "unknown", shouldPlay }: TestimonialsSectionProps) {
+export function TestimonialsSection({ funnel = "unknown", shouldPlay, onThumbnailClick }: TestimonialsSectionProps) {
   return (
     <section className="px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto">
@@ -32,9 +30,10 @@ export function TestimonialsSection({ funnel = "unknown", shouldPlay }: Testimon
         <div className="flex flex-col gap-8 justify-center items-center max-w-sm mx-auto">
           <div
             className="relative w-full aspect-[9/16] bg-gray-100 rounded-lg overflow-hidden shadow-2xl"
+            onClick={!shouldPlay ? onThumbnailClick : undefined} // Agregamos el evento onClick
+            style={{ cursor: !shouldPlay ? 'pointer' : 'default' }} // Cambiamos el cursor para indicar que es clickeable
           >
             {shouldPlay ? (
-              // 3. Si 'shouldPlay' es true, mostramos el video de Vimeo con autoplay.
               <iframe
                 src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?autoplay=1&title=0&byline=0&portrait=0`}
                 className="absolute top-0 left-0 w-full h-full"
@@ -44,7 +43,6 @@ export function TestimonialsSection({ funnel = "unknown", shouldPlay }: Testimon
                 title="Testimonio de Edgar"
               ></iframe>
             ) : (
-              // 4. Si 'shouldPlay' es false, mostramos la miniatura y un ícono de Play.
               <>
                 <Image
                   src="/miniatura-edgar.webp"
@@ -53,7 +51,7 @@ export function TestimonialsSection({ funnel = "unknown", shouldPlay }: Testimon
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
-                <div 
+                <div
                   className="absolute inset-0 bg-black/30 flex items-center justify-center"
                 >
                   <div
