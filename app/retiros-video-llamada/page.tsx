@@ -1,5 +1,7 @@
 // app/retiros-video-llamada/page.tsx
+"use client"; // <--- ¡MUY IMPORTANTE AÑADIR ESTA LÍNEA!
 
+import { useState } from "react";
 import { HeroSection } from "@/components/hero-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { CustomContactForm } from "@/components/custom-contact-form";
@@ -7,15 +9,26 @@ import { AboutSection } from "@/components/about-section";
 import { Footer } from "@/components/footer";
 
 export default function RetirosVideoLlamada() {
+  // 1. Creamos nuestro "interruptor". Por defecto está apagado (false).
+  const [playVideo, setPlayVideo] = useState(false);
+
+  // 2. Esta es la función que el botón del Hero usará para encender el interruptor.
+  const handleHeroButtonClick = () => {
+    setPlayVideo(true);
+    // Hacemos scroll suavemente a la sección de testimonios
+    const targetSection = document.getElementById("testimonios");
+    targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <main>
-      {/* Llamada simplificada y el ctaLink apunta al ID correcto */}
-      <HeroSection ctaLink="#testimonios" />
+      {/* 3. Le pasamos la función al componente HeroSection */}
+      <HeroSection onCtaClick={handleHeroButtonClick} />
 
-      {/* La sección de testimonios ahora tiene el ID correcto */}
-    <section id="testimonios" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4">
-      <TestimonialsSection funnel="video" />
-    </section>
+      <section id="testimonios" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4">
+        {/* 4. Le pasamos el estado del interruptor a la TestimonialsSection */}
+        <TestimonialsSection funnel="video" shouldPlay={playVideo} />
+      </section>
 
       <section id="about" className="bg-purple-900 min-h-screen flex flex-col justify-center py-20 px-4">
         <AboutSection />
@@ -30,7 +43,6 @@ export default function RetirosVideoLlamada() {
       </section>
 
       <Footer />
-
     </main>
   );
 }
