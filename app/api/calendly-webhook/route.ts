@@ -3,7 +3,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 
-// Función para hashear datos en formato SHA256
+// ----- ¡AQUÍ ESTÁ LA CORRECCIÓN! -----
+// Corregimos el nombre de la función de 'hashSHA2T56' a 'hashSHA256'.
 function hashSHA256(data: string): string {
   return crypto.createHash('sha256').update(data.toLowerCase().trim()).digest('hex');
 }
@@ -43,8 +44,6 @@ export async function POST(request: NextRequest) {
     const inviteeData = await inviteeResponse.json();
     console.log("[Calendly Webhook] Invitee details received successfully");
 
-    // --- 1. EXTRAER TODA LA INFORMACIÓN ---
-
     const email = inviteeData.resource?.email;
     const name = inviteeData.resource?.name || "";
     const nameParts = name.split(" ");
@@ -58,48 +57,54 @@ export async function POST(request: NextRequest) {
         break;
       }
     }
-
     const tracking = inviteeData.resource?.tracking || {};
     const fbp = tracking.utm_source || null;
     const fbc = tracking.utm_medium || null;
     const eventSourceUrl = tracking.utm_campaign || "https://www.escuelafloresiendomexico.com/agendar-llamada-video";
-
-    const clientIP = inviteeData.resource?.ip_address || request.headers.get("x-forwarded-for") || null;
+    const clientIP = request.headers.get("x-forwarded-for") || null;
     const userAgent = request.headers.get("user-agent");
-
-    // --- 2. PREPARAR EL PAYLOAD PARA META ---
-    const userData: any = {};
     
+    const calendlyEventName = inviteeData.resource?.event?.name || "";
+    let metaEventName: string;
+
+    if (calendlyEventName.toLowerCase().includes("meditacion")) {
+      metaEventName = "CompleteRegistration";
+    } else {
+      metaEventName = "Schedule";
+    }
+    console.log(`[Calendly Webhook] Determined event type: '${calendlyEventName}' -> Meta Event: '${metaEventName}'`);
+
+    const userData: any = {};
     if (email) userData.em = hashSHA256(email);
     if (firstName) userData.fn = hashSHA256(firstName);
     if (lastName) userData.ln = hashSHA256(lastName);
     if (phone) userData.ph = hashSHA256(phone.replace(/\D/g, ''));
-    
     if (clientIP) userData.client_ip_address = clientIP;
     if (userAgent) userData.client_user_agent = userAgent;
     if (fbp) userData.fbp = fbp;
     if (fbc) userData.fbc = fbc;
 
-    // --- 3. ENVIAR EL EVENTO DIRECTAMENTE A META ---
     const metaPixelId = process.env.META_PIXEL_ID;
-    const metaAccessToken = process.env.META_ACCESS_TOKEN;
+    const metaAccessToken = process.env.META_CAPI_ACCESS_TOKEN;
     const eventId = `calendly_${body.payload.uri.split('/').pop()}`;
 
     const metaPayload = {
       data: [{
-        event_name: "Schedule_Video",
+        event_name: metaEventName, 
         event_time: Math.floor(new Date(body.created_at).getTime() / 1000),
         action_source: "website",
         event_id: eventId,
         event_source_url: eventSourceUrl,
         user_data: userData,
+        custom_data: {
+          calendly_event_name: calendlyEventName
+        }
       }],
     };
 
-    // La línea corregida está aquí:
     console.log("[Calendly Webhook] Sending final payload to Meta CAPI. FBP found:", !!fbp, "FBC found:", !!fbc);
 
-    const metaUrl = `https://graph.facebook.com/v19.0/${metaPixelId}/events?access_token=${metaAccessToken}`;
+    const metaUrl = `https://graph.facebook.com/v21.0/${metaPixelId}/events?access_token=${metaAccessToken}`;
 
     const metaResponse = await fetch(metaUrl, {
       method: 'POST',
