@@ -18,6 +18,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Ignoring non-creation event" });
     }
 
+    // ----- ¡LA SOLUCIÓN FINAL ESTÁ AQUÍ! -----
+    // Dejamos de buscar en la segunda llamada a la API. Tomamos la URI del tipo de evento
+    // directamente del "payload" inicial que nos envía Calendly. Es más rápido y fiable.
+    const eventTypeUri = body.payload?.scheduled_event?.event_type?.uri || "";
+    let metaEventName: string;
+
+    if (eventTypeUri.includes("meditacion-gratuita")) {
+      metaEventName = "CompleteRegistration";
+    } else {
+      metaEventName = "Schedule";
+    }
+    console.log(`[Calendly Webhook] Determined event from initial payload URI: '${eventTypeUri}' -> Meta Event: '${metaEventName}'`);
+    // ----- FIN DE LA SOLUCIÓN FINAL -----
+    
+    // El resto del código para obtener los detalles del usuario sigue siendo valioso.
     const inviteeUri = body.payload?.uri;
     if (!inviteeUri) {
       console.error("[Calendly Webhook] No invitee URI found in payload");
@@ -33,29 +48,12 @@ export async function POST(request: NextRequest) {
     });
 
     if (!inviteeResponse.ok) {
-      const errorText = await inviteeResponse.text();
-      console.error("[Calendly Webhook] Failed to fetch invitee details:", errorText);
-      return NextResponse.json({ error: "Failed to fetch details" }, { status: 500 });
+        const errorText = await inviteeResponse.text();
+        console.error("[Calendly Webhook] Failed to fetch invitee details:", errorText);
+        return NextResponse.json({ error: "Failed to fetch details" }, { status: 500 });
     }
 
     const inviteeData = await inviteeResponse.json();
-    console.log("[Calendly Webhook] Invitee details received.");
-
-    // ----- ¡AQUÍ ESTÁ LA LÓGICA ROBUSTA! -----
-    // Usamos la URI del TIPO de evento, que es un identificador único y fiable.
-    const eventTypeUri = inviteeData.resource?.event_type?.uri || "";
-    let metaEventName: string;
-
-    if (eventTypeUri.includes("meditacion-gratuita")) {
-      // Si la URI contiene el slug de nuestro evento de meditación...
-      metaEventName = "CompleteRegistration";
-    } else {
-      // Para cualquier otro evento (como la llamada de ventas)...
-      metaEventName = "Schedule";
-    }
-    console.log(`[Calendly Webhook] Determined event from URI: '${eventTypeUri}' -> Meta Event: '${metaEventName}'`);
-    // ----- FIN DE LA LÓGICA ROBUSTA -----
-
     const email = inviteeData.resource?.email;
     const name = inviteeData.resource?.name || "";
     const nameParts = name.split(" ");
