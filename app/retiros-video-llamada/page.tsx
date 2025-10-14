@@ -22,12 +22,12 @@ export default function RetirosVideoLlamada() {
     setPlayVideo(true);
   };
 
-  return (
+return (
     <main>
       <HeroSection onCtaClick={handleHeroButtonClick} />
 
-      <section id="testimonios" className="bg-gray-50 min-h-screen flex flex-col justify-center px-4">
-        {/* Ahora le pasamos la nueva función al componente */}
+      {/* SECCIÓN 1: TESTIMONIO (PICO EMOCIONAL) */}
+      <section id="testimonios" className="bg-gray-50 py-20 sm:py-24 flex flex-col justify-center px-4">
         <TestimonialsSection
           funnel="video"
           shouldPlay={playVideo}
@@ -35,16 +35,18 @@ export default function RetirosVideoLlamada() {
         />
       </section>
 
-      <section id="about" className="bg-purple-900 min-h-screen flex flex-col justify-center py-20 px-4">
-        <AboutSection />
-      </section>
-
-      <section id="contacto" className="bg-gray-50 min-h-screen flex flex-col px-4 pt-20 pb-12">
+      {/* SECCIÓN 2: CONTACTO (CONVERSIÓN INMEDIATA) */}
+      <section id="contacto" className="bg-gradient-to-b from-gray-50 to-purple-900 py-20 sm:py-24 flex flex-col px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-purple-900 mb-4">¿Interesado/a? Da el primer paso</h2>
-          <p className="text-xl text-muted-purple-900 max-w-2xl mx-auto">El viaje más importante empieza con una conversación. Déjanos tus datos y escríbenos por WhatsApp para conocerte y guiarte.</p>
+          <h2 className="text-4xl font-bold text-purple-900 mb-4">Tu transformación comienza con una conversación</h2>
+          <p className="text-xl text-muted-purple-900 max-w-2xl mx-auto">Rellena el formulario para iniciar un chat por WhatsApp con un facilitador. Es 100% gratuito y sin compromiso.</p>
         </div>
         <CustomContactForm funnel="video" />
+      </section>
+
+      {/* SECCIÓN 3: SOBRE NOSOTROS (LÓGICA Y CONFIANZA) */}
+      <section id="about" className="bg-purple-900 py-20 sm:py-24 flex flex-col justify-center px-4">
+        <AboutSection />
       </section>
 
       <Footer />
