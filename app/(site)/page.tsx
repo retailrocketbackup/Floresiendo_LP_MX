@@ -61,13 +61,6 @@ export default function HomePage() {
               Conoce la escuela
             </Link>
           </div>
-
-          {/* Scroll indicator */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2 hover:border-white/60 transition-colors">
-              <div className="w-1.5 h-3 bg-white/60 rounded-full animate-pulse" />
-            </div>
-          </div>
         </div>
       </section>
 
