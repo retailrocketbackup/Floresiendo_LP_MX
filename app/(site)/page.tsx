@@ -21,7 +21,7 @@ export default function HomePage() {
             sizes="100vw"
             className="object-cover scale-105 animate-[scale-in_20s_ease-out_forwards]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-burgundy/70 via-burgundy/50 to-burgundy/80" />
         </div>
 
         {/* Floating decorative elements */}
@@ -108,25 +108,28 @@ export default function HomePage() {
                 icon: Heart,
                 title: "Sanación Emocional",
                 description: "Ansiedad, depresión, PTSD, trauma, fobias, duelo y crisis existenciales.",
-                color: "coral",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
               },
               {
                 icon: Users,
                 title: "Relaciones",
                 description: "Sanar vínculos, resolver conflictos familiares y encontrar conexiones auténticas.",
-                color: "burgundy",
+                bgColor: "bg-burgundy/10",
+                textColor: "text-burgundy",
               },
               {
                 icon: Leaf,
                 title: "Transformación Personal",
                 description: "Adicciones, trastornos alimenticios, TOC y patrones limitantes de vida.",
-                color: "gold",
+                bgColor: "bg-gold/10",
+                textColor: "text-gold",
               },
             ].map((item, index) => (
               <ScrollAnimate key={index} animation="fade-up" delay={index * 100}>
                 <div className="card-interactive p-8 text-center group h-full">
-                  <div className={`w-16 h-16 bg-${item.color}/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                    <item.icon className={`w-8 h-8 text-${item.color}`} />
+                  <div className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                    <item.icon className={`w-8 h-8 ${item.textColor}`} />
                   </div>
                   <h3 className="text-xl font-bold text-warm-gray-800 mb-3">{item.title}</h3>
                   <p className="text-warm-gray-600">{item.description}</p>

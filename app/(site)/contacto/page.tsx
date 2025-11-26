@@ -96,6 +96,9 @@ export default function ContactoPage() {
           <div className="text-center mb-12">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">Resolvemos tus dudas</span>
             <h2 className="text-burgundy mt-3 mb-4">Preguntas frecuentes</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Las preguntas más comunes sobre nuestros encuentros y proceso.
+            </p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
@@ -127,7 +130,7 @@ export default function ContactoPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-gradient-coral text-white">
+      <section className="section-padding bg-gradient-to-b from-coral via-coral-dark to-burgundy text-white -mb-px">
         <div className="section-container text-center">
           <h2 className="text-white mb-6">¿Prefieres que te contactemos?</h2>
           <p className="text-white/90 mb-10 max-w-2xl mx-auto text-lg">

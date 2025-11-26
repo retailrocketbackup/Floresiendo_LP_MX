@@ -97,33 +97,37 @@ export default function EscuelaPage() {
                 icon: Heart,
                 title: "Amor",
                 description: "El amor como maestra principal de todo proceso de sanación.",
-                color: "coral",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
               },
               {
                 icon: Users,
                 title: "Comunidad",
                 description: "Espacios seguros de contención y acompañamiento grupal.",
-                color: "burgundy",
+                bgColor: "bg-burgundy/10",
+                textColor: "text-burgundy",
               },
               {
                 icon: BookOpen,
                 title: "Integración",
                 description: "Combinamos sabiduría ancestral con enfoques terapéuticos modernos.",
-                color: "gold",
+                bgColor: "bg-gold/10",
+                textColor: "text-gold",
               },
               {
                 icon: Globe,
                 title: "Alcance Global",
                 description: "Presencia internacional con sedes en múltiples países.",
-                color: "coral",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
               },
             ].map((item, index) => (
               <div
                 key={index}
                 className="card-interactive p-8 text-center group"
               >
-                <div className={`w-16 h-16 bg-${item.color}/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <item.icon className={`w-8 h-8 text-${item.color}`} />
+                <div className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <item.icon className={`w-8 h-8 ${item.textColor}`} />
                 </div>
                 <h3 className="font-bold text-warm-gray-800 mb-3 text-xl">{item.title}</h3>
                 <p className="text-warm-gray-600">{item.description}</p>

@@ -133,24 +133,27 @@ export default function MedicinasPage() {
                 icon: Shield,
                 title: "Seguridad primero",
                 description: "Evaluación médica previa, contraindicaciones claras, ambiente controlado y equipo preparado para emergencias.",
-                color: "coral",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
               },
               {
                 icon: Heart,
                 title: "Respeto sin dogma",
                 description: "Honramos la sabiduría de las medicinas sin convertirlas en religión. El protagonista eres tú, no la sustancia.",
-                color: "burgundy",
+                bgColor: "bg-burgundy/10",
+                textColor: "text-burgundy",
               },
               {
                 icon: Leaf,
                 title: "Integración continua",
                 description: "El trabajo no termina en la ceremonia. La integración es donde se consolidan los aprendizajes y cambios.",
-                color: "gold",
+                bgColor: "bg-gold/10",
+                textColor: "text-gold",
               },
             ].map((item, index) => (
               <div key={index} className="card-interactive p-8 group">
-                <div className={`w-16 h-16 bg-${item.color}/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <item.icon className={`w-8 h-8 text-${item.color}`} />
+                <div className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <item.icon className={`w-8 h-8 ${item.textColor}`} />
                 </div>
                 <h3 className="font-bold text-warm-gray-800 mb-3 text-xl">{item.title}</h3>
                 <p className="text-warm-gray-600">{item.description}</p>

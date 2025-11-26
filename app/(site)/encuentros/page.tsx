@@ -172,24 +172,27 @@ export default function EncuentrosPage() {
                 icon: MapPin,
                 title: "Fácil acceso",
                 description: "A 1.5 horas de CDMX, con opciones de transporte desde el aeropuerto.",
-                color: "coral",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
               },
               {
                 icon: Users,
                 title: "Grupos íntimos",
                 description: "Máximo 15 participantes para garantizar atención personalizada.",
-                color: "burgundy",
+                bgColor: "bg-burgundy/10",
+                textColor: "text-burgundy",
               },
               {
                 icon: Clock,
                 title: "3 noches",
                 description: "Experiencia completa con preparación, ceremonias e integración.",
-                color: "gold",
+                bgColor: "bg-gold/10",
+                textColor: "text-gold",
               },
             ].map((item, index) => (
               <div key={index} className="card-interactive p-8 text-center group">
-                <div className={`w-16 h-16 bg-${item.color}/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <item.icon className={`w-8 h-8 text-${item.color}`} />
+                <div className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <item.icon className={`w-8 h-8 ${item.textColor}`} />
                 </div>
                 <h3 className="font-bold text-warm-gray-800 mb-3 text-xl">{item.title}</h3>
                 <p className="text-warm-gray-600">{item.description}</p>
@@ -241,11 +244,14 @@ export default function EncuentrosPage() {
       </section>
 
       {/* What's Included */}
-      <section className="section-padding bg-gradient-warm">
+      <section className="section-padding bg-warm-white">
         <div className="section-container">
           <div className="text-center mb-16">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">Todo incluido</span>
             <h2 className="text-burgundy mt-3 mb-4">¿Qué incluye el encuentro?</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Una experiencia completa con todo lo necesario para tu transformación.
+            </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
@@ -280,6 +286,9 @@ export default function EncuentrosPage() {
           <div className="text-center mb-16">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">El camino</span>
             <h2 className="text-burgundy mt-3 mb-4">¿Cómo funciona el proceso?</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Desde el primer contacto hasta la integración, te acompañamos en cada paso.
+            </p>
           </div>
 
           <div className="max-w-3xl mx-auto">
@@ -350,7 +359,7 @@ export default function EncuentrosPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-gradient-coral text-white">
+      <section className="section-padding bg-gradient-to-b from-coral via-coral-dark to-burgundy text-white -mb-px">
         <div className="section-container text-center">
           <h2 className="text-white mb-6">¿Listo para dar el primer paso?</h2>
           <p className="text-white/90 mb-10 max-w-2xl mx-auto text-lg">
