@@ -46,7 +46,7 @@ export default function EncuentrosPage() {
       </section>
 
       {/* Upcoming Dates - Moved to top */}
-      <section className="section-padding bg-burgundy text-white relative overflow-hidden">
+      <section className="section-padding bg-burgundy text-white relative overflow-hidden -mt-1">
         {/* Decorative elements */}
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-coral/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-burgundy-light/20 rounded-full blur-3xl" />
