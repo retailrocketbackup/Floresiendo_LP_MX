@@ -1,7 +1,7 @@
-// Funnel layout - No navigation header, just footer
+// Funnel layout - No navigation header, minimal footer
 // This keeps funnel pages distraction-free for conversions
 
-import { Footer } from "@/components/footer";
+import { FunnelFooter } from "@/components/funnel-footer";
 
 export default function FunnelLayout({
   children,
@@ -11,7 +11,7 @@ export default function FunnelLayout({
   return (
     <>
       {children}
-      <Footer />
+      <FunnelFooter />
     </>
   );
 }

@@ -1,18 +1,11 @@
 // components/calcom-widget.tsx
 "use client";
 
-import { useEffect } from "react";
-import { trackEvent } from "@/lib/meta-tracking";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-declare global {
-  interface Window {
-    Cal?: any;
-  }
-}
-
 interface CalcomWidgetProps {
-  calLink: string; // e.g., "ramonhenriquez/meditacion-gratuita"
+  calLink: string; // e.g., "floresiendomexico/meditacion-guiada"
   funnel?: string;
   eventName?: string;
   className?: string;
@@ -20,56 +13,9 @@ interface CalcomWidgetProps {
 
 export function CalcomWidget({
   calLink,
-  funnel = "meditacion",
-  eventName = "Schedule_Meditation",
   className,
 }: CalcomWidgetProps) {
-  useEffect(() => {
-    // Load Cal.com embed script
-    const script = document.createElement("script");
-    script.src = "https://app.cal.com/embed/embed.js";
-    script.async = true;
-
-    script.onload = () => {
-      if (window.Cal) {
-        // Initialize Cal.com inline embed
-        window.Cal("init", { origin: "https://app.cal.com" });
-
-        window.Cal("inline", {
-          elementOrSelector: "#cal-inline-container",
-          calLink: calLink,
-          config: {
-            layout: "month_view",
-            theme: "light",
-          },
-        });
-
-        // Listen for booking success
-        window.Cal("on", {
-          action: "bookingSuccessful",
-          callback: () => {
-            console.log(`[Cal.com Widget] Tracking Meta event: ${eventName}`);
-            trackEvent(eventName, {
-              funnel,
-              content_type: "calcom_booking",
-            });
-          },
-        });
-      }
-    };
-
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup script on unmount
-      const existingScript = document.querySelector(
-        'script[src="https://app.cal.com/embed/embed.js"]'
-      );
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, [calLink, funnel, eventName]);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <section id="registro" className={cn("py-16 sm:py-20 px-4", className)}>
@@ -87,15 +33,25 @@ export function CalcomWidget({
           </p>
         </div>
 
-        <div
-          className={cn(
-            "bg-white rounded-2xl shadow-lg overflow-hidden border border-[#f78080]/10",
-            className
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-[#f78080]/10 relative">
+          {/* Loading state */}
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b2a4a] mx-auto mb-4"></div>
+                <p className="text-gray-500">Cargando calendario...</p>
+              </div>
+            </div>
           )}
-        >
-          <div
-            id="cal-inline-container"
-            style={{ width: "100%", height: "700px", overflow: "auto" }}
+
+          {/* Cal.com iframe */}
+          <iframe
+            src={`https://cal.com/${calLink}?embed=true&layout=month_view&theme=light`}
+            width="100%"
+            height="700"
+            frameBorder="0"
+            onLoad={() => setIsLoading(false)}
+            style={{ minHeight: "700px" }}
           />
         </div>
 
