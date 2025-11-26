@@ -15,8 +15,8 @@ export default function EncuentrosPage() {
       <section className="relative py-32 md:py-40 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/retreat-bg.jpg"
-            alt="Retiro FloreSiendo"
+            src="/images/venue-alberca.jpg"
+            alt="Retiro FloreSiendo en Morelos"
             fill
             priority
             sizes="100vw"
@@ -81,11 +81,11 @@ export default function EncuentrosPage() {
             <div className="relative">
               <div className="absolute -top-4 -right-4 w-72 h-72 bg-coral/10 rounded-full blur-3xl" />
               <Image
-                src="/images/retreat-bg.jpg"
-                alt="Retiro FloreSiendo"
+                src="/images/circulo-integracion.jpg"
+                alt="Círculo de integración grupal"
                 width={600}
                 height={400}
-                className="relative rounded-3xl shadow-2xl hover-lift"
+                className="relative rounded-3xl shadow-2xl hover-lift object-cover"
               />
             </div>
           </div>
@@ -137,8 +137,49 @@ export default function EncuentrosPage() {
         </div>
       </section>
 
-      {/* What's Included */}
+      {/* Venue Gallery */}
       <section className="section-padding bg-warm-white">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">El espacio</span>
+            <h2 className="text-burgundy mt-3 mb-4">Conoce nuestro refugio</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Un espacio diseñado para tu transformación, rodeado de naturaleza y con todas las comodidades.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              { src: "/images/venue-alberca.jpg", alt: "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
+              { src: "/images/venue-salon-ceremonias.jpg", alt: "Salón de ceremonias", span: "" },
+              { src: "/images/venue-jardin.jpg", alt: "Jardín", span: "" },
+              { src: "/images/venue-sala.jpg", alt: "Sala común", span: "" },
+              { src: "/images/venue-terraza.jpg", alt: "Terraza", span: "" },
+              { src: "/images/venue-habitacion-1.jpg", alt: "Habitación", span: "" },
+            ].map((image, index) => (
+              <div
+                key={index}
+                className={`relative overflow-hidden rounded-2xl group ${image.span} ${index === 0 ? "aspect-square md:aspect-auto" : "aspect-square"}`}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes={index === 0 ? "(max-width: 768px) 50vw, 66vw" : "(max-width: 768px) 50vw, 33vw"}
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-burgundy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute bottom-4 left-4 text-white font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {image.alt}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What's Included */}
+      <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-16">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">Todo incluido</span>
@@ -177,22 +218,59 @@ export default function EncuentrosPage() {
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-coral/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-burgundy-light/20 rounded-full blur-3xl" />
 
-        <div className="section-container relative z-10 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gold/20 rounded-2xl mb-8">
-            <Calendar className="w-10 h-10 text-gold" />
+        <div className="section-container relative z-10">
+          <div className="text-center mb-12">
+            <span className="text-coral-light font-semibold uppercase tracking-wide text-sm">Fechas confirmadas</span>
+            <h2 className="text-white mt-3 mb-4">Próximos encuentros</h2>
+            <p className="text-coral-light/80 max-w-2xl mx-auto">
+              Reserva tu lugar en nuestro próximo encuentro transformador en Morelos, México.
+            </p>
           </div>
-          <h2 className="text-white mb-6">Próximos encuentros</h2>
-          <p className="text-coral-light/80 mb-10 max-w-2xl mx-auto">
-            Estamos programando las próximas fechas de encuentros en México.
-            Contáctanos para conocer la disponibilidad y reservar tu lugar.
+
+          {/* Event Card */}
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                {/* Date Box */}
+                <div className="bg-coral rounded-2xl p-6 text-center min-w-[140px] shadow-lg">
+                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Febrero</span>
+                  <div className="text-4xl font-bold text-white my-1">19-22</div>
+                  <span className="text-white/80 text-sm font-medium">2026</span>
+                </div>
+
+                {/* Event Details */}
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-2xl font-bold text-white mb-2">Encuentro de Febrero</h3>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-4 text-coral-light/90 text-sm mb-4">
+                    <span className="flex items-center gap-1">
+                      <MapPin size={16} />
+                      Morelos, México
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock size={16} />
+                      3 noches
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users size={16} />
+                      Cupos limitados
+                    </span>
+                  </div>
+                  <Link
+                    href="/contacto"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Reservar mi lugar
+                    <ArrowRight size={18} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info */}
+          <p className="text-center text-coral-light/60 text-sm mt-8">
+            ¿Tienes preguntas? Contáctanos para más información sobre el encuentro.
           </p>
-          <Link
-            href="/contacto"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-xl hover:scale-105 transition-all duration-300"
-          >
-            Consultar fechas disponibles
-            <ArrowRight size={20} />
-          </Link>
         </div>
       </section>
 

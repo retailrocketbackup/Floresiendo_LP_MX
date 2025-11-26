@@ -205,6 +205,55 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Real Experience Section */}
+      <section className="section-padding bg-warm-white overflow-hidden">
+        <div className="section-container">
+          <ScrollAnimate animation="fade-up" className="text-center mb-12">
+            <p className="text-coral font-semibold mb-3 uppercase tracking-wide text-sm">Momentos reales</p>
+            <h2 className="text-burgundy mb-6">Nuestra comunidad</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Cada encuentro crea vínculos profundos y transformaciones auténticas.
+            </p>
+          </ScrollAnimate>
+
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <ScrollAnimate animation="fade-left">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
+                <Image
+                  src="/images/grupo-participantes.jpg"
+                  alt="Grupo de participantes FloreSiendo"
+                  width={600}
+                  height={400}
+                  className="object-cover w-full h-[400px] transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-burgundy/60 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 text-white">
+                  <p className="font-semibold text-lg">Comunidad que sana</p>
+                  <p className="text-coral-light text-sm">Participantes de retiros anteriores</p>
+                </div>
+              </div>
+            </ScrollAnimate>
+
+            <ScrollAnimate animation="fade-right">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
+                <Image
+                  src="/images/facilitador-guitarra.jpg"
+                  alt="Facilitador con música en ceremonia"
+                  width={600}
+                  height={400}
+                  className="object-cover w-full h-[400px] transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-burgundy/60 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 text-white">
+                  <p className="font-semibold text-lg">Música ceremonial</p>
+                  <p className="text-coral-light text-sm">La música guía y acompaña el proceso</p>
+                </div>
+              </div>
+            </ScrollAnimate>
+          </div>
+        </div>
+      </section>
+
       {/* Video Testimonial Section */}
       <VideoTestimonial />
 
