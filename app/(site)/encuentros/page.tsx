@@ -12,7 +12,7 @@ export default function EncuentrosPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative py-32 md:py-40 overflow-hidden">
+      <section className="relative py-32 md:py-40 overflow-hidden -mb-px">
         <div className="absolute inset-0">
           <Image
             src="/images/venue-alberca.jpg"
@@ -22,7 +22,7 @@ export default function EncuentrosPage() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-hero" />
+          <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />
         </div>
 
         {/* Decorative elements */}
@@ -41,6 +41,68 @@ export default function EncuentrosPage() {
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
             Los retiros que ofrecemos son una oportunidad para conectarnos con nuestra
             esencia más profunda, con la naturaleza y con el Amor.
+          </p>
+        </div>
+      </section>
+
+      {/* Upcoming Dates - Moved to top */}
+      <section className="section-padding bg-burgundy text-white relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-coral/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-burgundy-light/20 rounded-full blur-3xl" />
+
+        <div className="section-container relative z-10">
+          <div className="text-center mb-12">
+            <span className="text-coral-light font-semibold uppercase tracking-wide text-sm">Fechas confirmadas</span>
+            <h2 className="text-white mt-3 mb-4">Próximos encuentros</h2>
+            <p className="text-coral-light/80 max-w-2xl mx-auto">
+              Reserva tu lugar en nuestro próximo encuentro transformador en Morelos, México.
+            </p>
+          </div>
+
+          {/* Event Card */}
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                {/* Date Box */}
+                <div className="bg-coral rounded-2xl p-6 text-center min-w-[140px] shadow-lg">
+                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Febrero</span>
+                  <div className="text-4xl font-bold text-white my-1">19-22</div>
+                  <span className="text-white/80 text-sm font-medium">2026</span>
+                </div>
+
+                {/* Event Details */}
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-2xl font-bold text-white mb-2">Encuentro de Febrero</h3>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-4 text-coral-light/90 text-sm mb-4">
+                    <span className="flex items-center gap-1">
+                      <MapPin size={16} />
+                      Morelos, México
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock size={16} />
+                      3 noches
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users size={16} />
+                      Cupos limitados
+                    </span>
+                  </div>
+                  <Link
+                    href="/contacto"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Reservar mi lugar
+                    <ArrowRight size={18} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info */}
+          <p className="text-center text-coral-light/60 text-sm mt-8">
+            ¿Tienes preguntas? Contáctanos para más información sobre el encuentro.
           </p>
         </div>
       </section>
@@ -209,68 +271,6 @@ export default function EncuentrosPage() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Upcoming Dates */}
-      <section className="section-padding bg-gradient-burgundy text-white relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-coral/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-burgundy-light/20 rounded-full blur-3xl" />
-
-        <div className="section-container relative z-10">
-          <div className="text-center mb-12">
-            <span className="text-coral-light font-semibold uppercase tracking-wide text-sm">Fechas confirmadas</span>
-            <h2 className="text-white mt-3 mb-4">Próximos encuentros</h2>
-            <p className="text-coral-light/80 max-w-2xl mx-auto">
-              Reserva tu lugar en nuestro próximo encuentro transformador en Morelos, México.
-            </p>
-          </div>
-
-          {/* Event Card */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="flex flex-col md:flex-row gap-6 items-center">
-                {/* Date Box */}
-                <div className="bg-coral rounded-2xl p-6 text-center min-w-[140px] shadow-lg">
-                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Febrero</span>
-                  <div className="text-4xl font-bold text-white my-1">19-22</div>
-                  <span className="text-white/80 text-sm font-medium">2026</span>
-                </div>
-
-                {/* Event Details */}
-                <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-2xl font-bold text-white mb-2">Encuentro de Febrero</h3>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-4 text-coral-light/90 text-sm mb-4">
-                    <span className="flex items-center gap-1">
-                      <MapPin size={16} />
-                      Morelos, México
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={16} />
-                      3 noches
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users size={16} />
-                      Cupos limitados
-                    </span>
-                  </div>
-                  <Link
-                    href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
-                  >
-                    Reservar mi lugar
-                    <ArrowRight size={18} />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Info */}
-          <p className="text-center text-coral-light/60 text-sm mt-8">
-            ¿Tienes preguntas? Contáctanos para más información sobre el encuentro.
-          </p>
         </div>
       </section>
 
