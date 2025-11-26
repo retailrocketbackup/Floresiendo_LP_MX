@@ -6,7 +6,7 @@ import Image from "next/image";
 // 1. Cambiamos lo que el componente espera recibir.
 // Ahora espera una función llamada 'onCtaClick'.
 interface HeroSectionProps {
-  onCtaClick: () => void;
+  onCtaClick?: () => void;
 }
 
 export function HeroSection({ onCtaClick }: HeroSectionProps) {
