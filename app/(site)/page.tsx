@@ -37,18 +37,14 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 drop-shadow-2xl animate-slide-up">
-            Una escuela donde la maestra es el{" "}
+            Retiros y Escuela donde la maestra es el{" "}
             <span className="text-coral relative">
               Amor
               <span className="absolute -bottom-2 left-0 w-full h-1 bg-coral/50 rounded-full" />
             </span>
           </h1>
 
-          <p className="text-xl md:text-2xl mb-4 text-coral-light font-medium animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Alquimia de Amor
-          </p>
-
-          <p className="text-lg md:text-xl mb-10 text-white/80 max-w-3xl mx-auto animate-slide-up leading-relaxed" style={{ animationDelay: "0.2s" }}>
+          <p className="text-lg md:text-xl mb-10 text-white/80 max-w-3xl mx-auto animate-slide-up leading-relaxed" style={{ animationDelay: "0.1s" }}>
             Facilitamos experiencias transformadoras a través de la sabiduría
             ancestral en un entorno seguro y sagrado en México.
           </p>
