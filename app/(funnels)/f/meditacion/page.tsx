@@ -5,7 +5,8 @@ import { MeditationHero } from "@/components/meditation-hero";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { MeditationBenefits } from "@/components/meditation-benefits";
 import { MeditationFacilitator } from "@/components/meditation-facilitator";
-import { CalendlyWidget } from "@/components/calendly-widget";
+import { MeditationFAQ } from "@/components/meditation-faq";
+import { CalcomWidget } from "@/components/calcom-widget";
 
 export default function FunnelMeditacionPage() {
   const [playVideo, setPlayVideo] = useState(false);
@@ -14,10 +15,12 @@ export default function FunnelMeditacionPage() {
   };
 
   return (
-    <main>
+    <main className="bg-white">
+      {/* Hero: Problem-first headline with burgundy overlay */}
       <MeditationHero />
 
-      <section className="bg-gray-50 py-20 sm:py-24 flex flex-col justify-center">
+      {/* Testimonials: Social proof */}
+      <section className="bg-gradient-to-b from-white to-[#f78080]/5 py-20 sm:py-24 flex flex-col justify-center">
         <TestimonialsSection
           funnel="meditacion"
           shouldPlay={playVideo}
@@ -26,30 +29,44 @@ export default function FunnelMeditacionPage() {
         />
       </section>
 
-      <section className="bg-gradient-to-b from-gray-50 to-white">
-        <MeditationBenefits className="bg-transparent" />
-      </section>
+      {/* Benefits: Neuroscience-backed messaging */}
+      <MeditationBenefits />
 
-      <section className="bg-gradient-to-b from-white to-purple-50">
-        <MeditationFacilitator className="bg-transparent" />
-      </section>
+      {/* Facilitator: Credibility section */}
+      <MeditationFacilitator />
 
-      <section id="registro" className="bg-gradient-to-b from-gray-50 to-purple-900 py-20 sm:py-24 px-4">
-        <div className="text-center mb-12 max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-purple-900 mb-4">
-            Reserva tu Lugar 100% Gratis
+      {/* FAQ: Objection handling */}
+      <MeditationFAQ className="bg-white" />
+
+      {/* Cal.com Booking: Main conversion point */}
+      <CalcomWidget
+        calLink="floresiendomexico/meditacion-guiada"
+        funnel="meditacion"
+        eventName="CompleteRegistration"
+        className="bg-gradient-to-b from-white to-[#8b2a4a]/10"
+      />
+
+      {/* Final CTA section */}
+      <section className="bg-[#8b2a4a] py-16 px-4 text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Tu mente merece un descanso.
           </h2>
-          <p className="text-xl text-muted-purple-900">
-            La invitación llegará directamente a tu calendario.
+          <p className="text-xl text-white/80 mb-8">
+            45 minutos pueden cambiar cómo te sientes esta semana.
           </p>
+          <button
+            onClick={() => {
+              const element = document.getElementById("registro");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
+            className="inline-flex items-center justify-center px-8 py-4 text-xl font-bold bg-[#f78080] hover:bg-[#e66b6b] text-white rounded-full shadow-2xl hover:shadow-[#f78080]/50 hover:scale-105 transition-all duration-300"
+          >
+            Reservar Mi Lugar Gratis
+          </button>
         </div>
-
-        <CalendlyWidget
-          funnel="meditacion"
-          url="https://calendly.com/ramonhenriquez/meditacion-gratuita"
-          eventName="CompleteRegistration"
-          className="bg-transparent"
-        />
       </section>
     </main>
   );

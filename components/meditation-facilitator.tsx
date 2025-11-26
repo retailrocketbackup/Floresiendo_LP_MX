@@ -1,8 +1,7 @@
 // components/meditation-facilitator.tsx
 import Image from "next/image";
-import { cn } from "@/lib/utils"; // <-- IMPORTANTE: Importamos la utilidad
+import { cn } from "@/lib/utils";
 
-// AÑADIDO: El componente ahora puede recibir una clase
 interface MeditationFacilitatorProps {
   className?: string;
 }
@@ -11,15 +10,14 @@ export function MeditationFacilitator({
   className,
 }: MeditationFacilitatorProps) {
   return (
-    // CAMBIO CLAVE: Usamos cn() para fusionar estilos
-    <section className={cn("py-20 sm:py-24 px-4", className)}>
+    <section className={cn("py-20 sm:py-24 px-4 bg-[#8b2a4a]/5", className)}>
       <div className="max-w-4xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="w-full max-w-sm mx-auto">
-            <div className="relative aspect-square rounded-full overflow-hidden shadow-2xl">
+            <div className="relative aspect-square rounded-full overflow-hidden shadow-2xl ring-4 ring-[#f78080]/30">
               <Image
                 src="/facilitador.jpg"
-                alt="Foto del facilitador de la meditación"
+                alt="Ramón Henríquez - Facilitador de meditación"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
@@ -28,20 +26,26 @@ export function MeditationFacilitator({
           </div>
 
           <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
-              Conoce a tu Guía
+            <p className="text-[#f78080] font-semibold mb-2 uppercase tracking-wide text-sm">
+              Tu facilitador
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] mb-4">
+              Ramón Henríquez
             </h2>
             <div className="space-y-4 text-lg text-gray-600 leading-relaxed">
               <p>
-                Ramon Henriquez tiene más de 10 años de experiencia
-                guiando a personas en procesos de sanación y autoconocimiento.
-                Su enfoque combina la sabiduría ancestral con técnicas modernas,
-                creando un espacio seguro y de profunda confianza para la
-                transformación.
+                Con más de <span className="font-semibold text-[#8b2a4a]">10 años de experiencia</span> guiando
+                procesos de transformación personal, Ramón ha acompañado a cientos de personas
+                en su camino hacia la paz interior.
               </p>
               <p>
-                Su misión es simple: darte las herramientas para que tú mismo
-                encuentres la paz y la claridad que ya existen en tu interior.
+                Su enfoque combina <span className="text-[#d4a853] font-medium">técnicas de respiración respaldadas por neurociencia</span> con
+                la sabiduría de tradiciones contemplativas, creando experiencias
+                profundas pero accesibles.
+              </p>
+              <p className="text-[#8b2a4a] font-medium italic">
+                "Mi trabajo es darte herramientas que funcionen. Sin misticismo innecesario.
+                Solo práctica que transforma."
               </p>
             </div>
           </div>
