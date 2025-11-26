@@ -48,7 +48,7 @@ export function MeditationHero() {
           <span className="text-[#d4a853] font-semibold">Respaldada por neurociencia.</span>
         </p>
         <p className="text-lg mb-8 text-white/70">
-          Próxima sesión: <span className="font-bold text-[#d4a853]">Domingo 24 de Noviembre</span> — En vivo por Zoom
+          Próxima sesión: <span className="font-bold text-[#d4a853]">Viernes 28 de Noviembre, 7:00 PM</span> — En vivo por Zoom
         </p>
 
         {/* CTA Button with coral accent */}

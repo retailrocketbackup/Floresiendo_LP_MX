@@ -1,8 +1,15 @@
 // components/calcom-widget.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+
+// Cal.com type declaration
+declare global {
+  interface Window {
+    Cal?: (action: string, ...args: unknown[]) => void;
+  }
+}
 
 interface CalcomWidgetProps {
   calLink: string; // e.g., "floresiendomexico/meditacion-guiada"
@@ -15,7 +22,41 @@ export function CalcomWidget({
   calLink,
   className,
 }: CalcomWidgetProps) {
+  const calRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Load Cal.com embed script
+    const script = document.createElement("script");
+    script.src = "https://app.cal.com/embed/embed.js";
+    script.async = true;
+    script.onload = () => {
+      // Initialize Cal after script loads
+      if (window.Cal) {
+        window.Cal("init", { origin: "https://cal.com" });
+        window.Cal("inline", {
+          elementOrSelector: "#cal-inline-container",
+          calLink: calLink,
+          layout: "month_view",
+          config: {
+            theme: "light",
+          },
+        });
+
+        // Hide loading after a short delay for Cal to render
+        setTimeout(() => setIsLoading(false), 1000);
+      }
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup
+      const existingScript = document.querySelector('script[src="https://app.cal.com/embed/embed.js"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [calLink]);
 
   return (
     <section id="registro" className={cn("py-16 sm:py-20 px-4", className)}>
@@ -44,14 +85,11 @@ export function CalcomWidget({
             </div>
           )}
 
-          {/* Cal.com iframe */}
-          <iframe
-            src={`https://cal.com/${calLink}?embed=true&layout=month_view&theme=light`}
-            width="100%"
-            height="700"
-            frameBorder="0"
-            onLoad={() => setIsLoading(false)}
-            style={{ minHeight: "700px" }}
+          {/* Cal.com inline embed */}
+          <div
+            id="cal-inline-container"
+            ref={calRef}
+            style={{ minHeight: "700px", width: "100%" }}
           />
         </div>
 
