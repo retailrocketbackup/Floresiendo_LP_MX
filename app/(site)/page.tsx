@@ -296,16 +296,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-md border-t border-warm-gray-100 lg:hidden z-40">
-        <Link href="/contacto" className="btn-primary w-full justify-center">
-          Contáctanos
-          <ArrowRight size={18} />
-        </Link>
-      </div>
-
-      {/* Spacer for sticky CTA on mobile */}
-      <div className="h-20 lg:hidden" />
     </main>
   );
 }
