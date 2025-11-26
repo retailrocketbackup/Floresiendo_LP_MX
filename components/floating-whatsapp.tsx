@@ -91,29 +91,31 @@ export function FloatingWhatsApp({
       </div>
 
       {/* WhatsApp Button */}
-      <button
-        onClick={handleClick}
-        onMouseEnter={() => !hasInteracted && setIsOpen(true)}
-        className="group relative w-16 h-16 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 overflow-hidden"
-        aria-label="Contactar por WhatsApp"
-      >
-        {/* Pulse animation */}
-        <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-25" />
+      <div className="relative">
+        <button
+          onClick={handleClick}
+          onMouseEnter={() => !hasInteracted && setIsOpen(true)}
+          className="group relative w-16 h-16 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 overflow-hidden"
+          aria-label="Contactar por WhatsApp"
+        >
+          {/* Pulse animation */}
+          <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-25" />
 
-        {/* WhatsApp Icon Image */}
-        <Image
-          src="/images/whatsapp-icon.webp"
-          alt="WhatsApp"
-          width={64}
-          height={64}
-          className="relative z-10"
-        />
+          {/* WhatsApp Icon Image */}
+          <Image
+            src="/images/whatsapp-icon.webp"
+            alt="WhatsApp"
+            width={64}
+            height={64}
+            className="relative z-10"
+          />
+        </button>
 
-        {/* Notification dot */}
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-coral rounded-full border-2 border-white flex items-center justify-center z-20">
+        {/* Notification dot - outside button to avoid overflow-hidden clipping */}
+        <span className="absolute -top-1 -right-1 w-5 h-5 bg-coral rounded-full border-2 border-white flex items-center justify-center z-20 pointer-events-none">
           <span className="text-[10px] text-white font-bold">1</span>
         </span>
-      </button>
+      </div>
     </div>
   );
 }
