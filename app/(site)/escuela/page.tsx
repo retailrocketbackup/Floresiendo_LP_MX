@@ -5,7 +5,7 @@ import { AnimatedStats } from "@/components/animated-stats";
 
 export const metadata = {
   title: "La Escuela | FloreSiendo México",
-  description: "Conoce FloreSiendo, una escuela internacional enfocada en expandir el amor a través de medicinas enteógenas y acompañamiento terapéutico.",
+  description: "Conoce FloreSiendo, una escuela internacional enfocada en expandir el amor a través de prácticas ancestrales y acompañamiento terapéutico.",
 };
 
 export default function EscuelaPage() {
@@ -39,7 +39,7 @@ export default function EscuelaPage() {
             <span className="text-coral">Amor</span>
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Somos una escuela integrativa que combina medicinas enteógenas como la ayahuasca
+            Somos una escuela integrativa que combina prácticas ancestrales
             con filosofía mística y constelaciones familiares.
           </p>
         </div>
@@ -96,7 +96,7 @@ export default function EscuelaPage() {
               {
                 icon: Heart,
                 title: "Amor",
-                description: "El amor como maestra principal de todo proceso de sanación.",
+                description: "El amor como maestra principal de todo proceso de crecimiento.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
               },
@@ -184,9 +184,9 @@ export default function EscuelaPage() {
               </div>
 
               <p className="text-warm-gray-600 leading-relaxed mb-8">
-                Con años de experiencia en facilitación de medicinas enteógenas y
+                Con años de experiencia en facilitación de ceremonias ancestrales y
                 acompañamiento terapéutico, nuestro equipo en México trabaja con la visión
-                de crear espacios de transformación auténtica y sanación profunda.
+                de crear espacios de transformación auténtica y bienestar integral.
               </p>
 
               <Link href="/encuentros" className="btn-outline">

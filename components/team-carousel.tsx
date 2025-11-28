@@ -48,7 +48,7 @@ const teamMembers: TeamMember[] = [
     name: "Roble",
     role: "Facilitador",
     image: "/images/Roble.jpg",
-    quote: "La naturaleza nos enseña que todo proceso de sanación requiere tiempo, presencia y amor.",
+    quote: "La naturaleza nos enseña que todo proceso de bienestar requiere tiempo, presencia y amor.",
   },
   {
     id: 5,

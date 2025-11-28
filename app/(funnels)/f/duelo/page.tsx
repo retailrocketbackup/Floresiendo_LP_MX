@@ -101,7 +101,7 @@ export default function FunnelDueloPage() {
       <section id="testimonios" className="bg-gray-50 py-20 sm:py-24 flex flex-col justify-center px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
-            Historias de sanación
+            Historias de transformación
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Personas que, como tú, atravesaron el dolor de la pérdida y encontraron un camino hacia la paz.
@@ -132,11 +132,11 @@ export default function FunnelDueloPage() {
               },
               {
                 title: "Conexión profunda",
-                description: "Las medicinas ancestrales facilitan un encuentro interior que permite sanar desde la raíz.",
+                description: "Las prácticas ancestrales facilitan un encuentro interior que permite encontrar bienestar desde la raíz.",
               },
               {
                 title: "Integración",
-                description: "Acompañamiento para dar sentido a la experiencia y llevar la sanación a tu vida diaria.",
+                description: "Acompañamiento para dar sentido a la experiencia y llevar el bienestar a tu vida diaria.",
               },
             ].map((item, index) => (
               <div key={index} className="bg-white/10 rounded-xl p-6">
@@ -157,7 +157,7 @@ export default function FunnelDueloPage() {
       <section id="contacto" className="bg-gradient-to-b from-purple-900 to-gray-50 py-20 sm:py-24 flex flex-col px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-white mb-4">
-            Da el primer paso hacia la sanación
+            Da el primer paso hacia el bienestar
           </h2>
           <p className="text-xl text-purple-200 max-w-2xl mx-auto">
             Déjanos tus datos para una conversación privada y sin compromiso.

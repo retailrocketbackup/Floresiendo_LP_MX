@@ -56,7 +56,7 @@ export interface Encuentro {
 export const encuentroFebrero2026: Encuentro = {
   slug: "febrero-2026",
   title: "Encuentro de Febrero",
-  subtitle: "4 días de transformación profunda",
+  subtitle: "4 días de crecimiento personal",
   startDate: "2026-02-19",
   endDate: "2026-02-22",
   displayDates: "19-22 de Febrero, 2026",
@@ -66,20 +66,20 @@ export const encuentroFebrero2026: Encuentro = {
   spotsRemaining: 12,
   status: "upcoming",
 
-  description: `Un retiro íntimo de 4 días diseñado para facilitar un proceso de sanación profunda
+  description: `Un retiro íntimo de 4 días diseñado para facilitar un proceso de bienestar integral
   y reconexión con tu esencia. En un entorno natural privilegiado, te acompañamos en un viaje
-  de autodescubrimiento utilizando medicinas ancestrales bajo la guía de facilitadores experimentados.`,
+  de autodescubrimiento con prácticas ancestrales bajo la guía de facilitadores experimentados.`,
 
   medicines: [
-    "Ayahuasca (2 ceremonias)",
-    "Kambó (opcional)",
-    "Bufo Alvarius (opcional)",
+    "Ceremonias nocturnas (2 sesiones)",
+    "Práctica de purificación (opcional)",
+    "Experiencia contemplativa (opcional)",
   ],
 
   included: [
     "Alojamiento 4 días / 3 noches",
     "Alimentación completa (dieta de preparación)",
-    "2 ceremonias de Ayahuasca",
+    "2 ceremonias nocturnas",
     "Círculos de integración diarios",
     "Temazcal de cierre",
     "Sesiones de breathwork",
@@ -91,7 +91,7 @@ export const encuentroFebrero2026: Encuentro = {
   notIncluded: [
     "Transporte aéreo o terrestre a Morelos",
     "Seguro de viaje",
-    "Medicinas opcionales (Kambó, Bufo)",
+    "Prácticas opcionales",
   ],
 
   schedule: [
@@ -102,7 +102,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "14:00", activity: "Llegada y registro", description: "Bienvenida y asignación de espacios" },
         { time: "16:00", activity: "Círculo de apertura", description: "Presentaciones e intenciones" },
         { time: "18:00", activity: "Cena ligera", description: "Última comida antes de la ceremonia" },
-        { time: "20:00", activity: "Primera ceremonia de Ayahuasca", description: "Guiada por Ramón Henríquez" },
+        { time: "20:00", activity: "Primera ceremonia nocturna", description: "Guiada por facilitadores experimentados" },
       ],
     },
     {
@@ -114,7 +114,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "13:00", activity: "Comida nutritiva" },
         { time: "16:00", activity: "Breathwork y meditación" },
         { time: "18:00", activity: "Cena ligera" },
-        { time: "20:00", activity: "Segunda ceremonia de Ayahuasca" },
+        { time: "20:00", activity: "Segunda ceremonia nocturna" },
       ],
     },
     {
@@ -145,8 +145,8 @@ export const encuentroFebrero2026: Encuentro = {
       name: "Roble",
       role: "Facilitador Principal",
       bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
-      Su enfoque integra la conexión con la naturaleza y las medicinas ancestrales para guiar
-      experiencias profundas de sanación y autodescubrimiento.`,
+      Su enfoque integra la conexión con la naturaleza y las prácticas ancestrales para guiar
+      experiencias profundas de bienestar y autodescubrimiento.`,
       image: "/images/Roble.jpg",
     },
   ],

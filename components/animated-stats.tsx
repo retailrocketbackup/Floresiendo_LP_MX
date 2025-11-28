@@ -31,7 +31,7 @@ const defaultStats: Stat[] = [
     suffix: "+",
     label: "Años de Experiencia",
     icon: Calendar,
-    description: "Acompañando procesos de sanación",
+    description: "Acompañando procesos de bienestar",
   },
   {
     value: 98,

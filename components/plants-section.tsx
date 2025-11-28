@@ -9,7 +9,7 @@ export function PlantsSection() {
             <div className="aspect-square rounded-full overflow-hidden bg-gradient-to-br from-green-100 to-blue-100 p-8">
               <img
                 src="/placeholder-romd4.png"
-                alt="Plantas amazónicas y geometría sagrada"
+                alt="Prácticas ancestrales y geometría sagrada"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -17,16 +17,16 @@ export function PlantsSection() {
 
           <div className="order-1 lg:order-2">
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              ¿Qué son las plantas amazónicas y la integración?
+              ¿Qué son las prácticas ancestrales y la integración?
             </h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Las plantas maestras amazónicas son aliados vegetales sagrados que han sido utilizados durante milenios
-                por las culturas indígenas para la sanación, el crecimiento espiritual y la conexión con la sabiduría
+                Las prácticas ancestrales son tradiciones sagradas que han sido utilizadas durante milenios
+                por las culturas indígenas para el bienestar, el crecimiento espiritual y la conexión con la sabiduría
                 ancestral.
               </p>
               <p>
-                En nuestros retiros, trabajamos con estas plantas en un contexto ceremonial seguro, acompañados por
+                En nuestros retiros, trabajamos con estas prácticas en un contexto ceremonial seguro, acompañados por
                 facilitadores experimentados que honran las tradiciones ancestrales mientras proporcionan un marco
                 moderno de seguridad y contención.
               </p>

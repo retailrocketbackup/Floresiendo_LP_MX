@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Política de Privacidad | FloreSiendo",
   description:
-    "Política de privacidad y protección de datos personales de FloreSiendo - Retiros de Ayahuasca en Morelos, México.",
+    "Política de privacidad y protección de datos personales de FloreSiendo - Retiros de bienestar en Morelos, México.",
 }
 
 export default function PoliticaPrivacidad() {

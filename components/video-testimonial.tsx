@@ -122,7 +122,7 @@ export function VideoTestimonial({
                 {/* Experience tag */}
                 <div className="mt-6">
                   <span className="inline-block px-4 py-2 bg-coral/10 text-coral text-sm rounded-full font-medium">
-                    Ceremonia de Sanación
+                    Ceremonia de Bienestar
                   </span>
                 </div>
               </div>

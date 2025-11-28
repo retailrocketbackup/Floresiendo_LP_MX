@@ -11,7 +11,7 @@ interface ContactSectionFormProps {
 export function ContactSectionForm({
   funnel,
   title = "¿Listo para tu Transformación?",
-  subtitle = "Completa el formulario y te contactaremos para comenzar tu viaje de sanación y crecimiento personal.",
+  subtitle = "Completa el formulario y te contactaremos para comenzar tu viaje de bienestar y crecimiento personal.",
   buttonText = "Más Información",
 }: ContactSectionFormProps) {
   return (

@@ -100,7 +100,7 @@ export default function HomePage() {
             {[
               {
                 icon: Heart,
-                title: "Sanación Emocional",
+                title: "Bienestar Emocional",
                 description: "Ansiedad, depresión, PTSD, trauma, fobias, duelo y crisis existenciales.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
@@ -159,8 +159,8 @@ export default function HomePage() {
                   <h3 className="text-2xl font-bold">Encuentros</h3>
                 </div>
                 <p className="text-coral-light/90 mb-6">
-                  Retiros transformadores de 3 noches con uso de ayahuasca y otras medicinas
-                  ancestrales en un entorno seguro y sagrado en Morelos, México.
+                  Retiros de 3 noches con prácticas ancestrales y ceremonias tradicionales
+                  en un entorno seguro y sagrado en Morelos, México.
                 </p>
                 <Link
                   href="/encuentros"
@@ -179,17 +179,17 @@ export default function HomePage() {
                   <div className="w-14 h-14 bg-gold rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <Leaf className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold">Medicinas</h3>
+                  <h3 className="text-2xl font-bold">Sabiduría Ancestral</h3>
                 </div>
                 <p className="text-coral-light/90 mb-6">
-                  Trabajamos con ayahuasca, bufo alvarius, kambó y otras medicinas ancestrales
+                  Trabajamos con prácticas tradicionales y ceremonias ancestrales
                   con un enfoque integrativo, respetando su sabiduría sin dogmatismo.
                 </p>
                 <Link
                   href="/medicinas"
                   className="inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-light transition-colors group/link"
                 >
-                  Conoce las medicinas
+                  Conoce nuestras prácticas
                   <ArrowRight size={18} className="group-hover/link:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -214,7 +214,7 @@ export default function HomePage() {
             <p className="text-coral font-semibold mb-3 uppercase tracking-wide text-sm">Documental</p>
             <h2 className="text-burgundy mb-6">Conoce nuestra historia</h2>
             <p className="text-warm-gray-600 mb-10">
-              Descubre cómo la ayahuasca está transformando vidas a través de este documental.
+              Descubre cómo nuestras experiencias están impactando vidas a través de este documental.
             </p>
           </ScrollAnimate>
 
@@ -240,16 +240,16 @@ export default function HomePage() {
             subtitle="Resolvemos tus dudas más comunes sobre nuestras experiencias y acompañamiento."
             items={[
               {
-                question: "¿Es seguro participar en una ceremonia de ayahuasca?",
-                answer: "Sí, nuestras ceremonias son completamente seguras. Contamos con un equipo médico y terapéutico certificado, realizamos una evaluación previa de salud, y mantenemos un entorno controlado y sagrado. La seguridad física y emocional de los participantes es nuestra prioridad absoluta.",
+                question: "¿Es seguro participar en un encuentro?",
+                answer: "Sí, nuestros encuentros son completamente seguros. Contamos con un equipo profesional certificado, realizamos una evaluación previa, y mantenemos un entorno controlado y sagrado. La seguridad física y emocional de los participantes es nuestra prioridad absoluta.",
               },
               {
                 question: "¿Cuánto dura un encuentro?",
-                answer: "Nuestros encuentros principales son de 3 noches y 4 días. Este tiempo permite una inmersión profunda en el proceso de sanación, integrando ceremonias, talleres terapéuticos, momentos de reflexión y acompañamiento personalizado.",
+                answer: "Nuestros encuentros principales son de 3 noches y 4 días. Este tiempo permite una inmersión profunda en el proceso de crecimiento personal, integrando ceremonias, talleres terapéuticos, momentos de reflexión y acompañamiento personalizado.",
               },
               {
-                question: "¿Necesito experiencia previa con medicinas ancestrales?",
-                answer: "No es necesario tener experiencia previa. Recibimos tanto a personas que nunca han tenido contacto con medicinas ancestrales como a aquellas con experiencia. Cada participante recibe un acompañamiento personalizado según su situación.",
+                question: "¿Necesito experiencia previa con prácticas ancestrales?",
+                answer: "No es necesario tener experiencia previa. Recibimos tanto a personas que nunca han tenido contacto con prácticas ancestrales como a aquellas con experiencia. Cada participante recibe un acompañamiento personalizado según su situación.",
               },
               {
                 question: "¿Cómo me preparo para un encuentro?",
@@ -257,7 +257,7 @@ export default function HomePage() {
               },
               {
                 question: "¿Dónde se realizan los encuentros?",
-                answer: "Nuestros encuentros se realizan en un hermoso espacio en Morelos, México. El lugar está especialmente diseñado para crear un ambiente de conexión con la naturaleza, seguro y propicio para la introspección y sanación.",
+                answer: "Nuestros encuentros se realizan en un hermoso espacio en Morelos, México. El lugar está especialmente diseñado para crear un ambiente de conexión con la naturaleza, seguro y propicio para la introspección y el bienestar.",
               },
             ]}
           />

@@ -99,7 +99,7 @@ export default async function EncuentroPage({
       <section className="py-12 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-8">
-            Medicinas del Encuentro
+            Prácticas del Encuentro
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {encuentro.medicines.map((medicine, index) => (
@@ -207,12 +207,12 @@ export default async function EncuentroPage({
           </h2>
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8">
             <p className="text-lg leading-relaxed mb-6">
-              En FloreSiendo creemos que cada proceso de sanación es único. Por eso,
+              En FloreSiendo creemos que cada proceso de bienestar es único. Por eso,
               <strong className="text-[#d4a853]"> no manejamos precios fijos</strong>.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               La inversión se determina de forma personalizada según tu situación particular,
-              las medicinas que elijas trabajar, y el acompañamiento que necesites antes y después del encuentro.
+              las prácticas que elijas trabajar, y el acompañamiento que necesites antes y después del encuentro.
             </p>
             <p className="text-white/80">
               Agenda una llamada sin compromiso para conocer tu caso y diseñar juntos

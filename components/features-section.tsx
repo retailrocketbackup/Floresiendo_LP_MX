@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card"
 export function FeaturesSection() {
   const features = [
     {
-      title: "Plantas amazónicas",
+      title: "Remedios Ancestrales",
       description:
-        "Conecta con la sabiduría ancestral de las plantas maestras amazónicas en un entorno seguro y sagrado.",
+        "Conecta con la sabiduría ancestral en un entorno seguro y sagrado, guiado por facilitadores experimentados.",
       icon: "🌿",
     },
     {
@@ -15,7 +15,7 @@ export function FeaturesSection() {
     },
     {
       title: "Experiencia segura y consciente",
-      description: "Acompañamiento profesional y protocolos de seguridad para una experiencia transformadora.",
+      description: "Acompañamiento profesional y protocolos de seguridad para una experiencia de desarrollo personal profundo.",
       icon: "🛡️",
     },
   ]
@@ -26,7 +26,7 @@ export function FeaturesSection() {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Una experiencia transformadora</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-            Descubre un camino hacia la sanación y el crecimiento personal a través de prácticas ancestrales
+            Descubre un camino hacia el bienestar integral y el crecimiento personal a través de prácticas ancestrales
           </p>
         </div>
 

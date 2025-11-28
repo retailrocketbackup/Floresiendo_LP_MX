@@ -5,7 +5,7 @@ import { FAQAccordion } from "@/components/faq-accordion";
 
 export const metadata = {
   title: "Encuentros y Retiros | FloreSiendo México",
-  description: "Descubre nuestros retiros transformadores de 3 noches con ayahuasca y medicinas ancestrales en Morelos, México.",
+  description: "Descubre nuestros retiros de 3 noches con prácticas ancestrales y ceremonias tradicionales en Morelos, México.",
 };
 
 export default function EncuentrosPage() {
@@ -115,12 +115,12 @@ export default function EncuentrosPage() {
               <span className="text-coral font-semibold uppercase tracking-wide text-sm">La experiencia</span>
               <h2 className="text-burgundy mt-3 mb-6">¿Qué es un encuentro?</h2>
               <p className="text-warm-gray-600 mb-6 leading-relaxed">
-                Nuestros encuentros son retiros de 3 noches donde trabajamos con ayahuasca
-                y otras medicinas ancestrales en un entorno seguro, sagrado y amoroso.
+                Nuestros encuentros son retiros de 3 noches donde trabajamos con prácticas
+                y ceremonias tradicionales en un entorno seguro, sagrado y amoroso.
               </p>
               <p className="text-warm-gray-600 mb-8 leading-relaxed">
                 Cada encuentro está diseñado para facilitar experiencias de expansión de
-                consciencia, apertura del corazón y sanación profunda, guiados por
+                consciencia, apertura del corazón y bienestar integral, guiados por
                 facilitadores con más de una década de experiencia.
               </p>
               <ul className="space-y-4">
@@ -259,7 +259,7 @@ export default function EncuentrosPage() {
               {[
                 "Hospedaje durante las 3 noches",
                 "Alimentación consciente (vegetariana)",
-                "2-3 ceremonias con medicinas",
+                "2-3 ceremonias nocturnas",
                 "Sesiones de integración grupal",
                 "Acompañamiento de facilitadores",
                 "Asesoría médica/psicológica",
@@ -378,7 +378,7 @@ export default function EncuentrosPage() {
               href="/medicinas"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold bg-white/20 hover:bg-white/30 text-white border border-white/40 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-105"
             >
-              Conoce las medicinas
+              Conoce nuestras prácticas
             </Link>
           </div>
         </div>
