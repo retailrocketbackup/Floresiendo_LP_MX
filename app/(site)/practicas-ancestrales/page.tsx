@@ -66,7 +66,7 @@ export default function MedicinasPage() {
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto animate-slide-up">
             Prácticas{" "}
-            <span className="text-coral">ancestrales</span>
+            <span className="text-coral">Ancestrales</span>
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
             Ceremonias tradicionales que facilitan la conexión con nuestra
