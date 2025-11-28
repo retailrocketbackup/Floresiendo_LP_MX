@@ -186,7 +186,7 @@ export default function HomePage() {
                   con un enfoque integrativo, respetando su sabiduría sin dogmatismo.
                 </p>
                 <Link
-                  href="/medicinas"
+                  href="/practicas-ancestrales"
                   className="inline-flex items-center gap-2 text-gold font-semibold hover:text-gold-light transition-colors group/link"
                 >
                   Conoce nuestras prácticas

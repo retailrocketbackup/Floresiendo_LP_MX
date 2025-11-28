@@ -375,7 +375,7 @@ export default function EncuentrosPage() {
               <ArrowRight size={20} />
             </Link>
             <Link
-              href="/medicinas"
+              href="/practicas-ancestrales"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold bg-white/20 hover:bg-white/30 text-white border border-white/40 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-105"
             >
               Conoce nuestras prácticas

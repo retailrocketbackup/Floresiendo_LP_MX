@@ -65,7 +65,7 @@ export function SiteFooter() {
               {[
                 { href: "/escuela", label: "La Escuela" },
                 { href: "/encuentros", label: "Encuentros" },
-                { href: "/medicinas", label: "Medicinas" },
+                { href: "/practicas-ancestrales", label: "Prácticas Ancestrales" },
                 { href: "https://www.escuelafloresiendo.com/blog", label: "Blog", external: true },
               ].map((link) => (
                 <Link
