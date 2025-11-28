@@ -31,7 +31,7 @@ const teamMembers: TeamMember[] = [
     id: 2,
     name: "Flor Soeiro",
     role: "Co-Fundadora & Facilitadora",
-    image: "",
+    image: "/images/Flor.jpg",
     quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
   },
   {
@@ -45,7 +45,7 @@ const teamMembers: TeamMember[] = [
     id: 4,
     name: "Roble",
     role: "Facilitador",
-    image: "",
+    image: "/images/Roble.jpg",
     quote: "La naturaleza nos enseña que todo proceso de sanación requiere tiempo, presencia y amor.",
   },
   {

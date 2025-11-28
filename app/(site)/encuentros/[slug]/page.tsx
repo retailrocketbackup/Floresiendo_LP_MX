@@ -244,8 +244,20 @@ export default async function EncuentroPage({
           <div className="grid md:grid-cols-1 gap-8 max-w-2xl mx-auto">
             {encuentro.facilitators.map((facilitator, index) => (
               <div key={index} className="bg-white p-8 rounded-2xl shadow-lg text-center">
-                <div className="w-24 h-24 bg-[#8b2a4a]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-4xl">🙏</span>
+                <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[#8b2a4a]/20">
+                  {facilitator.image ? (
+                    <Image
+                      src={facilitator.image}
+                      alt={facilitator.name}
+                      width={128}
+                      height={128}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#8b2a4a]/10 flex items-center justify-center">
+                      <span className="text-4xl">🙏</span>
+                    </div>
+                  )}
                 </div>
                 <h3 className="text-2xl font-bold text-[#8b2a4a] mb-2">
                   {facilitator.name}

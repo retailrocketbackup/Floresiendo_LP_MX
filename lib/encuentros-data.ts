@@ -140,11 +140,12 @@ export const encuentroFebrero2026: Encuentro = {
 
   facilitators: [
     {
-      name: "Ramón Henríquez",
+      name: "Roble",
       role: "Facilitador Principal",
-      bio: `Más de 15 años de experiencia trabajando con medicinas ancestrales.
-      Formado en la tradición del Santo Daime y con profundo respeto por los linajes indígenas.
-      Su enfoque integra la sabiduría ancestral con herramientas modernas de integración.`,
+      bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
+      Su enfoque integra la conexión con la naturaleza y las medicinas ancestrales para guiar
+      experiencias profundas de sanación y autodescubrimiento.`,
+      image: "/images/Roble.jpg",
     },
   ],
 
