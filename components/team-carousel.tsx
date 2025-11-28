@@ -145,7 +145,7 @@ export function TeamCarousel({
                               src={member.image}
                               alt={member.name}
                               fill
-                              className="object-cover"
+                              className="object-cover object-top"
                             />
                           ) : (
                             <div className="w-full h-full bg-warm-gray-200 flex items-center justify-center text-warm-gray-400 text-4xl font-bold">
@@ -216,7 +216,7 @@ export function TeamCarousel({
                         src={currentMember.image}
                         alt={currentMember.name}
                         fill
-                        className="object-cover"
+                        className="object-cover object-top"
                       />
                     ) : (
                       <div className="w-full h-full bg-warm-gray-200 flex items-center justify-center text-warm-gray-400 text-3xl font-bold">

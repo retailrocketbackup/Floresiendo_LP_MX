@@ -251,7 +251,7 @@ export default async function EncuentroPage({
                       alt={facilitator.name}
                       width={128}
                       height={128}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-top"
                     />
                   ) : (
                     <div className="w-full h-full bg-[#8b2a4a]/10 flex items-center justify-center">
