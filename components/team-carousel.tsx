@@ -34,7 +34,8 @@ const teamMembers: TeamMember[] = [
     name: "Flor Soeiro",
     role: "Co-Fundadora & Facilitadora",
     image: "/images/Flor.jpg",
-    imagePosition: "center 20%", // Face is in upper portion
+    imagePosition: "70% 15%", // Face is on right side, upper portion
+    imageScale: 2.2, // Zoom in to show face
     quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
   },
   {
