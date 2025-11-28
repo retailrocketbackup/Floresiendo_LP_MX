@@ -24,38 +24,38 @@ interface TeamCarouselProps {
 const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: "Sergio Sanz",
-    role: "Co-Fundador & Facilitador & Psicólogo Clínico",
-    image: "/images/sergio.png",
-    quote: "Mi propósito es acompañar a otros con amor mientras me acompañaba a mí mismo por todo aquello que nos tocaba atravesar en la vida.",
-  },
-  {
-    id: 2,
-    name: "Flor Soeiro",
-    role: "Co-Fundadora & Facilitadora",
-    image: "/images/Flor.jpg",
-    quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
-  },
-  {
-    id: 3,
-    name: "Ramon Henriquez",
-    role: "Co-Fundador & Facilitador & Psicoterapeuta",
-    image: "",
-    quote: "Cada ceremonia es un encuentro sagrado con nuestra esencia más profunda.",
-  },
-  {
-    id: 4,
     name: "Roble",
     role: "Facilitador",
     image: "/images/Roble.jpg",
     quote: "La naturaleza nos enseña que todo proceso de bienestar requiere tiempo, presencia y amor.",
   },
   {
-    id: 5,
+    id: 2,
+    name: "Sergio Sanz",
+    role: "Co-Fundador & Facilitador & Psicólogo Clínico",
+    image: "/images/sergio.png",
+    quote: "Mi propósito es acompañar a otros con amor mientras me acompañaba a mí mismo por todo aquello que nos tocaba atravesar en la vida.",
+  },
+  {
+    id: 3,
+    name: "Flor Soeiro",
+    role: "Co-Fundadora & Facilitadora",
+    image: "/images/Flor.jpg",
+    quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
+  },
+  {
+    id: 4,
     name: "Karla Nava",
     role: "Alumna de Escuela FloreSiendo",
     image: "",
     quote: "Crear espacios seguros donde cada persona pueda reconectarse con su luz interior es mi mayor regalo.",
+  },
+  {
+    id: 5,
+    name: "Ramon Henriquez",
+    role: "Co-Fundador & Facilitador & Psicoterapeuta",
+    image: "",
+    quote: "Cada ceremonia es un encuentro sagrado con nuestra esencia más profunda.",
   },
 ];
 
@@ -65,7 +65,7 @@ export function TeamCarousel({
   autoPlay = true,
   autoPlayInterval = 5000,
 }: TeamCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1); // Start with Sergio centered
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
