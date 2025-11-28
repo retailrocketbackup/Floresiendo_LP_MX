@@ -252,7 +252,10 @@ export default async function EncuentroPage({
                       width={128}
                       height={128}
                       className="w-full h-full object-cover"
-                      style={{ objectPosition: facilitator.imagePosition || "center" }}
+                      style={{
+                        objectPosition: facilitator.imagePosition || "center",
+                        transform: facilitator.imageScale ? `scale(${facilitator.imageScale})` : undefined,
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full bg-[#8b2a4a]/10 flex items-center justify-center">

@@ -19,6 +19,7 @@ export interface Facilitator {
   bio: string;
   image?: string;
   imagePosition?: string; // CSS object-position for face centering
+  imageScale?: number; // Scale factor for zooming into face
 }
 
 export interface Encuentro {
@@ -147,7 +148,8 @@ export const encuentroFebrero2026: Encuentro = {
       Su enfoque integra la conexión con la naturaleza y las medicinas ancestrales para guiar
       experiencias profundas de sanación y autodescubrimiento.`,
       image: "/images/Roble.jpg",
-      imagePosition: "center 15%",
+      imagePosition: "center 8%",
+      imageScale: 2.5,
     },
   ],
 

@@ -10,6 +10,7 @@ interface TeamMember {
   role: string;
   image: string;
   imagePosition?: string; // CSS object-position value for face centering
+  imageScale?: number; // Scale factor for zooming into face (default 1)
   quote: string;
 }
 
@@ -48,7 +49,8 @@ const teamMembers: TeamMember[] = [
     name: "Roble",
     role: "Facilitador",
     image: "/images/Roble.jpg",
-    imagePosition: "center 15%", // Face is near top of image
+    imagePosition: "center 8%", // Face is near top of image
+    imageScale: 2.5, // Zoom in to show face
     quote: "La naturaleza nos enseña que todo proceso de sanación requiere tiempo, presencia y amor.",
   },
   {
@@ -149,7 +151,10 @@ export function TeamCarousel({
                               alt={member.name}
                               fill
                               className="object-cover"
-                              style={{ objectPosition: member.imagePosition || "center" }}
+                              style={{
+                                objectPosition: member.imagePosition || "center",
+                                transform: member.imageScale ? `scale(${member.imageScale})` : undefined,
+                              }}
                             />
                           ) : (
                             <div className="w-full h-full bg-warm-gray-200 flex items-center justify-center text-warm-gray-400 text-4xl font-bold">
@@ -221,7 +226,10 @@ export function TeamCarousel({
                         alt={currentMember.name}
                         fill
                         className="object-cover"
-                        style={{ objectPosition: currentMember.imagePosition || "center" }}
+                        style={{
+                          objectPosition: currentMember.imagePosition || "center",
+                          transform: currentMember.imageScale ? `scale(${currentMember.imageScale})` : undefined,
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full bg-warm-gray-200 flex items-center justify-center text-warm-gray-400 text-3xl font-bold">
