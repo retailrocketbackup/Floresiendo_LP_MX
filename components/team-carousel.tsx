@@ -48,7 +48,7 @@ const teamMembers: TeamMember[] = [
     name: "Roble",
     role: "Facilitador",
     image: "/images/Roble.jpg",
-    imagePosition: "center 30%", // Face is in upper-middle portion
+    imagePosition: "center 15%", // Face is near top of image
     quote: "La naturaleza nos enseña que todo proceso de sanación requiere tiempo, presencia y amor.",
   },
   {

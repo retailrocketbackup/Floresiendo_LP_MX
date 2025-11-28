@@ -147,7 +147,7 @@ export const encuentroFebrero2026: Encuentro = {
       Su enfoque integra la conexión con la naturaleza y las medicinas ancestrales para guiar
       experiencias profundas de sanación y autodescubrimiento.`,
       image: "/images/Roble.jpg",
-      imagePosition: "center 30%",
+      imagePosition: "center 15%",
     },
   ],
 
