@@ -9,6 +9,7 @@ interface TeamMember {
   name: string;
   role: string;
   image: string;
+  imagePosition?: string; // CSS object-position value for face centering
   quote: string;
 }
 
@@ -32,6 +33,7 @@ const teamMembers: TeamMember[] = [
     name: "Flor Soeiro",
     role: "Co-Fundadora & Facilitadora",
     image: "/images/Flor.jpg",
+    imagePosition: "center 20%", // Face is in upper portion
     quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
   },
   {
@@ -46,6 +48,7 @@ const teamMembers: TeamMember[] = [
     name: "Roble",
     role: "Facilitador",
     image: "/images/Roble.jpg",
+    imagePosition: "center 30%", // Face is in upper-middle portion
     quote: "La naturaleza nos enseña que todo proceso de sanación requiere tiempo, presencia y amor.",
   },
   {
@@ -145,7 +148,8 @@ export function TeamCarousel({
                               src={member.image}
                               alt={member.name}
                               fill
-                              className="object-cover object-top"
+                              className="object-cover"
+                              style={{ objectPosition: member.imagePosition || "center" }}
                             />
                           ) : (
                             <div className="w-full h-full bg-warm-gray-200 flex items-center justify-center text-warm-gray-400 text-4xl font-bold">
@@ -216,7 +220,8 @@ export function TeamCarousel({
                         src={currentMember.image}
                         alt={currentMember.name}
                         fill
-                        className="object-cover object-top"
+                        className="object-cover"
+                        style={{ objectPosition: currentMember.imagePosition || "center" }}
                       />
                     ) : (
                       <div className="w-full h-full bg-warm-gray-200 flex items-center justify-center text-warm-gray-400 text-3xl font-bold">
