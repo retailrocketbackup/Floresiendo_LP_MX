@@ -34,8 +34,8 @@ const teamMembers: TeamMember[] = [
     name: "Flor Soeiro",
     role: "Co-Fundadora & Facilitadora",
     image: "/images/Flor.jpg",
-    imagePosition: "70% 15%", // Face is on right side, upper portion
-    imageScale: 2.2, // Zoom in to show face
+    imagePosition: "75% 25%", // Zoom origin: right side where her face is
+    imageScale: 2.5,
     quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
   },
   {
@@ -50,8 +50,8 @@ const teamMembers: TeamMember[] = [
     name: "Roble",
     role: "Facilitador",
     image: "/images/Roble.jpg",
-    imagePosition: "40% 8%", // Face slightly left of center
-    imageScale: 2.5, // Zoom in to show face
+    imagePosition: "50% 15%", // Zoom origin: center-top where his face is
+    imageScale: 3,
     quote: "La naturaleza nos enseña que todo proceso de sanación requiere tiempo, presencia y amor.",
   },
   {
@@ -153,7 +153,7 @@ export function TeamCarousel({
                               fill
                               className="object-cover"
                               style={{
-                                objectPosition: member.imagePosition || "center",
+                                transformOrigin: member.imagePosition || "center",
                                 transform: member.imageScale ? `scale(${member.imageScale})` : undefined,
                               }}
                             />
@@ -228,7 +228,7 @@ export function TeamCarousel({
                         fill
                         className="object-cover"
                         style={{
-                          objectPosition: currentMember.imagePosition || "center",
+                          transformOrigin: currentMember.imagePosition || "center",
                           transform: currentMember.imageScale ? `scale(${currentMember.imageScale})` : undefined,
                         }}
                       />

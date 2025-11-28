@@ -253,7 +253,7 @@ export default async function EncuentroPage({
                       height={128}
                       className="w-full h-full object-cover"
                       style={{
-                        objectPosition: facilitator.imagePosition || "center",
+                        transformOrigin: facilitator.imagePosition || "center",
                         transform: facilitator.imageScale ? `scale(${facilitator.imageScale})` : undefined,
                       }}
                     />
