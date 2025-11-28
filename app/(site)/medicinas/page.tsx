@@ -9,8 +9,8 @@ export const metadata = {
 
 const practicas = [
   {
-    name: "Ceremonias Nocturnas",
-    description: "Prácticas tradicionales que facilitan vivencias de expansión de la consciencia y apertura del corazón en un espacio sagrado y contenido.",
+    name: "Planta Amazónica",
+    description: "Práctica tradicional que facilita vivencias de expansión de la consciencia y apertura del corazón en un espacio sagrado y contenido.",
     details: "Nuestras ceremonias principales son experiencias guiadas de varias horas, diseñadas para facilitar procesos de bienestar emocional, conexión espiritual y autoconocimiento profundo.",
     bgColor: "bg-gold/10",
     borderColor: "border-gold/30",
@@ -18,31 +18,23 @@ const practicas = [
     accentColor: "bg-gold",
   },
   {
-    name: "Experiencias Contemplativas",
-    description: "Prácticas breves pero profundas que permiten la conexión con estados de consciencia expandida y bienestar integral.",
-    details: "Estas experiencias ofrecen momentos de profunda introspección y conexión con la unidad. Se realizan con respeto y preparación adecuada.",
+    name: "El Sapo de Sonora",
+    description: "Práctica breve pero profunda que permite la conexión con estados de consciencia expandida y bienestar integral.",
+    details: "Esta experiencia ofrece momentos de profunda introspección y conexión con la unidad. Se realiza con respeto y preparación adecuada.",
     bgColor: "bg-coral/10",
     borderColor: "border-coral/30",
     textColor: "text-coral-dark",
     accentColor: "bg-coral",
   },
   {
-    name: "Prácticas de Purificación",
-    description: "Ceremonias tradicionales que trabajan a nivel físico y energético, facilitando la limpieza y renovación integral.",
-    details: "Estas prácticas apoyan el bienestar físico del cuerpo. Son experiencias intensas pero breves, siempre guiadas por facilitadores experimentados.",
+    name: "Rana Mono Gigante",
+    subtitle: "Práctica de Purificación",
+    description: "Ceremonia tradicional que trabaja a nivel físico y energético, facilitando la limpieza y renovación integral.",
+    details: "Esta práctica apoya el bienestar físico del cuerpo. Es una experiencia intensa pero breve, siempre guiada por facilitadores experimentados.",
     bgColor: "bg-burgundy/10",
     borderColor: "border-burgundy/30",
     textColor: "text-burgundy",
     accentColor: "bg-burgundy",
-  },
-  {
-    name: "Ceremonias Ancestrales",
-    description: "Prácticas tradicionales de orígenes milenarios que facilitan estados de consciencia expandida y conexión espiritual.",
-    details: "Estas ceremonias se utilizan en contextos específicos con la guía de facilitadores experimentados, respetando su tradición y sabiduría.",
-    bgColor: "bg-warm-gray-100",
-    borderColor: "border-warm-gray-200",
-    textColor: "text-warm-gray-800",
-    accentColor: "bg-warm-gray-600",
   },
 ];
 
@@ -185,9 +177,14 @@ export default function MedicinasPage() {
                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className={`text-2xl font-bold ${practica.textColor} mb-3`}>
+                    <h3 className={`text-2xl font-bold ${practica.textColor} mb-1`}>
                       {practica.name}
                     </h3>
+                    {practica.subtitle && (
+                      <p className={`text-sm font-medium ${practica.textColor} opacity-70 mb-3`}>
+                        {practica.subtitle}
+                      </p>
+                    )}
                     <p className="text-warm-gray-700 mb-4 italic text-lg">
                       {practica.description}
                     </p>

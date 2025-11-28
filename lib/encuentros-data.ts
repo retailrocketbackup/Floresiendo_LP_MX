@@ -71,15 +71,15 @@ export const encuentroFebrero2026: Encuentro = {
   de autodescubrimiento con prácticas ancestrales bajo la guía de facilitadores experimentados.`,
 
   medicines: [
-    "Ceremonias nocturnas (2 sesiones)",
-    "Práctica de purificación (opcional)",
-    "Experiencia contemplativa (opcional)",
+    "Planta Amazónica (2 sesiones)",
+    "Rana Mono Gigante (opcional)",
+    "El Sapo de Sonora (opcional)",
   ],
 
   included: [
     "Alojamiento 4 días / 3 noches",
     "Alimentación completa (dieta de preparación)",
-    "2 ceremonias nocturnas",
+    "2 ceremonias con Planta Amazónica",
     "Círculos de integración diarios",
     "Temazcal de cierre",
     "Sesiones de breathwork",
@@ -102,7 +102,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "14:00", activity: "Llegada y registro", description: "Bienvenida y asignación de espacios" },
         { time: "16:00", activity: "Círculo de apertura", description: "Presentaciones e intenciones" },
         { time: "18:00", activity: "Cena ligera", description: "Última comida antes de la ceremonia" },
-        { time: "20:00", activity: "Primera ceremonia nocturna", description: "Guiada por facilitadores experimentados" },
+        { time: "20:00", activity: "Primera ceremonia con Planta Amazónica", description: "Guiada por facilitadores experimentados" },
       ],
     },
     {
@@ -114,7 +114,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "13:00", activity: "Comida nutritiva" },
         { time: "16:00", activity: "Breathwork y meditación" },
         { time: "18:00", activity: "Cena ligera" },
-        { time: "20:00", activity: "Segunda ceremonia nocturna" },
+        { time: "20:00", activity: "Segunda ceremonia con Planta Amazónica" },
       ],
     },
     {
