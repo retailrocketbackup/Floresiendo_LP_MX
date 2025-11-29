@@ -20,28 +20,28 @@ interface AnimatedStatsProps {
 
 const defaultStats: Stat[] = [
   {
-    value: 500,
+    value: 1000,
     suffix: "+",
-    label: "Vidas Transformadas",
+    label: "Participantes",
     icon: Users,
     description: "Personas que han encontrado su camino",
   },
   {
-    value: 15,
+    value: 10,
     suffix: "+",
     label: "Años de Experiencia",
     icon: Calendar,
     description: "Acompañando procesos de bienestar",
   },
   {
-    value: 98,
+    value: 91,
     suffix: "%",
     label: "Satisfacción",
     icon: Heart,
     description: "Recomendarían la experiencia",
   },
   {
-    value: 50,
+    value: 100,
     suffix: "+",
     label: "Retiros Realizados",
     icon: Award,
@@ -129,7 +129,7 @@ function StatCard({ stat, isVisible, delay }: { stat: Stat; isVisible: boolean; 
 export function AnimatedStats({
   stats = defaultStats,
   title = "Nuestra Comunidad en Números",
-  subtitle = "Cada número representa una historia de transformación y renacimiento",
+  subtitle = "Cada número representa una historia de crecimiento y renacimiento",
 }: AnimatedStatsProps) {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -199,7 +199,7 @@ export function AnimatedStats({
             href="/contacto"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
-            Comienza Tu Transformación
+            Comienza Tu Proceso
           </a>
         </div>
       </div>
