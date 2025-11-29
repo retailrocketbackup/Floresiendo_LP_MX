@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Youtube, MessageCircle, MapPin, Heart } from "lucide-react";
+import { Facebook, Instagram, Youtube, MapPin, Heart } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -95,8 +95,13 @@ export function SiteFooter() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-coral-light/80 hover:text-white transition-colors group"
               >
-                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center group-hover:bg-green-500 transition-colors">
-                  <MessageCircle size={20} />
+                <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Image
+                    src="/images/whatsapp-icon.webp"
+                    alt="WhatsApp"
+                    width={40}
+                    height={40}
+                  />
                 </div>
                 <span>+52 618 230 1481</span>
               </a>
