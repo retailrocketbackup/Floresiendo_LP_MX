@@ -37,7 +37,7 @@ const practicas = [
     accentColor: "bg-burgundy",
   },
   {
-    name: "Yopo",
+    name: "El Rapé de los Dioses",
     subtitle: "Tradición Ceremonial Ancestral",
     description: "Adéntrate en una tradición ceremonial ancestral que utiliza un rapé sagrado natural derivado de una semilla poderosa.",
     details: "Esta práctica abre la mente a nuevas perspectivas y estados elevados de consciencia, frecuentemente acompañados de una limpieza física y sutil. Enraizada en la sabiduría ancestral, sirve como puerta hacia una conexión más profunda con uno mismo y el cosmos.",
