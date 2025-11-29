@@ -70,7 +70,7 @@ export const practicas: Practica[] = [
       "Adéntrate en una tradición ceremonial ancestral que utiliza un rapé sagrado natural derivado de una semilla poderosa.",
     details:
       "Esta práctica abre la mente a nuevas perspectivas y estados elevados de consciencia, frecuentemente acompañados de una limpieza física y sutil. Enraizada en la sabiduría ancestral, sirve como puerta hacia una conexión más profunda con uno mismo y el cosmos.",
-    image: "", // Placeholder
+    image: "/images/rape-dioses.jpg",
     bgColor: "bg-warm-gray-100",
     borderColor: "border-warm-gray-200",
     textColor: "text-warm-gray-800",
@@ -98,7 +98,7 @@ export const practicas: Practica[] = [
       "Sesiones de acompañamiento psicoterapéutico que integran diversas corrientes para tu proceso de bienestar.",
     details:
       "Nuestro equipo de psicoterapeutas ofrece un espacio seguro para explorar y procesar experiencias. Combinamos enfoques humanistas, transpersonales y somáticos para acompañar tu proceso de integración y crecimiento personal de manera holística. Cada sesión está adaptada a tus necesidades individuales.",
-    image: "", // Placeholder
+    image: "/images/psicoterapia.jpg",
     bgColor: "bg-purple-100",
     borderColor: "border-purple-200",
     textColor: "text-purple-800",

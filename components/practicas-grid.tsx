@@ -47,17 +47,19 @@ export function PracticasGrid({
                 onClick={() => openModal(practica)}
                 className={`${practica.bgColor} p-4 md:p-6 rounded-xl text-center border ${practica.borderColor} hover:shadow-lg transition-all hover:scale-[1.02] cursor-pointer group`}
               >
-                <div className={`w-12 h-12 md:w-16 md:h-16 ${practica.accentColor} rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform`}>
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden mx-auto mb-3 md:mb-4 group-hover:scale-110 transition-transform">
                   {practica.image ? (
                     <Image
                       src={practica.image}
                       alt={practica.name}
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover"
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-cover"
                     />
                   ) : (
-                    <Leaf className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    <div className={`w-full h-full ${practica.accentColor} flex items-center justify-center`}>
+                      <Leaf className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                    </div>
                   )}
                 </div>
                 <p className={`text-sm md:text-lg font-medium ${practica.textColor}`}>
