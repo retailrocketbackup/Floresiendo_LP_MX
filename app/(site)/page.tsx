@@ -46,7 +46,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg md:text-xl mb-10 text-white/80 max-w-3xl mx-auto animate-slide-up leading-relaxed" style={{ animationDelay: "0.1s" }}>
-            Facilitamos experiencias transformadoras a través de la sabiduría
+            Facilitamos experiencias de crecimiento personal a través de la sabiduría
             ancestral en un entorno seguro y sagrado en México.
           </p>
 

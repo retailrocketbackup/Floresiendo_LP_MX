@@ -40,7 +40,7 @@ export default function EscuelaPage() {
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
             Somos una escuela integrativa que combina prácticas ancestrales
-            con filosofía mística y constelaciones familiares.
+            con filosofía mística, psicoterapia, meditación, entre otras herramientas holísticas.
           </p>
         </div>
       </section>

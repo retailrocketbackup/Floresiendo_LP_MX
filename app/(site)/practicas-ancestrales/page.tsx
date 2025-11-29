@@ -62,7 +62,7 @@ export default function MedicinasPage() {
         <div className="relative z-10 section-container text-center text-white">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
             <Leaf size={16} className="text-gold" />
-            <span className="text-sm font-medium">Sabiduría ancestral</span>
+            <span className="text-sm font-medium">+1,000 participantes</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto animate-slide-up">
             Prácticas{" "}

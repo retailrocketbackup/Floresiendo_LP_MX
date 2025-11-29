@@ -52,7 +52,7 @@ export default function FunnelDueloPage() {
           </p>
 
           <p className="text-lg md:text-xl mb-10 text-purple-100/80 max-w-2xl mx-auto">
-            El duelo no es algo que debas &ldquo;superar&rdquo;. Es un proceso sagrado de transformación
+            El duelo no es algo que debas &ldquo;superar&rdquo;. Es un proceso de perdón y aceptación
             que, con el acompañamiento adecuado, puede convertirse en un camino hacia la paz interior.
           </p>
 
