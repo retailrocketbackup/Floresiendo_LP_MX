@@ -1,52 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Leaf, Shield, Heart, AlertTriangle, Sparkles } from "lucide-react";
+import { practicas } from "@/lib/practicas-data";
 
 export const metadata = {
   title: "Prácticas Ancestrales | FloreSiendo México",
   description: "Conoce las prácticas tradicionales y ceremonias ancestrales con las que trabajamos. Enfoque integrativo y seguro.",
 };
-
-const practicas = [
-  {
-    name: "Planta Amazónica",
-    description: "Experimenta un viaje que trasciende lo ordinario, abriendo caminos hacia una profunda introspección psicológica y bienestar emocional.",
-    details: "Esta preparación natural ancestral actúa como un poderoso catalizador para la conexión mente-cuerpo-espíritu, ayudando a liberar bloqueos mentales y fomentar el crecimiento interior. En un entorno seguro y amoroso, te guía a través de una exploración interna profunda, promoviendo la renovación y el bienestar duradero.",
-    bgColor: "bg-gold/10",
-    borderColor: "border-gold/30",
-    textColor: "text-gold-dark",
-    accentColor: "bg-gold",
-  },
-  {
-    name: "El Sapo de Sonora",
-    description: "Embárcate en un encuentro breve pero profundo con uno de los regalos más potentes de la naturaleza.",
-    details: "Esta ceremonia única ofrece una intensa liberación emocional y claridad espiritual en un corto periodo de tiempo, apoyando avances personales y una consciencia expandida.",
-    bgColor: "bg-coral/10",
-    borderColor: "border-coral/30",
-    textColor: "text-coral-dark",
-    accentColor: "bg-coral",
-  },
-  {
-    name: "Rana Mono Gigante",
-    subtitle: "Práctica de Purificación",
-    description: "Descubre un intenso ritual de purificación que aprovecha la secreción de un extraordinario anfibio.",
-    details: "Aplicada mediante técnicas tradicionales precisas, esta práctica activa los procesos naturales de limpieza del cuerpo, liberando toxinas y fortaleciendo el sistema inmunológico. La experiencia es breve pero poderosa, ayudando a restaurar la energía, claridad y equilibrio desde adentro.",
-    bgColor: "bg-burgundy/10",
-    borderColor: "border-burgundy/30",
-    textColor: "text-burgundy",
-    accentColor: "bg-burgundy",
-  },
-  {
-    name: "El Rapé de los Dioses",
-    subtitle: "Tradición Ceremonial Ancestral",
-    description: "Adéntrate en una tradición ceremonial ancestral que utiliza un rapé sagrado natural derivado de una semilla poderosa.",
-    details: "Esta práctica abre la mente a nuevas perspectivas y estados elevados de consciencia, frecuentemente acompañados de una limpieza física y sutil. Enraizada en la sabiduría ancestral, sirve como puerta hacia una conexión más profunda con uno mismo y el cosmos.",
-    bgColor: "bg-warm-gray-100",
-    borderColor: "border-warm-gray-200",
-    textColor: "text-warm-gray-800",
-    accentColor: "bg-warm-gray-600",
-  },
-];
 
 export default function MedicinasPage() {
   return (
@@ -177,9 +137,9 @@ export default function MedicinasPage() {
           </div>
 
           <div className="max-w-4xl mx-auto space-y-8">
-            {practicas.map((practica, index) => (
+            {practicas.map((practica) => (
               <div
-                key={index}
+                key={practica.slug}
                 className={`${practica.bgColor} rounded-3xl p-8 border ${practica.borderColor} hover:shadow-lg transition-shadow`}
               >
                 <div className="flex items-start gap-4">
@@ -187,9 +147,16 @@ export default function MedicinasPage() {
                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className={`text-2xl font-bold ${practica.textColor} mb-1`}>
-                      {practica.name}
-                    </h3>
+                    <div className="flex flex-wrap items-center gap-3 mb-1">
+                      <h3 className={`text-2xl font-bold ${practica.textColor}`}>
+                        {practica.name}
+                      </h3>
+                      {practica.optional && (
+                        <span className="px-2 py-0.5 text-xs font-medium bg-warm-gray-200 text-warm-gray-600 rounded-full">
+                          Opcional
+                        </span>
+                      )}
+                    </div>
                     {practica.subtitle && (
                       <p className={`text-sm font-medium ${practica.textColor} opacity-70 mb-3`}>
                         {practica.subtitle}

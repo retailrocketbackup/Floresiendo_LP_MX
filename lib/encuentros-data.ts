@@ -99,6 +99,7 @@ export const encuentroFebrero2026: Encuentro = {
       day: "Día 1 - Jueves",
       date: "19 de Febrero",
       items: [
+        { time: "17:00", activity: "Registro", description: "Check-in y bienvenida" },
         { time: "18:00", activity: "Merienda", description: "Llegada y bienvenida" },
         { time: "20:30", activity: "Preparación", description: "Círculo de apertura e intenciones" },
         { time: "22:30", activity: "Sesión con Planta Amazónica", description: "Primera ceremonia nocturna" },
@@ -113,6 +114,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "11:00", activity: "Integración del grupo", description: "Compartir experiencias" },
         { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
         { time: "14:00", activity: "Almuerzo" },
+        { time: "17:00", activity: "Registro", description: "Check-in para nuevos participantes" },
         { time: "18:00", activity: "Merienda" },
         { time: "20:30", activity: "Preparación" },
         { time: "22:30", activity: "Sesión con Planta Amazónica", description: "Segunda ceremonia nocturna" },

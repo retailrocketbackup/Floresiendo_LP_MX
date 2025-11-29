@@ -8,6 +8,7 @@ import {
   encuentros,
   type Encuentro,
 } from "@/lib/encuentros-data";
+import { PracticasGrid } from "@/components/practicas-grid";
 
 // Generate static params for all encuentros
 export async function generateStaticParams() {
@@ -95,27 +96,8 @@ export default async function EncuentroPage({
         </div>
       </section>
 
-      {/* Medicines */}
-      <section className="py-12 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-8">
-            Prácticas del Encuentro
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {encuentro.medicines.map((medicine, index) => (
-              <div
-                key={index}
-                className="bg-[#fdf8f4] p-6 rounded-xl text-center border border-[#f78080]/20"
-              >
-                <div className="w-16 h-16 bg-[#8b2a4a]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">🌿</span>
-                </div>
-                <p className="text-lg font-medium text-[#8b2a4a]">{medicine}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Practices */}
+      <PracticasGrid />
 
       {/* Schedule */}
       <section className="py-16 px-4">
