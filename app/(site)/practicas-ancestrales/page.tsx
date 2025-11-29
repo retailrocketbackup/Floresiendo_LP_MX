@@ -69,8 +69,8 @@ export default function MedicinasPage() {
             <span className="text-coral">Ancestrales</span>
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Ceremonias tradicionales que facilitan la conexión con nuestra
-            esencia más profunda y el bienestar integral.
+            Ceremonias tradicionales que facilitan la conexión con nuestro
+            ser auténtico y el bienestar integral.
           </p>
         </div>
       </section>

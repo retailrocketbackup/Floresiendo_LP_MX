@@ -32,15 +32,15 @@ export default function EncuentrosPage() {
         <div className="relative z-10 section-container text-center text-white">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
             <Calendar size={16} className="text-gold" />
-            <span className="text-sm font-medium">3 noches transformadoras</span>
+            <span className="text-sm font-medium">3 noches de inmersión</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto animate-slide-up">
-            Encuentros{" "}
-            <span className="text-coral">transformadores</span>
+            Encuentros de{" "}
+            <span className="text-coral">bienestar</span>
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Los retiros que ofrecemos son una oportunidad para conectarnos con nuestra
-            esencia más profunda, con la naturaleza y con el Amor.
+            Los retiros que ofrecemos son una oportunidad para conectarnos con nuestro
+            ser interior, con la naturaleza y con el Amor.
           </p>
         </div>
       </section>
@@ -56,7 +56,7 @@ export default function EncuentrosPage() {
             <span className="text-coral-light font-semibold uppercase tracking-wide text-sm">Fechas confirmadas</span>
             <h2 className="text-white mt-3 mb-4">Próximos encuentros</h2>
             <p className="text-coral-light/80 max-w-2xl mx-auto">
-              Reserva tu lugar en nuestro próximo encuentro transformador en Morelos, México.
+              Reserva tu lugar en nuestro próximo encuentro de bienestar en Morelos, México.
             </p>
           </div>
 
@@ -209,7 +209,7 @@ export default function EncuentrosPage() {
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">El espacio</span>
             <h2 className="text-burgundy mt-3 mb-4">Conoce nuestro refugio</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Un espacio diseñado para tu transformación, rodeado de naturaleza y con todas las comodidades.
+              Un espacio diseñado para tu proceso, rodeado de naturaleza y con todas las comodidades.
             </p>
           </div>
 
@@ -250,7 +250,7 @@ export default function EncuentrosPage() {
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">Todo incluido</span>
             <h2 className="text-burgundy mt-3 mb-4">¿Qué incluye el encuentro?</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Una experiencia completa con todo lo necesario para tu transformación.
+              Una experiencia completa con todo lo necesario para tu bienestar.
             </p>
           </div>
 

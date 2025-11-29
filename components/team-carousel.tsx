@@ -41,7 +41,7 @@ const teamMembers: TeamMember[] = [
     name: "Flor Soeiro",
     role: "Co-Fundadora & Facilitadora",
     image: "/images/Flor.jpg",
-    quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de transformación.",
+    quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de crecimiento.",
   },
   {
     id: 4,
@@ -55,7 +55,7 @@ const teamMembers: TeamMember[] = [
     name: "Ramon Henriquez",
     role: "Co-Fundador & Facilitador & Psicoterapeuta",
     image: "",
-    quote: "Cada ceremonia es un encuentro sagrado con nuestra esencia más profunda.",
+    quote: "Cada ceremonia es un encuentro sagrado con lo más profundo de nuestro ser.",
   },
 ];
 
