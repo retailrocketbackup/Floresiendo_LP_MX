@@ -10,8 +10,8 @@ export const metadata = {
 const practicas = [
   {
     name: "Planta Amazónica",
-    description: "Práctica tradicional que facilita vivencias de expansión de la consciencia y apertura del corazón en un espacio sagrado y contenido.",
-    details: "Nuestras ceremonias principales son experiencias guiadas de varias horas, diseñadas para facilitar procesos de bienestar emocional, conexión espiritual y autoconocimiento profundo.",
+    description: "Experimenta un viaje que trasciende lo ordinario, abriendo caminos hacia una profunda introspección psicológica y bienestar emocional.",
+    details: "Esta preparación natural ancestral actúa como un poderoso catalizador para la conexión mente-cuerpo-espíritu, ayudando a liberar bloqueos mentales y fomentar el crecimiento interior. En un entorno seguro y amoroso, te guía a través de una exploración interna profunda, promoviendo la renovación y el bienestar duradero.",
     bgColor: "bg-gold/10",
     borderColor: "border-gold/30",
     textColor: "text-gold-dark",
@@ -19,8 +19,8 @@ const practicas = [
   },
   {
     name: "El Sapo de Sonora",
-    description: "Práctica breve pero profunda que permite la conexión con estados de consciencia expandida y bienestar integral.",
-    details: "Esta experiencia ofrece momentos de profunda introspección y conexión con la unidad. Se realiza con respeto y preparación adecuada.",
+    description: "Embárcate en un encuentro breve pero profundo con uno de los regalos más potentes de la naturaleza.",
+    details: "Esta ceremonia única ofrece una intensa liberación emocional y claridad espiritual en un corto periodo de tiempo, apoyando avances personales y una consciencia expandida.",
     bgColor: "bg-coral/10",
     borderColor: "border-coral/30",
     textColor: "text-coral-dark",
@@ -29,12 +29,22 @@ const practicas = [
   {
     name: "Rana Mono Gigante",
     subtitle: "Práctica de Purificación",
-    description: "Ceremonia tradicional que trabaja a nivel físico y energético, facilitando la limpieza y renovación integral.",
-    details: "Esta práctica apoya el bienestar físico del cuerpo. Es una experiencia intensa pero breve, siempre guiada por facilitadores experimentados.",
+    description: "Descubre un intenso ritual de purificación que aprovecha la secreción de un extraordinario anfibio.",
+    details: "Aplicada mediante técnicas tradicionales precisas, esta práctica activa los procesos naturales de limpieza del cuerpo, liberando toxinas y fortaleciendo el sistema inmunológico. La experiencia es breve pero poderosa, ayudando a restaurar la energía, claridad y equilibrio desde adentro.",
     bgColor: "bg-burgundy/10",
     borderColor: "border-burgundy/30",
     textColor: "text-burgundy",
     accentColor: "bg-burgundy",
+  },
+  {
+    name: "Yopo",
+    subtitle: "Tradición Ceremonial Ancestral",
+    description: "Adéntrate en una tradición ceremonial ancestral que utiliza un rapé sagrado natural derivado de una semilla poderosa.",
+    details: "Esta práctica abre la mente a nuevas perspectivas y estados elevados de consciencia, frecuentemente acompañados de una limpieza física y sutil. Enraizada en la sabiduría ancestral, sirve como puerta hacia una conexión más profunda con uno mismo y el cosmos.",
+    bgColor: "bg-warm-gray-100",
+    borderColor: "border-warm-gray-200",
+    textColor: "text-warm-gray-800",
+    accentColor: "bg-warm-gray-600",
   },
 ];
 
