@@ -15,7 +15,7 @@ interface FAQAccordionProps {
 }
 
 export function FAQAccordion({ items, title, subtitle }: FAQAccordionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const toggle = (index: number) => {
