@@ -36,7 +36,7 @@ export default function EncuentrosPage() {
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto animate-slide-up">
             Encuentros de{" "}
-            <span className="text-coral">bienestar</span>
+            <span className="text-coral">Conexión</span>
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
             Los retiros que ofrecemos son una oportunidad para conectarnos con nuestro
