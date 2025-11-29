@@ -77,20 +77,17 @@ export const encuentroFebrero2026: Encuentro = {
   ],
 
   included: [
-    "Alojamiento 4 días / 3 noches",
+    "Alojamiento 2-3 noches",
     "Alimentación completa (dieta de preparación)",
-    "2 ceremonias con Planta Amazónica",
+    "2-3 ceremonias con Planta Amazónica",
     "Círculos de integración diarios",
-    "Temazcal de cierre",
     "Sesiones de breathwork",
     "Acompañamiento personalizado",
     "Integración post-retiro (1 sesión)",
-    "Transporte desde punto de encuentro",
   ],
 
   notIncluded: [
     "Transporte aéreo o terrestre a Morelos",
-    "Seguro de viaje",
     "Prácticas opcionales",
   ],
 
