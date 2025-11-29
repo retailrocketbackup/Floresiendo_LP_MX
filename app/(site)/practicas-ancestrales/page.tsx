@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Leaf, Shield, Heart, AlertTriangle, Sparkles } from "lucide-react";
+import { ArrowRight, Leaf, Shield, Heart, AlertTriangle } from "lucide-react";
 import { practicas } from "@/lib/practicas-data";
 
 export const metadata = {
@@ -143,8 +143,20 @@ export default function MedicinasPage() {
                 className={`${practica.bgColor} rounded-3xl p-8 border ${practica.borderColor} hover:shadow-lg transition-shadow`}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 ${practica.accentColor} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                    <Sparkles className="w-6 h-6 text-white" />
+                  <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                    {practica.image ? (
+                      <Image
+                        src={practica.image}
+                        alt={practica.name}
+                        width={64}
+                        height={64}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className={`w-full h-full ${practica.accentColor} flex items-center justify-center`}>
+                        <Leaf className="w-8 h-8 text-white" />
+                      </div>
+                    )}
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-3 mb-1">
