@@ -142,12 +142,28 @@ export const encuentroFebrero2026: Encuentro = {
 
   facilitators: [
     {
-      name: "Roble",
-      role: "Facilitador Principal",
+      name: "Rodrigo Roble",
+      role: "Facilitador Egresado de Escuela FloreSiendo",
       bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
       Su enfoque integra la conexión con la naturaleza y las prácticas ancestrales para guiar
       experiencias profundas de bienestar y autodescubrimiento.`,
       image: "/images/Roble.jpg",
+    },
+    {
+      name: "Ramon Henriquez",
+      role: "Cofundador & Facilitador & Psicoterapeuta",
+      bio: `Psicoterapeuta con formación en acompañamiento de procesos de expansión de consciencia.
+      Aporta una perspectiva integrativa que combina la psicología moderna con la sabiduría ancestral,
+      creando un espacio seguro para la exploración interior.`,
+      image: "",
+    },
+    {
+      name: "Karla Nava",
+      role: "Facilitadora en Formación",
+      bio: `Facilitadora con experiencia en crear espacios seguros y amorosos para el trabajo interior.
+      Su presencia cálida y su capacidad de escucha profunda acompañan a cada participante
+      en su proceso único de reconexión.`,
+      image: "",
     },
   ],
 

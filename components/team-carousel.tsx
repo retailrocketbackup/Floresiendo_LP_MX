@@ -24,8 +24,8 @@ interface TeamCarouselProps {
 const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: "Roble",
-    role: "Facilitador",
+    name: "Rodrigo Roble",
+    role: "Facilitador Egresado de Escuela FloreSiendo",
     image: "/images/Roble.jpg",
     quote: "La naturaleza nos enseña que todo proceso de bienestar requiere tiempo, presencia y amor.",
   },
@@ -46,14 +46,14 @@ const teamMembers: TeamMember[] = [
   {
     id: 4,
     name: "Karla Nava",
-    role: "Alumna de Escuela FloreSiendo",
+    role: "Facilitadora en Formación",
     image: "",
     quote: "Crear espacios seguros donde cada persona pueda reconectarse con su luz interior es mi mayor regalo.",
   },
   {
     id: 5,
     name: "Ramon Henriquez",
-    role: "Co-Fundador & Facilitador & Psicoterapeuta",
+    role: "Cofundador & Facilitador & Psicoterapeuta",
     image: "",
     quote: "Cada ceremonia es un encuentro sagrado con lo más profundo de nuestro ser.",
   },
