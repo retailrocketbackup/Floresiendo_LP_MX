@@ -26,7 +26,7 @@ export const practicas: Practica[] = [
       "Experimenta un viaje que trasciende lo ordinario, abriendo caminos hacia una profunda introspección psicológica y bienestar emocional.",
     details:
       "Esta preparación natural ancestral actúa como un poderoso catalizador para la conexión mente-cuerpo-espíritu, ayudando a liberar bloqueos mentales y fomentar el crecimiento interior. En un entorno seguro y amoroso, te guía a través de una exploración interna profunda, promoviendo la renovación y el bienestar duradero.",
-    image: "", // Placeholder
+    image: "/images/planta-amazonica.jpg",
     bgColor: "bg-gold/10",
     borderColor: "border-gold/30",
     textColor: "text-gold-dark",
@@ -40,7 +40,7 @@ export const practicas: Practica[] = [
       "Embárcate en un encuentro breve pero profundo con uno de los regalos más potentes de la naturaleza.",
     details:
       "Esta ceremonia única ofrece una intensa liberación emocional y claridad espiritual en un corto periodo de tiempo, apoyando avances personales y una consciencia expandida.",
-    image: "", // Placeholder
+    image: "/images/sapo-sonora.jpg",
     bgColor: "bg-coral/10",
     borderColor: "border-coral/30",
     textColor: "text-coral-dark",
@@ -55,7 +55,7 @@ export const practicas: Practica[] = [
       "Descubre un intenso ritual de purificación que aprovecha la secreción de un extraordinario anfibio.",
     details:
       "Aplicada mediante técnicas tradicionales precisas, esta práctica activa los procesos naturales de limpieza del cuerpo, liberando toxinas y fortaleciendo el sistema inmunológico. La experiencia es breve pero poderosa, ayudando a restaurar la energía, claridad y equilibrio desde adentro.",
-    image: "", // Placeholder
+    image: "/images/rana-mono-gigante.jpg",
     bgColor: "bg-burgundy/10",
     borderColor: "border-burgundy/30",
     textColor: "text-burgundy",
@@ -84,7 +84,7 @@ export const practicas: Practica[] = [
       "Prácticas guiadas de meditación para cultivar la presencia, la calma mental y la conexión con tu ser interior.",
     details:
       "A través de técnicas meditativas ancestrales y contemporáneas, facilitamos un espacio para el silencio interior y la observación consciente. Estas prácticas ayudan a reducir el estrés, aumentar la claridad mental y profundizar la conexión contigo mismo. Cada sesión está diseñada para acompañar tu proceso de integración y bienestar.",
-    image: "", // Placeholder
+    image: "/images/meditacion.jpg",
     bgColor: "bg-sage/10",
     borderColor: "border-sage/30",
     textColor: "text-sage-dark",
