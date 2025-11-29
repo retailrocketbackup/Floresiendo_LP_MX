@@ -9,6 +9,7 @@ import {
   type Encuentro,
 } from "@/lib/encuentros-data";
 import { PracticasGrid } from "@/components/practicas-grid";
+import { FacilitadoresCarousel } from "@/components/facilitadores-carousel";
 
 // Generate static params for all encuentros
 export async function generateStaticParams() {
@@ -216,41 +217,8 @@ export default async function EncuentroPage({
         </div>
       </section>
 
-      {/* Facilitators */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-12">
-            Facilitadores
-          </h2>
-
-          <div className="grid md:grid-cols-1 gap-8 max-w-2xl mx-auto">
-            {encuentro.facilitators.map((facilitator, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-lg text-center">
-                <div className="w-32 h-32 rounded-full overflow-hidden mx-auto mb-6 border-4 border-[#8b2a4a]/20">
-                  {facilitator.image ? (
-                    <Image
-                      src={facilitator.image}
-                      alt={facilitator.name}
-                      width={128}
-                      height={128}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-[#8b2a4a]/10 flex items-center justify-center">
-                      <span className="text-4xl">🙏</span>
-                    </div>
-                  )}
-                </div>
-                <h3 className="text-2xl font-bold text-[#8b2a4a] mb-2">
-                  {facilitator.name}
-                </h3>
-                <p className="text-[#d4a853] font-medium mb-4">{facilitator.role}</p>
-                <p className="text-gray-600 leading-relaxed">{facilitator.bio}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Facilitators Carousel */}
+      <FacilitadoresCarousel facilitators={encuentro.facilitators} />
 
       {/* Preparation */}
       <section className="py-16 px-4 bg-white">
