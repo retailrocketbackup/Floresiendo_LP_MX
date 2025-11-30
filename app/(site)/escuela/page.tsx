@@ -106,7 +106,7 @@ export default function EscuelaPage() {
 
           {/* Urgency Micro-copy */}
           <p className="mt-6 text-white/60 text-sm animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            Próxima generación: Marzo 2026 · Cupos limitados a 15 participantes
+            Próxima generación: Marzo 2026 · Cupos limitados a 12 participantes
           </p>
           <p className="mt-2 text-white/50 text-xs animate-fade-in" style={{ animationDelay: "0.5s" }}>
             Requisito: Haber participado en al menos 2 encuentros con FloreSiendo
@@ -404,68 +404,136 @@ export default function EscuelaPage() {
         </div>
       </section>
 
-      {/* 6 Core Competencies - Phelps Framework */}
+      {/* 6 Core Competencies - FloreSiendo Framework (IAF + Phelps) */}
       <section className="section-padding bg-warm-white">
         <div className="section-container">
           <div className="text-center mb-16">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">Metodología</span>
             <h2 className="text-burgundy mt-3 mb-4">Las 6 Competencias del Facilitador</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Basado en el marco internacional de competencias para facilitadores (Phelps),
-              evaluamos y desarrollamos estas capacidades esenciales.
+              Nuestro marco integra estándares internacionales de facilitación (IAF) con
+              competencias específicas para el acompañamiento de prácticas ancestrales.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {[
-              {
-                number: "01",
-                title: "Presencia Empática",
-                description: "Cultivar calma, ecuanimidad y atención suspendida. Escucha profunda sin juicio, sosteniendo el espacio con compostura.",
-                color: "coral",
-              },
-              {
-                number: "02",
-                title: "Construcción de Confianza",
-                description: "Generar seguridad y confianza en el proceso. Normalizar experiencias paradójicas y modelar apertura al proceso.",
-                color: "burgundy",
-              },
-              {
-                number: "03",
-                title: "Inteligencia Espiritual",
-                description: "Comodidad con dimensiones existenciales y transpersonales. Integrar diversos marcos espirituales y de sentido.",
-                color: "gold",
-              },
-              {
-                number: "04",
-                title: "Conocimiento Técnico",
-                description: "Farmacología, efectos físicos y psicológicos, contraindicaciones, interacciones y manejo de efectos adversos.",
-                color: "coral",
-              },
-              {
-                number: "05",
-                title: "Autoconciencia Ética",
-                description: "Trabajo personal profundo, manejo de contratransferencia, límites claros, integridad profesional y autocuidado.",
-                color: "burgundy",
-              },
-              {
-                number: "06",
-                title: "Técnicas Complementarias",
-                description: "Trabajo somático, breathwork, arte, movimiento, ritual y métodos de integración para un enfoque holístico.",
-                color: "gold",
-              },
-            ].map((competency, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-warm-gray-100 hover:shadow-lg transition-shadow"
-              >
-                <div className={`text-${competency.color} text-4xl font-bold opacity-20 mb-2`}>
-                  {competency.number}
-                </div>
-                <h3 className="font-bold text-warm-gray-800 text-lg mb-2">{competency.title}</h3>
-                <p className="text-warm-gray-600 text-sm leading-relaxed">{competency.description}</p>
+          {/* SER */}
+          <div className="max-w-6xl mx-auto mb-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-coral/10 rounded-xl flex items-center justify-center">
+                <Heart className="w-6 h-6 text-coral" />
               </div>
-            ))}
+              <div>
+                <h3 className="font-bold text-burgundy text-lg">SER</h3>
+                <p className="text-warm-gray-500 text-sm">Quién eres es más importante que lo que haces</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  number: "01",
+                  title: "Presencia y Autoconciencia",
+                  description: "Cultivar calma, ecuanimidad y escucha sin juicio. Trabajo personal profundo, manejo de contratransferencia y límites éticos claros.",
+                  color: "coral",
+                },
+                {
+                  number: "02",
+                  title: "Inteligencia Espiritual",
+                  description: "Comodidad con dimensiones transpersonales y existenciales. Integrar diversos marcos espirituales y de sentido sin dogma.",
+                  color: "burgundy",
+                },
+              ].map((competency, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-6 shadow-sm border border-warm-gray-100 hover:shadow-lg transition-shadow"
+                >
+                  <div className={`text-${competency.color} text-4xl font-bold opacity-20 mb-2`}>
+                    {competency.number}
+                  </div>
+                  <h3 className="font-bold text-warm-gray-800 text-lg mb-2">{competency.title}</h3>
+                  <p className="text-warm-gray-600 text-sm leading-relaxed">{competency.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* SABER */}
+          <div className="max-w-6xl mx-auto mb-10">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-gold-dark" />
+              </div>
+              <div>
+                <h3 className="font-bold text-burgundy text-lg">SABER</h3>
+                <p className="text-warm-gray-500 text-sm">La seguridad requiere conocimiento</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  number: "03",
+                  title: "Conocimiento Técnico",
+                  description: "Farmacología, efectos físicos y psicológicos, contraindicaciones, interacciones y protocolos de seguridad y emergencia.",
+                  color: "gold",
+                },
+                {
+                  number: "04",
+                  title: "Creación de Espacio Seguro",
+                  description: "Generar confianza y seguridad. Preparar el entorno físico y emocional. Clima de inclusión y respeto a la diversidad.",
+                  color: "coral",
+                },
+              ].map((competency, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-6 shadow-sm border border-warm-gray-100 hover:shadow-lg transition-shadow"
+                >
+                  <div className={`text-${competency.color} text-4xl font-bold opacity-20 mb-2`}>
+                    {competency.number}
+                  </div>
+                  <h3 className="font-bold text-warm-gray-800 text-lg mb-2">{competency.title}</h3>
+                  <p className="text-warm-gray-600 text-sm leading-relaxed">{competency.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* HACER */}
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-burgundy/10 rounded-xl flex items-center justify-center">
+                <Users className="w-6 h-6 text-burgundy" />
+              </div>
+              <div>
+                <h3 className="font-bold text-burgundy text-lg">HACER</h3>
+                <p className="text-warm-gray-500 text-sm">El arte de guiar procesos de transformación</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  number: "05",
+                  title: "Facilitación de Procesos",
+                  description: "Guiar dinámicas grupales, manejar conflictos y situaciones de crisis, técnicas de integración y co-facilitación efectiva.",
+                  color: "burgundy",
+                },
+                {
+                  number: "06",
+                  title: "Desarrollo Profesional",
+                  description: "Supervisión activa, educación continua y red de pares. El facilitador nunca deja de crecer y aprender.",
+                  color: "gold",
+                },
+              ].map((competency, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-6 shadow-sm border border-warm-gray-100 hover:shadow-lg transition-shadow"
+                >
+                  <div className={`text-${competency.color} text-4xl font-bold opacity-20 mb-2`}>
+                    {competency.number}
+                  </div>
+                  <h3 className="font-bold text-warm-gray-800 text-lg mb-2">{competency.title}</h3>
+                  <p className="text-warm-gray-600 text-sm leading-relaxed">{competency.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Assessment Note */}
@@ -837,7 +905,7 @@ export default function EscuelaPage() {
           </div>
 
           <p className="mt-8 text-white/60 text-sm">
-            Próxima generación: Marzo 2026 · Solo 15 lugares disponibles
+            Próxima generación: Marzo 2026 · Solo 12 lugares disponibles
           </p>
         </div>
       </section>
