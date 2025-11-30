@@ -432,7 +432,7 @@ export default function EscuelaPage() {
                 {
                   number: "01",
                   title: "Presencia y Autoconciencia",
-                  description: "Cultivar calma, ecuanimidad y escucha sin juicio. Trabajo personal profundo, manejo de contratransferencia y límites éticos claros.",
+                  description: "Cultivar calma, ecuanimidad y escucha sin juicio. Trabajo personal profundo, claridad emocional en el acompañamiento y límites éticos claros.",
                   color: "coral",
                 },
                 {
