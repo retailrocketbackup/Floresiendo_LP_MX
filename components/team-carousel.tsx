@@ -32,14 +32,14 @@ const teamMembers: TeamMember[] = [
   {
     id: 2,
     name: "Sergio Sanz",
-    role: "Co-Fundador & Facilitador & Psicólogo Clínico",
+    role: "Fundador & Facilitador & Psicólogo Clínico",
     image: "/images/sergio.png",
     quote: "Mi propósito es acompañar a otros con amor mientras me acompañaba a mí mismo por todo aquello que nos tocaba atravesar en la vida.",
   },
   {
     id: 3,
     name: "Flor Soeiro",
-    role: "Co-Fundadora & Facilitadora",
+    role: "Fundadora & Facilitadora",
     image: "/images/Flor.jpg",
     quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de crecimiento.",
   },
