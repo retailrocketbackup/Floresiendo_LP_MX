@@ -370,3 +370,71 @@ export const testTracking = () => {
     { enableCAPI: true },
   )
 }
+
+// =================== WHATSAPP LEAD TRACKING ===================
+
+export interface WhatsAppLeadData {
+  page: "home" | "encuentro" | "escuela" | "practicas" | "contacto" | string
+  buttonLocation: "hero" | "pricing" | "footer" | "cta" | "sticky" | string
+  encuentroSlug?: string
+  value?: number
+  currency?: string
+}
+
+export const trackWhatsAppLead = async (data: WhatsAppLeadData) => {
+  const eventName = "Lead"
+  const contentName = data.encuentroSlug
+    ? `whatsapp_${data.page}_${data.encuentroSlug}`
+    : `whatsapp_${data.page}`
+
+  console.log(`📱 WHATSAPP LEAD: Tracking click`, {
+    page: data.page,
+    buttonLocation: data.buttonLocation,
+    encuentroSlug: data.encuentroSlug,
+    value: data.value,
+    timestamp: new Date().toISOString(),
+  })
+
+  return trackEvent(
+    eventName,
+    {
+      funnel: data.page,
+      content_type: "whatsapp_click",
+      content_name: contentName,
+      value: data.value,
+      currency: data.currency || "MXN",
+    },
+    { enableCAPI: true },
+  )
+}
+
+// =================== PAGE VIEW CONTENT TRACKING ===================
+
+export interface PageViewContentData {
+  page: "home" | "encuentro" | "escuela" | "practicas" | "contacto" | string
+  contentName?: string
+  encuentroSlug?: string
+  value?: number
+  currency?: string
+}
+
+export const trackPageViewContent = (data: PageViewContentData) => {
+  const contentName = data.contentName
+    || data.encuentroSlug
+    || data.page
+
+  console.log(`👁️ VIEW CONTENT: Tracking page view`, {
+    page: data.page,
+    contentName,
+    value: data.value,
+    timestamp: new Date().toISOString(),
+  })
+
+  return trackPixelEvent("ViewContent", {
+    funnel: data.page,
+    content_type: data.page,
+    content_name: contentName,
+    value: data.value,
+    currency: data.currency || "MXN",
+  })
+}

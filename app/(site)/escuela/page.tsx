@@ -14,6 +14,8 @@ import {
   UserCheck,
   Brain,
 } from "lucide-react";
+import { PageTracking } from "@/components/page-tracking";
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 
 // WhatsApp Icon Component
 const WhatsAppIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -30,10 +32,12 @@ export const metadata = {
 export default function EscuelaPage() {
   const whatsappNumber = "526182301481";
   const whatsappMessage = "Hola, me interesa la Formación de Facilitadores de Escuela FloreSiendo. Me gustaría recibir más información.";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <main>
+      {/* Meta Tracking */}
+      <PageTracking page="escuela" contentName="formacion-facilitadores" value={180000} />
+
       {/* Hero Section - Transformation Promise */}
       <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
         <div className="absolute inset-0">
@@ -86,15 +90,17 @@ export default function EscuelaPage() {
 
           {/* Primary CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedWhatsAppLink
+              phone={whatsappNumber}
+              message={whatsappMessage}
+              page="escuela"
+              buttonLocation="hero"
+              value={180000}
               className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-xl"
             >
               <WhatsAppIcon className="w-6 h-6" />
               Solicitar Información
-            </a>
+            </TrackedWhatsAppLink>
             <a
               href="#programa"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
@@ -225,21 +231,22 @@ export default function EscuelaPage() {
         </div>
       </section>
 
-      {/* Program Overview - 7 Cycles, 4 Days Each */}
+      {/* Program Overview - 7 Cycles with Practical Progression */}
       <section id="programa" className="section-padding bg-warm-white scroll-mt-20">
         <div className="section-container">
           <div className="text-center mb-16">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">El programa</span>
-            <h2 className="text-burgundy mt-3 mb-4">Estructura de la Formación Presencial</h2>
+            <h2 className="text-burgundy mt-3 mb-4">Formación Progresiva: De Aprendiz a Facilitador</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              7 ciclos de inmersión, cada uno de 4 días presenciales. Un viaje progresivo de transformación y aprendizaje.
+              7 ciclos de inmersión (Ciclo 0 al Ciclo 6) con un sistema progresivo de prácticas supervisadas.
+              Cada ciclo te acerca más a facilitar con autonomía y seguridad.
             </p>
           </div>
 
           {/* Summary Stats */}
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12">
             <div className="text-center">
-              <div className="text-4xl font-bold text-burgundy">7</div>
+              <div className="text-4xl font-bold text-burgundy">0-6</div>
               <div className="text-warm-gray-600 text-sm">Ciclos</div>
             </div>
             <div className="text-center">
@@ -256,55 +263,119 @@ export default function EscuelaPage() {
             </div>
           </div>
 
-          {/* 7 Cycles Grid */}
+          {/* Progression Legend */}
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
+            <div className="flex items-center gap-2 text-sm">
+              <span className="w-3 h-3 bg-warm-gray-300 rounded-full"></span>
+              <span className="text-warm-gray-600">Teoría</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="w-3 h-3 bg-gold rounded-full"></span>
+              <span className="text-warm-gray-600">Apoyo</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="w-3 h-3 bg-coral rounded-full"></span>
+              <span className="text-warm-gray-600">Autoaplicación</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="w-3 h-3 bg-burgundy rounded-full"></span>
+              <span className="text-warm-gray-600">Responsable</span>
+            </div>
+          </div>
+
+          {/* 7 Cycles Grid with Practical Progression */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {[
               {
                 cycle: 0,
                 title: "Fundamentos",
-                description: "Historia, marco legal, ética del facilitador, protocolos de seguridad y evaluación de contraindicaciones.",
+                subtitle: "Solo teoría",
+                classes: "4 clases teóricas",
+                classTopics: ["Aplicación Sapo de Sonora", "Aplicación Rana Mono", "Facilitación Planta Amazónica", "Fundamentos de Integración"],
+                practices: [],
                 gradient: "from-warm-gray-600 to-warm-gray-700",
                 border: "border-warm-gray-300",
               },
               {
                 cycle: 1,
-                title: "Presencia",
-                description: "Presencia empática, escucha profunda, contención emocional y cultivo de la ecuanimidad terapéutica.",
+                title: "Facilitación Básica",
+                subtitle: "Primera práctica",
+                classes: "3 clases",
+                classTopics: ["Rana Mono (profundización)", "Técnicas de Facilitación", "Métodos de Integración"],
+                practices: [{ name: "Apoyo Sapo", level: "apoyo" }],
                 gradient: "from-coral to-coral-dark",
                 border: "border-coral",
               },
               {
                 cycle: 2,
-                title: "Cuerpo",
-                description: "Técnicas somáticas, breathwork, movimiento auténtico y anatomía experiencial para el acompañamiento.",
+                title: "Primeras Prácticas",
+                subtitle: "Transición a la acción",
+                classes: "2 clases integración",
+                classTopics: ["Manejo de crisis", "Contención emocional"],
+                practices: [
+                  { name: "Autoaplicación Rana", level: "auto" },
+                  { name: "Responsable Sapo", level: "responsable" },
+                  { name: "Apoyo Planta", level: "apoyo" },
+                ],
                 gradient: "from-burgundy to-burgundy-dark",
                 border: "border-burgundy",
               },
               {
                 cycle: 3,
-                title: "Emoción",
-                description: "Manejo de crisis, catarsis, intervención en emergencias y construcción de confianza en procesos intensos.",
+                title: "Responsable Individual",
+                subtitle: "Liderazgo supervisado",
+                classes: "1 clase integración",
+                classTopics: ["Supervisión y casos complejos"],
+                practices: [
+                  { name: "Responsable Rana", level: "responsable" },
+                  { name: "Responsable Sapo", level: "responsable" },
+                  { name: "Responsable Planta", level: "responsable" },
+                  { name: "Conferencia 15 min", level: "responsable" },
+                ],
                 gradient: "from-gold to-gold-dark",
                 border: "border-gold",
               },
               {
                 cycle: 4,
-                title: "Grupo",
-                description: "Facilitación grupal, co-terapia, dinámicas colectivas y creación de contenedores seguros.",
+                title: "Responsable Grupal",
+                subtitle: "Facilitación colectiva",
+                classes: "2 clases integración",
+                classTopics: ["Dinámicas grupales", "Conflicto y transformación"],
+                practices: [
+                  { name: "Responsable Rana", level: "responsable" },
+                  { name: "Responsable Sapo", level: "responsable" },
+                  { name: "Responsable Planta", level: "responsable" },
+                  { name: "Apoyo Integración", level: "apoyo" },
+                ],
                 gradient: "from-coral-dark to-burgundy",
                 border: "border-coral-dark",
               },
               {
                 cycle: 5,
-                title: "Integración",
-                description: "Técnicas de integración post-experiencia, seguimiento, neuroplasticidad y acompañamiento continuo.",
+                title: "Integración Avanzada",
+                subtitle: "Autonomía completa",
+                classes: "2 clases integración",
+                classTopics: ["Mentoría y enseñanza", "Ética profesional"],
+                practices: [
+                  { name: "Responsable Rana", level: "responsable" },
+                  { name: "Responsable Sapo", level: "responsable" },
+                  { name: "Responsable Planta", level: "responsable" },
+                  { name: "Responsable Integración", level: "responsable" },
+                ],
                 gradient: "from-burgundy to-burgundy-dark",
                 border: "border-burgundy",
               },
               {
                 cycle: 6,
-                title: "Maestría",
-                description: "Práctica supervisada con retroalimentación, evaluación de competencias y desarrollo de tu estilo único.",
+                title: "Integración a la Red",
+                subtitle: "Tu camino profesional",
+                classes: "2 clases",
+                classTopics: ["Desarrollo profesional", "Integración a comunidad"],
+                practices: [
+                  { name: "Evaluación de casos", level: "responsable" },
+                  { name: "Proyecto personal", level: "responsable" },
+                ],
+                extras: ["Reconocimiento como Facilitador", "Acceso a Red FloreSiendo", "Oportunidades de co-facilitación"],
                 gradient: "from-gold-dark to-burgundy",
                 border: "border-gold-dark",
               },
@@ -316,12 +387,57 @@ export default function EscuelaPage() {
                 <div className={`bg-gradient-to-r ${item.gradient} p-5 text-white`}>
                   <span className="text-sm font-medium uppercase tracking-wide opacity-80">Ciclo {item.cycle}</span>
                   <h3 className="text-xl font-bold mt-1">{item.title}</h3>
+                  <p className="text-white/70 text-sm mt-1">{item.subtitle}</p>
                 </div>
                 <div className="p-5">
-                  <p className="text-warm-gray-600 text-sm leading-relaxed mb-4">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center gap-2 text-warm-gray-400 text-xs">
+                  {/* Classes */}
+                  <div className="mb-4">
+                    <p className="text-warm-gray-500 text-xs uppercase tracking-wide mb-2">{item.classes}</p>
+                    <ul className="space-y-1">
+                      {item.classTopics.map((topic, i) => (
+                        <li key={i} className="flex items-start gap-2 text-warm-gray-600 text-sm">
+                          <span className="w-1.5 h-1.5 bg-warm-gray-300 rounded-full mt-1.5 flex-shrink-0"></span>
+                          {topic}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Practices */}
+                  {item.practices.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-warm-gray-500 text-xs uppercase tracking-wide mb-2">Prácticas</p>
+                      <ul className="space-y-1">
+                        {item.practices.map((practice, i) => (
+                          <li key={i} className="flex items-center gap-2 text-sm">
+                            <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                              practice.level === "apoyo" ? "bg-gold" :
+                              practice.level === "auto" ? "bg-coral" :
+                              "bg-burgundy"
+                            }`}></span>
+                            <span className="text-warm-gray-700">{practice.name}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Extras for Cycle 7 */}
+                  {item.extras && (
+                    <div className="pt-3 border-t border-warm-gray-100">
+                      <ul className="space-y-1">
+                        {item.extras.map((extra, i) => (
+                          <li key={i} className="flex items-center gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                            <span className="text-warm-gray-700 font-medium">{extra}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Days indicator */}
+                  <div className="flex items-center gap-2 text-warm-gray-400 text-xs mt-4 pt-3 border-t border-warm-gray-100">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
@@ -332,25 +448,71 @@ export default function EscuelaPage() {
             ))}
           </div>
 
-          {/* Structure Info */}
-          <div className="mt-12 max-w-3xl mx-auto">
+          {/* Progression Summary Table */}
+          <div className="mt-12 max-w-4xl mx-auto">
             <div className="bg-gradient-to-r from-burgundy/5 to-coral/5 rounded-3xl p-8 border border-burgundy/10">
-              <h4 className="font-bold text-burgundy text-lg mb-4 text-center">Cada ciclo de 4 días incluye:</h4>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  "Sesiones teóricas y conceptuales",
-                  "Prácticas guiadas entre compañeros",
-                  "Experiencia ceremonial supervisada",
-                  "Círculos de integración grupal",
-                  "Retroalimentación personalizada",
-                  "Tiempo de reflexión individual",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-coral flex-shrink-0" />
-                    <span className="text-warm-gray-600 text-sm">{item}</span>
-                  </div>
-                ))}
+              <h4 className="font-bold text-burgundy text-lg mb-6 text-center">Tu Progresión en Cada Práctica</h4>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-burgundy/10">
+                      <th className="text-left py-3 text-warm-gray-600 font-medium">Práctica</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C0</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C1</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C2</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C3</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C4</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C5</th>
+                      <th className="text-center py-3 text-warm-gray-600 font-medium">C6</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-warm-gray-100">
+                      <td className="py-3 font-medium text-warm-gray-700">Sapo de Sonora</td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-gold rounded-full inline-block" title="Apoyo"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
+                    </tr>
+                    <tr className="border-b border-warm-gray-100">
+                      <td className="py-3 font-medium text-warm-gray-700">Rana Mono Gigante</td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-coral rounded-full inline-block" title="Autoaplicación"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
+                    </tr>
+                    <tr className="border-b border-warm-gray-100">
+                      <td className="py-3 font-medium text-warm-gray-700">Planta Amazónica</td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-gold rounded-full inline-block" title="Apoyo"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 font-medium text-warm-gray-700">Integración</td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-gold rounded-full inline-block" title="Apoyo"></span></td>
+                      <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
+                      <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+              <p className="text-center text-warm-gray-500 text-xs mt-4">
+                Cada práctica tiene su propia progresión: Teoría → Apoyo → Autoaplicación → Responsable
+              </p>
             </div>
           </div>
         </div>
@@ -544,8 +706,8 @@ export default function EscuelaPage() {
                 <h4 className="font-bold text-burgundy mb-2">Evaluación basada en competencias</h4>
                 <p className="text-warm-gray-600 text-sm">
                   A diferencia de programas basados solo en asistencia, evaluamos tu desarrollo real en cada competencia
-                  con retroalimentación estructurada, role-play y práctica supervisada. La certificación requiere
-                  demostrar dominio en al menos 5 de las 6 competencias.
+                  con retroalimentación estructurada, role-play y práctica supervisada. El reconocimiento como facilitador
+                  formado requiere demostrar dominio en al menos 5 de las 6 competencias.
                 </p>
               </div>
             </div>
@@ -585,7 +747,7 @@ export default function EscuelaPage() {
                 role: "Facilitadora, Monterrey",
                 quote: "La ética y seguridad que enseñan es impecable. Me siento preparada para cualquier situación y mis participantes confían completamente en mi guía.",
                 before: "Interesada en prácticas ancestrales sin formación formal",
-                after: "Facilitadora certificada con práctica propia en Monterrey",
+                after: "Facilitadora formada con práctica propia en Monterrey",
               },
             ].map((testimonial, index) => (
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/10">
@@ -611,8 +773,91 @@ export default function EscuelaPage() {
         </div>
       </section>
 
-      {/* Instructors/Facilitators */}
+      {/* Network Integration - What Happens After */}
       <section className="section-padding bg-warm-white">
+        <div className="section-container">
+          <div className="text-center mb-16">
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Después de la formación</span>
+            <h2 className="text-burgundy mt-3 mb-4">Tu Camino Profesional con FloreSiendo</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Completar la formación es solo el inicio. Te integramos a una red activa de facilitadores
+              con oportunidades reales de práctica y crecimiento continuo.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                icon: Users,
+                title: "Red de Facilitadores",
+                description: "Acceso a comunidad privada de +50 facilitadores activos en México, España, Portugal, Rumania y Uruguay.",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
+              },
+              {
+                icon: UserCheck,
+                title: "Co-facilitación",
+                description: "Oportunidades de acompañar encuentros como co-facilitador con mentores experimentados. Primeras experiencias pagadas.",
+                bgColor: "bg-burgundy/10",
+                textColor: "text-burgundy",
+              },
+              {
+                icon: Video,
+                title: "Supervisión Continua",
+                description: "Círculos mensuales de supervisión grupal para revisar casos, resolver dudas y seguir creciendo como facilitador.",
+                bgColor: "bg-gold/10",
+                textColor: "text-gold-dark",
+              },
+              {
+                icon: Globe,
+                title: "Respaldo Internacional",
+                description: "Si quieres organizar encuentros en otro país, te brindamos acompañamiento, protocolos y conexión con la red local.",
+                bgColor: "bg-coral/10",
+                textColor: "text-coral",
+              },
+            ].map((item, index) => (
+              <div key={index} className="bg-white rounded-2xl p-6 shadow-sm border border-warm-gray-100 hover:shadow-lg transition-shadow">
+                <div className={`w-12 h-12 ${item.bgColor} rounded-xl flex items-center justify-center mb-4`}>
+                  <item.icon className={`w-6 h-6 ${item.textColor}`} />
+                </div>
+                <h3 className="font-bold text-warm-gray-800 mb-2">{item.title}</h3>
+                <p className="text-warm-gray-600 text-sm">{item.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Try One Cycle First Option */}
+          <div className="mt-12 max-w-3xl mx-auto">
+            <div className="bg-gradient-to-r from-gold/10 to-coral/10 rounded-3xl p-8 border border-gold/20">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0">
+                  <Sparkles className="w-10 h-10 text-gold-dark" />
+                </div>
+                <div className="text-center md:text-left">
+                  <h4 className="font-bold text-burgundy text-xl mb-2">¿No estás seguro de comprometerte con el programa completo?</h4>
+                  <p className="text-warm-gray-600 mb-4">
+                    Puedes comenzar con el Ciclo 0 para conocer nuestra metodología y decidir si es para ti.
+                    Si continúas, tu inversión inicial se aplica al programa completo.
+                  </p>
+                  <TrackedWhatsAppLink
+                    phone={whatsappNumber}
+                    message="Hola, me interesa probar el Ciclo 0 de la Formación de Facilitadores antes de comprometerme con el programa completo. ¿Podrían darme más información?"
+                    page="escuela"
+                    buttonLocation="try-one-cycle"
+                    value={180000}
+                    className="inline-flex items-center justify-center gap-2 bg-burgundy hover:bg-burgundy-dark text-white font-semibold py-3 px-6 rounded-full transition-all hover:scale-105"
+                  >
+                    Consultar sobre el Ciclo 0
+                  </TrackedWhatsAppLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Instructors/Facilitators */}
+      <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-16">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">Quiénes te forman</span>
@@ -760,14 +1005,14 @@ export default function EscuelaPage() {
                   <h4 className="font-bold text-warm-gray-800 mb-4">Incluye:</h4>
                   <ul className="space-y-3">
                     {[
-                      "28 días de formación presencial (7 ciclos)",
+                      "28 días de formación presencial (Ciclos 0-6)",
                       "140+ horas de contacto directo",
                       "Alojamiento y alimentación en cada ciclo",
                       "Sesiones de seguimiento online entre ciclos",
                       "Role-play y práctica entre pares online",
                       "Supervisión de casos con formadores",
                       "Materiales y recursos de por vida",
-                      "Certificación basada en competencias",
+                      "Reconocimiento como facilitador formado",
                       "Acceso a red internacional de egresados",
                     ].map((item, i) => (
                       <li key={i} className="flex items-center gap-3">
@@ -790,15 +1035,17 @@ export default function EscuelaPage() {
                 </div>
 
                 {/* CTA */}
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TrackedWhatsAppLink
+                  phone={whatsappNumber}
+                  message={whatsappMessage}
+                  page="escuela"
+                  buttonLocation="pricing"
+                  value={180000}
                   className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
                 >
                   <WhatsAppIcon className="w-6 h-6" />
                   Solicitar Información
-                </a>
+                </TrackedWhatsAppLink>
               </div>
             </div>
 
@@ -830,16 +1077,16 @@ export default function EscuelaPage() {
                 answer: "El requisito principal es haber participado en al menos 2 encuentros con FloreSiendo antes de iniciar la formación. Esto nos permite conocerte, evaluar tu preparación y asegurar que comprendes nuestro enfoque. Si tienes experiencia previa con otras organizaciones, podemos considerarla caso por caso.",
               },
               {
-                question: "¿Cómo se evalúa la certificación?",
-                answer: "A diferencia de programas basados solo en asistencia, utilizamos evaluación por competencias. Medimos tu desarrollo en las 6 competencias del facilitador mediante role-play, práctica supervisada y retroalimentación estructurada. La certificación requiere demostrar dominio en al menos 5 de las 6 competencias.",
+                question: "¿Cómo se evalúa el progreso en la formación?",
+                answer: "A diferencia de programas basados solo en asistencia, utilizamos evaluación por competencias. Medimos tu desarrollo en las 6 competencias del facilitador mediante role-play, práctica supervisada progresiva (de apoyo a responsable) y retroalimentación estructurada. El reconocimiento como facilitador formado requiere demostrar dominio en al menos 5 de las 6 competencias.",
               },
               {
                 question: "¿Qué pasa si no estoy listo para facilitar al final?",
-                answer: "La seguridad es nuestra prioridad. Si identificamos áreas que requieren más desarrollo, ofrecemos ciclos adicionales de práctica supervisada y mentoría personalizada. No certificamos a nadie que no demuestre las competencias necesarias para facilitar con seguridad.",
+                answer: "La seguridad es nuestra prioridad. Si identificamos áreas que requieren más desarrollo, ofrecemos ciclos adicionales de práctica supervisada y mentoría personalizada. No reconocemos como facilitador formado a nadie que no demuestre las competencias necesarias para facilitar con seguridad.",
               },
               {
                 question: "¿Cuánto dura la formación completa?",
-                answer: "Los 7 ciclos se distribuyen a lo largo de 12-18 meses, con 2-4 semanas de integración entre cada ciclo. Este espaciado permite la práctica personal, sesiones de seguimiento online quincenales y asimilación profunda del aprendizaje.",
+                answer: "Los 7 ciclos (del 0 al 6) se distribuyen a lo largo de 12-18 meses, con 2-4 semanas de integración entre cada ciclo. Este espaciado permite la práctica personal, sesiones de seguimiento online quincenales y asimilación profunda del aprendizaje.",
               },
               {
                 question: "¿Cuál es el tamaño del grupo?",
@@ -887,15 +1134,17 @@ export default function EscuelaPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedWhatsAppLink
+              phone={whatsappNumber}
+              message={whatsappMessage}
+              page="escuela"
+              buttonLocation="footer"
+              value={180000}
               className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-xl"
             >
               <WhatsAppIcon className="w-6 h-6" />
               Solicitar Información
-            </a>
+            </TrackedWhatsAppLink>
             <Link
               href="/encuentros"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
