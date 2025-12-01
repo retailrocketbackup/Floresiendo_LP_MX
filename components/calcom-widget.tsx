@@ -46,9 +46,11 @@ export function CalcomWidget({
       };
     })(window, "https://app.cal.com/embed/embed.js", "init");
 
-    // Initialize with namespace
+    // Initialize with namespace and brand colors
     (window as any).Cal("init", "meditacion-guiada", { origin: "https://app.cal.com" });
     (window as any).Cal.ns["meditacion-guiada"]("ui", {
+      theme: "light",
+      styles: { branding: { brandColor: "#8b2a4a" } },
       hideEventTypeDetails: false,
       layout: "month_view",
     });
