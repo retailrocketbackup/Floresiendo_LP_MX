@@ -1,18 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MeditationHero } from "@/components/meditation-hero";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { MeditationBenefits } from "@/components/meditation-benefits";
 import { MeditationFacilitator } from "@/components/meditation-facilitator";
 import { MeditationFAQ } from "@/components/meditation-faq";
-import { CalcomWidget } from "@/components/calcom-widget";
 
 export default function FunnelMeditacionPage() {
   const [playVideo, setPlayVideo] = useState(false);
   const handleThumbnailClick = () => {
     setPlayVideo(true);
   };
+
+  // Load Cal.com script once for all buttons
+  useEffect(() => {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const w = window as any;
+    (function (C: any, A: string, L: string) {
+      const p = function (a: any, ar: any) { a.q.push(ar); };
+      const d = C.document;
+      C.Cal = C.Cal || function () {
+        const cal = C.Cal;
+        const ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api: any = function () { p(api, arguments); };
+          const namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(w, "https://app.cal.com/embed/embed.js", "init");
+
+    w.Cal("init", "meditacion-guiada", { origin: "https://app.cal.com" });
+    w.Cal.ns["meditacion-guiada"]("ui", {
+      theme: "light",
+      styles: { branding: { brandColor: "#8b2a4a" } },
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+  }, []);
 
   return (
     <main className="bg-white">
@@ -37,14 +77,6 @@ export default function FunnelMeditacionPage() {
 
       {/* FAQ: Objection handling */}
       <MeditationFAQ className="bg-white" />
-
-      {/* Cal.com Booking: Main conversion point */}
-      <CalcomWidget
-        calLink="floresiendomexico/meditacion-guiada"
-        funnel="meditacion"
-        eventName="CompleteRegistration"
-        className="bg-gradient-to-b from-white to-[#8b2a4a]/10"
-      />
 
       {/* Final CTA section */}
       <section className="bg-[#8b2a4a] py-16 px-4 text-center">
