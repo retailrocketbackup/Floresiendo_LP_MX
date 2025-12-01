@@ -3,17 +3,6 @@
 
 import Image from "next/image";
 
-// Función para hacer scroll suave a una sección de la página
-const scrollTo = (id: string) => {
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }
-};
-
 export function MeditationHero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -51,10 +40,12 @@ export function MeditationHero() {
           Próxima sesión: <span className="font-bold text-[#d4a853]">Viernes 28 de Noviembre, 7:00 PM</span> — En vivo por Zoom
         </p>
 
-        {/* CTA Button with coral accent */}
+        {/* CTA Button - Opens Cal.com popup */}
         <button
-          onClick={() => scrollTo("registro")}
-          className="inline-flex items-center justify-center px-8 py-4 text-xl font-bold bg-[#f78080] hover:bg-[#e66b6b] text-white rounded-full shadow-2xl hover:shadow-[#f78080]/50 hover:scale-105 transition-all duration-300"
+          data-cal-link="floresiendomexico/meditacion-guiada"
+          data-cal-namespace="meditacion-guiada"
+          data-cal-config='{"layout":"month_view"}'
+          className="inline-flex items-center justify-center px-8 py-4 text-xl font-bold bg-[#f78080] hover:bg-[#e66b6b] text-white rounded-full shadow-2xl hover:shadow-[#f78080]/50 hover:scale-105 transition-all duration-300 cursor-pointer"
         >
           Reservar Mi Lugar Gratis
         </button>

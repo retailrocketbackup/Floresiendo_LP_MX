@@ -56,13 +56,10 @@ export default function FunnelMeditacionPage() {
             45 minutos pueden cambiar cómo te sientes esta semana.
           </p>
           <button
-            onClick={() => {
-              const element = document.getElementById("registro");
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
-            }}
-            className="inline-flex items-center justify-center px-8 py-4 text-xl font-bold bg-[#f78080] hover:bg-[#e66b6b] text-white rounded-full shadow-2xl hover:shadow-[#f78080]/50 hover:scale-105 transition-all duration-300"
+            data-cal-link="floresiendomexico/meditacion-guiada"
+            data-cal-namespace="meditacion-guiada"
+            data-cal-config='{"layout":"month_view"}'
+            className="inline-flex items-center justify-center px-8 py-4 text-xl font-bold bg-[#f78080] hover:bg-[#e66b6b] text-white rounded-full shadow-2xl hover:shadow-[#f78080]/50 hover:scale-105 transition-all duration-300 cursor-pointer"
           >
             Reservar Mi Lugar Gratis
           </button>

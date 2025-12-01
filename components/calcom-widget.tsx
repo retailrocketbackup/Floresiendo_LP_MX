@@ -4,13 +4,6 @@
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 
-// Cal.com type declaration
-declare global {
-  interface Window {
-    Cal?: (action: string, ...args: unknown[]) => void;
-  }
-}
-
 interface CalcomWidgetProps {
   calLink: string; // e.g., "floresiendomexico/meditacion-guiada"
   funnel?: string;
@@ -25,34 +18,41 @@ export function CalcomWidget({
   buttonText = "Reservar Mi Lugar Gratis",
 }: CalcomWidgetProps) {
   useEffect(() => {
-    // Load Cal.com embed script
-    const existingScript = document.querySelector(
-      'script[src="https://app.cal.com/embed/embed.js"]'
-    );
-
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.src = "https://app.cal.com/embed/embed.js";
-      script.async = true;
-      script.onload = () => {
-        if (window.Cal) {
-          window.Cal("init", { origin: "https://cal.com" });
+    // Cal.com element-click embed script
+    (function (C: any, A: string, L: string) {
+      let p = function (a: any, ar: any) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal;
+        let ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
         }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
       };
-      document.head.appendChild(script);
-    }
-  }, []);
+    })(window, "https://app.cal.com/embed/embed.js", "init");
 
-  const openCalPopup = () => {
-    if (window.Cal) {
-      window.Cal("modal", {
-        calLink: calLink,
-        config: {
-          theme: "light",
-        },
-      });
-    }
-  };
+    // Initialize with namespace
+    (window as any).Cal("init", "meditacion-guiada", { origin: "https://app.cal.com" });
+    (window as any).Cal.ns["meditacion-guiada"]("ui", {
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
+  }, []);
 
   return (
     <section id="registro" className={cn("py-16 sm:py-20 px-4", className)}>
@@ -69,10 +69,12 @@ export function CalcomWidget({
             correo de confirmación con el enlace de Zoom.
           </p>
 
-          {/* CTA Button - Opens popup */}
+          {/* CTA Button - Cal.com element-click */}
           <button
-            onClick={openCalPopup}
-            className="inline-flex items-center justify-center px-10 py-5 text-xl font-bold bg-[#8b2a4a] hover:bg-[#6d2139] text-white rounded-full shadow-2xl hover:shadow-[#8b2a4a]/30 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none"
+            data-cal-link={calLink}
+            data-cal-namespace="meditacion-guiada"
+            data-cal-config='{"layout":"month_view"}'
+            className="inline-flex items-center justify-center px-10 py-5 text-xl font-bold bg-[#8b2a4a] hover:bg-[#6d2139] text-white rounded-full shadow-2xl hover:shadow-[#8b2a4a]/30 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none cursor-pointer"
           >
             {buttonText}
           </button>
