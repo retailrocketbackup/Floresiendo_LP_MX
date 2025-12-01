@@ -1,7 +1,7 @@
 // components/calcom-widget.tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 // Cal.com type declaration
@@ -16,47 +16,43 @@ interface CalcomWidgetProps {
   funnel?: string;
   eventName?: string;
   className?: string;
+  buttonText?: string;
 }
 
 export function CalcomWidget({
   calLink,
   className,
+  buttonText = "Reservar Mi Lugar Gratis",
 }: CalcomWidgetProps) {
-  const calRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     // Load Cal.com embed script
-    const script = document.createElement("script");
-    script.src = "https://app.cal.com/embed/embed.js";
-    script.async = true;
-    script.onload = () => {
-      // Initialize Cal after script loads
-      if (window.Cal) {
-        window.Cal("init", { origin: "https://cal.com" });
-        window.Cal("inline", {
-          elementOrSelector: "#cal-inline-container",
-          calLink: calLink,
-          layout: "month_view",
-          config: {
-            theme: "light",
-          },
-        });
+    const existingScript = document.querySelector(
+      'script[src="https://app.cal.com/embed/embed.js"]'
+    );
 
-        // Hide loading after a short delay for Cal to render
-        setTimeout(() => setIsLoading(false), 1000);
-      }
-    };
-    document.head.appendChild(script);
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.src = "https://app.cal.com/embed/embed.js";
+      script.async = true;
+      script.onload = () => {
+        if (window.Cal) {
+          window.Cal("init", { origin: "https://cal.com" });
+        }
+      };
+      document.head.appendChild(script);
+    }
+  }, []);
 
-    return () => {
-      // Cleanup
-      const existingScript = document.querySelector('script[src="https://app.cal.com/embed/embed.js"]');
-      if (existingScript) {
-        existingScript.remove();
-      }
-    };
-  }, [calLink]);
+  const openCalPopup = () => {
+    if (window.Cal) {
+      window.Cal("modal", {
+        calLink: calLink,
+        config: {
+          theme: "light",
+        },
+      });
+    }
+  };
 
   return (
     <section id="registro" className={cn("py-16 sm:py-20 px-4", className)}>
@@ -66,34 +62,23 @@ export function CalcomWidget({
             Reserva tu lugar
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] mb-4">
-            Elige tu Horario
+            Sesión de Meditación Gratuita
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Selecciona el día y hora que mejor funcione para ti. Recibirás un
             correo de confirmación con el enlace de Zoom.
           </p>
+
+          {/* CTA Button - Opens popup */}
+          <button
+            onClick={openCalPopup}
+            className="inline-flex items-center justify-center px-10 py-5 text-xl font-bold bg-[#8b2a4a] hover:bg-[#6d2139] text-white rounded-full shadow-2xl hover:shadow-[#8b2a4a]/30 hover:scale-105 transition-all duration-300 animate-pulse hover:animate-none"
+          >
+            {buttonText}
+          </button>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-[#f78080]/10 relative">
-          {/* Loading state */}
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8b2a4a] mx-auto mb-4"></div>
-                <p className="text-gray-500">Cargando calendario...</p>
-              </div>
-            </div>
-          )}
-
-          {/* Cal.com inline embed */}
-          <div
-            id="cal-inline-container"
-            ref={calRef}
-            style={{ minHeight: "700px", width: "100%" }}
-          />
-        </div>
-
-        {/* Trust indicators below calendar */}
+        {/* Trust indicators */}
         <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
           <div className="flex items-center gap-2">
             <svg
