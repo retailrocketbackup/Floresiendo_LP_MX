@@ -1,18 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { MeditationHero } from "@/components/meditation-hero";
-import { TestimonialsSection } from "@/components/testimonials-section";
 import { MeditationBenefits } from "@/components/meditation-benefits";
 import { MeditationFacilitator } from "@/components/meditation-facilitator";
 import { MeditationFAQ } from "@/components/meditation-faq";
 
 export default function FunnelMeditacionPage() {
-  const [playVideo, setPlayVideo] = useState(false);
-  const handleThumbnailClick = () => {
-    setPlayVideo(true);
-  };
-
   // Load Cal.com script once for all buttons
   useEffect(() => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -58,16 +52,6 @@ export default function FunnelMeditacionPage() {
     <main className="bg-white">
       {/* Hero: Problem-first headline with burgundy overlay */}
       <MeditationHero />
-
-      {/* Testimonials: Social proof */}
-      <section className="bg-gradient-to-b from-white to-[#f78080]/5 py-20 sm:py-24 flex flex-col justify-center">
-        <TestimonialsSection
-          funnel="meditacion"
-          shouldPlay={playVideo}
-          onThumbnailClick={handleThumbnailClick}
-          className="bg-transparent"
-        />
-      </section>
 
       {/* Benefits: Neuroscience-backed messaging */}
       <MeditationBenefits />

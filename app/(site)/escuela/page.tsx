@@ -13,6 +13,7 @@ import {
   Video,
   UserCheck,
   Brain,
+  MessageCircle,
 } from "lucide-react";
 import { PageTracking } from "@/components/page-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
