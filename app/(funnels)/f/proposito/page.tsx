@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, Compass, Users, Sparkles, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { Play, Compass, Sparkles, Heart, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import { trackWhatsAppLead } from "@/lib/meta-tracking";
 import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
 // TODO: Replace with actual Vimeo video ID for V001
 const VIMEO_VIDEO_ID = "PENDING";
 const MAIN_WHATSAPP = "526182301481";
-const WHATSAPP_MESSAGE = "Hola, vi el video sobre encontrar proposito y me gustaria saber mas sobre como pueden ayudarme.";
+const WHATSAPP_MESSAGE = "Hola, vi el video sobre encontrar propósito y me gustaría saber más sobre cómo pueden ayudarme.";
 
 // WhatsApp button component with tracking
 function WhatsAppCTA({
@@ -77,24 +77,24 @@ export default function PropositoPage() {
 
   const faqs = [
     {
-      question: "¿Que puedo esperar al escribirles?",
-      answer: "Te responderemos personalmente para escucharte, entender tu situacion y explorar juntos si nuestro acompanamiento puede ayudarte. Sin presion, sin compromiso.",
+      question: "¿Qué incluye el encuentro y dónde se realiza?",
+      answer: "Son tres noches en Morelos, con prácticas ancestrales y acompañamiento personalizado en un ambiente de tranquilidad.",
     },
     {
-      question: "¿Necesito experiencia previa con practicas espirituales?",
-      answer: "No. El acompanamiento esta disenado para cualquier persona que busque reconectar con su proposito, sin importar su experiencia previa.",
+      question: "¿Necesito experiencia previa en espiritualidad para participar?",
+      answer: "Para nada, este espacio es para todas las personas que buscan reencontrarse consigo mismas.",
     },
     {
-      question: "¿Tiene algun costo la conversacion inicial?",
-      answer: "No. La primera conversacion es gratuita y sin compromiso. Tu decides si quieres dar el siguiente paso.",
+      question: "¿Qué puedo esperar durante el retiro?",
+      answer: "Ejercicios, meditaciones y rituales que apoyan tu proceso personal sin presión.",
     },
     {
-      question: "¿Que tipo de practicas utilizan?",
-      answer: "Trabajamos con practicas ancestrales que facilitan la introspeccion profunda y la reconexion con tu esencia. Todo en un ambiente seguro y de respeto.",
+      question: "¿El encuentro tiene horarios fijos?",
+      answer: "Sí, pero siempre con flexibilidad para que cada quien avance a su ritmo.",
     },
     {
-      question: "¿Cuanto tiempo toma el proceso?",
-      answer: "Cada persona tiene su propio ritmo. Algunos encuentran claridad en una sesion, otros prefieren un acompanamiento mas prolongado. Tu decides.",
+      question: "¿Cómo puedo reservar mi lugar?",
+      answer: "Solo escribe al WhatsApp en esta página y te ayudamos con todo el proceso.",
     },
   ];
 
@@ -118,7 +118,7 @@ export default function PropositoPage() {
           {/* Badge */}
           <div className="text-center mb-8">
             <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm text-[#f78080] rounded-full text-sm font-semibold border border-white/20">
-              Transformacion Personal
+              Transformación Personal
             </span>
           </div>
 
@@ -130,8 +130,8 @@ export default function PropositoPage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-white/80 text-center mb-10 max-w-2xl mx-auto">
-            Se lo que es trabajar por dinero pero sentir que no estas cumpliendo tu proposito.
-            Por eso quiero acompanarte a encontrar el tuyo.
+            Sé lo que es trabajar por dinero pero sentir que no estás cumpliendo tu propósito.
+            Aquí te acompañamos a encontrar el tuyo—sin presión, sin compromiso.
           </p>
 
           {/* CTA - Primary focus */}
@@ -146,7 +146,7 @@ export default function PropositoPage() {
               Escribenos por WhatsApp
             </WhatsAppCTA>
             <p className="mt-4 text-white/60 text-sm">
-              Sin costo. Sin presion. Solo una conversacion para escucharte.
+              Sin costo. Sin presión. Solo una conversación para escucharte.
             </p>
           </div>
 
@@ -183,16 +183,16 @@ export default function PropositoPage() {
             ¿Te suena familiar?
           </h2>
           <p className="text-xl text-gray-600 text-center mb-12">
-            Tal vez reconoces algunas de estas senales...
+            Tal vez reconoces algunas de estas señales...
           </p>
 
           <div className="space-y-4">
             {[
-              "Trabajas de 9 a 5 pero terminas el dia sintiendote vacio",
-              "Cumples responsabilidades pero no te hacen feliz",
-              "Sientes una insatisfaccion profunda que el dinero no llena",
-              "Te preguntas: ¿Para que me levanto cada manana?",
-              "Quieres dejar un legado pero no sabes cual es tu camino",
+              "Terminas el día agotado pero vacío, sin motivación verdadera",
+              "Cumples responsabilidades, pero no te hacen feliz",
+              "Sientes una insatisfacción profunda que el dinero no llena",
+              "Te preguntas: ¿para qué me levanto cada mañana?",
+              "Quieres dejar un legado, pero no sabes cuál es tu camino",
             ].map((item, index) => (
               <div
                 key={index}
@@ -207,7 +207,7 @@ export default function PropositoPage() {
           </div>
 
           <p className="text-center text-[#8b2a4a] font-medium mt-10 text-lg">
-            Esa voz interior que te dice que hay algo mas... tiene razon.
+            Esa voz interior que te dice que hay algo más... tiene razón.
           </p>
         </div>
       </section>
@@ -216,14 +216,14 @@ export default function PropositoPage() {
       <section className="py-20 px-4 bg-[#fdf8f4]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] text-center mb-6">
-            Reconecta con tu proposito
+            Reconecta con tu propósito
           </h2>
           <p className="text-xl text-gray-600 text-center mb-6 max-w-2xl mx-auto">
             En FloreSiendo creamos un espacio de confianza donde puedes explorar
             tu interior y descubrir aquello que te hace sentir vivo.
           </p>
           <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            A traves de practicas ancestrales, te acompanamos a:
+            A través de prácticas ancestrales, te acompañamos a:
           </p>
 
           {/* Benefits Cards */}
@@ -231,18 +231,18 @@ export default function PropositoPage() {
             {[
               {
                 icon: Compass,
-                title: "Encontrar tu norte",
-                description: "Descubre que es lo que realmente te hace levantarte cada manana con ganas de vivir",
+                title: "Prácticas ancestrales que iluminan tu camino",
+                description: "Descubre qué es lo que realmente te hace levantarte cada mañana con ganas de vivir.",
+              },
+              {
+                icon: Heart,
+                title: "Espacio seguro para escucharte sin juicios",
+                description: "Reconecta con esa parte de ti que sabe cuál es tu camino, más allá del ruido diario.",
               },
               {
                 icon: Sparkles,
-                title: "Conectar con tu esencia",
-                description: "Reconecta con esa parte de ti que sabe cual es tu camino, mas alla del ruido diario",
-              },
-              {
-                icon: Users,
-                title: "Transformacion permanente",
-                description: "No es motivacion temporal—es un cambio profundo en como vives y para que lo haces",
+                title: "Transformación desde la experiencia",
+                description: "No es motivación temporal—es un cambio profundo en cómo vives y para qué lo haces.",
               },
             ].map((item, index) => (
               <div
@@ -265,9 +265,9 @@ export default function PropositoPage() {
           {/* Hint at Encuentros */}
           <div className="bg-white rounded-2xl p-8 border border-[#8b2a4a]/10">
             <p className="text-gray-700 text-center mb-4">
-              Para quienes buscan una inmersion mas profunda, tambien facilitamos
-              <strong className="text-[#8b2a4a]"> encuentros de 3 noches en Morelos, Mexico</strong>—retiros
-              donde el proceso de transformacion continua en comunidad.
+              Para quienes buscan una inmersión más profunda, también facilitamos
+              <strong className="text-[#8b2a4a]"> encuentros de 3 noches en Morelos, México</strong>—retiros
+              donde el proceso de transformación continúa en comunidad.
             </p>
             <div className="text-center">
               <Link
@@ -286,18 +286,13 @@ export default function PropositoPage() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] text-center mb-12">
-            Alguien que estuvo donde tu estas
+            Alguien que estuvo donde tú estás
           </h2>
 
           <div className="bg-[#fdf8f4] rounded-2xl p-8">
             <blockquote className="text-gray-700 leading-relaxed text-lg italic text-center">
-              &ldquo;En algun momento de mi vida me encontraba en un trabajo rutinario de 9 a 5,
-              estando en la computadora, respondiendo a los jefes... Terminaba el dia vacio,
-              sin un sentido, tocando fondo, aburrido, sin motivacion.
-              <br /><br />
-              Llego un punto de insatisfaccion profunda. Compromisos que no queria,
-              responsabilidades por un trabajo a cambio de dinero, pero no me llenaba,
-              no me hacia feliz, no sentia que estaba cumpliendo mi proposito.
+              &ldquo;Cuando toqué fondo, sentí que nada tenía sentido... hasta que me permití
+              detenerme y abrirme a prácticas que me recordaron quién realmente soy.
               <br /><br />
               <span className="text-[#8b2a4a] font-semibold not-italic">
                 Y eso es algo que te puede estar pasando a ti.
@@ -329,7 +324,7 @@ export default function PropositoPage() {
             Empieza a vivir la vida que quieres vivir
           </h2>
           <p className="text-xl text-white/80 mb-10">
-            Una conversacion puede ser el inicio de tu transformacion.
+            Una conversación puede ser el inicio de tu transformación.
           </p>
 
           <WhatsAppCTA

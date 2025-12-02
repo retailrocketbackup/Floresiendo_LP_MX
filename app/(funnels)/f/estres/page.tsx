@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, Battery, Brain, Heart, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { Play, Battery, Heart, Sparkles, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import { trackWhatsAppLead } from "@/lib/meta-tracking";
 import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
 // TODO: Replace with actual Vimeo video ID for V003
 const VIMEO_VIDEO_ID = "PENDING";
 const MAIN_WHATSAPP = "526182301481";
-const WHATSAPP_MESSAGE = "Hola, vi el video sobre el estres y la rutina, y me gustaria saber como pueden ayudarme.";
+const WHATSAPP_MESSAGE = "Hola, vi el video sobre el estrés y la rutina, y me gustaría saber cómo pueden ayudarme.";
 
 // WhatsApp button component with tracking
 function WhatsAppCTA({
@@ -77,24 +77,24 @@ export default function EstresPage() {
 
   const faqs = [
     {
-      question: "¿Que puedo esperar al escribirles?",
-      answer: "Te responderemos personalmente para escucharte, entender tu situacion y explorar juntos si nuestro acompanamiento puede ayudarte. Sin presion, sin compromiso.",
+      question: "¿En qué consiste el encuentro?",
+      answer: "Es una experiencia inmersiva de tres noches en Morelos con prácticas para aliviar el estrés emocional y mental.",
     },
     {
-      question: "¿Esto es terapia psicologica?",
-      answer: "No. Ofrecemos acompanamiento espiritual basado en practicas ancestrales. Si necesitas atencion psicologica, te recomendamos buscar un profesional de salud mental.",
+      question: "¿Se necesita experiencia en espiritualidad?",
+      answer: "No, está diseñado para cualquier persona que busque un espacio de paz y acompañamiento.",
     },
     {
-      question: "¿Tiene algun costo la conversacion inicial?",
-      answer: "No. La primera conversacion es gratuita y sin compromiso. Tu decides si quieres dar el siguiente paso.",
+      question: "¿Cómo es el horario durante el retiro?",
+      answer: "Combina actividades guiadas con momentos libres para integrar y descansar.",
     },
     {
-      question: "¿Que tipo de practicas utilizan?",
-      answer: "Trabajamos con ceremonias y rituales de tradiciones ancestrales que facilitan la reconexion interior y el descanso profundo del ser. Todo en un ambiente seguro.",
+      question: "¿Es posible asistir solo un día?",
+      answer: "Para mejores resultados recomendamos vivir las tres noches completas.",
     },
     {
-      question: "¿Puedo combinarlo con mi tratamiento medico?",
-      answer: "Nuestro acompanamiento es complementario. Siempre recomendamos mantener cualquier tratamiento medico o psicologico que estes llevando.",
+      question: "¿Cómo puedo reservar?",
+      answer: "Envía un mensaje al WhatsApp que aparece en la página y te guiaremos.",
     },
   ];
 
@@ -130,8 +130,8 @@ export default function EstresPage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-white/80 text-center mb-10 max-w-2xl mx-auto">
-            Se lo que es despertar con un peso inmenso, ahogado entre trabajo,
-            problemas y deudas. Encontre una alternativa, y quiero compartirla contigo.
+            Sé lo que es despertar con un peso inmenso, ahogado entre trabajo,
+            problemas y deudas. Encontré una alternativa—y quiero compartirla contigo, sin juicios ni prisas.
           </p>
 
           {/* CTA - Primary focus */}
@@ -143,10 +143,10 @@ export default function EstresPage() {
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
-              Escribenos por WhatsApp
+              Escríbenos por WhatsApp
             </WhatsAppCTA>
             <p className="mt-4 text-white/60 text-sm">
-              Sin costo. Sin presion. Solo una conversacion para escucharte.
+              Sin costo. Sin presión. Solo una conversación para escucharte.
             </p>
           </div>
 
@@ -183,16 +183,16 @@ export default function EstresPage() {
             ¿Te identificas?
           </h2>
           <p className="text-xl text-gray-600 text-center mb-12">
-            Tal vez reconoces algunas de estas senales...
+            Tal vez reconoces algunas de estas señales...
           </p>
 
           <div className="space-y-4">
             {[
-              "Despiertas con una sensacion de vacio y un peso inmenso",
+              "Despiertas con una sensación de vacío y un peso inmenso",
               "Te sientes atrapado en una rutina de trabajo y reuniones interminables",
               "Problemas familiares, de pareja y deudas que restan tu paz",
-              "Un trabajo que te agota dia a dia sin darte nada a cambio",
-              "Sientes que lo que dices, piensas y sientes no tiene congruencia",
+              "Un trabajo que te agota día a día sin darte nada a cambio",
+              "Buscas un respiro verdadero que te ayude a reencontrarte",
             ].map((item, index) => (
               <div
                 key={index}
@@ -207,7 +207,7 @@ export default function EstresPage() {
           </div>
 
           <p className="text-center text-[#8b2a4a] font-medium mt-10 text-lg">
-            No estas solo. Y hay una alternativa.
+            No estás solo. Y hay una alternativa.
           </p>
         </div>
       </section>
@@ -223,26 +223,26 @@ export default function EstresPage() {
             reconectar contigo mismo y encontrar claridad.
           </p>
           <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            A traves de practicas ancestrales, te acompanamos a:
+            A través de prácticas ancestrales, te acompañamos a:
           </p>
 
           {/* Benefits Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
               {
-                icon: Brain,
-                title: "Silenciar el ruido mental",
-                description: "Tecnicas para calmar la mente y salir del ciclo de estres y preocupacion constante",
-              },
-              {
-                icon: Battery,
-                title: "Recargar tu energia",
-                description: "Reconectar con fuentes de vitalidad que van mas alla del descanso fisico",
+                icon: Sparkles,
+                title: "Rituales y prácticas ancestrales para soltar cargas",
+                description: "Técnicas para calmar la mente y salir del ciclo de estrés y preocupación constante.",
               },
               {
                 icon: Heart,
-                title: "Encontrar congruencia",
-                description: "Alinear lo que piensas, sientes y haces para vivir con autenticidad",
+                title: "Un espacio seguro sin presión ni juicios",
+                description: "Reconectar con fuentes de vitalidad que van más allá del descanso físico.",
+              },
+              {
+                icon: Battery,
+                title: "Renueva tu energía y perspectiva",
+                description: "Alinear lo que piensas, sientes y haces para vivir con autenticidad.",
               },
             ].map((item, index) => (
               <div
@@ -265,8 +265,8 @@ export default function EstresPage() {
           {/* Hint at Encuentros */}
           <div className="bg-white rounded-2xl p-8 border border-[#8b2a4a]/10">
             <p className="text-gray-700 text-center mb-4">
-              Para quienes buscan una inmersion mas profunda, tambien facilitamos
-              <strong className="text-[#8b2a4a]"> encuentros de 3 noches en Morelos, Mexico</strong>—retiros
+              Para quienes buscan una inmersión más profunda, también facilitamos
+              <strong className="text-[#8b2a4a]"> encuentros de 3 noches en Morelos, México</strong>—retiros
               donde puedes desconectarte completamente y reconectar con tu esencia.
             </p>
             <div className="text-center">
@@ -286,21 +286,16 @@ export default function EstresPage() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] text-center mb-12">
-            Alguien que encontro la salida
+            Alguien que encontró la salida
           </h2>
 
           <div className="bg-[#fdf8f4] rounded-2xl p-8">
             <blockquote className="text-gray-700 leading-relaxed text-lg italic text-center">
-              &ldquo;Todos los dias al despertar me levantaba con una sensacion de vacio
-              y un peso inmenso que me impedia ir a trabajar. Me encontraba atrapado
-              en una rutina de trabajo, reuniones, problemas familiares y con pareja,
-              deudas... todo restaba mi paz.
-              <br /><br />
-              Estaba en un trabajo que no me llenaba, que me agotaba dia a dia.
+              &ldquo;El estrés me tenía atrapado; en estos encuentros aprendí a respirar,
+              a soltar y a volver a mi centro.
               <br /><br />
               <span className="text-[#8b2a4a] font-semibold not-italic">
-                Al final del dia pude encontrar una alternativa.
-                Y si esto resuena contigo, juntos podremos encontrar una solucion.
+                Si esto resuena contigo, juntos podremos encontrar una solución.
               </span>&rdquo;
             </blockquote>
           </div>
@@ -329,7 +324,7 @@ export default function EstresPage() {
             Recupera tu paz
           </h2>
           <p className="text-xl text-white/80 mb-10">
-            Una conversacion puede ser el primer paso para salir del ciclo.
+            Una conversación puede ser el primer paso para salir del ciclo.
           </p>
 
           <WhatsAppCTA
@@ -339,7 +334,7 @@ export default function EstresPage() {
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
-            Escribenos por WhatsApp
+            Escríbenos por WhatsApp
           </WhatsAppCTA>
 
           {/* Trust indicators */}
