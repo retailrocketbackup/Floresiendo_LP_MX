@@ -438,3 +438,39 @@ export const trackPageViewContent = (data: PageViewContentData) => {
     currency: data.currency || "MXN",
   })
 }
+
+// =================== VIDEO TRACKING ===================
+
+export type VideoMilestone = "play" | "25" | "50" | "75" | "complete"
+
+export interface VideoTrackingData {
+  funnel: string
+  videoId: string
+  milestone: VideoMilestone
+}
+
+export const trackVideoMilestone = async (data: VideoTrackingData) => {
+  const eventName = data.milestone === "play"
+    ? "ViewContent"
+    : `Video${data.milestone === "complete" ? "Complete" : data.milestone}`
+
+  const contentName = `video_${data.funnel}_${data.videoId}_${data.milestone}`
+
+  console.log(`🎬 VIDEO: Tracking ${data.milestone} milestone`, {
+    funnel: data.funnel,
+    videoId: data.videoId,
+    milestone: data.milestone,
+    eventName,
+    timestamp: new Date().toISOString(),
+  })
+
+  return trackEvent(
+    eventName,
+    {
+      funnel: data.funnel,
+      content_type: "video",
+      content_name: contentName,
+    },
+    { enableCAPI: true },
+  )
+}

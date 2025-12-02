@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Play, Heart, Users, Leaf, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import { trackWhatsAppLead } from "@/lib/meta-tracking";
+import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
 const VIMEO_VIDEO_ID = "1142274109";
 const KARLA_WHATSAPP = "5215540180914";
@@ -158,13 +159,11 @@ export default function DueloAcompanamientoPage() {
 
             {isPlaying && (
               <div className="mt-6 relative aspect-[9/16] max-w-xs mx-auto rounded-2xl overflow-hidden shadow-2xl">
-                <iframe
-                  src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?autoplay=1&title=0&byline=0&portrait=0`}
+                <TrackedVimeoPlayer
+                  videoId={VIMEO_VIDEO_ID}
+                  funnel="duelo-acompanamiento"
                   className="absolute top-0 left-0 w-full h-full"
-                  frameBorder="0"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  title="Video de acompañamiento en duelo"
+                  autoplay={true}
                 />
               </div>
             )}
