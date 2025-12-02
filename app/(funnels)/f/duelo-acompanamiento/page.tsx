@@ -25,6 +25,7 @@ function WhatsAppCTA({
     trackWhatsAppLead({
       page: "duelo-acompanamiento",
       buttonLocation: location,
+      eventName: "Lead_Duelo",
     });
   };
 

@@ -278,10 +278,8 @@ export const trackEvent = async (
       console.warn("[v0] Failed to auto-capture technical data:", error)
     }
   }
-  let finalEventName = eventName
-  if (eventName === "Lead") {
-    finalEventName = data.funnel.includes("video") ? "Lead_Video" : "Lead_Testimonios"
-  }
+  // Use event name as provided (no more auto-renaming Lead events)
+  const finalEventName = eventName
   const sharedEventId = generateEventId()
   const sharedExternalId = data.external_id || generateExternalId(data)
   const fbclid = getFbclid()
@@ -377,12 +375,14 @@ export interface WhatsAppLeadData {
   page: "home" | "encuentro" | "escuela" | "practicas" | "contacto" | string
   buttonLocation: "hero" | "pricing" | "footer" | "cta" | "sticky" | string
   encuentroSlug?: string
+  eventName?: string // Custom event name like "Lead_Duelo", "Lead_Encuentro", etc.
   value?: number
   currency?: string
 }
 
 export const trackWhatsAppLead = async (data: WhatsAppLeadData) => {
-  const eventName = "Lead"
+  // Use custom event name if provided, otherwise default to "Lead"
+  const eventName = data.eventName || "Lead"
   const contentName = data.encuentroSlug
     ? `whatsapp_${data.page}_${data.encuentroSlug}`
     : `whatsapp_${data.page}`
@@ -391,6 +391,7 @@ export const trackWhatsAppLead = async (data: WhatsAppLeadData) => {
     page: data.page,
     buttonLocation: data.buttonLocation,
     encuentroSlug: data.encuentroSlug,
+    eventName,
     value: data.value,
     timestamp: new Date().toISOString(),
   })
