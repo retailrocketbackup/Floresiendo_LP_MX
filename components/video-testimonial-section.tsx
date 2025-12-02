@@ -14,7 +14,7 @@ export function VideoTestimonialSection({ className = "" }: VideoTestimonialSect
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <section className={`py-16 px-4 bg-[#fdf8f4] ${className}`}>
+    <section className={`py-16 px-4 bg-gradient-to-b from-white via-[#fdf8f4] to-[#8b2a4a]/20 ${className}`}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
