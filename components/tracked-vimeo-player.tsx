@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Player from "@vimeo/player";
 import { trackVideoMilestone, type VideoMilestone } from "@/lib/meta-tracking";
 
@@ -19,7 +19,8 @@ export function TrackedVimeoPlayer({
 }: TrackedVimeoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<Player | null>(null);
-  const [trackedMilestones, setTrackedMilestones] = useState<Set<VideoMilestone>>(new Set());
+  // Use ref instead of state to avoid stale closures in event handlers
+  const trackedMilestonesRef = useRef<Set<VideoMilestone>>(new Set());
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -37,9 +38,9 @@ export function TrackedVimeoPlayer({
 
     // Track play event
     player.on("play", () => {
-      if (!trackedMilestones.has("play")) {
+      if (!trackedMilestonesRef.current.has("play")) {
+        trackedMilestonesRef.current.add("play");
         trackVideoMilestone({ funnel, videoId, milestone: "play" });
-        setTrackedMilestones((prev) => new Set(prev).add("play"));
       }
     });
 
@@ -47,34 +48,34 @@ export function TrackedVimeoPlayer({
     player.on("timeupdate", async (data) => {
       const percent = data.percent * 100;
 
-      if (percent >= 25 && !trackedMilestones.has("25")) {
+      if (percent >= 25 && !trackedMilestonesRef.current.has("25")) {
+        trackedMilestonesRef.current.add("25");
         trackVideoMilestone({ funnel, videoId, milestone: "25" });
-        setTrackedMilestones((prev) => new Set(prev).add("25"));
       }
 
-      if (percent >= 50 && !trackedMilestones.has("50")) {
+      if (percent >= 50 && !trackedMilestonesRef.current.has("50")) {
+        trackedMilestonesRef.current.add("50");
         trackVideoMilestone({ funnel, videoId, milestone: "50" });
-        setTrackedMilestones((prev) => new Set(prev).add("50"));
       }
 
-      if (percent >= 75 && !trackedMilestones.has("75")) {
+      if (percent >= 75 && !trackedMilestonesRef.current.has("75")) {
+        trackedMilestonesRef.current.add("75");
         trackVideoMilestone({ funnel, videoId, milestone: "75" });
-        setTrackedMilestones((prev) => new Set(prev).add("75"));
       }
     });
 
     // Track complete
     player.on("ended", () => {
-      if (!trackedMilestones.has("complete")) {
+      if (!trackedMilestonesRef.current.has("complete")) {
+        trackedMilestonesRef.current.add("complete");
         trackVideoMilestone({ funnel, videoId, milestone: "complete" });
-        setTrackedMilestones((prev) => new Set(prev).add("complete"));
       }
     });
 
     return () => {
       player.destroy();
     };
-  }, [videoId, funnel, autoplay, trackedMilestones]);
+  }, [videoId, funnel, autoplay]);
 
   return (
     <div
