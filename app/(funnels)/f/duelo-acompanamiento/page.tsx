@@ -130,36 +130,8 @@ export default function DueloAcompanamientoPage() {
             Sé lo que es cargar con una pérdida que cambió todo. Por eso quiero acompañarte.
           </p>
 
-          {/* Video */}
-          <div className="relative aspect-[9/16] max-w-sm mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10">
-            {isPlaying ? (
-              <iframe
-                src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?autoplay=1&title=0&byline=0&portrait=0`}
-                className="absolute top-0 left-0 w-full h-full"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                title="Video de acompañamiento en duelo"
-              />
-            ) : (
-              <div
-                className="relative w-full h-full bg-gray-900 cursor-pointer group"
-                onClick={() => setIsPlaying(true)}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8b2a4a] to-[#5a1a33] flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-2xl">
-                      <Play className="w-8 h-8 text-[#8b2a4a] ml-1" />
-                    </div>
-                    <p className="text-white/80 text-sm">Ver video</p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* CTA */}
-          <div className="text-center">
+          {/* CTA - Primary focus */}
+          <div className="text-center mb-10">
             <WhatsAppCTA
               location="hero"
               className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
@@ -172,6 +144,30 @@ export default function DueloAcompanamientoPage() {
             <p className="mt-4 text-white/60 text-sm">
               Sin costo. Sin presión. Solo una conversación para escucharte.
             </p>
+          </div>
+
+          {/* Optional Video - Secondary */}
+          <div className="text-center">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors"
+            >
+              <Play className="w-4 h-4" />
+              {isPlaying ? "Cerrar video" : "Ver video completo"}
+            </button>
+
+            {isPlaying && (
+              <div className="mt-6 relative aspect-[9/16] max-w-xs mx-auto rounded-2xl overflow-hidden shadow-2xl">
+                <iframe
+                  src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?autoplay=1&title=0&byline=0&portrait=0`}
+                  className="absolute top-0 left-0 w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title="Video de acompañamiento en duelo"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>
