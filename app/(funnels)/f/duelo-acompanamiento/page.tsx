@@ -286,7 +286,7 @@ export default function DueloAcompanamientoPage() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] text-center mb-12">
-            Tu guía: Alguien que entiende desde la experiencia
+            Alguien que entiende desde la experiencia
           </h2>
 
           <div className="flex flex-col md:flex-row items-center gap-8">
