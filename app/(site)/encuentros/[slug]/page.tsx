@@ -184,6 +184,9 @@ export default async function EncuentroPage({
         </div>
       </section>
 
+      {/* Video Testimonial - Social proof before Investment CTA */}
+      <VideoTestimonialSection />
+
       {/* Personalized Investment Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-[#8b2a4a] to-[#722240] text-white">
         <div className="max-w-3xl mx-auto text-center">
@@ -223,9 +226,6 @@ export default async function EncuentroPage({
 
       {/* Facilitators Carousel */}
       <FacilitadoresCarousel facilitators={encuentro.facilitators} />
-
-      {/* Video Testimonial */}
-      <VideoTestimonialSection />
 
       {/* Preparation */}
       <section className="py-16 px-4 bg-white">
