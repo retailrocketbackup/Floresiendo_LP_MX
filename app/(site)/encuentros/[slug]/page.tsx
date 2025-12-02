@@ -11,6 +11,7 @@ import { PracticasGrid } from "@/components/practicas-grid";
 import { FacilitadoresCarousel } from "@/components/facilitadores-carousel";
 import { EncuentroTracking } from "@/components/encuentro-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
+import { VideoTestimonialSection } from "@/components/video-testimonial-section";
 
 // Generate static params for all encuentros
 export async function generateStaticParams() {
@@ -222,6 +223,9 @@ export default async function EncuentroPage({
 
       {/* Facilitators Carousel */}
       <FacilitadoresCarousel facilitators={encuentro.facilitators} />
+
+      {/* Video Testimonial */}
+      <VideoTestimonialSection />
 
       {/* Preparation */}
       <section className="py-16 px-4 bg-white">

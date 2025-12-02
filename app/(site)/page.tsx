@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Users, Leaf, Calendar, ArrowRight, Star, Shield, Clock, Sparkles } from "lucide-react";
-import { VideoTestimonial } from "@/components/video-testimonial";
 import { AnimatedStats } from "@/components/animated-stats";
 import { FAQAccordion } from "@/components/faq-accordion";
 import { TeamCarousel } from "@/components/team-carousel";
@@ -200,9 +199,6 @@ export default function HomePage() {
 
       {/* Community Carousel Section */}
       <CommunityCarousel />
-
-      {/* Video Testimonial Section */}
-      <VideoTestimonial />
 
       {/* Animated Stats Section */}
       <AnimatedStats />
