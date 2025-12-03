@@ -7,8 +7,8 @@ import { Play, Battery, Heart, Sparkles, ChevronDown, ChevronUp, ArrowRight } fr
 import { trackWhatsAppLead } from "@/lib/meta-tracking";
 import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
-// TODO: Replace with actual Vimeo video ID for V003
-const VIMEO_VIDEO_ID = "PENDING";
+// V003 - "Sientes que tu rutina te consume"
+const VIMEO_VIDEO_ID = "1143232548";
 const MAIN_WHATSAPP = "526182301481";
 const WHATSAPP_MESSAGE = "Hola, vi el video sobre el estrés y la rutina, y me gustaría saber cómo pueden ayudarme.";
 
@@ -150,29 +150,27 @@ export default function EstresPage() {
             </p>
           </div>
 
-          {/* Optional Video - Secondary */}
-          {VIMEO_VIDEO_ID !== "PENDING" && (
-            <div className="text-center">
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors"
-              >
-                <Play className="w-4 h-4" />
-                {isPlaying ? "Cerrar video" : "Ver video completo"}
-              </button>
+          {/* Video Section */}
+          <div className="text-center">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm transition-colors"
+            >
+              <Play className="w-4 h-4" />
+              {isPlaying ? "Cerrar video" : "Ver video completo"}
+            </button>
 
-              {isPlaying && (
-                <div className="mt-6 relative aspect-[9/16] max-w-xs mx-auto rounded-2xl overflow-hidden shadow-2xl">
-                  <TrackedVimeoPlayer
-                    videoId={VIMEO_VIDEO_ID}
-                    funnel="estres"
-                    className="absolute top-0 left-0 w-full h-full"
-                    autoplay={true}
-                  />
-                </div>
-              )}
-            </div>
-          )}
+            {isPlaying && (
+              <div className="mt-6 relative aspect-[9/16] max-w-xs mx-auto rounded-2xl overflow-hidden shadow-2xl">
+                <TrackedVimeoPlayer
+                  videoId={VIMEO_VIDEO_ID}
+                  funnel="estres"
+                  className="absolute top-0 left-0 w-full h-full"
+                  autoplay={true}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
