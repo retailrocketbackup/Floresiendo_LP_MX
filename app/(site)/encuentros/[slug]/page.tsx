@@ -185,7 +185,7 @@ export default async function EncuentroPage({
       </section>
 
       {/* Video Testimonial - Social proof before Investment CTA */}
-      <VideoTestimonialSection />
+      <VideoTestimonialSection funnel={`encuentro_${encuentro.slug}`} />
 
       {/* Personalized Investment Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-[#8b2a4a] to-[#722240] text-white">
@@ -214,6 +214,7 @@ export default async function EncuentroPage({
             page="encuentro"
             buttonLocation="pricing"
             encuentroSlug={encuentro.slug}
+            eventName={`Lead_Encuentro_${encuentro.slug.replace(/-/g, "_")}`}
             className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -292,6 +293,7 @@ export default async function EncuentroPage({
               page="encuentro"
               buttonLocation="footer"
               encuentroSlug={encuentro.slug}
+              eventName={`Lead_Encuentro_${encuentro.slug.replace(/-/g, "_")}`}
               className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

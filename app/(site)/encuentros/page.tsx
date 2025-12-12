@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar, MapPin, Clock, Users, Check, Heart, Star, Sparkles } from "lucide-react";
 import { FAQAccordion } from "@/components/faq-accordion";
+import { PageTracking } from "@/components/page-tracking";
 
 export const metadata = {
   title: "Encuentros y Retiros | FloreSiendo México",
@@ -11,6 +12,13 @@ export const metadata = {
 export default function EncuentrosPage() {
   return (
     <main>
+      {/* Page View Tracking */}
+      <PageTracking
+        page="encuentros"
+        contentName="encuentros_listing"
+        contentCategory="encuentros"
+      />
+
       {/* Hero */}
       <section className="relative py-32 md:py-40 overflow-hidden -mb-px">
         <div className="absolute inset-0">

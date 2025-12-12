@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Play, Heart, Users, Leaf, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
-import { trackWhatsAppLead } from "@/lib/meta-tracking";
+import { trackWhatsAppLead, trackPageViewContent } from "@/lib/meta-tracking";
 import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
 const VIMEO_VIDEO_ID = "1142274109";
@@ -73,6 +73,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function DueloAcompanamientoPage() {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageViewContent({
+      page: "duelo-acompanamiento",
+      contentName: "vsl_duelo_landing",
+      contentCategory: "duelo",
+    });
+  }, []);
 
   const faqs = [
     {

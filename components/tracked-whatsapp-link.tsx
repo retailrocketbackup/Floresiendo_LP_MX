@@ -8,6 +8,7 @@ interface TrackedWhatsAppLinkProps {
   page: WhatsAppLeadData["page"];
   buttonLocation: WhatsAppLeadData["buttonLocation"];
   encuentroSlug?: string;
+  eventName?: string;
   value?: number;
   currency?: string;
   children: React.ReactNode;
@@ -20,6 +21,7 @@ export function TrackedWhatsAppLink({
   page,
   buttonLocation,
   encuentroSlug,
+  eventName,
   value,
   currency = "MXN",
   children,
@@ -33,6 +35,7 @@ export function TrackedWhatsAppLink({
       page,
       buttonLocation,
       encuentroSlug,
+      eventName,
       value,
       currency,
     });

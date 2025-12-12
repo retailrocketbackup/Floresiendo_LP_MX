@@ -6,6 +6,7 @@ import { trackPageViewContent, type PageViewContentData } from "@/lib/meta-track
 interface UsePageTrackingOptions {
   page: PageViewContentData["page"];
   contentName?: string;
+  contentCategory?: string;
   encuentroSlug?: string;
   value?: number;
   currency?: string;
@@ -26,6 +27,7 @@ interface UsePageTrackingOptions {
 export function usePageTracking({
   page,
   contentName,
+  contentCategory,
   encuentroSlug,
   value,
   currency = "MXN",
@@ -40,9 +42,10 @@ export function usePageTracking({
     trackPageViewContent({
       page,
       contentName,
+      contentCategory,
       encuentroSlug,
       value,
       currency,
     });
-  }, [page, contentName, encuentroSlug, value, currency]);
+  }, [page, contentName, contentCategory, encuentroSlug, value, currency]);
 }

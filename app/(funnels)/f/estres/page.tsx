@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Play, Battery, Heart, Sparkles, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
-import { trackWhatsAppLead } from "@/lib/meta-tracking";
+import { trackWhatsAppLead, trackPageViewContent } from "@/lib/meta-tracking";
 import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
 // V003 - "Sientes que tu rutina te consume"
@@ -74,6 +74,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function EstresPage() {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageViewContent({
+      page: "estres",
+      contentName: "vsl_estres_landing",
+      contentCategory: "estres",
+    });
+  }, []);
 
   const faqs = [
     {

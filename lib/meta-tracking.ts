@@ -414,6 +414,7 @@ export const trackWhatsAppLead = async (data: WhatsAppLeadData) => {
 export interface PageViewContentData {
   page: "home" | "encuentro" | "escuela" | "practicas" | "contacto" | string
   contentName?: string
+  contentCategory?: string // For retargeting segmentation (estres, proposito, duelo, etc.)
   encuentroSlug?: string
   value?: number
   currency?: string
@@ -427,6 +428,7 @@ export const trackPageViewContent = (data: PageViewContentData) => {
   console.log(`👁️ VIEW CONTENT: Tracking page view`, {
     page: data.page,
     contentName,
+    contentCategory: data.contentCategory,
     value: data.value,
     timestamp: new Date().toISOString(),
   })
@@ -435,6 +437,7 @@ export const trackPageViewContent = (data: PageViewContentData) => {
     funnel: data.page,
     content_type: data.page,
     content_name: contentName,
+    content_category: data.contentCategory,
     value: data.value,
     currency: data.currency || "MXN",
   })

@@ -6,6 +6,7 @@ import type { PageViewContentData } from "@/lib/meta-tracking";
 interface PageTrackingProps {
   page: PageViewContentData["page"];
   contentName?: string;
+  contentCategory?: string;
   value?: number;
   currency?: string;
 }
@@ -14,10 +15,11 @@ interface PageTrackingProps {
  * Client component to handle page tracking for server components.
  * Add this component to any server-rendered page to track ViewContent events.
  */
-export function PageTracking({ page, contentName, value, currency }: PageTrackingProps) {
+export function PageTracking({ page, contentName, contentCategory, value, currency }: PageTrackingProps) {
   usePageTracking({
     page,
     contentName,
+    contentCategory,
     value,
     currency,
   });

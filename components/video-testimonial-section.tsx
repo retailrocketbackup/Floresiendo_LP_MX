@@ -3,14 +3,16 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Play, Quote, Star } from "lucide-react";
+import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
 
 interface VideoTestimonialSectionProps {
   className?: string;
+  funnel?: string;
 }
 
 const VIMEO_VIDEO_ID = "1126936015";
 
-export function VideoTestimonialSection({ className = "" }: VideoTestimonialSectionProps) {
+export function VideoTestimonialSection({ className = "", funnel = "encuentro" }: VideoTestimonialSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
@@ -38,13 +40,11 @@ export function VideoTestimonialSection({ className = "" }: VideoTestimonialSect
               onClick={() => !isPlaying && setIsPlaying(true)}
             >
               {isPlaying ? (
-                <iframe
-                  src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?autoplay=1&title=0&byline=0&portrait=0`}
+                <TrackedVimeoPlayer
+                  videoId={VIMEO_VIDEO_ID}
+                  funnel={funnel}
                   className="absolute top-0 left-0 w-full h-full"
-                  frameBorder="0"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  title="Testimonio de Edgar"
+                  autoplay={true}
                 />
               ) : (
                 <>
