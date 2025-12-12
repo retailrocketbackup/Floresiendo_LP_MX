@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Calendar, Clock, Users, CheckCircle } from "lucide-react";
-import { trackEvent } from "@/lib/meta-tracking";
+import { trackEvent, trackPageViewContent } from "@/lib/meta-tracking";
 
 export default function MeditacionGratisPage() {
   const [formData, setFormData] = useState({
@@ -16,8 +16,16 @@ export default function MeditacionGratisPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Session details - update these for each campaign
-  const sessionDate = "Próximamente"; // e.g., "Sábado 14 de Diciembre"
-  const sessionTime = "10:00 AM (Hora CDMX)";
+  const sessionDate = "Martes 4 de Febrero";
+  const sessionTime = "7:00 PM (Hora CDMX)";
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageViewContent({
+      page: "meditacion-gratis",
+      contentName: "meditacion_en_vivo_landing",
+    });
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -44,9 +52,9 @@ export default function MeditacionGratisPage() {
     const fullPhoneNumber = `${formData.countryCode}${formData.phoneNumber}`;
 
     try {
-      // Meta tracking - Lead event for lead magnet
+      // 1. Meta tracking - Custom Lead event for meditation funnel
       await trackEvent(
-        "Lead",
+        "Lead_Meditacion_Gratis",
         {
           funnel: "meditacion-gratis",
           content_type: "lead_magnet",
@@ -58,7 +66,7 @@ export default function MeditacionGratisPage() {
         { enableCAPI: true }
       );
 
-      // Save to HubSpot
+      // 2. Save to HubSpot
       const contactData = {
         firstname: formData.firstname,
         lastname: formData.lastname,
@@ -72,6 +80,22 @@ export default function MeditacionGratisPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contactData),
       });
+
+      // 3. Meta tracking - CompleteRegistration after successful submission
+      await trackEvent(
+        "CompleteRegistration",
+        {
+          funnel: "meditacion-gratis",
+          content_type: "meditation_registration",
+          content_name: "meditacion_en_vivo",
+          first_name: formData.firstname,
+          last_name: formData.lastname,
+          phone: fullPhoneNumber,
+          value: 0,
+          currency: "MXN",
+        },
+        { enableCAPI: true }
+      );
 
       setIsSubmitting(false);
       setIsSubmitted(true);
