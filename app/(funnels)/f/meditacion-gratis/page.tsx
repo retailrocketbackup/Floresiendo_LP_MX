@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Calendar, Clock, Users, CheckCircle } from "lucide-react";
+import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon } from "lucide-react";
 import { trackEvent, trackPageViewContent } from "@/lib/meta-tracking";
 
 export default function MeditacionGratisPage() {
@@ -286,32 +286,110 @@ export default function MeditacionGratisPage() {
         </div>
       </section>
 
-      {/* Social Proof */}
-      <section className="bg-warm-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-burgundy mb-8">
-            ¿Por qué unirte a esta meditación?
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+      {/* Neuroscience Benefits */}
+      <section className="bg-gradient-to-b from-warm-white to-coral/5 py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">
+              Lo que la ciencia dice
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-burgundy mt-2 mb-4">
+              ¿Qué Pasa en tu Cerebro Durante la Sesión?
+            </h2>
+            <p className="text-lg text-warm-gray-600 max-w-2xl mx-auto">
+              No es magia. Es neurociencia aplicada a través de técnicas milenarias.
+            </p>
+          </div>
+
+          <div className="max-w-2xl mx-auto space-y-6">
             {[
               {
-                stat: "500+",
-                label: "Personas han participado",
+                icon: Brain,
+                title: "Calma tu Amígdala en Minutos",
+                description: "La técnica que aprenderás activa tu sistema nervioso parasimpático, reduciendo la respuesta de estrés de tu cerebro. Estudios muestran que 8 semanas de práctica pueden reducir el tamaño de la amígdala (centro del miedo).",
+                science: "Neurociencia: Activación del nervio vago"
               },
               {
-                stat: "10+",
-                label: "Años de experiencia",
+                icon: Heart,
+                title: "Reduce tu Cortisol (Hormona del Estrés)",
+                description: "La respiración consciente disminuye los niveles de cortisol en tu cuerpo, mejorando tu sueño, digestión y claridad mental. Sentirás el efecto desde la primera sesión.",
+                science: "Fisiología: Regulación hormonal"
               },
               {
-                stat: "100%",
-                label: "Gratuito y sin compromisos",
-              },
-            ].map((item, index) => (
-              <div key={index} className="p-6">
-                <div className="text-4xl font-bold text-burgundy mb-2">{item.stat}</div>
-                <p className="text-warm-gray-600">{item.label}</p>
+                icon: Moon,
+                title: "Duerme Profundo Esta Noche",
+                description: "Muchos participantes reportan dormir mejor la misma noche de la sesión. Tu sistema nervioso aprende a 'apagarse' correctamente cuando lo necesitas.",
+                science: "Resultado: Sueño reparador"
+              }
+            ].map((benefit, index) => (
+              <div key={index} className="flex items-start gap-4 p-6 bg-white rounded-xl shadow-sm border border-coral/10 hover:shadow-md transition-shadow">
+                <div className="bg-burgundy text-white rounded-full p-3 flex-shrink-0">
+                  <benefit.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-burgundy">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-warm-gray-600 mt-2">
+                    {benefit.description}
+                  </p>
+                  <p className="text-sm text-gold font-medium mt-2">
+                    {benefit.science}
+                  </p>
+                </div>
               </div>
             ))}
+          </div>
+
+          {/* Social proof */}
+          <div className="mt-12 text-center">
+            <p className="text-warm-gray-500 text-sm">
+              Más de <span className="font-bold text-burgundy">500 personas</span> han experimentado esta técnica en sesiones anteriores
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Facilitator */}
+      <section className="bg-burgundy/5 py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="w-full max-w-sm mx-auto">
+              <div className="relative aspect-square rounded-full overflow-hidden shadow-2xl ring-4 ring-coral/30">
+                <Image
+                  src="/facilitador.jpg"
+                  alt="Ramón Henríquez - Facilitador de meditación"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="text-center md:text-left">
+              <span className="text-coral font-semibold uppercase tracking-wide text-sm">
+                Tu facilitador
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-burgundy mt-2 mb-4">
+                Ramón Henríquez
+              </h2>
+              <div className="space-y-4 text-warm-gray-600 leading-relaxed">
+                <p>
+                  Con más de <span className="font-semibold text-burgundy">10 años de experiencia</span> guiando
+                  procesos de transformación personal, Ramón ha acompañado a cientos de personas
+                  en su camino hacia la paz interior.
+                </p>
+                <p>
+                  Su enfoque combina <span className="text-gold font-medium">técnicas de respiración respaldadas por neurociencia</span> con
+                  la sabiduría de tradiciones contemplativas, creando experiencias
+                  profundas pero accesibles.
+                </p>
+                <p className="text-burgundy font-medium italic">
+                  "Mi trabajo es darte herramientas que funcionen. Sin misticismo innecesario.
+                  Solo práctica que transforma."
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
