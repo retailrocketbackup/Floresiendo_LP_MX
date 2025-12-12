@@ -63,6 +63,39 @@ export default function EncuentrosPage() {
           {/* Events Container */}
           <div className="max-w-2xl mx-auto space-y-6">
 
+            {/* Free Meditation Card - Feb 4 */}
+            <Link
+              href="/f/meditacion-gratis"
+              className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-purple-400/40 hover:border-purple-400 hover:bg-white/15 transition-all duration-300 group"
+            >
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                {/* Date Box - Purple accent */}
+                <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
+                  <div className="text-3xl font-bold text-white my-1">4</div>
+                  <span className="text-white/80 text-xs font-medium">7:00 PM</span>
+                </div>
+
+                {/* Event Details */}
+                <div className="flex-1 text-center md:text-left">
+                  <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-purple-500/30 text-purple-200 font-bold text-xs uppercase tracking-wide rounded-full">
+                      Gratis
+                    </span>
+                    <span className="text-coral-light/80 text-sm">Meditación en Vivo</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-1">Meditación Guiada en Vivo</h3>
+                  <p className="text-coral-light/70 text-sm mb-3">
+                    30 minutos para calmar tu mente y reconectar contigo
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-purple-300 font-semibold group-hover:text-purple-200 transition-colors">
+                    Reservar mi lugar
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
             {/* Free Conference Card - Feb 11 */}
             <Link
               href="/f/conferencia-vida-perfecta"
