@@ -896,7 +896,7 @@ export default function EscuelaPage() {
             <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
               <div className="relative h-64 bg-gradient-burgundy">
                 <Image
-                  src="/images/Flor.jpg"
+                  src="/images/Flor.webp"
                   alt="Flor Soeiro"
                   fill
                   className="object-cover object-top"
