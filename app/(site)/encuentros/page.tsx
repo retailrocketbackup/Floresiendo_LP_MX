@@ -88,9 +88,9 @@ export default function EncuentrosPage() {
                   <p className="text-coral-light/70 text-sm mb-3">
                     30 minutos para calmar tu mente y reconectar contigo
                   </p>
-                  <span className="inline-flex items-center gap-2 text-purple-300 font-semibold group-hover:text-purple-200 transition-colors">
-                    Reservar mi lugar
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
+                    Apartar mi lugar
+                    <ArrowRight size={18} />
                   </span>
                 </div>
               </div>
@@ -128,9 +128,9 @@ export default function EncuentrosPage() {
                       60 lugares
                     </span>
                   </div>
-                  <span className="inline-flex items-center gap-2 text-gold font-semibold group-hover:text-gold-light transition-colors">
+                  <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-gold hover:bg-gold-dark text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
                     Apartar mi lugar
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={18} />
                   </span>
                 </div>
               </div>
