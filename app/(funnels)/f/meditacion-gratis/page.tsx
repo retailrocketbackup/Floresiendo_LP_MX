@@ -107,17 +107,17 @@ export default function MeditacionGratisPage() {
 
   if (isSubmitted) {
     return (
-      <main className="min-h-screen bg-gradient-to-b from-purple-900 to-purple-950 flex items-center justify-center px-4">
+      <main className="min-h-screen bg-gradient-to-b from-burgundy to-burgundy-dark flex items-center justify-center px-4">
         <div className="max-w-xl mx-auto text-center text-white">
           <div className="mb-8">
             <CheckCircle className="w-20 h-20 text-green-400 mx-auto" />
           </div>
           <h2 className="text-3xl font-bold mb-4">¡Registro exitoso!</h2>
-          <p className="text-xl text-purple-200 mb-6">
+          <p className="text-xl text-coral-light mb-6">
             En un momento te redirigiremos a WhatsApp para confirmar tu lugar
             y enviarte el enlace de acceso.
           </p>
-          <p className="text-purple-300">
+          <p className="text-coral-light/70">
             Redirigiendo...
           </p>
         </div>
@@ -138,14 +138,14 @@ export default function MeditacionGratisPage() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-900/90 via-purple-900/80 to-purple-950/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-burgundy/90 via-burgundy/80 to-burgundy-dark/95" />
         </div>
 
         <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left - Copy */}
             <div className="text-white text-center lg:text-left">
-              <div className="inline-block px-4 py-2 bg-yellow-400/20 rounded-full text-yellow-400 text-sm font-medium mb-6">
+              <div className="inline-block px-4 py-2 bg-gold/20 rounded-full text-gold text-sm font-medium mb-6">
                 EVENTO EN VIVO GRATUITO
               </div>
 
@@ -153,28 +153,28 @@ export default function MeditacionGratisPage() {
                 Meditación Guiada en Vivo
               </h1>
 
-              <p className="text-xl md:text-2xl text-purple-200 mb-6">
+              <p className="text-xl md:text-2xl text-coral-light mb-6">
                 30 minutos para calmar tu mente y reconectar contigo
               </p>
 
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Calendar className="w-5 h-5 text-yellow-400" />
+                  <Calendar className="w-5 h-5 text-gold" />
                   <span className="text-lg">{sessionDate}</span>
                 </div>
                 <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Clock className="w-5 h-5 text-yellow-400" />
+                  <Clock className="w-5 h-5 text-gold" />
                   <span className="text-lg">{sessionTime}</span>
                 </div>
                 <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Users className="w-5 h-5 text-yellow-400" />
+                  <Users className="w-5 h-5 text-gold" />
                   <span className="text-lg">Cupo limitado - Grupos reducidos</span>
                 </div>
               </div>
 
               <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
-                <h3 className="font-bold text-yellow-400 mb-3">Lo que experimentarás:</h3>
-                <ul className="space-y-2 text-purple-100 text-left">
+                <h3 className="font-bold text-gold mb-3">Lo que experimentarás:</h3>
+                <ul className="space-y-2 text-coral-light text-left">
                   <li>• Técnicas de respiración para calmar la ansiedad</li>
                   <li>• Meditación guiada por facilitadores certificados</li>
                   <li>• Espacio seguro para compartir (opcional)</li>
@@ -185,17 +185,17 @@ export default function MeditacionGratisPage() {
 
             {/* Right - Form */}
             <div className="bg-white rounded-2xl p-8 shadow-2xl">
-              <h2 className="text-2xl font-bold text-purple-900 mb-2 text-center">
+              <h2 className="text-2xl font-bold text-burgundy mb-2 text-center">
                 Reserva tu lugar
               </h2>
-              <p className="text-gray-600 mb-6 text-center">
+              <p className="text-warm-gray-600 mb-6 text-center">
                 Es 100% gratis. Solo necesitamos tus datos para enviarte el acceso.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="firstname" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="firstname" className="block text-sm font-medium text-warm-gray-700 mb-1">
                       Nombre *
                     </label>
                     <input
@@ -205,12 +205,12 @@ export default function MeditacionGratisPage() {
                       required
                       value={formData.firstname}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent"
                       placeholder="Tu nombre"
                     />
                   </div>
                   <div>
-                    <label htmlFor="lastname" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="lastname" className="block text-sm font-medium text-warm-gray-700 mb-1">
                       Apellido *
                     </label>
                     <input
@@ -220,14 +220,14 @@ export default function MeditacionGratisPage() {
                       required
                       value={formData.lastname}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent"
                       placeholder="Tu apellido"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="phone" className="block text-sm font-medium text-warm-gray-700 mb-1">
                     WhatsApp *
                   </label>
                   <div className="flex gap-2">
@@ -235,7 +235,7 @@ export default function MeditacionGratisPage() {
                       name="countryCode"
                       value={formData.countryCode}
                       onChange={handleInputChange}
-                      className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 bg-gray-50"
+                      className="px-3 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral bg-warm-gray-50"
                     >
                       <option value="+52">+52</option>
                       <option value="+1">+1</option>
@@ -250,11 +250,11 @@ export default function MeditacionGratisPage() {
                       required
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="flex-1 px-4 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent"
                       placeholder="Tu número"
                     />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-warm-gray-500 mt-1">
                     Te enviaremos el link de acceso por WhatsApp
                   </p>
                 </div>
@@ -262,7 +262,7 @@ export default function MeditacionGratisPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-purple-900 hover:bg-purple-800 disabled:bg-purple-400 text-white font-bold py-4 rounded-full transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:cursor-not-allowed"
+                  className="w-full bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-bold py-4 rounded-full transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
@@ -277,7 +277,7 @@ export default function MeditacionGratisPage() {
                   )}
                 </button>
 
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-warm-gray-500 text-center">
                   Al registrarte aceptas recibir mensajes de WhatsApp con información del evento.
                 </p>
               </form>
@@ -287,9 +287,9 @@ export default function MeditacionGratisPage() {
       </section>
 
       {/* Social Proof */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-warm-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-purple-900 mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-burgundy mb-8">
             ¿Por qué unirte a esta meditación?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -308,8 +308,8 @@ export default function MeditacionGratisPage() {
               },
             ].map((item, index) => (
               <div key={index} className="p-6">
-                <div className="text-4xl font-bold text-purple-900 mb-2">{item.stat}</div>
-                <p className="text-gray-600">{item.label}</p>
+                <div className="text-4xl font-bold text-burgundy mb-2">{item.stat}</div>
+                <p className="text-warm-gray-600">{item.label}</p>
               </div>
             ))}
           </div>
@@ -317,9 +317,9 @@ export default function MeditacionGratisPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-gray-50 py-16 px-4">
+      <section className="bg-gradient-warm py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-purple-900 mb-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-burgundy mb-8 text-center">
             Preguntas frecuentes
           </h2>
           <div className="space-y-4">
@@ -341,9 +341,9 @@ export default function MeditacionGratisPage() {
                 a: "No hay problema. Solo avísanos por WhatsApp y te invitaremos a la próxima sesión.",
               },
             ].map((item, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-sm">
-                <h3 className="font-bold text-purple-900 mb-2">{item.q}</h3>
-                <p className="text-gray-600">{item.a}</p>
+              <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-warm-gray-100">
+                <h3 className="font-bold text-burgundy mb-2">{item.q}</h3>
+                <p className="text-warm-gray-600">{item.a}</p>
               </div>
             ))}
           </div>
