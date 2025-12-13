@@ -150,6 +150,7 @@ export function CommunityCarousel() {
                     src={communityPhotos[currentIndex].src}
                     alt={communityPhotos[currentIndex].alt}
                     fill
+                    sizes="100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-burgundy/70 via-transparent to-transparent" />
@@ -187,6 +188,7 @@ export function CommunityCarousel() {
                       src={photo.src}
                       alt={photo.alt}
                       fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-burgundy/70 via-transparent to-transparent" />

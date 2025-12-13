@@ -142,6 +142,7 @@ export function FacilitadoresCarousel({
                           src={currentFacilitator.image}
                           alt={currentFacilitator.name}
                           fill
+                          sizes="192px"
                           className="object-cover transition-transform duration-500"
                         />
                       ) : (

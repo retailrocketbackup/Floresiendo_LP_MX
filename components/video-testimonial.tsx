@@ -110,6 +110,7 @@ export function VideoTestimonial({
                       src="/images/miniatura-edgar.webp"
                       alt="Edgar"
                       fill
+                      sizes="56px"
                       className="object-cover object-top"
                     />
                   </div>

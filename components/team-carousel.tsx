@@ -147,6 +147,7 @@ export function TeamCarousel({
                               src={member.image}
                               alt={member.name}
                               fill
+                              sizes="128px"
                               className="object-cover"
                             />
                           ) : (
@@ -218,6 +219,7 @@ export function TeamCarousel({
                         src={currentMember.image}
                         alt={currentMember.name}
                         fill
+                        sizes="112px"
                         className="object-cover"
                       />
                     ) : (

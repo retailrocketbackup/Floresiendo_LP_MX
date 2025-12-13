@@ -61,6 +61,7 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
               src={practica.image}
               alt={practica.name}
               fill
+              sizes="(max-width: 768px) 100vw, 512px"
               className="object-cover"
             />
           ) : (

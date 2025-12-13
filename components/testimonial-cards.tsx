@@ -131,6 +131,7 @@ export function TestimonialCards({
                           src={currentTestimonial.image}
                           alt={currentTestimonial.name}
                           fill
+                          sizes="160px"
                           className="object-cover"
                         />
                       ) : (

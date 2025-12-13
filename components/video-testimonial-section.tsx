@@ -52,6 +52,7 @@ export function VideoTestimonialSection({ className = "", funnel = "encuentro" }
                     src="/miniatura-edgar.webp"
                     alt="Testimonio de Edgar"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
@@ -92,6 +93,7 @@ export function VideoTestimonialSection({ className = "", funnel = "encuentro" }
                     src="/miniatura-edgar.webp"
                     alt="Edgar"
                     fill
+                    sizes="56px"
                     className="object-cover object-top"
                   />
                 </div>
