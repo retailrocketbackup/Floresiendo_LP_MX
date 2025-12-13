@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Play, Quote, Star } from "lucide-react";
-import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
+
+// Lazy load Vimeo player - only loads ~150KB when user clicks play
+const TrackedVimeoPlayer = dynamic(
+  () => import("@/components/tracked-vimeo-player").then((mod) => mod.TrackedVimeoPlayer),
+  { ssr: false }
+);
 
 interface VideoTestimonialSectionProps {
   className?: string;

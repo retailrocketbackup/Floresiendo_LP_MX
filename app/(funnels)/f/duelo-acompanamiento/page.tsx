@@ -3,9 +3,15 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Play, Heart, Users, Leaf, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 import { trackWhatsAppLead, trackPageViewContent } from "@/lib/meta-tracking";
-import { TrackedVimeoPlayer } from "@/components/tracked-vimeo-player";
+
+// Lazy load Vimeo player - only loads when user clicks play
+const TrackedVimeoPlayer = dynamic(
+  () => import("@/components/tracked-vimeo-player").then((mod) => mod.TrackedVimeoPlayer),
+  { ssr: false }
+);
 
 const VIMEO_VIDEO_ID = "1142274109";
 const KARLA_WHATSAPP = "5215540180914";
