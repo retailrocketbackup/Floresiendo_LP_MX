@@ -26,14 +26,14 @@ const teamMembers: TeamMember[] = [
     id: 1,
     name: "Rodrigo Roble",
     role: "Facilitador Egresado de Escuela FloreSiendo",
-    image: "/images/Roble.jpg",
+    image: "/images/Roble.webp",
     quote: "La naturaleza nos enseña que todo proceso de bienestar requiere tiempo, presencia y amor.",
   },
   {
     id: 2,
     name: "Sergio Sanz",
     role: "Fundador & Facilitador & Psicólogo Clínico",
-    image: "/images/sergio.png",
+    image: "/images/sergio.webp",
     quote: "Mi propósito es acompañar a otros con amor mientras me acompañaba a mí mismo por todo aquello que nos tocaba atravesar en la vida.",
   },
   {

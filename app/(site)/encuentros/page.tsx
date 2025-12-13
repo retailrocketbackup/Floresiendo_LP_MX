@@ -23,7 +23,7 @@ export default function EncuentrosPage() {
       <section className="relative py-32 md:py-40 overflow-hidden -mb-px">
         <div className="absolute inset-0">
           <Image
-            src="/images/venue-alberca.jpg"
+            src="/images/venue-alberca.webp"
             alt="Retiro FloreSiendo en Morelos"
             fill
             priority
@@ -226,7 +226,7 @@ export default function EncuentrosPage() {
             <div className="relative">
               <div className="absolute -top-4 -right-4 w-72 h-72 bg-coral/10 rounded-full blur-3xl" />
               <Image
-                src="/images/circulo-integracion.jpg"
+                src="/images/circulo-integracion.webp"
                 alt="Círculo de integración grupal"
                 width={600}
                 height={400}
@@ -298,12 +298,12 @@ export default function EncuentrosPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { src: "/images/venue-alberca.jpg", alt: "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
-              { src: "/images/venue-salon-ceremonias.jpg", alt: "Salón de ceremonias", span: "" },
-              { src: "/images/venue-jardin.jpg", alt: "Jardín", span: "" },
-              { src: "/images/venue-sala.jpg", alt: "Sala común", span: "" },
-              { src: "/images/venue-terraza.jpg", alt: "Terraza", span: "" },
-              { src: "/images/venue-habitacion-1.jpg", alt: "Habitación", span: "" },
+              { src: "/images/venue-alberca.webp", alt: "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
+              { src: "/images/venue-salon-ceremonias.webp", alt: "Salón de ceremonias", span: "" },
+              { src: "/images/venue-jardin.webp", alt: "Jardín", span: "" },
+              { src: "/images/venue-sala.webp", alt: "Sala común", span: "" },
+              { src: "/images/venue-terraza.webp", alt: "Terraza", span: "" },
+              { src: "/images/venue-habitacion-1.webp", alt: "Habitación", span: "" },
             ].map((image, index) => (
               <div
                 key={index}

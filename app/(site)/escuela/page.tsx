@@ -43,7 +43,7 @@ export default function EscuelaPage() {
       <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/herosectionescuelapage.jpg"
+            src="/images/herosectionescuelapage.webp"
             alt="Formación de Facilitadores FloreSiendo"
             fill
             priority
@@ -873,7 +873,7 @@ export default function EscuelaPage() {
             <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
               <div className="relative h-64 bg-gradient-burgundy">
                 <Image
-                  src="/images/sergio.png"
+                  src="/images/sergio.webp"
                   alt="Sergio Sanz"
                   fill
                   className="object-cover object-top"

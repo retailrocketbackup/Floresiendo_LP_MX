@@ -15,7 +15,7 @@ export default function MedicinasPage() {
       <section className="relative py-32 md:py-40 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/medicinas.png"
+            src="/images/medicinas.webp"
             alt="Prácticas ancestrales"
             fill
             priority
@@ -70,7 +70,7 @@ export default function MedicinasPage() {
             <div className="relative">
               <div className="absolute -top-4 -right-4 w-72 h-72 bg-gold/10 rounded-full blur-3xl" />
               <Image
-                src="/images/medicinas.png"
+                src="/images/medicinas.webp"
                 alt="Prácticas ancestrales"
                 width={500}
                 height={400}

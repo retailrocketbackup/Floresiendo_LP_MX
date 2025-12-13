@@ -15,42 +15,42 @@ interface CommunityPhoto {
 
 const communityPhotos: CommunityPhoto[] = [
   {
-    src: "/images/comunidad-espana-1.jpg",
+    src: "/images/comunidad-espana-1.webp",
     alt: "Círculo de integración al aire libre",
     location: "Círculo de integración",
     country: "España",
     flag: "🇪🇸",
   },
   {
-    src: "/images/comunidad-grupo-2.jpg",
+    src: "/images/comunidad-grupo-2.webp",
     alt: "Grupo de participantes sonriendo",
     location: "Nuestra familia",
     country: "Portugal",
     flag: "🇵🇹",
   },
   {
-    src: "/images/comunidad-abrazo-3.jpg",
+    src: "/images/comunidad-abrazo-3.webp",
     alt: "Amigos abrazándose viendo el atardecer",
     location: "Conexión profunda",
     country: "Uruguay",
     flag: "🇺🇾",
   },
   {
-    src: "/images/comunidad-integracion-4.jpg",
+    src: "/images/comunidad-integracion-4.webp",
     alt: "Sesión de integración grupal",
     location: "Sesión grupal",
     country: "Rumania",
     flag: "🇷🇴",
   },
   {
-    src: "/images/comunidad-silueta-5.jpg",
+    src: "/images/comunidad-silueta-5.webp",
     alt: "Mujer con brazos abiertos al atardecer",
     location: "Transformación",
     country: "México",
     flag: "🇲🇽",
   },
   {
-    src: "/images/comunidad-yoga-6.jpg",
+    src: "/images/comunidad-yoga-6.webp",
     alt: "Meditación en la naturaleza",
     location: "Práctica contemplativa",
     country: "Internacional",
