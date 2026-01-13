@@ -364,7 +364,7 @@ export default function ConektaPaymentForm({
                   Procesando...
                 </span>
               ) : (
-                `Pagar ${displayAmount}`
+                `Invertir ${displayAmount}`
               )}
             </button>
 
