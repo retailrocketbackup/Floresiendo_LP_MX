@@ -16,7 +16,7 @@ export default function MeditacionGratisPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Session details - update these for each campaign
-  const sessionDate = "Lunes 10 de Febrero";
+  const sessionDate = "Martes 10 de Febrero";
   const sessionTime = "7:00 PM (Hora CDMX)";
 
   // Track page view on mount
