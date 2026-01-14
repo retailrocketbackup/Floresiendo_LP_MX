@@ -1,5 +1,6 @@
 // app/aplicar/page.tsx
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { ScreeningWizard } from "@/components/screening/ScreeningWizard";
 
 export const metadata: Metadata = {
@@ -12,6 +13,18 @@ export const metadata: Metadata = {
   },
 };
 
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[var(--warm-white)]">
+      <div className="animate-pulse text-[var(--burgundy)]">Cargando...</div>
+    </div>
+  );
+}
+
 export default function AplicarPage() {
-  return <ScreeningWizard />;
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ScreeningWizard />
+    </Suspense>
+  );
 }

@@ -1,7 +1,7 @@
 // components/screening/ScreeningWizard.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
@@ -43,6 +43,18 @@ export function ScreeningWizard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
+  // Prevent scroll on form updates
+  const scrollPositionRef = useRef<number>(0);
+  const isUpdatingRef = useRef(false);
+
+  // Save scroll position before state updates
+  useLayoutEffect(() => {
+    if (isUpdatingRef.current) {
+      window.scrollTo(0, scrollPositionRef.current);
+      isUpdatingRef.current = false;
+    }
+  });
+
   // Handle hydration mismatch with localStorage
   useEffect(() => {
     setIsHydrated(true);
@@ -57,6 +69,10 @@ export function ScreeningWizard() {
 
   useEffect(() => {
     if (!isHydrated) return;
+
+    // Save scroll position before any state updates
+    scrollPositionRef.current = window.scrollY;
+    isUpdatingRef.current = true;
 
     const result = evaluateRisk();
     // Only show knockout if it's a new red condition we haven't shown yet
