@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
       // Source tracking
       funnel_source: "screening_application",
-      landing_page: "floresiendo.com/aplicar",
+      landing_page: "escuelafloresiendomexico.com/aplicar",
 
       // Intentions for team context
       why_participate: formData.intentions?.whyParticipate?.substring(0, 500),
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             fields: hubspotFields,
             context: {
-              pageUri: "https://floresiendo.com/aplicar",
+              pageUri: "https://escuelafloresiendomexico.com/aplicar",
               pageName: "Screening Application",
             },
           }),
