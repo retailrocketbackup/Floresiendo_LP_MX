@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Calendar, MapPin, Clock, Users, Check, Heart, Star, Sparkles } from "lucide-react";
 import { FAQAccordion } from "@/components/faq-accordion";
 import { PageTracking } from "@/components/page-tracking";
+import { retreatInclusions } from "@/lib/encuentros-data";
 
 export const metadata = {
   title: "Encuentros y Retiros | FloreSiendo México",
@@ -339,18 +340,7 @@ export default function EncuentrosPage() {
 
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-6">
-              {[
-                "Hospedaje durante las 3 noches",
-                "Alimentación consciente (vegetariana)",
-                "2-3 ceremonias nocturnas",
-                "Sesiones de integración grupal",
-                "Acompañamiento de facilitadores",
-                "Asesoría médica/psicológica",
-                "Prácticas de respiración y meditación",
-                "Materiales de trabajo personal",
-                "Seguimiento post-retiro",
-                "Acceso a comunidad de participantes",
-              ].map((item, index) => (
+              {retreatInclusions.included.map((item, index) => (
                 <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm border border-warm-gray-100 hover:border-coral/30 hover:shadow-md transition-all">
                   <div className="w-8 h-8 bg-coral rounded-full flex items-center justify-center flex-shrink-0">
                     <Check className="w-5 h-5 text-white" />
