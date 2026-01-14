@@ -17,6 +17,7 @@ import { IntentionsStep } from "./steps/IntentionsStep";
 import { ConsentStep } from "./steps/ConsentStep";
 import { KnockoutModal } from "./KnockoutModal";
 import { ReviewFlagModal } from "./ReviewFlagModal";
+import { ApprovedModal } from "./ApprovedModal";
 
 export function ScreeningWizard() {
   const router = useRouter();
@@ -39,6 +40,8 @@ export function ScreeningWizard() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [showKnockout, setShowKnockout] = useState(false);
   const [showReviewFlag, setShowReviewFlag] = useState(false);
+  const [showApproved, setShowApproved] = useState(false);
+  const [approvedData, setApprovedData] = useState({ applicationId: "", userName: "" });
   const [knockoutData, setKnockoutData] = useState({ message: "", recommendation: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -122,8 +125,12 @@ export function ScreeningWizard() {
 
       if (response.ok) {
         if (result.level === "green") {
-          // Auto-approved: redirect to payment
-          router.push(`/encuentros/febrero-2026-precios?applicationId=${data.applicationId}`);
+          // Auto-approved: show congratulations modal
+          setApprovedData({
+            applicationId: data.applicationId,
+            userName: formData.basicInfo?.fullName || "",
+          });
+          setShowApproved(true);
         } else if (result.level === "yellow") {
           // Soft flag: show review modal
           setShowReviewFlag(true);
@@ -308,6 +315,15 @@ export function ScreeningWizard() {
       <ReviewFlagModal
         isOpen={showReviewFlag}
         onClose={() => setShowReviewFlag(false)}
+      />
+
+      <ApprovedModal
+        isOpen={showApproved}
+        applicationId={approvedData.applicationId}
+        userName={approvedData.userName}
+        onProceedToPayment={() => {
+          router.push(`/encuentros/febrero-2026-precios?applicationId=${approvedData.applicationId}`);
+        }}
       />
     </div>
   );
