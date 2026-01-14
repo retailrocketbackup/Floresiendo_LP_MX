@@ -3,6 +3,8 @@
 
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
@@ -183,12 +185,28 @@ export function ScreeningWizard() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[var(--warm-gray-50)] to-[var(--warm-white)] py-8 px-4">
       <div className="max-w-2xl mx-auto">
+        {/* Breadcrumb Navigation */}
+        <nav className="mb-6 text-sm flex items-center flex-wrap gap-1">
+          <Link href="/encuentros" className="text-[var(--coral)] hover:underline">
+            Encuentros
+          </Link>
+          <ChevronRight size={14} className="text-[var(--warm-gray-400)]" />
+          <Link href="/encuentros/febrero-2026" className="text-[var(--coral)] hover:underline">
+            Febrero 2026
+          </Link>
+          <ChevronRight size={14} className="text-[var(--warm-gray-400)]" />
+          <span className="text-[var(--warm-gray-600)]">Tu Evaluación</span>
+        </nav>
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-[var(--burgundy)] mb-2">
-            Solicitud de Participación
+            Tu Evaluación Personalizada de Seguridad
           </h1>
           <p className="text-[var(--warm-gray-600)]">
+            Creemos un plan que sea perfecto y seguro para ti
+          </p>
+          <p className="text-[var(--warm-gray-500)] text-sm mt-1">
             Retiro Floresiendo · Febrero 2026
           </p>
         </div>

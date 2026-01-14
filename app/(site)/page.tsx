@@ -36,7 +36,7 @@ export default function HomePage() {
             <span className="text-sm font-medium">+10 años de experiencia</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 drop-shadow-2xl animate-slide-up">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow-2xl animate-slide-up">
             Retiros y Escuela donde la maestra es el{" "}
             <span className="text-coral relative">
               Amor

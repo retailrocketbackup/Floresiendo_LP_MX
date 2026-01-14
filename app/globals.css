@@ -16,9 +16,10 @@ html {
   /* ========== NEW WARM COLOR PALETTE ========== */
 
   /* Primary - Warm Coral/Salmon (like Spain site) */
-  --coral: #f78080;
-  --coral-light: #faa0a0;
-  --coral-dark: #e56060;
+  /* Darkened for WCAG AA contrast compliance (4.5:1 with white text) */
+  --coral: #e85555;
+  --coral-light: #f78080;
+  --coral-dark: #d04545;
 
   /* Secondary - Warm Burgundy/Wine */
   --burgundy: #8b2a4a;

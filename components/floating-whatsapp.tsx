@@ -43,11 +43,11 @@ export function FloatingWhatsApp({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      {/* WhatsApp Button */}
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+      {/* WhatsApp Button - smaller on mobile to avoid blocking content */}
       <button
         onClick={handleClick}
-        className="group relative w-16 h-16 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 overflow-hidden"
+        className="group relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 overflow-hidden"
         aria-label="Contactar por WhatsApp"
       >
         {/* Pulse animation */}
@@ -59,7 +59,7 @@ export function FloatingWhatsApp({
           alt="WhatsApp"
           width={64}
           height={64}
-          className="relative z-10"
+          className="relative z-10 w-14 h-14 sm:w-16 sm:h-16"
         />
       </button>
     </div>
