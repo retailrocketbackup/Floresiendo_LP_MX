@@ -224,7 +224,7 @@ async function sendTeamNotification(
         },
         body: JSON.stringify({
           from: 'Floresiendo <notificaciones@escuelafloresiendomexico.com>',
-          to: ['ramon@escuelafloresiendomexico.com'],
+          to: ['henriquez.alan@gmail.com'],
           subject: `${riskEmoji} ${riskLabel}: ${formData.basicInfo?.fullName} - ${applicationId}`,
           html: emailHtml,
         }),
