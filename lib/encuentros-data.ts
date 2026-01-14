@@ -1,17 +1,74 @@
 // lib/encuentros-data.ts
 // Data and types for Encuentros (Retreats)
 
+// Activity categories for visual distinction
+export type ActivityCategory =
+  | "ceremony" // Main plant ceremonies
+  | "optional" // Kambó, Bufo, Yopo
+  | "integration" // Sharing circles
+  | "workshop" // Talleres, breathwork
+  | "meal" // Meals
+  | "preparation" // Pre-ceremony prep
+  | "admin"; // Registration, departure
+
 export interface ScheduleItem {
   time: string;
   activity: string;
   description?: string;
+  category?: ActivityCategory;
+  isOptional?: boolean;
 }
 
 export interface DaySchedule {
-  day: string; // "Día 1 - Jueves"
+  day: string; // "Día 1"
+  weekday: string; // "Jueves"
   date: string; // "19 de Febrero"
+  theme: string; // "Llegada y Apertura"
+  tagline?: string; // "Cruzar el umbral hacia tu interior"
   items: ScheduleItem[];
 }
+
+// Category configuration for UI rendering
+export const categoryConfig: Record<
+  ActivityCategory,
+  { icon: string; label: string; colorClass: string }
+> = {
+  ceremony: {
+    icon: "moon",
+    label: "Ceremonia",
+    colorClass: "bg-purple-900 text-white",
+  },
+  optional: {
+    icon: "star",
+    label: "Opcional",
+    colorClass: "bg-amber-100 text-amber-800",
+  },
+  integration: {
+    icon: "heart",
+    label: "Integración",
+    colorClass: "bg-teal-100 text-teal-800",
+  },
+  workshop: {
+    icon: "sparkles",
+    label: "Taller",
+    colorClass: "bg-indigo-100 text-indigo-800",
+  },
+  meal: {
+    icon: "utensils",
+    label: "Comida",
+    colorClass: "bg-orange-100 text-orange-800",
+  },
+  preparation: {
+    icon: "flame",
+    label: "Preparación",
+    colorClass: "bg-rose-100 text-rose-800",
+  },
+  admin: {
+    icon: "clipboard",
+    label: "Logística",
+    colorClass: "bg-gray-100 text-gray-800",
+  },
+};
 
 export interface Facilitator {
   name: string;
@@ -97,56 +154,68 @@ export const encuentroFebrero2026: Encuentro = {
 
   schedule: [
     {
-      day: "Día 1 - Jueves",
+      day: "Día 1",
+      weekday: "Jueves",
       date: "19 de Febrero",
+      theme: "Llegada y Apertura",
+      tagline: "Cruzar el umbral hacia tu interior",
       items: [
-        { time: "17:00", activity: "Registro", description: "Check-in y bienvenida" },
-        { time: "18:00", activity: "Merienda", description: "Llegada y bienvenida" },
-        { time: "20:30", activity: "Preparación", description: "Círculo de apertura e intenciones" },
-        { time: "22:30", activity: "Sesión con Planta Amazónica", description: "Primera ceremonia nocturna" },
+        { time: "17:00", activity: "Bienvenida al Santuario", description: "Registro e instalación en tu espacio", category: "admin" },
+        { time: "18:00", activity: "Merienda", description: "Primera conexión con el grupo", category: "meal" },
+        { time: "20:30", activity: "Círculo de Apertura", description: "Intenciones y preparación ceremonial", category: "preparation" },
+        { time: "22:30", activity: "Ceremonia Nocturna", description: "Primera sesión con Planta Amazónica", category: "ceremony" },
       ],
     },
     {
-      day: "Día 2 - Viernes",
+      day: "Día 2",
+      weekday: "Viernes",
       date: "20 de Febrero",
+      theme: "Inmersión Profunda",
+      tagline: "Soltar lo que ya no sirve",
       items: [
-        { time: "09:00", activity: "Rana Mono Gigante (opcional)", description: "Práctica de purificación" },
-        { time: "09:30", activity: "Desayuno" },
-        { time: "11:00", activity: "Integración del grupo", description: "Compartir experiencias" },
-        { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
-        { time: "14:00", activity: "Almuerzo" },
-        { time: "15:30", activity: "Taller y Meditación", description: "Encuentra tu propósito + meditación guiada" },
-        { time: "17:00", activity: "Registro", description: "Check-in para nuevos participantes" },
-        { time: "18:00", activity: "Merienda" },
-        { time: "20:30", activity: "Preparación" },
-        { time: "22:30", activity: "Sesión con Planta Amazónica", description: "Segunda ceremonia nocturna" },
+        { time: "09:00", activity: "Kambó", description: "Práctica de purificación profunda", category: "optional", isOptional: true },
+        { time: "09:30", activity: "Desayuno", category: "meal" },
+        { time: "11:00", activity: "Círculo de Integración", description: "Compartir desde el corazón", category: "integration" },
+        { time: "13:00", activity: "Bufo", description: "Ceremonia breve e intensa", category: "optional", isOptional: true },
+        { time: "14:00", activity: "Almuerzo", category: "meal" },
+        { time: "15:30", activity: "Taller: Encuentra tu Propósito", description: "Meditación guiada y reflexión", category: "workshop" },
+        { time: "17:00", activity: "Registro", description: "Bienvenida a nuevos participantes", category: "admin" },
+        { time: "18:00", activity: "Merienda", category: "meal" },
+        { time: "20:30", activity: "Preparación Ceremonial", category: "preparation" },
+        { time: "22:30", activity: "Ceremonia Nocturna", description: "Segunda sesión con Planta Amazónica", category: "ceremony" },
       ],
     },
     {
-      day: "Día 3 - Sábado",
+      day: "Día 3",
+      weekday: "Sábado",
       date: "21 de Febrero",
+      theme: "Expansión",
+      tagline: "Encontrar tu centro y tu luz",
       items: [
-        { time: "09:00", activity: "Rana Mono Gigante (opcional)", description: "Práctica de purificación" },
-        { time: "09:30", activity: "Desayuno" },
-        { time: "11:00", activity: "Integración del grupo", description: "Compartir experiencias" },
-        { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
-        { time: "14:00", activity: "Almuerzo" },
-        { time: "15:30", activity: "Breathwork y Meditación", description: "Trabajo de respiración + meditación guiada" },
-        { time: "18:00", activity: "Merienda" },
-        { time: "20:30", activity: "Preparación" },
-        { time: "22:00", activity: "Sesión con Planta Amazónica", description: "Tercera ceremonia nocturna" },
+        { time: "09:00", activity: "Kambó", description: "Práctica de purificación profunda", category: "optional", isOptional: true },
+        { time: "09:30", activity: "Desayuno", category: "meal" },
+        { time: "11:00", activity: "Círculo de Integración", description: "Compartir desde el corazón", category: "integration" },
+        { time: "13:00", activity: "Bufo", description: "Ceremonia breve e intensa", category: "optional", isOptional: true },
+        { time: "14:00", activity: "Almuerzo", category: "meal" },
+        { time: "15:30", activity: "Breathwork y Meditación", description: "Trabajo de respiración consciente", category: "workshop" },
+        { time: "18:00", activity: "Merienda", category: "meal" },
+        { time: "20:30", activity: "Preparación Ceremonial", category: "preparation" },
+        { time: "22:00", activity: "Ceremonia Nocturna", description: "Tercera sesión con Planta Amazónica", category: "ceremony" },
       ],
     },
     {
-      day: "Día 4 - Domingo",
+      day: "Día 4",
+      weekday: "Domingo",
       date: "22 de Febrero",
+      theme: "Integración y Cierre",
+      tagline: "Renacer con claridad y propósito",
       items: [
-        { time: "09:00", activity: "Rana Mono Gigante (opcional)", description: "Práctica de purificación" },
-        { time: "09:30", activity: "Desayuno" },
-        { time: "10:30", activity: "Taller y Breathwork", description: "Encuentra tu propósito + trabajo de respiración" },
-        { time: "12:00", activity: "Integración del grupo", description: "Círculo de cierre" },
-        { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
-        { time: "14:30", activity: "Almuerzo y despedida" },
+        { time: "09:00", activity: "Kambó", description: "Práctica de purificación profunda", category: "optional", isOptional: true },
+        { time: "09:30", activity: "Desayuno", category: "meal" },
+        { time: "10:30", activity: "Taller: Tu Nueva Vida", description: "Integración y herramientas para el regreso", category: "workshop" },
+        { time: "12:00", activity: "Círculo de Cierre", description: "Compartir final y compromisos", category: "integration" },
+        { time: "13:00", activity: "Bufo", description: "Ceremonia breve e intensa", category: "optional", isOptional: true },
+        { time: "14:30", activity: "Almuerzo de Despedida", description: "Celebración y nuevos comienzos", category: "meal" },
       ],
     },
   ],

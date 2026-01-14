@@ -12,6 +12,7 @@ import { FacilitadoresCarousel } from "@/components/facilitadores-carousel";
 import { EncuentroTracking } from "@/components/encuentro-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { VideoTestimonialSection } from "@/components/video-testimonial-section";
+import { ScheduleDisplay } from "@/components/schedule-display";
 
 // Generate static params for all encuentros
 export async function generateStaticParams() {
@@ -105,37 +106,22 @@ export default async function EncuentroPage({
       {/* Schedule */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-12">
-            Itinerario del Encuentro
-          </h2>
-
-          <div className="space-y-8">
-            {encuentro.schedule.map((day, dayIndex) => (
-              <div key={dayIndex} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div className="bg-[#8b2a4a] text-white p-4">
-                  <h3 className="text-xl font-bold">{day.day}</h3>
-                  <p className="text-white/80">{day.date}</p>
-                </div>
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {day.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className="flex gap-4">
-                        <div className="flex-shrink-0 w-16 text-[#d4a853] font-semibold">
-                          {item.time}
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-800">{item.activity}</p>
-                          {item.description && (
-                            <p className="text-sm text-gray-500 mt-1">{item.description}</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Section Header with Subtitle */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] mb-3">
+              Tu Viaje de Transformación
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Cuatro días diseñados para reconectarte con tu esencia
+            </p>
           </div>
+
+          {/* Interactive Schedule with Accordion */}
+          <ScheduleDisplay
+            schedule={encuentro.schedule}
+            retreatTitle={encuentro.title}
+            retreatYear={parseInt(encuentro.startDate.split("-")[0])}
+          />
         </div>
       </section>
 
