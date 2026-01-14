@@ -46,7 +46,7 @@ const defaultTestimonials: Testimonial[] = [
     name: "Roberto",
     location: "Monterrey",
     image: "",
-    quote: "Después de 20 años luchando con ansiedad, finalmente pude soltar lo que me estaba deteniendo. El equipo crea un espacio verdaderamente sagrado.",
+    quote: "Después de años buscando respuestas, finalmente encontré la paz que necesitaba. El equipo crea un espacio verdaderamente sagrado.",
     rating: 5,
     experience: "Ceremonia Individual",
   },

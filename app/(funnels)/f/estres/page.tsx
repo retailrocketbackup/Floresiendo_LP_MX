@@ -16,7 +16,7 @@ const TrackedVimeoPlayer = dynamic(
 // V003 - "Sientes que tu rutina te consume"
 const VIMEO_VIDEO_ID = "1143232548";
 const MAIN_WHATSAPP = "526182301481";
-const WHATSAPP_MESSAGE = "Hola, vi el video sobre el estrés y la rutina, y me gustaría saber cómo pueden ayudarme.";
+const WHATSAPP_MESSAGE = "Hola, vi el video sobre encontrar paz interior, y me gustaría saber cómo pueden acompañarme.";
 
 // WhatsApp button component with tracking
 function WhatsAppCTA({
@@ -93,7 +93,7 @@ export default function EstresPage() {
   const faqs = [
     {
       question: "¿En qué consiste el encuentro?",
-      answer: "Es una experiencia inmersiva de tres noches en Morelos con prácticas para aliviar el estrés emocional y mental.",
+      answer: "Es una experiencia inmersiva de tres noches en Morelos con prácticas ancestrales para encontrar paz y claridad.",
     },
     {
       question: "¿Se necesita experiencia en espiritualidad?",
@@ -245,7 +245,7 @@ export default function EstresPage() {
               {
                 icon: Sparkles,
                 title: "Rituales y prácticas ancestrales para soltar cargas",
-                description: "Técnicas para calmar la mente y salir del ciclo de estrés y preocupación constante.",
+                description: "Técnicas para aquietar el ruido mental y encontrar claridad interior.",
               },
               {
                 icon: Heart,
@@ -304,11 +304,11 @@ export default function EstresPage() {
 
           <div className="bg-[#fdf8f4] rounded-2xl p-8">
             <blockquote className="text-gray-700 leading-relaxed text-lg italic text-center">
-              &ldquo;El estrés me tenía atrapado; en estos encuentros aprendí a respirar,
+              &ldquo;El ritmo de vida me tenía atrapado; en estos encuentros aprendí a respirar,
               a soltar y a volver a mi centro.
               <br /><br />
               <span className="text-[#8b2a4a] font-semibold not-italic">
-                Si esto resuena contigo, juntos podremos encontrar una solución.
+                Si esto resuena contigo, juntos podremos encontrar un camino.
               </span>&rdquo;
             </blockquote>
           </div>

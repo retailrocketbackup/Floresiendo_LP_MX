@@ -175,7 +175,7 @@ export default function MeditacionGratisPage() {
               <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
                 <h3 className="font-bold text-gold mb-3">Lo que experimentarás:</h3>
                 <ul className="space-y-2 text-coral-light text-left">
-                  <li>• Técnicas de respiración para calmar la ansiedad</li>
+                  <li>• Técnicas de respiración para encontrar calma</li>
                   <li>• Meditación guiada por facilitadores certificados</li>
                   <li>• Espacio seguro para compartir (opcional)</li>
                   <li>• Herramientas que puedes usar en tu día a día</li>
@@ -291,13 +291,13 @@ export default function MeditacionGratisPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <span className="text-coral font-semibold uppercase tracking-wide text-sm">
-              Lo que la ciencia dice
+              Lo que experimentarás
             </span>
             <h2 className="text-2xl md:text-3xl font-bold text-burgundy mt-2 mb-4">
-              ¿Qué Pasa en tu Cerebro Durante la Sesión?
+              Beneficios de la Meditación Guiada
             </h2>
             <p className="text-lg text-warm-gray-600 max-w-2xl mx-auto">
-              No es magia. Es neurociencia aplicada a través de técnicas milenarias.
+              Prácticas milenarias para tu bienestar diario.
             </p>
           </div>
 
@@ -305,21 +305,21 @@ export default function MeditacionGratisPage() {
             {[
               {
                 icon: Brain,
-                title: "Calma tu Amígdala en Minutos",
-                description: "La técnica que aprenderás activa tu sistema nervioso parasimpático, reduciendo la respuesta de estrés de tu cerebro. Estudios muestran que 8 semanas de práctica pueden reducir el tamaño de la amígdala (centro del miedo).",
-                science: "Neurociencia: Activación del nervio vago"
+                title: "Encuentra Calma Mental en Minutos",
+                description: "La técnica que aprenderás te ayuda a reconectar con tu centro y soltar el ruido mental. Prácticas milenarias respaldadas por la ciencia moderna para tu bienestar diario.",
+                science: "Técnicas ancestrales probadas"
               },
               {
                 icon: Heart,
-                title: "Reduce tu Cortisol (Hormona del Estrés)",
-                description: "La respiración consciente disminuye los niveles de cortisol en tu cuerpo, mejorando tu sueño, digestión y claridad mental. Sentirás el efecto desde la primera sesión.",
-                science: "Fisiología: Regulación hormonal"
+                title: "Reduce el Ruido Mental",
+                description: "La respiración consciente te ayuda a encontrar claridad y calma. Sentirás mayor ligereza y presencia desde la primera sesión.",
+                science: "Bienestar integral"
               },
               {
                 icon: Moon,
-                title: "Duerme Profundo Esta Noche",
-                description: "Muchos participantes reportan dormir mejor la misma noche de la sesión. Tu sistema nervioso aprende a 'apagarse' correctamente cuando lo necesitas.",
-                science: "Resultado: Sueño reparador"
+                title: "Descansa Profundamente",
+                description: "Muchos participantes reportan sentirse más relajados y descansar mejor después de la sesión. Aprende a soltar las tensiones del día.",
+                science: "Resultado: Descanso reparador"
               }
             ].map((benefit, index) => (
               <div key={index} className="flex items-start gap-4 p-6 bg-white rounded-xl shadow-sm border border-coral/10 hover:shadow-md transition-shadow">

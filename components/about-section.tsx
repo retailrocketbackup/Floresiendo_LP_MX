@@ -14,7 +14,7 @@ export function AboutSection() {
 
         <div className="space-y-8 text-xl text-gray-50 max-w-3xl mx-auto text-pretty leading-relaxed text-justify">
           <p>
-            Nuestros retiros son un espacio para dejar atrás lo que duele, sanar desde la raíz y volver a sentir paz en tu interior.
+            Nuestros retiros son un espacio para soltar lo que pesa, reconectar desde la raíz y volver a sentir paz en tu interior.
           </p>
           <p>
             Es una oportunidad para reconectar con tu alegría, tu confianza y tu fuerza interior en un entorno de respeto, calidez y acompañamiento real.

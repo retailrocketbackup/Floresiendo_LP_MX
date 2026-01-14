@@ -13,9 +13,9 @@ export function FAQSection() {
 
   const faqs = [
     {
-      question: "¿Es seguro participar en ceremonias con plantas amazónicas?",
+      question: "¿Es seguro participar en los encuentros?",
       answer:
-        "Sí, la seguridad es nuestra máxima prioridad. Contamos con facilitadores experimentados, protocolos médicos estrictos, y un entorno controlado. Realizamos evaluaciones previas de salud física y mental, y mantenemos supervisión médica durante todo el proceso.",
+        "Sí, la seguridad es nuestra máxima prioridad. Contamos con facilitadores experimentados, protocolos estrictos, y un entorno controlado. Realizamos evaluaciones previas y mantenemos acompañamiento profesional durante todo el proceso.",
     },
     {
       question: "¿Qué debo traer al retiro?",
@@ -48,7 +48,7 @@ export function FAQSection() {
         "Sí, entendemos que pueden surgir circunstancias imprevistas. Tenemos una política de cancelación flexible: reembolso completo hasta 30 días antes, 50% hasta 15 días antes. Consulta nuestros términos completos para más detalles.",
     },
     {
-      question: "¿Es necesario tener experiencia previa con plantas medicinales?",
+      question: "¿Es necesario tener experiencia previa con prácticas ancestrales?",
       answer:
         "No es necesario tener experiencia previa. Nuestros retiros están diseñados tanto para principiantes como para personas con experiencia. Proporcionamos toda la preparación y orientación necesaria para que te sientas seguro y preparado.",
     },

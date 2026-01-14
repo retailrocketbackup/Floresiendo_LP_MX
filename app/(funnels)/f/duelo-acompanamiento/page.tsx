@@ -231,7 +231,7 @@ export default function DueloAcompanamientoPage() {
           </h2>
           <p className="text-xl text-gray-600 text-center mb-6 max-w-2xl mx-auto">
             En FloreSiendo ofrecemos acompañamiento basado en la sabiduría ancestral.
-            No prometemos soluciones rápidas—el duelo tiene su propio ritmo.
+            Un espacio para honrar tu proceso a tu propio ritmo.
           </p>
           <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
             Lo que sí ofrecemos es un espacio seguro donde puedas:

@@ -35,21 +35,21 @@ export function MeditationBenefits({ className }: MeditationBenefitsProps) {
   const benefits = [
     {
       icon: BrainIcon,
-      title: "Calma tu Amígdala en Minutos",
-      description: "La técnica que aprenderás activa tu sistema nervioso parasimpático, reduciendo la respuesta de estrés de tu cerebro. Estudios muestran que 8 semanas de práctica pueden reducir el tamaño de la amígdala (centro del miedo).",
-      science: "Neurociencia: Activación del nervio vago"
+      title: "Encuentra Calma Mental en Minutos",
+      description: "La técnica que aprenderás te ayuda a reconectar con tu centro y soltar el ruido mental. Prácticas milenarias respaldadas por la ciencia moderna para tu bienestar diario.",
+      science: "Técnicas ancestrales probadas"
     },
     {
       icon: HeartIcon,
-      title: "Reduce tu Cortisol (Hormona del Estrés)",
-      description: "La respiración consciente disminuye los niveles de cortisol en tu cuerpo, mejorando tu sueño, digestión y claridad mental. Sentirás el efecto desde la primera sesión.",
-      science: "Fisiología: Regulación hormonal"
+      title: "Reduce el Ruido Mental",
+      description: "La respiración consciente te ayuda a encontrar claridad y calma. Sentirás mayor ligereza y presencia desde la primera sesión.",
+      science: "Bienestar integral"
     },
     {
       icon: MoonIcon,
-      title: "Duerme Profundo Esta Noche",
-      description: "Muchos participantes reportan dormir mejor la misma noche de la sesión. Tu sistema nervioso aprende a 'apagarse' correctamente cuando lo necesitas.",
-      science: "Resultado: Sueño reparador"
+      title: "Descansa Profundamente",
+      description: "Muchos participantes reportan sentirse más relajados y descansar mejor después de la sesión. Aprende a soltar las tensiones del día.",
+      science: "Resultado: Descanso reparador"
     }
   ];
 

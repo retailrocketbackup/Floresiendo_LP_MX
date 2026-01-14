@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card"
 export function FeaturesSection() {
   const features = [
     {
-      title: "Remedios Ancestrales",
+      title: "Sabiduría Ancestral",
       description:
-        "Conecta con la sabiduría ancestral en un entorno seguro y sagrado, guiado por facilitadores experimentados.",
+        "Conecta con prácticas ancestrales en un entorno seguro y sagrado, guiado por facilitadores experimentados.",
       icon: "🌿",
     },
     {

@@ -6,6 +6,7 @@ import { FAQAccordion } from "@/components/faq-accordion";
 import { TeamCarousel } from "@/components/team-carousel";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { CommunityCarousel } from "@/components/community-carousel";
+import { TrackedCTAButton } from "@/components/TrackedCTAButton";
 
 export default function HomePage() {
   return (
@@ -50,16 +51,25 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <Link href="/encuentros" className="btn-primary hover-shine group">
+            <TrackedCTAButton
+              href="/encuentros"
+              page="home"
+              buttonLocation="hero_primary"
+              eventName="Lead_Encuentros"
+              className="btn-primary hover-shine group"
+            >
               Ver próximos encuentros
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
+            </TrackedCTAButton>
+            <TrackedCTAButton
               href="/escuela"
+              page="home"
+              buttonLocation="hero_secondary"
+              eventName="Lead_Escuela"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/30 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/50"
             >
               Conoce la escuela
-            </Link>
+            </TrackedCTAButton>
           </div>
         </div>
       </section>
@@ -100,21 +110,21 @@ export default function HomePage() {
               {
                 icon: Heart,
                 title: "Bienestar Emocional",
-                description: "Ansiedad, depresión, PTSD, trauma, fobias, duelo y crisis existenciales.",
+                description: "Reconexión con tu paz interior, claridad mental y equilibrio emocional en momentos de cambio.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
               },
               {
                 icon: Users,
                 title: "Relaciones",
-                description: "Sanar vínculos, resolver conflictos familiares y encontrar conexiones auténticas.",
+                description: "Fortalecer vínculos, resolver conflictos familiares y encontrar conexiones auténticas.",
                 bgColor: "bg-burgundy/10",
                 textColor: "text-burgundy",
               },
               {
                 icon: Leaf,
                 title: "Transformación Personal",
-                description: "Adicciones, trastornos alimenticios, TOC y patrones limitantes de vida.",
+                description: "Liberar hábitos y patrones que ya no te sirven para vivir con mayor plenitud.",
                 bgColor: "bg-gold/10",
                 textColor: "text-gold",
               },
@@ -276,13 +286,16 @@ export default function HomePage() {
             </p>
 
             <div className="flex justify-center">
-              <Link
+              <TrackedCTAButton
                 href="/contacto"
+                page="home"
+                buttonLocation="footer_cta"
+                eventName="Lead_Contacto"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold bg-white text-coral hover:bg-warm-gray-50 rounded-full shadow-xl hover:scale-105 transition-all duration-300 hover-shine group focus-ring"
               >
                 Contáctanos por WhatsApp
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </TrackedCTAButton>
             </div>
           </ScrollAnimate>
         </div>
