@@ -16,7 +16,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { ConferenceRegistrationForm } from "@/components/conference-registration-form";
-import { trackPageViewContent } from "@/lib/meta-tracking";
+import { trackEvent } from "@/lib/meta-tracking";
 import { ScrollAnimate } from "@/components/scroll-animate";
 
 const FUNNEL_NAME = "conferencia_vida_perfecta";
@@ -53,11 +53,18 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export default function ConferenciaVidaPerfectaPage() {
+  // Track page view on mount with funnel-specific event
   useEffect(() => {
-    trackPageViewContent({
-      page: FUNNEL_NAME,
-      contentName: "conferencia_vida_perfecta_landing",
-    });
+    trackEvent(
+      "ViewContent_Conferencia",
+      {
+        funnel: "conferencia",
+        content_type: "landing",
+        content_name: "conferencia_vida_perfecta_landing",
+        content_category: "tofu_event",
+      },
+      { enableCAPI: true }
+    );
   }, []);
 
   const faqs = [

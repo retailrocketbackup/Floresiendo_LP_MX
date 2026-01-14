@@ -8,7 +8,7 @@ import { ChevronRight } from "lucide-react";
 import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
-import { trackEvent, trackPageViewContent } from "@/lib/meta-tracking";
+import { trackEvent } from "@/lib/meta-tracking";
 import { StepProgress } from "./StepProgress";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { BasicInfoStep } from "./steps/BasicInfoStep";
@@ -63,14 +63,19 @@ export function ScreeningWizard() {
   useEffect(() => {
     if (isHydrated && !showWelcome && !hasTrackedPageView.current) {
       hasTrackedPageView.current = true;
-      trackPageViewContent({
-        page: "aplicar",
-        contentName: "screening_application_form",
-        contentCategory: "retreat_application",
-        value: 15000,
-        currency: "MXN",
-      });
-      console.log("📋 SCREENING: ViewContent tracked - form started");
+      trackEvent(
+        "ViewContent_Aplicar",
+        {
+          funnel: "aplicar",
+          content_type: "application_form",
+          content_name: "screening_application_form",
+          content_category: "retreat_application",
+          value: 15000,
+          currency: "MXN",
+        },
+        { enableCAPI: true }
+      );
+      console.log("📋 SCREENING: ViewContent_Aplicar tracked - form started");
     }
   }, [isHydrated, showWelcome]);
 

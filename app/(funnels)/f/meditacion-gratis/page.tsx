@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon } from "lucide-react";
-import { trackEvent, trackPageViewContent } from "@/lib/meta-tracking";
+import { trackEvent } from "@/lib/meta-tracking";
 
 export default function MeditacionGratisPage() {
   const [formData, setFormData] = useState({
@@ -19,12 +19,18 @@ export default function MeditacionGratisPage() {
   const sessionDate = "Martes 10 de Febrero";
   const sessionTime = "7:00 PM (Hora CDMX)";
 
-  // Track page view on mount
+  // Track page view on mount with funnel-specific event
   useEffect(() => {
-    trackPageViewContent({
-      page: "meditacion-gratis",
-      contentName: "meditacion_en_vivo_landing",
-    });
+    trackEvent(
+      "ViewContent_Meditacion",
+      {
+        funnel: "meditacion",
+        content_type: "landing",
+        content_name: "meditacion_en_vivo_landing",
+        content_category: "lead_magnet",
+      },
+      { enableCAPI: true }
+    );
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

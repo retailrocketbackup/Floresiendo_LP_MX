@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Play, Heart, Users, Leaf, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
-import { trackWhatsAppLead, trackPageViewContent } from "@/lib/meta-tracking";
+import { trackWhatsAppLead, trackEvent } from "@/lib/meta-tracking";
 
 // Lazy load Vimeo player - only loads when user clicks play
 const TrackedVimeoPlayer = dynamic(
@@ -80,13 +80,18 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 export default function DueloAcompanamientoPage() {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Track page view on mount
+  // Track page view on mount with funnel-specific event
   useEffect(() => {
-    trackPageViewContent({
-      page: "duelo-acompanamiento",
-      contentName: "vsl_duelo_landing",
-      contentCategory: "duelo",
-    });
+    trackEvent(
+      "ViewContent_Duelo",
+      {
+        funnel: "duelo",
+        content_type: "landing",
+        content_name: "vsl_duelo_landing",
+        content_category: "duelo",
+      },
+      { enableCAPI: true }
+    );
   }, []);
 
   const faqs = [

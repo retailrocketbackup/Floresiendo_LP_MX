@@ -20,9 +20,9 @@ export function PaymentSuccessTracking({
     if (hasTracked.current) return;
     hasTracked.current = true;
 
-    // Track ViewContent for success page view
+    // Track funnel-specific ViewContent for success page view
     trackEvent(
-      "ViewContent",
+      "ViewContent_PagoExitoso",
       {
         funnel: "pago_exitoso",
         content_type: "payment_confirmation",
@@ -33,7 +33,7 @@ export function PaymentSuccessTracking({
       { enableCAPI: true }
     );
 
-    console.log("💳 PAYMENT SUCCESS: ViewContent tracked", {
+    console.log("💳 PAYMENT SUCCESS: ViewContent_PagoExitoso tracked", {
       chargeId,
       productId,
       productName,

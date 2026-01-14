@@ -7,7 +7,8 @@ import Script from 'next/script';
 import ConektaPaymentForm from "@/components/ConektaPaymentForm"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import { SiteHeader } from "@/components/site-header"
-import { trackPageViewContent } from "@/lib/meta-tracking"
+import { trackEvent } from "@/lib/meta-tracking"
+import { encuentroFebrero2026 } from "@/lib/encuentros-data"
 
 type PaymentOption = {
   id: string;
@@ -32,15 +33,20 @@ export default function PreciosFebrero2026() {
   const [selectedPayment, setSelectedPayment] = useState<PaymentOption>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  // Track high-intent pricing page view
+  // Track high-intent pricing page view with funnel-specific event
   useEffect(() => {
-    trackPageViewContent({
-      page: "precios",
-      contentName: "febrero_2026_precios",
-      contentCategory: "high_intent",
-      value: 10200,
-      currency: "MXN",
-    });
+    trackEvent(
+      "ViewContent_Precios",
+      {
+        funnel: "precios",
+        content_type: "pricing",
+        content_name: "febrero_2026_precios",
+        content_category: "high_intent",
+        value: 10200,
+        currency: "MXN",
+      },
+      { enableCAPI: true }
+    );
   }, []);
 
   // Auto-open payment modal when coming from approved application
@@ -347,16 +353,7 @@ export default function PreciosFebrero2026() {
                     <h3 className="text-xl font-bold text-white">Incluido en tu Retiro</h3>
                   </div>
                   <ul className="space-y-4">
-                    {[
-                      '2-3 ceremonias de Planta Amazónica',
-                      'Alojamiento completo',
-                      'Todas las comidas (dieta de preparación)',
-                      'Taller Encuentra tu propósito',
-                      'Sesiones de trabajo de respiración',
-                      'Acompañamiento personalizado',
-                      'Meditación guiada',
-                      '1 sesión individual de integración post-retiro (opción 3 noches)'
-                    ].map((item, i) => (
+                    {encuentroFebrero2026.included.map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-white/70">
                         <span className="text-coral mt-1">•</span>
                         <span>{item}</span>
@@ -379,11 +376,7 @@ export default function PreciosFebrero2026() {
                     <h3 className="text-xl font-bold text-white">No Incluido</h3>
                   </div>
                   <ul className="space-y-4">
-                    {[
-                      'Transporte aéreo/terrestre a Morelos',
-                      'Prácticas opcionales (Kambó, Bufo, Yopo)',
-                      'Gastos personales'
-                    ].map((item, i) => (
+                    {encuentroFebrero2026.notIncluded.map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-white/50">
                         <span className="text-white/30 mt-1">•</span>
                         <span>{item}</span>

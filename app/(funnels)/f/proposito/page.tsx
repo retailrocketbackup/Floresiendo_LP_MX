@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Play, Compass, Sparkles, Heart, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
-import { trackWhatsAppLead, trackPageViewContent } from "@/lib/meta-tracking";
+import { trackWhatsAppLead, trackEvent } from "@/lib/meta-tracking";
 
 // Lazy load Vimeo player - only loads when user clicks play
 const TrackedVimeoPlayer = dynamic(
@@ -81,13 +81,18 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 export default function PropositoPage() {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Track page view on mount
+  // Track page view on mount with funnel-specific event
   useEffect(() => {
-    trackPageViewContent({
-      page: "proposito",
-      contentName: "vsl_proposito_landing",
-      contentCategory: "proposito",
-    });
+    trackEvent(
+      "ViewContent_Proposito",
+      {
+        funnel: "proposito",
+        content_type: "landing",
+        content_name: "vsl_proposito_landing",
+        content_category: "proposito",
+      },
+      { enableCAPI: true }
+    );
   }, []);
 
   const faqs = [

@@ -463,9 +463,11 @@ export interface VideoTrackingData {
 }
 
 export const trackVideoMilestone = async (data: VideoTrackingData) => {
+  // Create funnel-specific event names: VideoPlay_Duelo, Video25_Duelo, etc.
+  const funnelSuffix = data.funnel.charAt(0).toUpperCase() + data.funnel.slice(1).replace(/-/g, '')
   const eventName = data.milestone === "play"
-    ? "ViewContent"
-    : `Video${data.milestone === "complete" ? "Complete" : data.milestone}`
+    ? `VideoPlay_${funnelSuffix}`
+    : `Video${data.milestone === "complete" ? "Complete" : data.milestone}_${funnelSuffix}`
 
   const contentName = `video_${data.funnel}_${data.videoId}_${data.milestone}`
 
