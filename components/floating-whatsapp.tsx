@@ -2,15 +2,20 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { trackWhatsAppLead } from "@/lib/meta-tracking";
 
 interface FloatingWhatsAppProps {
   phoneNumber?: string;
   message?: string;
+  page?: string;
+  encuentroSlug?: string;
 }
 
 export function FloatingWhatsApp({
   phoneNumber = "526182301481",
   message = "Hola, me gustaría saber más sobre los encuentros de FloreSiendo México",
+  page = "general",
+  encuentroSlug,
 }: FloatingWhatsAppProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -23,6 +28,14 @@ export function FloatingWhatsApp({
   }, []);
 
   const handleClick = () => {
+    // Track WhatsApp click as Lead event
+    trackWhatsAppLead({
+      page: page,
+      buttonLocation: "sticky",
+      encuentroSlug: encuentroSlug,
+      eventName: "Lead_WhatsApp_Sticky",
+    });
+
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };

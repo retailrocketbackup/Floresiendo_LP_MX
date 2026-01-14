@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { trackEvent } from "@/lib/meta-tracking";
 
 // Declare Conekta global type
 declare global {
@@ -97,6 +98,17 @@ export default function ConektaPaymentForm({
     }
   }, [conektaReady]);
 
+  // Track InitiateCheckout when payment form is shown
+  useEffect(() => {
+    trackEvent("InitiateCheckout", {
+      funnel: "pricing",
+      content_type: "retreat_package",
+      content_name: productName,
+      value: amount / 100,
+      currency: "MXN",
+    }, { enableCAPI: true });
+  }, [productName, amount]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -168,6 +180,18 @@ export default function ConektaPaymentForm({
       const data = await response.json();
 
       if (data.success) {
+        // Track Purchase event
+        await trackEvent("Purchase", {
+          funnel: "pricing",
+          content_type: "retreat_booking",
+          content_name: productName,
+          value: amount / 100,
+          currency: "MXN",
+          email: formData.email,
+          first_name: formData.name.split(' ')[0],
+          phone: formData.phone,
+        }, { enableCAPI: true });
+
         setSuccess(true);
 
         if (onSuccess) {

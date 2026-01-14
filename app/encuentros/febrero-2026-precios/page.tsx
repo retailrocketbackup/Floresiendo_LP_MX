@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image"
 import Script from 'next/script';
 import ConektaPaymentForm from "@/components/ConektaPaymentForm"
+import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { SiteHeader } from "@/components/site-header"
+import { trackPageViewContent } from "@/lib/meta-tracking"
 
 type PaymentOption = {
   id: string;
@@ -14,6 +17,17 @@ type PaymentOption = {
 export default function PreciosFebrero2026() {
   const [selectedPayment, setSelectedPayment] = useState<PaymentOption>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+  // Track high-intent pricing page view
+  useEffect(() => {
+    trackPageViewContent({
+      page: "precios",
+      contentName: "febrero_2026_precios",
+      contentCategory: "high_intent",
+      value: 10200,
+      currency: "MXN",
+    });
+  }, []);
 
   const openPaymentModal = (productId: string, productName: string, amount: number) => {
     setSelectedPayment({ id: productId, name: productName, amount });
@@ -33,9 +47,20 @@ export default function PreciosFebrero2026() {
         strategy="beforeInteractive"
       />
 
+      {/* Site Header */}
+      <SiteHeader />
+
+      {/* Floating WhatsApp Button */}
+      <FloatingWhatsApp
+        phoneNumber="526182301481"
+        message="Hola Ramón, me interesa el Encuentro de Febrero 2026. ¿Podrías darme más información?"
+        page="precios"
+        encuentroSlug="febrero-2026"
+      />
+
       <main className="min-h-screen bg-warm-gray-900">
-        {/* Hero Section */}
-        <section className="relative min-h-[55vh] flex items-center justify-center overflow-hidden">
+        {/* Hero Section - extends under header for transparent effect */}
+        <section className="relative min-h-[55vh] flex items-center justify-center overflow-hidden pt-20">
           <div className="absolute inset-0">
             <Image
               src="/cosmic-spiritual-background.webp"
