@@ -28,6 +28,7 @@ export function TrackedVimeoPlayer({
     const player = new Player(containerRef.current, {
       id: parseInt(videoId),
       autoplay,
+      responsive: true,
       title: false,
       byline: false,
       portrait: false,

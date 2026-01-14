@@ -179,11 +179,11 @@ export default function DueloAcompanamientoPage() {
             </button>
 
             {isPlaying && (
-              <div className="mt-6 relative aspect-[9/16] max-w-xs mx-auto rounded-2xl overflow-hidden shadow-2xl">
+              <div className="mt-6 max-w-xs mx-auto rounded-2xl overflow-hidden shadow-2xl">
                 <TrackedVimeoPlayer
                   videoId={VIMEO_VIDEO_ID}
                   funnel="duelo-acompanamiento"
-                  className="absolute top-0 left-0 w-full h-full"
+                  className="w-full"
                   autoplay={true}
                 />
               </div>
