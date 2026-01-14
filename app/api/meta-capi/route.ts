@@ -88,14 +88,27 @@ export async function POST(request: NextRequest) {
       total_parameters: Object.keys(hashedUserData).length,
     })
 
+    // Validate event_name is present and valid
+    if (!body.event_name || typeof body.event_name !== 'string' || body.event_name.trim() === '') {
+      console.error("[v0] Missing or invalid event_name:", body.event_name)
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Missing required parameter: event_name",
+          received: body.event_name,
+        },
+        { status: 400 },
+      )
+    }
+
     const facebookPayload = {
       data: [
         {
-          event_name: body.event_name,
-          event_time: body.event_time,
+          event_name: body.event_name.trim(),
+          event_time: body.event_time || Math.floor(Date.now() / 1000),
           event_id: body.event_id,
-          action_source: body.action_source,
-          event_source_url: body.event_source_url, // Required for website events
+          action_source: body.action_source || "website",
+          event_source_url: body.event_source_url,
           user_data: hashedUserData,
           custom_data: body.custom_data || {},
         },
