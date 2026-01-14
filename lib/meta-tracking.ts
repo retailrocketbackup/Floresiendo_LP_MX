@@ -138,8 +138,16 @@ export const trackCAPIEvent = async (
   eventName: string, data: TrackingData, eventId: string, userAgent?: string | null,
   ip?: string | null, externalId?: string | null, fbclid?: string | null,
 ) => {
-  console.log(`🚀 CAPI: Starting ${eventName} tracking...`, {
-    event: eventName, funnel: data.funnel, content_type: data.content_type, eventID: eventId,
+  // Validate event_name before sending to CAPI
+  if (!eventName || typeof eventName !== 'string' || eventName.trim() === '') {
+    console.error(`❌ CAPI: Invalid event_name provided:`, eventName)
+    throw new Error(`Invalid event_name: ${eventName}`)
+  }
+
+  const validEventName = eventName.trim()
+
+  console.log(`🚀 CAPI: Starting ${validEventName} tracking...`, {
+    event: validEventName, funnel: data.funnel, content_type: data.content_type, eventID: eventId,
     external_id: externalId, hasEmail: !!data.email, hasPhone: !!data.phone,
     hasUserAgent: !!userAgent, hasIP: !!ip, fbclid_passed: !!fbclid,
   })
@@ -190,7 +198,7 @@ export const trackCAPIEvent = async (
     if (data.currency) customData.currency = data.currency
     if (data.value !== undefined) customData.value = data.value
     const payload = {
-      event_name: eventName, event_time: Math.floor(Date.now() / 1000), event_id: eventId,
+      event_name: validEventName, event_time: Math.floor(Date.now() / 1000), event_id: eventId,
       action_source: "website",
       event_source_url: typeof window !== "undefined" ? window.location.href : undefined,
       user_data: userData, custom_data: customData,
@@ -237,16 +245,16 @@ export const trackCAPIEvent = async (
       })
       throw new Error(`CAPI server returned invalid JSON response`)
     }
-    console.log(`✅ CAPI: ${eventName} tracked successfully with enhanced matching`, {
-      event: eventName, eventID: eventId, external_id: externalId, funnel: data.funnel,
+    console.log(`✅ CAPI: ${validEventName} tracked successfully with enhanced matching`, {
+      event: validEventName, eventID: eventId, external_id: externalId, funnel: data.funnel,
       events_received: result.events_received, fbtrace_id: result.fbtrace_id,
       fbclid_sent: !!finalFbclid, fbp_sent: !!fbp, deduplication_ready: "✅ DOUBLE PROTECTION",
       timestamp: new Date().toISOString(),
     })
     return result
   } catch (error) {
-    console.error(`❌ CAPI: Tracking error for ${eventName}`, {
-      event: eventName, funnel: data.funnel, eventID: eventId, external_id: externalId,
+    console.error(`❌ CAPI: Tracking error for ${validEventName}`, {
+      event: validEventName, funnel: data.funnel, eventID: eventId, external_id: externalId,
       error: error instanceof Error ? error.message : error, timestamp: new Date().toISOString(),
     })
     throw error
