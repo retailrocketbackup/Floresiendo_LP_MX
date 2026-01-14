@@ -322,7 +322,8 @@ export function ScreeningWizard() {
         applicationId={approvedData.applicationId}
         userName={approvedData.userName}
         onProceedToPayment={() => {
-          router.push(`/encuentros/febrero-2026-precios?applicationId=${approvedData.applicationId}`);
+          const packageParam = selectedPackage ? `&package=${selectedPackage}` : '';
+          router.push(`/encuentros/febrero-2026-precios?applicationId=${approvedData.applicationId}${packageParam}&autoOpenPayment=true`);
         }}
       />
     </div>

@@ -15,10 +15,19 @@ type PaymentOption = {
   amount: number;
 } | null;
 
+// Package configuration mapping
+const PACKAGE_CONFIG: Record<string, { id: string; name: string; amount: number }> = {
+  DEPOSIT: { id: 'DEPOSIT', name: 'Anticipo - Encuentro Febrero 2026', amount: 300000 },
+  TWO_NIGHTS_EARLY: { id: 'TWO_NIGHTS_EARLY', name: 'Retiro 2 Noches - Precio Especial', amount: 710000 },
+  THREE_NIGHTS_EARLY: { id: 'THREE_NIGHTS_EARLY', name: 'Retiro 3 Noches - Precio Especial', amount: 1020000 },
+};
+
 export default function PreciosFebrero2026() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const applicationId = searchParams.get('applicationId');
+  const autoOpenPayment = searchParams.get('autoOpenPayment') === 'true';
+  const packageParam = searchParams.get('package');
 
   const [selectedPayment, setSelectedPayment] = useState<PaymentOption>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -33,6 +42,17 @@ export default function PreciosFebrero2026() {
       currency: "MXN",
     });
   }, []);
+
+  // Auto-open payment modal when coming from approved application
+  useEffect(() => {
+    if (autoOpenPayment && applicationId && packageParam) {
+      const packageConfig = PACKAGE_CONFIG[packageParam];
+      if (packageConfig) {
+        setSelectedPayment(packageConfig);
+        setShowPaymentModal(true);
+      }
+    }
+  }, [autoOpenPayment, applicationId, packageParam]);
 
   // If user has applicationId, they can proceed to payment directly
   // Otherwise, redirect to application form first
