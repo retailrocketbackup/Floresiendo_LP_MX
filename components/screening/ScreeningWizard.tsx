@@ -1,7 +1,7 @@
 // components/screening/ScreeningWizard.tsx
 "use client";
 
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -48,18 +48,6 @@ export function ScreeningWizard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Prevent scroll on form updates
-  const scrollPositionRef = useRef<number>(0);
-  const isUpdatingRef = useRef(false);
-
-  // Save scroll position before state updates
-  useLayoutEffect(() => {
-    if (isUpdatingRef.current) {
-      window.scrollTo(0, scrollPositionRef.current);
-      isUpdatingRef.current = false;
-    }
-  });
-
   // Handle hydration mismatch with localStorage
   useEffect(() => {
     setIsHydrated(true);
@@ -69,30 +57,19 @@ export function ScreeningWizard() {
     }
   }, []);
 
-  // Check for hard blocks - only show modal once per red condition
-  const [lastShownRiskMessage, setLastShownRiskMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!isHydrated) return;
-
-    // Save scroll position before any state updates
-    scrollPositionRef.current = window.scrollY;
-    isUpdatingRef.current = true;
-
+  // Check for hard blocks - memoized to prevent unnecessary calls
+  const checkForHardBlocks = useCallback(() => {
     const result = evaluateRisk();
-    // Only show knockout if it's a new red condition we haven't shown yet
     if (result.level === "red" && result.messages.length > 0) {
-      const currentMessage = result.messages[0];
-      if (currentMessage !== lastShownRiskMessage) {
-        setKnockoutData({
-          message: currentMessage,
-          recommendation: result.recommendation || "",
-        });
-        setShowKnockout(true);
-        setLastShownRiskMessage(currentMessage);
-      }
+      setKnockoutData({
+        message: result.messages[0],
+        recommendation: result.recommendation || "",
+      });
+      setShowKnockout(true);
+      return true;
     }
-  }, [formData, evaluateRisk, isHydrated, lastShownRiskMessage]);
+    return false;
+  }, [evaluateRisk]);
 
   const handleNext = () => {
     const result = evaluateRisk();
