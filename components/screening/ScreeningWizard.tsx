@@ -1,13 +1,14 @@
 // components/screening/ScreeningWizard.tsx
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
+import { trackEvent, trackPageViewContent } from "@/lib/meta-tracking";
 import { StepProgress } from "./StepProgress";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { BasicInfoStep } from "./steps/BasicInfoStep";
@@ -47,6 +48,7 @@ export function ScreeningWizard() {
   const [knockoutData, setKnockoutData] = useState({ message: "", recommendation: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const hasTrackedPageView = useRef(false);
 
   // Handle hydration mismatch with localStorage
   useEffect(() => {
@@ -56,6 +58,21 @@ export function ScreeningWizard() {
       setShowWelcome(false);
     }
   }, []);
+
+  // Track ViewContent when user starts the screening form (only once)
+  useEffect(() => {
+    if (isHydrated && !showWelcome && !hasTrackedPageView.current) {
+      hasTrackedPageView.current = true;
+      trackPageViewContent({
+        page: "aplicar",
+        contentName: "screening_application_form",
+        contentCategory: "retreat_application",
+        value: 15000,
+        currency: "MXN",
+      });
+      console.log("📋 SCREENING: ViewContent tracked - form started");
+    }
+  }, [isHydrated, showWelcome]);
 
   // Check for hard blocks - memoized to prevent unnecessary calls
   const checkForHardBlocks = useCallback(() => {
@@ -88,6 +105,28 @@ export function ScreeningWizard() {
     setIsSubmitting(true);
     const result = evaluateRisk();
 
+    // Track Lead event on form submission (before API call)
+    const userData = {
+      email: formData.basicInfo?.email,
+      phone: formData.basicInfo?.phone,
+      first_name: formData.basicInfo?.fullName?.split(" ")[0],
+      last_name: formData.basicInfo?.fullName?.split(" ").slice(1).join(" "),
+    };
+
+    await trackEvent(
+      "Lead",
+      {
+        funnel: "screening_application",
+        content_type: "retreat_application",
+        content_name: `screening_submission_${result.level}`,
+        value: 15000,
+        currency: "MXN",
+        ...userData,
+      },
+      { enableCAPI: true }
+    );
+    console.log("📋 SCREENING: Lead event tracked - form submitted");
+
     try {
       const response = await fetch("/api/screening-application", {
         method: "POST",
@@ -110,9 +149,39 @@ export function ScreeningWizard() {
             userName: formData.basicInfo?.fullName || "",
           });
           setShowApproved(true);
+
+          // Track CompleteRegistration for approved applications
+          await trackEvent(
+            "CompleteRegistration",
+            {
+              funnel: "screening_application",
+              content_type: "retreat_application",
+              content_name: "screening_approved",
+              value: 15000,
+              currency: "MXN",
+              ...userData,
+            },
+            { enableCAPI: true }
+          );
+          console.log("📋 SCREENING: CompleteRegistration tracked - application approved");
         } else if (result.level === "yellow") {
           // Soft flag: show review modal
           setShowReviewFlag(true);
+
+          // Track CompleteRegistration for pending review applications
+          await trackEvent(
+            "CompleteRegistration",
+            {
+              funnel: "screening_application",
+              content_type: "retreat_application",
+              content_name: "screening_pending_review",
+              value: 15000,
+              currency: "MXN",
+              ...userData,
+            },
+            { enableCAPI: true }
+          );
+          console.log("📋 SCREENING: CompleteRegistration tracked - pending review");
         }
       } else {
         console.error("Submission error:", data);

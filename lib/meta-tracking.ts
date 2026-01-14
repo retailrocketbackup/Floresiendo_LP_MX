@@ -10,6 +10,7 @@ export interface TrackingData {
   funnel: string
   content_type?: string
   content_name?: string
+  content_category?: string
   currency?: string
   value?: number
   email?: string
