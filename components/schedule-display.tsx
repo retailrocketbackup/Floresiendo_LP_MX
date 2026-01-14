@@ -119,8 +119,8 @@ export function ScheduleDisplay({
   retreatTitle = "Encuentro FloreSiendo",
   retreatYear = 2026
 }: ScheduleDisplayProps) {
-  // Start with first day expanded
-  const [expandedDays, setExpandedDays] = useState<number[]>([0]);
+  // Start with all days collapsed
+  const [expandedDays, setExpandedDays] = useState<number[]>([]);
   const [showCalendarMenu, setShowCalendarMenu] = useState(false);
 
   const handleAddToCalendar = (type: "google" | "ics") => {
