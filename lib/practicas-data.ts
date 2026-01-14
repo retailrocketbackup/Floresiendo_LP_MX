@@ -91,13 +91,13 @@ export const practicas: Practica[] = [
     accentColor: "bg-sage",
   },
   {
-    slug: "psicoterapia-integrativa",
-    name: "Psicoterapia Integrativa",
-    subtitle: "Acompañamiento Terapéutico",
+    slug: "integracion-terapeutica",
+    name: "Integración Terapéutica",
+    subtitle: "Círculos de Preparación e Integración",
     description:
-      "Sesiones de acompañamiento psicoterapéutico que integran diversas corrientes para tu proceso de bienestar.",
+      "Círculos grupales antes y después de cada ceremonia para preparar, compartir y procesar la experiencia.",
     details:
-      "Nuestro equipo de psicoterapeutas ofrece un espacio seguro para explorar y procesar experiencias. Combinamos enfoques humanistas, transpersonales y somáticos para acompañar tu proceso de integración y crecimiento personal de manera holística. Cada sesión está adaptada a tus necesidades individuales.",
+      "Nuestro equipo de facilitadores y psicoterapeutas guía círculos de preparación e integración alrededor de cada ceremonia. Estos espacios grupales permiten establecer intenciones, compartir experiencias, recibir retroalimentación y trabajar dinámicas de inteligencia emocional. Es una parte fundamental del proceso terapéutico del encuentro.",
     image: "/images/psicoterapia.jpg",
     bgColor: "bg-purple-100",
     borderColor: "border-purple-200",
@@ -118,12 +118,12 @@ export function getPracticasForEncuentro(slugs: string[]): Practica[] {
     .filter((p): p is Practica => p !== undefined);
 }
 
-// Default practices for encuentros
+// Default practices for encuentros (included first, then optional)
 export const defaultEncuentroPracticas = [
+  "meditacion",
   "planta-amazonica",
+  "integracion-terapeutica",
   "rana-mono-gigante",
   "sapo-sonora",
-  "meditacion",
   "rape-dioses",
-  "psicoterapia-integrativa",
 ];

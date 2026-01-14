@@ -77,18 +77,22 @@ export const encuentroFebrero2026: Encuentro = {
   ],
 
   included: [
-    "Alojamiento 2-3 noches",
+    "Alojamiento 3 noches (o 2 noches en opción corta)",
     "Alimentación completa (dieta de preparación)",
     "2-3 ceremonias con Planta Amazónica",
-    "Círculos de integración diarios",
-    "Sesiones de breathwork",
-    "Acompañamiento personalizado",
-    "Integración post-retiro (1 sesión)",
+    "Círculos de integración terapéutica",
+    "Taller 'Encuentra tu Propósito' (diario)",
+    "Sesiones de breathwork y meditación",
+    "Acompañamiento personalizado de facilitadores",
+    "1 sesión de integración post-retiro",
+    "Acceso a comunidad de participantes",
   ],
 
   notIncluded: [
-    "Transporte aéreo o terrestre a Morelos",
-    "Prácticas opcionales",
+    "Transporte aéreo/terrestre a Morelos",
+    "Prácticas opcionales (Kambó, Bufo, Yopo)",
+    "Gastos personales",
+    "Materiales de escritura (traer libreta y pluma)",
   ],
 
   schedule: [
@@ -111,6 +115,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "11:00", activity: "Integración del grupo", description: "Compartir experiencias" },
         { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
         { time: "14:00", activity: "Almuerzo" },
+        { time: "15:30", activity: "Taller y Meditación", description: "Encuentra tu propósito + meditación guiada" },
         { time: "17:00", activity: "Registro", description: "Check-in para nuevos participantes" },
         { time: "18:00", activity: "Merienda" },
         { time: "20:30", activity: "Preparación" },
@@ -126,6 +131,7 @@ export const encuentroFebrero2026: Encuentro = {
         { time: "11:00", activity: "Integración del grupo", description: "Compartir experiencias" },
         { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
         { time: "14:00", activity: "Almuerzo" },
+        { time: "15:30", activity: "Breathwork y Meditación", description: "Trabajo de respiración + meditación guiada" },
         { time: "18:00", activity: "Merienda" },
         { time: "20:30", activity: "Preparación" },
         { time: "22:00", activity: "Sesión con Planta Amazónica", description: "Tercera ceremonia nocturna" },
@@ -137,7 +143,8 @@ export const encuentroFebrero2026: Encuentro = {
       items: [
         { time: "09:00", activity: "Rana Mono Gigante (opcional)", description: "Práctica de purificación" },
         { time: "09:30", activity: "Desayuno" },
-        { time: "11:00", activity: "Integración del grupo", description: "Círculo de cierre" },
+        { time: "10:30", activity: "Taller y Breathwork", description: "Encuentra tu propósito + trabajo de respiración" },
+        { time: "12:00", activity: "Integración del grupo", description: "Círculo de cierre" },
         { time: "13:00", activity: "El Sapo de Sonora (opcional)", description: "Ceremonia breve e intensa" },
         { time: "14:30", activity: "Almuerzo y despedida" },
       ],
@@ -203,3 +210,24 @@ export function getEncuentroBySlug(slug: string): Encuentro | undefined {
 export function getUpcomingEncuentros(): Encuentro[] {
   return encuentros.filter((e) => e.status === "upcoming");
 }
+
+// Generic retreat inclusions for use across all pages
+export const retreatInclusions = {
+  included: [
+    "Alojamiento 3 noches (o 2 noches en opción corta)",
+    "Alimentación completa (dieta de preparación)",
+    "2-3 ceremonias con Planta Amazónica",
+    "Círculos de integración terapéutica",
+    "Taller 'Encuentra tu Propósito' (diario)",
+    "Sesiones de breathwork y meditación",
+    "Acompañamiento personalizado de facilitadores",
+    "1 sesión de integración post-retiro",
+    "Acceso a comunidad de participantes",
+  ],
+  notIncluded: [
+    "Transporte aéreo/terrestre a Morelos",
+    "Prácticas opcionales (Kambó, Bufo, Yopo)",
+    "Gastos personales",
+    "Materiales de escritura (traer libreta y pluma)",
+  ],
+};
