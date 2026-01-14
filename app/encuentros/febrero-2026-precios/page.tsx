@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from "next/image"
 import Script from 'next/script';
 import ConektaPaymentForm from "@/components/ConektaPaymentForm"
@@ -15,6 +16,10 @@ type PaymentOption = {
 } | null;
 
 export default function PreciosFebrero2026() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const applicationId = searchParams.get('applicationId');
+
   const [selectedPayment, setSelectedPayment] = useState<PaymentOption>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
@@ -29,9 +34,17 @@ export default function PreciosFebrero2026() {
     });
   }, []);
 
-  const openPaymentModal = (productId: string, productName: string, amount: number) => {
-    setSelectedPayment({ id: productId, name: productName, amount });
-    setShowPaymentModal(true);
+  // If user has applicationId, they can proceed to payment directly
+  // Otherwise, redirect to application form first
+  const handlePackageSelect = (packageId: string, productName: string, amount: number) => {
+    if (applicationId) {
+      // User already completed application, open payment modal
+      setSelectedPayment({ id: packageId, name: productName, amount });
+      setShowPaymentModal(true);
+    } else {
+      // User needs to complete application first
+      router.push(`/aplicar?package=${packageId}`);
+    }
   };
 
   const closePaymentModal = () => {
@@ -142,7 +155,7 @@ export default function PreciosFebrero2026() {
                   <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-light to-gold mb-2">$3,000 MXN</p>
                   <p className="text-white/50 mb-8 text-sm">El resto lo pagas antes del encuentro</p>
                   <button
-                    onClick={() => openPaymentModal('DEPOSIT', 'Anticipo - Encuentro Febrero 2026', 300000)}
+                    onClick={() => handlePackageSelect('DEPOSIT', 'Anticipo - Encuentro Febrero 2026', 300000)}
                     className="px-10 py-4 bg-gradient-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold text-warm-gray-900 font-bold text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-gold/30"
                   >
                     Reservar Ahora
@@ -197,7 +210,7 @@ export default function PreciosFebrero2026() {
 
                   <div className="mt-auto">
                     <button
-                      onClick={() => openPaymentModal('TWO_NIGHTS_EARLY', 'Retiro 2 Noches - Precio Especial', 710000)}
+                      onClick={() => handlePackageSelect('TWO_NIGHTS_EARLY', 'Retiro 2 Noches - Precio Especial', 710000)}
                       className="w-full py-4 bg-gradient-to-r from-coral to-coral-dark hover:from-coral-light hover:to-coral text-white font-bold rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-coral/30"
                     >
                       Invertir $7,100 MXN
@@ -257,7 +270,7 @@ export default function PreciosFebrero2026() {
 
                   <div className="mt-auto">
                     <button
-                      onClick={() => openPaymentModal('THREE_NIGHTS_EARLY', 'Retiro 3 Noches - Precio Especial', 1020000)}
+                      onClick={() => handlePackageSelect('THREE_NIGHTS_EARLY', 'Retiro 3 Noches - Precio Especial', 1020000)}
                       className="w-full py-4 bg-gradient-to-r from-coral to-coral-dark hover:from-coral-light hover:to-coral text-white font-bold rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-coral/30"
                     >
                       Invertir $10,200 MXN
