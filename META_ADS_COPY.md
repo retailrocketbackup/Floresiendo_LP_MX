@@ -9,6 +9,56 @@
 
 ---
 
+## REFINED COPY (Gemini - Meta-Safe, Mexican Spanish)
+
+### Option 1: "The Paradox" Angle (Emotional/Existential)
+**Best for:** High-achievers feeling unfulfilled. Focuses on "Meaning."
+
+**Primary Text:**
+```
+Has logrado todo lo que te propusiste: el puesto, la estabilidad y el reconocimiento. Sin embargo, esa sensación de que "algo falta" sigue ahí.
+
+No necesitas cambiar quién eres, ni tampoco "arreglarte". Solo necesitas una pausa estratégica para reconectar con lo que realmente importa.
+
+Este es un espacio seguro para transformar el éxito externo en plenitud interna. Encuentra el propósito detrás de tanto esfuerzo y regresa a tu centro.
+```
+
+**Headline:** ¿Lo tienes todo y aún sientes vacío?
+**CTA:** Más información
+
+---
+
+### Option 2: "Legacy & Clarity" Angle (Pragmatic)
+**Best for:** Busy professionals. Focuses on "Time Scarcity" and "Rest."
+
+**Primary Text:**
+```
+Vives a toda velocidad cuidando del negocio y la familia, pero a veces te olvidas de ti.
+
+Este retiro no es para escapar de tu realidad, es para regresar a ella con una visión renovada. Aprende técnicas prácticas para aquietar el ruido mental y encontrar calma, incluso en los días más pesados.
+
+No se trata solo de descansar, sino de construir un legado con claridad y propósito. Recupérate a ti mismo.
+```
+
+**Headline:** 3 días para recuperar tu claridad
+**CTA:** Ver disponibilidad
+
+---
+
+### Why These Work for Mexico & Meta
+
+**Meta Safety:**
+- Replaced "Anxiety/Stress" → "Ruido mental" (mental noise)
+- Replaced "Vives estresado" → "Vives a toda velocidad" (live at full speed)
+- Replaced "Heal/Fix" → "Reconectar" (reconnect), "Visión renovada" (renewed vision)
+
+**Mexican Nuance:**
+- "Pausa estratégica": Mexican professionals prize strategy; framing rest as a strategy validates it
+- "Cuidando del negocio y la familia": Appeals to the Mexican cultural pillar of provider/protector
+- Tonal Balance: Uses tú (conversational) but avoids slang like "onda" or "carnal", keeping it respectful for a professional audience
+
+---
+
 ## MEDITACIÓN EN VIVO - 4 de Febrero, 8pm
 
 ### Image Prompts
@@ -50,13 +100,12 @@ Lugares limitados. Regístrate gratis 👇
 
 ---
 
-#### Ad 2 - Nature/Spiritual Image
+#### Ad 2 - Nature/Spiritual Image (Meta-Safe Version)
 **Primary Text:**
 ```
-El estrés no se va con vacaciones.
-Se va cuando aprendes a soltar.
+Vives a toda velocidad y tu mente nunca para.
 
-Únete a nuestra sesión de meditación en vivo donde te guiaré paso a paso.
+Esta sesión de meditación en vivo te enseña a soltar el ruido mental, paso a paso.
 
 📅 Martes 4 de Febrero - 8pm CDMX
 ⏱️ 30 minutos
@@ -65,7 +114,7 @@ Se va cuando aprendes a soltar.
 Solo 50 lugares disponibles 👇
 ```
 
-**Headline:** Sesión en Vivo: Aprende a Soltar
+**Headline:** Sesión en Vivo: Aquieta el Ruido Mental
 **Description:** 4 de Febrero • Registro gratuito • Cupo limitado
 **CTA:** Registrarte
 
@@ -74,7 +123,7 @@ Solo 50 lugares disponibles 👇
 #### Ad 3 - Butterfly/Transformation Image
 **Primary Text:**
 ```
-Hay una versión de ti que respira profundo y siente paz.
+Hay una versión de ti que respira profundo y siente calma.
 
 No está lejos. Está a una sesión de distancia.
 
@@ -114,36 +163,34 @@ Person walking alone on empty beach at golden hour, footprints in sand, peaceful
 
 ### Ad Copy
 
-#### Ad 1 - Successful But Empty Image
+#### Ad 1 - Successful But Empty Image (Paradox Angle)
 **Primary Text:**
 ```
-Tienes el trabajo. El departamento. Los viajes.
+Has logrado todo lo que te propusiste: el puesto, la estabilidad y el reconocimiento.
 
-Y aún así... algo falta.
+Sin embargo, esa sensación de que "algo falta" sigue ahí.
 
-En esta conferencia EN VIVO vamos a hablar de por qué el éxito no trajo la felicidad que prometía.
+En esta conferencia EN VIVO exploramos por qué el éxito no trajo la plenitud que prometía.
 
 📅 Martes 11 de Febrero
 🕐 8:00 pm (hora CDMX)
 💻 Online y gratuito
 
-Aparta tu lugar antes de que se llene 👇
+Aparta tu lugar 👇
 ```
 
-**Headline:** ¿Por Qué No Soy Feliz Si "Lo Tengo Todo"?
+**Headline:** ¿Lo tienes todo y aún sientes vacío?
 **Description:** 11 de Febrero • Conferencia gratuita en vivo
 **CTA:** Registrarte
 
 ---
 
-#### Ad 2 - Breaking Free Image
+#### Ad 2 - Breaking Free Image (Legacy Angle)
 **Primary Text:**
 ```
-"Cuando logre X, voy a ser feliz."
+Vives a toda velocidad cuidando del negocio y la familia, pero a veces te olvidas de ti.
 
-¿Cuántas veces te has dicho eso?
-
-En esta conferencia vamos a romper ese ciclo.
+Esta conferencia no es para escapar de tu realidad, es para regresar a ella con visión renovada.
 
 📅 Martes 11 de Febrero - 8pm CDMX
 ⏱️ 60 minutos
@@ -152,7 +199,7 @@ En esta conferencia vamos a romper ese ciclo.
 Registro gratuito 👇
 ```
 
-**Headline:** Rompe el Ciclo de la "Vida Perfecta"
+**Headline:** Recupera Tu Claridad en 60 Minutos
 **Description:** Conferencia en vivo • 11 de Febrero • Gratis
 **CTA:** Más información
 
@@ -161,9 +208,9 @@ Registro gratuito 👇
 #### Ad 3 - New Beginning Image
 **Primary Text:**
 ```
-La vida que construiste no es la vida que querías.
+No necesitas cambiar quién eres, ni tampoco "arreglarte".
 
-Y eso tiene solución.
+Solo necesitas una pausa estratégica para reconectar con lo que realmente importa.
 
 Te lo explico en esta conferencia gratuita:
 
@@ -174,7 +221,7 @@ Te lo explico en esta conferencia gratuita:
 Solo 100 lugares. Aparta el tuyo 👇
 ```
 
-**Headline:** La Vida Que Querías vs La Que Construiste
+**Headline:** La Pausa Estratégica que Necesitas
 **Description:** 11 de Febrero • Conferencia gratis • Cupo limitado
 **CTA:** Registrarte
 
@@ -196,3 +243,22 @@ Solo 100 lugares. Aparta el tuyo 👇
 - **CTA Button:** "Más información" or "Registrarte"
 - **Pixel:** 1337956628128088
 - **Conversion Event:** Lead (for TOFU) or CompleteRegistration (for optimization)
+
+---
+
+## Meta Policy Compliance Notes
+
+### Words to AVOID:
+- Ansiedad, estrés, depresión (use "ruido mental", "agotamiento")
+- Curar, sanar, arreglar (use "reconectar", "renovar", "recuperar")
+- Garantizado, 100% efectivo
+- Before/after claims
+
+### Safe Alternatives:
+| Avoid | Use Instead |
+|-------|-------------|
+| Estrés | Ruido mental, vivir a toda velocidad |
+| Ansiedad | Inquietud, mente que no para |
+| Sanar | Reconectar, renovar |
+| Curar | Encontrar calma, recuperar claridad |
+| Transformación radical | Visión renovada, pausa estratégica |
