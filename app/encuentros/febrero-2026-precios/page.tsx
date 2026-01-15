@@ -172,7 +172,7 @@ export default function PreciosFebrero2026() {
               <div className="absolute inset-0 bg-gradient-to-r from-gold/20 via-gold/10 to-gold/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
               <div className="relative bg-warm-gray-800/80 backdrop-blur-xl rounded-3xl p-8 border border-gold/30 shadow-2xl shadow-gold/10">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <span className="bg-gradient-to-r from-gold to-gold-dark text-warm-gray-900 px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                  <span className="bg-gradient-to-r from-gold to-gold-dark text-warm-gray-900 px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg whitespace-nowrap">
                     RESERVA TU LUGAR
                   </span>
                 </div>
