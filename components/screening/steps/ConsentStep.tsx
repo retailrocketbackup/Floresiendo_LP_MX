@@ -82,6 +82,7 @@ export function ConsentStep() {
 
   const allRequired = consent.accepts7DayPreparation &&
                       consent.understandsSpiritualNotMedical &&
+                      consent.acceptsCancellationPolicy &&
                       consent.acceptsTermsAndConditions &&
                       consent.acceptsPrivacyPolicy &&
                       consent.acceptsSensitiveDataProcessing;
@@ -115,10 +116,20 @@ export function ConsentStep() {
       <ConsentCheckbox
         id="acceptsTermsAndConditions"
         label="Acepto los Términos y Condiciones"
-        description="He leído y acepto los términos de servicio, incluyendo la política de cancelación y las normas de convivencia del retiro."
+        description="He leído y acepto los términos de servicio y las normas de convivencia del retiro."
         link="/terminos-condiciones"
         linkText="Leer Términos y Condiciones"
         checked={consent.acceptsTermsAndConditions}
+        required
+      />
+
+      <ConsentCheckbox
+        id="acceptsCancellationPolicy"
+        label="Acepto la Política de Cancelación y Reembolso"
+        description="He leído y acepto la política de cancelación, transferencias y garantías descrita en los Términos y Condiciones (Sección IV)."
+        link="/terminos-condiciones#cancelacion"
+        linkText="Ver Política de Cancelación y Reembolso"
+        checked={consent.acceptsCancellationPolicy}
         required
       />
 
@@ -161,10 +172,11 @@ export function ConsentStep() {
             {[
               consent.accepts7DayPreparation,
               consent.understandsSpiritualNotMedical,
+              consent.acceptsCancellationPolicy,
               consent.acceptsTermsAndConditions,
               consent.acceptsPrivacyPolicy,
               consent.acceptsSensitiveDataProcessing,
-            ].filter(Boolean).length} / 5
+            ].filter(Boolean).length} / 6
           </span>
         </div>
 

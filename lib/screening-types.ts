@@ -101,6 +101,7 @@ export interface IntentionsData {
 export interface ConsentData {
   accepts7DayPreparation: boolean;
   understandsSpiritualNotMedical: boolean;
+  acceptsCancellationPolicy: boolean;
   acceptsTermsAndConditions: boolean;
   acceptsPrivacyPolicy: boolean;
   acceptsSensitiveDataProcessing: boolean;
@@ -169,7 +170,7 @@ export const STEPS: StepDefinition[] = [
   { id: 4, title: 'Salud Mental', shortTitle: 'Mental', description: 'Historial y estado psicológico', questionCount: 11 },
   { id: 5, title: 'Estilo de Vida', shortTitle: 'Vida', description: 'Hábitos y experiencia previa', questionCount: 6 },
   { id: 6, title: 'Intenciones', shortTitle: 'Intención', description: 'Motivación y expectativas', questionCount: 4 },
-  { id: 7, title: 'Consentimiento', shortTitle: 'Aceptar', description: 'Términos y autorizaciones', questionCount: 5 },
+  { id: 7, title: 'Consentimiento', shortTitle: 'Aceptar', description: 'Términos y autorizaciones', questionCount: 6 },
 ];
 
 export const TOTAL_QUESTIONS = STEPS.reduce((sum, step) => sum + step.questionCount, 0);
