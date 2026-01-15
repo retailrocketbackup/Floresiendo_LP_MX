@@ -34,8 +34,8 @@ Escalaste la montaña del éxito solo para descubrir que no era la cima que quer
 
 ### Ad 3: Emprendedores × ESTRÉS
 
-**Primary Text** (144 chars):
-No puedes escalar tu negocio con un sistema nervioso colapsado. 4 días de silencio y claridad en Morelos para volver con fuerza y visión total.
+**Primary Text** (130 chars):
+No puedes escalar tu negocio estando agotado. 4 días de silencio y claridad en Morelos para volver con fuerza y visión total.
 
 **Headline** (22 chars): Reset para Líderes
 
