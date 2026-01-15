@@ -48,7 +48,7 @@ export function MentalHealthStep() {
             </p>
           )}
           {sensitive && (
-            <span className="inline-block mt-1 px-2 py-0.5 bg-[var(--warm-[var(--warm-gray-100)])] text-[var(--burgundy-dark)] text-xs rounded">
+            <span className="inline-block mt-1 px-2 py-0.5 bg-[var(--warm-gray-100)] text-[var(--burgundy-dark)] text-xs rounded">
               Información sensible protegida
             </span>
           )}

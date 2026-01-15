@@ -3,6 +3,125 @@
 
 ---
 
+# NAMING CONVENTION - COPY/PASTE REFERENCE
+
+## Campaign Names
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  CAMPAIGN NAMING PATTERN                                        │
+│  [Brand] - [Funnel] [Purpose] | [Month][Year]                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  FL - TOFU-A Pain Funnels | Jan26                               │
+│  FL - TOFU-B Lead Magnets | Jan26                               │
+│  FL - MOFU Engagement | Jan26                                   │
+│  FL - BOFU Purchase | Jan26                                     │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Ad Set Names - All Funnels
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  AD SET NAMING PATTERN                                          │
+│  [Funnel] | [Target] | [Age] | [Strategy] | [Placement]         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  TOFU-A (Pain Funnels):                                         │
+│  ├── TOFU-A | Duelo | 35-55 | DeepLayer | Adv+                  │
+│  ├── TOFU-A | Proposito | 28-45 | DeepLayer | Adv+              │
+│  └── TOFU-A | Estres | 30-50 | DeepLayer | Adv+                 │
+│                                                                 │
+│  TOFU-B (Lead Magnets):                                         │
+│  ├── TOFU-B | Exec | 35-55 | HBR-Forbes | Adv+                  │
+│  ├── TOFU-B | Entrep | 28-50 | Startups-VC | Adv+               │
+│  ├── TOFU-B | Women | 30-50 | Oprah-Brene | Adv+                │
+│  └── TOFU-B | Burnout | 28-45 | Calm-Headspace | Adv+           │
+│                                                                 │
+│  MOFU (Engagement):                                             │
+│  ├── MOFU | Video50 | 28-55 | 14d | Adv+                        │
+│  ├── MOFU | Visitors | 28-55 | 14d | Adv+                       │
+│  └── MOFU | Engagers | 28-55 | 30d | Adv+                       │
+│                                                                 │
+│  BOFU (Purchase):                                               │
+│  ├── BOFU | LeadRegs | 28-55 | 60d | Adv+                       │
+│  ├── BOFU | WALeads | 28-55 | 30d | Adv+                        │
+│  ├── BOFU | HiIntent | 28-55 | 14d | Adv+                       │
+│  └── BOFU | Abandon | 28-55 | 7d | Adv+                         │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Ad Names - All Funnels
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  AD NAMING PATTERN                                              │
+│  [Funnel]-[Target] | [Format] | [Angle] | [Version]             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Format Codes:  IMG = Image | VID = Video | CAR = Carousel      │
+│  Version Codes: v1, v2, v3 (sequential) | A, B (A/B tests)      │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  TOFU-A Ads:                                                    │
+│  ├── TOFU-A-Duelo | VID | Perdida | v1                          │
+│  ├── TOFU-A-Duelo | IMG | Soltar | v1                           │
+│  ├── TOFU-A-Proposito | VID | Vacio | v1                        │
+│  ├── TOFU-A-Proposito | IMG | Legado | v1                       │
+│  ├── TOFU-A-Estres | VID | Rutina | v1                          │
+│  └── TOFU-A-Estres | IMG | Pausa | v1                           │
+│                                                                 │
+│  TOFU-B Ads:                                                    │
+│  ├── TOFU-B-Exec | IMG | PausaEst | v1                          │
+│  ├── TOFU-B-Exec | IMG | Claridad | v1                          │
+│  ├── TOFU-B-Entrep | IMG | Negocio | v1                         │
+│  ├── TOFU-B-Entrep | IMG | Reset | v1                           │
+│  ├── TOFU-B-Women | IMG | ExitoVacio | v1                       │
+│  ├── TOFU-B-Women | IMG | MasAlla | v1                          │
+│  ├── TOFU-B-Burnout | IMG | Centro | v1                         │
+│  └── TOFU-B-Burnout | IMG | PausaEst | v1                       │
+│                                                                 │
+│  MOFU Ads:                                                      │
+│  ├── MOFU-Video50 | IMG | SigPaso | v1                          │
+│  ├── MOFU-Visitors | IMG | Invitacion | v1                      │
+│  └── MOFU-Engagers | IMG | Conecta | v1                         │
+│                                                                 │
+│  BOFU Ads:                                                      │
+│  ├── BOFU-LeadRegs | IMG | Urgencia | v1                        │
+│  ├── BOFU-LeadRegs | IMG | Testimonio | v1                      │
+│  ├── BOFU-WALeads | IMG | Ultima | v1                           │
+│  ├── BOFU-HiIntent | IMG | 6Lugares | v1                        │
+│  └── BOFU-Abandon | IMG | TeEspera | v1                         │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Abbreviation Legend
+
+| Code | Meaning |
+|------|---------|
+| FL | Floresiendo |
+| TOFU | Top of Funnel |
+| MOFU | Middle of Funnel |
+| BOFU | Bottom of Funnel |
+| Exec | Corporate Executives |
+| Entrep | Entrepreneurs |
+| DeepLayer | Deep Layered Targeting |
+| Adv+ | Advantage+ Placements |
+| IMG | Static Image |
+| VID | Video |
+| CAR | Carousel |
+| WALeads | WhatsApp Leads |
+| LeadRegs | Lead Magnet Registrants |
+| HiIntent | High-Intent Visitors |
+| PausaEst | Pausa Estratégica |
+
+---
+
 # TOFU-A: PAIN FUNNELS
 
 ## Campaign Level Settings

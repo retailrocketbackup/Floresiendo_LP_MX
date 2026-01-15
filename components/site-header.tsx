@@ -14,17 +14,22 @@ const navItems = [
   { href: "/contacto", label: "Contacto" },
 ];
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  alwaysSolid?: boolean;
+}
+
+export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(alwaysSolid);
 
   useEffect(() => {
+    if (alwaysSolid) return; // Skip scroll listener if always solid
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [alwaysSolid]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {

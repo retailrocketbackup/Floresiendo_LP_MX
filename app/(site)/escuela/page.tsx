@@ -876,6 +876,7 @@ export default function EscuelaPage() {
                   src="/images/sergio.webp"
                   alt="Sergio Sanz"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-top"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-burgundy/80 to-transparent" />
@@ -899,6 +900,7 @@ export default function EscuelaPage() {
                   src="/images/Flor.webp"
                   alt="Flor Soeiro"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-top"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-burgundy/80 to-transparent" />

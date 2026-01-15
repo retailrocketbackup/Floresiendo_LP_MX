@@ -27,3 +27,16 @@ yarn-error.log*
 next-env.d.ts
 
 .vscode
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Large media files (stored on Vimeo/external)
+public/video ads/
+public/images/originals/
+
+# Python test scripts (local dev only)
+*.py
+tmpclaude-*

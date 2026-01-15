@@ -102,7 +102,7 @@ export function IntentionsStep() {
       </div>
 
       {/* Inspirational note */}
-      <div className="bg-gradient-to-r from-[var(--warm-[var(--warm-gray-100)])] to-pink-100 rounded-lg p-6 mt-8">
+      <div className="bg-gradient-to-r from-[var(--warm-gray-100)] to-pink-100 rounded-lg p-6 mt-8">
         <blockquote className="text-[var(--burgundy-dark)] italic">
           "El primer paso hacia la transformación es la intención clara.
           Al escribir estas palabras, ya estás sembrando las semillas de tu proceso."

@@ -33,6 +33,141 @@
 | Deduplication | event_id based |
 | Domain | escuelafloresiendomexico.com |
 
+---
+
+# NAMING CONVENTION SYSTEM
+
+## Overview
+
+All Meta Ads assets follow a consistent naming pattern for easy identification and reporting.
+
+## 1. Campaign Names
+
+**Pattern:** `[Brand] - [Funnel] [Purpose] | [Month][Year]`
+
+| Campaign Name | Funnel | Purpose |
+|---------------|--------|---------|
+| `FL - TOFU-A Pain Funnels \| Jan26` | Top of Funnel A | Pain point targeting |
+| `FL - TOFU-B Lead Magnets \| Jan26` | Top of Funnel B | Avatar-based lead magnets |
+| `FL - MOFU Engagement \| Jan26` | Middle of Funnel | Retargeting warm audiences |
+| `FL - BOFU Purchase \| Jan26` | Bottom of Funnel | Conversion to purchase |
+
+## 2. Ad Set Names
+
+**Pattern:** `[Funnel] | [Target] | [Age] | [Strategy] | [Placement]`
+
+### TOFU-A Ad Sets (Pain Funnels)
+
+| Ad Set Name | Target | Destination |
+|-------------|--------|-------------|
+| `TOFU-A \| Duelo \| 35-55 \| DeepLayer \| Adv+` | Grief pain point | /f/duelo-acompanamiento |
+| `TOFU-A \| Proposito \| 28-45 \| DeepLayer \| Adv+` | Purpose pain point | /f/proposito |
+| `TOFU-A \| Estres \| 30-50 \| DeepLayer \| Adv+` | Stress pain point | /f/estres |
+
+### TOFU-B Ad Sets (Lead Magnets)
+
+| Ad Set Name | Avatar | Destination |
+|-------------|--------|-------------|
+| `TOFU-B \| Exec \| 35-55 \| HBR-Forbes \| Adv+` | Corporate Executives | /f/meditacion-gratis |
+| `TOFU-B \| Entrep \| 28-50 \| Startups-VC \| Adv+` | Entrepreneurs | /f/meditacion-gratis |
+| `TOFU-B \| Women \| 30-50 \| Oprah-Brene \| Adv+` | High-Achieving Women | /f/conferencia-vida-perfecta |
+| `TOFU-B \| Burnout \| 28-45 \| Calm-Headspace \| Adv+` | Burned-out Professionals | /f/conferencia-vida-perfecta |
+
+### MOFU Ad Sets (Engagement)
+
+| Ad Set Name | Audience | Retention |
+|-------------|----------|-----------|
+| `MOFU \| Video50 \| 28-55 \| 14d \| Adv+` | Video 50%+ viewers | 14 days |
+| `MOFU \| Visitors \| 28-55 \| 14d \| Adv+` | Page visitors | 14 days |
+| `MOFU \| Engagers \| 28-55 \| 30d \| Adv+` | Social engagers | 30 days |
+
+### BOFU Ad Sets (Purchase)
+
+| Ad Set Name | Audience | Retention |
+|-------------|----------|-----------|
+| `BOFU \| LeadRegs \| 28-55 \| 60d \| Adv+` | Lead magnet registrants | 60 days |
+| `BOFU \| WALeads \| 28-55 \| 30d \| Adv+` | WhatsApp leads | 30 days |
+| `BOFU \| HiIntent \| 28-55 \| 14d \| Adv+` | High-intent /precios visitors | 14 days |
+| `BOFU \| Abandon \| 28-55 \| 7d \| Adv+` | Checkout abandoners | 7 days |
+
+## 3. Ad Names
+
+**Pattern:** `[Funnel]-[Target] | [Format] | [Angle] | [Version]`
+
+**Format Codes:**
+- `IMG` = Static image
+- `VID` = Video
+- `CAR` = Carousel
+
+**Version Codes:**
+- `v1`, `v2`, `v3` = Sequential versions
+- `A`, `B` = A/B test variants
+
+### TOFU-A Ads
+
+| Ad Name | Format | Message Angle |
+|---------|--------|---------------|
+| `TOFU-A-Duelo \| VID \| Perdida \| v1` | Video | Grief/loss empathy |
+| `TOFU-A-Duelo \| IMG \| Soltar \| v1` | Image | Letting go |
+| `TOFU-A-Proposito \| VID \| Vacio \| v1` | Video | Emptiness feeling |
+| `TOFU-A-Proposito \| IMG \| Legado \| v1` | Image | Legacy message |
+| `TOFU-A-Estres \| VID \| Rutina \| v1` | Video | Routine trap |
+| `TOFU-A-Estres \| IMG \| Pausa \| v1` | Image | Need for pause |
+
+### TOFU-B Ads
+
+| Ad Name | Format | Message Angle |
+|---------|--------|---------------|
+| `TOFU-B-Exec \| IMG \| PausaEst \| v1` | Image | Strategic pause for leaders |
+| `TOFU-B-Exec \| IMG \| Claridad \| v1` | Image | Mental clarity |
+| `TOFU-B-Entrep \| IMG \| Negocio \| v1` | Image | Business clarity |
+| `TOFU-B-Entrep \| IMG \| Reset \| v1` | Image | Founder reset |
+| `TOFU-B-Women \| IMG \| ExitoVacio \| v1` | Image | Success paradox |
+| `TOFU-B-Women \| IMG \| MasAlla \| v1` | Image | Beyond success |
+| `TOFU-B-Burnout \| IMG \| Centro \| v1` | Image | Find your center |
+| `TOFU-B-Burnout \| IMG \| PausaEst \| v1` | Image | Strategic pause |
+
+### MOFU Ads
+
+| Ad Name | Format | Message Angle |
+|---------|--------|---------------|
+| `MOFU-Video50 \| IMG \| SigPaso \| v1` | Image | Next step CTA |
+| `MOFU-Visitors \| IMG \| Invitacion \| v1` | Image | Personal invitation |
+| `MOFU-Engagers \| IMG \| Conecta \| v1` | Image | Reconnect message |
+
+### BOFU Ads
+
+| Ad Name | Format | Message Angle |
+|---------|--------|---------------|
+| `BOFU-LeadRegs \| IMG \| Urgencia \| v1` | Image | Limited spots urgency |
+| `BOFU-LeadRegs \| IMG \| Testimonio \| v1` | Image | Testimonial social proof |
+| `BOFU-WALeads \| IMG \| Ultima \| v1` | Image | Last chance |
+| `BOFU-HiIntent \| IMG \| 6Lugares \| v1` | Image | Only 6 spots left |
+| `BOFU-Abandon \| IMG \| TeEspera \| v1` | Image | Your spot is waiting |
+
+## Abbreviation Reference
+
+| Code | Meaning |
+|------|---------|
+| FL | Floresiendo |
+| TOFU | Top of Funnel |
+| MOFU | Middle of Funnel |
+| BOFU | Bottom of Funnel |
+| Exec | Corporate Executives |
+| Entrep | Entrepreneurs |
+| DeepLayer | Deep Layered Targeting |
+| Adv+ | Advantage+ Placements |
+| IMG | Static Image |
+| VID | Video |
+| CAR | Carousel |
+| WALeads | WhatsApp Leads |
+| LeadRegs | Lead Magnet Registrants |
+| HiIntent | High-Intent Visitors |
+| PausaEst | Pausa Estratégica |
+| SigPaso | Siguiente Paso (Next Step) |
+
+---
+
 ## Destination URLs
 
 | Funnel | URL | Event |

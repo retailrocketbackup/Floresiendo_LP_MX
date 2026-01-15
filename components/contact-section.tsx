@@ -21,7 +21,7 @@ export function ContactSection({ funnel }: ContactSectionProps) {
           <Link href={`/formulario-${funnel}`} passHref>
             <Button
               size="lg"
-              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full sm:w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
               style={{ backgroundColor: "#5A2D5A" }} // Changed to vibrant dark purple
             >
               Más Información
@@ -32,7 +32,7 @@ export function ContactSection({ funnel }: ContactSectionProps) {
           <Link href={`/agendar-llamada-${funnel}`} passHref>
             <Button
               size="lg"
-              className="w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full sm:w-64 py-4 text-lg rounded-full text-white hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-300"
               style={{ backgroundColor: "#5A2D5A" }}
             >
               Agendar Llamada

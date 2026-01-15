@@ -126,7 +126,7 @@ export function CommunityCarousel() {
           {/* Navigation Arrows */}
           <button
             onClick={goToPrevious}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 -ml-4 md:ml-0"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 ml-1 sm:-ml-2 md:-ml-4"
             aria-label="Anterior"
           >
             <ChevronLeft className="w-6 h-6 text-burgundy" />
@@ -134,7 +134,7 @@ export function CommunityCarousel() {
 
           <button
             onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 -mr-4 md:mr-0"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 mr-1 sm:-mr-2 md:-mr-4"
             aria-label="Siguiente"
           >
             <ChevronRight className="w-6 h-6 text-burgundy" />

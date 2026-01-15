@@ -1,0 +1,255 @@
+{
+  "version": "1.1.0",
+  "projectName": "Floresiendo LP MX",
+  "domain": "www.escuelafloresiendomexicom.com",
+  "lastUpdated": "2026-01-13T18:00:00Z",
+
+  "phase": "dev",
+
+  "completed": [
+    {
+      "task": "Payment integration (Conekta) - card payments",
+      "completedAt": "2026-01-10",
+      "skill": "manual",
+      "artifact": "components/ConektaPaymentForm.tsx"
+    },
+    {
+      "task": "Meta Pixel + CAPI tracking with deduplication",
+      "completedAt": "2026-01-08",
+      "skill": "manual",
+      "artifact": "lib/meta-tracking.ts"
+    },
+    {
+      "task": "Homepage hero and main sections",
+      "completedAt": "2026-01-05",
+      "skill": "manual",
+      "artifact": "app/(site)/page.tsx"
+    },
+    {
+      "task": "Grief funnel (duelo-acompanamiento)",
+      "completedAt": "2026-01-07",
+      "skill": "funnel-architect",
+      "artifact": "app/(funnels)/f/duelo-acompanamiento/page.tsx"
+    },
+    {
+      "task": "Cal.com booking widget",
+      "completedAt": "2026-01-06",
+      "skill": "manual",
+      "artifact": "components/calcom-widget.tsx"
+    },
+    {
+      "task": "Payment success page",
+      "completedAt": "2026-01-10",
+      "skill": "manual",
+      "artifact": "app/pago-exitoso/page.tsx"
+    },
+    {
+      "task": "Free meditation lead magnet funnel",
+      "completedAt": "2026-01-12",
+      "skill": "manual",
+      "artifact": "app/(funnels)/f/meditacion-gratis/page.tsx"
+    },
+    {
+      "task": "Free conference lead magnet funnel",
+      "completedAt": "2026-01-12",
+      "skill": "manual",
+      "artifact": "app/(funnels)/f/conferencia-vida-perfecta/page.tsx"
+    },
+    {
+      "task": "HubSpot CRM integration",
+      "completedAt": "2026-01-09",
+      "skill": "manual",
+      "artifact": "app/api/hubspot-contact/route.ts"
+    },
+    {
+      "task": "Vimeo tracked video player",
+      "completedAt": "2026-01-08",
+      "skill": "manual",
+      "artifact": "components/tracked-vimeo-player.tsx"
+    },
+    {
+      "task": "Conference registration form component",
+      "completedAt": "2026-01-12",
+      "skill": "manual",
+      "artifact": "components/conference-registration-form.tsx"
+    }
+  ],
+
+  "inProgress": {},
+
+  "blocked": [
+    {
+      "task": "SPEI transfer payment option",
+      "reason": "Conekta SPEI webhook documentation unclear",
+      "mitigation": "Card payments working, SPEI can be added post-launch",
+      "blockedSince": "2026-01-11"
+    }
+  ],
+
+  "pending": [
+    "44-question application form (retreat-application-wizard)",
+    "Purpose funnel video content (/f/proposito)",
+    "Stress funnel video content (/f/estres)",
+    "Email automation sequences",
+    "WhatsApp automation templates",
+    "Meta Ads MCP connection",
+    "Compliance review of all content",
+    "Privacy policy finalization",
+    "Terms of service",
+    "Final deployment to production"
+  ],
+
+  "decisions": [
+    {
+      "date": "2026-01-10",
+      "decision": "Use Conekta instead of Stripe",
+      "rationale": "MXN-native, lower fees (2.9% + $2.50), better local support",
+      "impact": "high",
+      "decidedBy": "user"
+    },
+    {
+      "date": "2026-01-13",
+      "decision": "Multi-step wizard for 44-question form",
+      "rationale": "Reduces overwhelm, enables save/resume, better mobile UX",
+      "impact": "medium",
+      "decidedBy": "ai-recommendation"
+    },
+    {
+      "date": "2026-01-13",
+      "decision": "Auto-approval with conditional blocking",
+      "rationale": "Faster booking flow, manual review only for flagged contraindications",
+      "impact": "high",
+      "decidedBy": "user"
+    },
+    {
+      "date": "2026-01-13",
+      "decision": "Separate compliance-sentinel skill",
+      "rationale": "Plant medicine messaging requires dedicated expertise and review gate",
+      "impact": "medium",
+      "decidedBy": "user"
+    }
+  ],
+
+  "artifacts": {
+    "payment": {
+      "form": "components/ConektaPaymentForm.tsx",
+      "api": "app/api/payments/create-charge/route.ts",
+      "webhook": "app/api/webhooks/conekta/route.ts",
+      "lib": "lib/conekta.ts"
+    },
+    "tracking": {
+      "metaPixel": "lib/meta-tracking.ts",
+      "capi": "app/api/meta-capi/route.ts",
+      "pixelRoute": "app/api/meta-pixel/route.ts"
+    },
+    "funnels": {
+      "duelo": "app/(funnels)/f/duelo-acompanamiento/page.tsx",
+      "proposito": "app/(funnels)/f/proposito/page.tsx",
+      "estres": "app/(funnels)/f/estres/page.tsx",
+      "meditacion": "app/(funnels)/f/meditacion-gratis/page.tsx"
+    },
+    "scheduling": {
+      "calcom": "components/calcom-widget.tsx",
+      "calendly": "components/calendly-widget.tsx"
+    },
+    "data": {
+      "encuentros": "lib/encuentros-data.ts",
+      "practicas": "lib/practicas-data.ts"
+    }
+  },
+
+  "config": {
+    "retreatDate": "2026-02-19",
+    "retreatEndDate": "2026-02-22",
+    "capacity": 15,
+    "currentBookings": 0,
+    "pricing": {
+      "deposit": 3000,
+      "twoNightEarly": 7100,
+      "twoNightRegular": 8000,
+      "threeNightEarly": 10200,
+      "threeNightRegular": 11500
+    },
+    "currency": "MXN",
+    "pixelId": "1337956628128088"
+  },
+
+  "contacts": {
+    "main": {
+      "name": "Ramón",
+      "whatsapp": "+52 618 230 1481"
+    },
+    "karla": {
+      "name": "Karla Nava",
+      "whatsapp": "+52 155 4018 0914",
+      "specialty": "Grief support (duelo)"
+    }
+  },
+
+  "funnels": {
+    "painPoint": {
+      "duelo": {
+        "url": "/f/duelo-acompanamiento",
+        "status": "complete",
+        "cta": "WhatsApp to Karla",
+        "trackingEvent": "Lead_Duelo"
+      },
+      "proposito": {
+        "url": "/f/proposito",
+        "status": "todo",
+        "cta": "WhatsApp to business",
+        "trackingEvent": "Lead_Proposito"
+      },
+      "estres": {
+        "url": "/f/estres",
+        "status": "todo",
+        "cta": "WhatsApp to business",
+        "trackingEvent": "Lead_Estres"
+      }
+    },
+    "leadMagnets": {
+      "meditacionGratis": {
+        "url": "/f/meditacion-gratis",
+        "status": "complete",
+        "offer": "30-min live guided meditation",
+        "cta": "Cal.com booking",
+        "trackingEvent": "Lead_Meditacion_Gratis"
+      },
+      "conferenciaVidaPerfecta": {
+        "url": "/f/conferencia-vida-perfecta",
+        "status": "complete",
+        "offer": "Free in-person conference (Feb 11, 2026, 60 spots)",
+        "cta": "Registration form",
+        "trackingEvent": "Lead_Conferencia_VidaPerfecta",
+        "thankYouPage": "/f/conferencia-vida-perfecta/gracias"
+      }
+    },
+    "thankYouPages": {
+      "pagoExitoso": "/pago-exitoso",
+      "conferenciaGracias": "/f/conferencia-vida-perfecta/gracias"
+    }
+  },
+
+  "integrations": {
+    "metaPixel": {
+      "pixelId": "1337956628128088",
+      "capiEndpoint": "/api/meta-capi",
+      "deduplication": true
+    },
+    "hubspot": {
+      "portalId": "50499487",
+      "contactEndpoint": "/api/hubspot-contact"
+    },
+    "conekta": {
+      "webhookEndpoint": "/api/webhooks/conekta",
+      "paymentEndpoint": "/api/payments/create-charge"
+    },
+    "calcom": {
+      "webhookEndpoint": "/api/calcom-webhook"
+    },
+    "vimeo": {
+      "trackedPlayer": "components/tracked-vimeo-player.tsx",
+      "milestones": ["play", "25%", "50%", "75%", "complete"]
+    }
+  }
+}

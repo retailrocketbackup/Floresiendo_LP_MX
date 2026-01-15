@@ -319,7 +319,7 @@ export default function ConektaPaymentForm({
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">
                     Mes *

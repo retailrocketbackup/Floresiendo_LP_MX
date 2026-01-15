@@ -288,24 +288,28 @@ export function ScheduleDisplay({
 
       {/* Sticky Day Navigation */}
       <div className="sticky top-0 z-20 bg-[#fdf8f4]/95 backdrop-blur-sm py-3 -mx-4 px-4 border-b border-[#8b2a4a]/10">
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          {schedule.map((day, index) => {
-            const isExpanded = expandedDays.includes(index);
-            return (
-              <button
-                key={index}
-                onClick={() => scrollToDay(index)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  isExpanded
-                    ? "bg-[#8b2a4a] text-white shadow-md"
-                    : "bg-white text-[#8b2a4a] border border-[#8b2a4a]/20 hover:border-[#8b2a4a]/40"
-                }`}
-              >
-                <span className="block">{day.day}</span>
-                <span className="block text-xs opacity-80">{day.theme}</span>
-              </button>
-            );
-          })}
+        <div className="relative">
+          {/* Scroll fade indicator - right (mobile only) */}
+          <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-[#fdf8f4] to-transparent pointer-events-none z-10 sm:hidden" />
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide snap-x">
+            {schedule.map((day, index) => {
+              const isExpanded = expandedDays.includes(index);
+              return (
+                <button
+                  key={index}
+                  onClick={() => scrollToDay(index)}
+                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all snap-start ${
+                    isExpanded
+                      ? "bg-[#8b2a4a] text-white shadow-md"
+                      : "bg-white text-[#8b2a4a] border border-[#8b2a4a]/20 hover:border-[#8b2a4a]/40"
+                  }`}
+                >
+                  <span className="block">{day.day}</span>
+                  <span className="block text-xs opacity-80">{day.theme}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 

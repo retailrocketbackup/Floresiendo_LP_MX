@@ -113,7 +113,7 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
         {/* --- CAMBIO 3: Nuevo campo de teléfono con selector de lada --- */}
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <select
               name="countryCode"
               id="countryCode"

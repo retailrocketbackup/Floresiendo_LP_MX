@@ -3,7 +3,7 @@
 ## Calendar
 | Event | Date | Day | Time |
 |-------|------|-----|------|
-| Meditación en Vivo | Feb 4, 2026 | Martes | 8pm CDMX |
+| Meditación en Vivo | Feb 10, 2026 | Lunes | 8pm CDMX |
 | Conferencia Vida Perfecta | Feb 11, 2026 | Martes | 8pm CDMX |
 | **Retreat** | Feb 19-22, 2026 | Jue-Dom | - |
 
@@ -59,7 +59,7 @@ No se trata solo de descansar, sino de construir un legado con claridad y propó
 
 ---
 
-## MEDITACIÓN EN VIVO - 4 de Febrero, 8pm
+## MEDITACIÓN EN VIVO - 10 de Febrero, 8pm
 
 ### Image Prompts
 
@@ -89,13 +89,13 @@ Te invito a una sesión de meditación guiada EN VIVO.
 
 No necesitas experiencia. Solo 30 minutos para reconectar contigo.
 
-📅 Martes 4 de Febrero, 8pm (hora CDMX)
+📅 Lunes 10 de Febrero, 8pm (hora CDMX)
 
 Lugares limitados. Regístrate gratis 👇
 ```
 
 **Headline:** Meditación Guiada EN VIVO - Gratis
-**Description:** 4 de Febrero • 30 min • Sin experiencia necesaria
+**Description:** 10 de Febrero • 30 min • Sin experiencia necesaria
 **CTA:** Más información
 
 ---
@@ -107,7 +107,7 @@ Vives a toda velocidad y tu mente nunca para.
 
 Esta sesión de meditación en vivo te enseña a soltar el ruido mental, paso a paso.
 
-📅 Martes 4 de Febrero - 8pm CDMX
+📅 Lunes 10 de Febrero - 8pm CDMX
 ⏱️ 30 minutos
 💻 100% online y gratuito
 
@@ -115,7 +115,7 @@ Solo 50 lugares disponibles 👇
 ```
 
 **Headline:** Sesión en Vivo: Aquieta el Ruido Mental
-**Description:** 4 de Febrero • Registro gratuito • Cupo limitado
+**Description:** 10 de Febrero • Registro gratuito • Cupo limitado
 **CTA:** Registrarte
 
 ---
@@ -129,7 +129,7 @@ No está lejos. Está a una sesión de distancia.
 
 Te invito a meditar juntos EN VIVO:
 
-📅 Martes 4 de Febrero
+📅 Lunes 10 de Febrero
 🕐 8:00 pm (CDMX)
 💰 Sin costo
 
@@ -137,7 +137,7 @@ Te invito a meditar juntos EN VIVO:
 ```
 
 **Headline:** Medita Conmigo EN VIVO
-**Description:** 4 de Febrero • Gratis • Cupo limitado
+**Description:** 10 de Febrero • Gratis • Cupo limitado
 **CTA:** Más información
 
 ---
@@ -227,12 +227,98 @@ Solo 100 lugares. Aparta el tuyo 👇
 
 ---
 
+## VIDEO FUNNELS
+
+### Video 1: PROPÓSITO - "Vida Sin Sentido"
+**Target:** Professionals stuck in unfulfilling 9-5 careers
+**Pain Point:** Empty routine, meaningless work, no purpose
+**Meta Risk:** LOW
+
+**Video Summary:**
+Facilitator shares personal story of feeling empty in a 9-5 job despite fulfilling responsibilities. Invites viewer to discover their purpose and build their legacy.
+
+**Primary Text:**
+```
+¿Tu trabajo te da dinero pero no sentido?
+
+Ese vacío que sientes al terminar el día tiene una razón.
+
+Descubre cuál es tu verdadero propósito y construye el legado que quieres dejar.
+
+Agenda una llamada sin compromiso 👇
+```
+
+**Headline:** Encuentra Tu Propósito de Vida
+**Description:** Llamada gratuita • Sin compromiso • Acompañamiento personalizado
+**CTA:** Más información
+**Destination:** `https://floresiendo.mx/f/proposito`
+**Event:** Lead_Proposito
+
+---
+
+### Video 2: DUELO - "Pérdida Imposible"
+**Target:** People processing grief from significant loss
+**Pain Point:** Emptiness, autopilot mode, nothing fills the void
+**Meta Risk:** HIGH (video mentions "medicinas ancestrales" - primary text compensates)
+
+**Video Summary:**
+Facilitator empathizes with grief experience, shares personal loss. Offers accompaniment through the process of letting go with love.
+
+**Primary Text:**
+```
+Cargar una pérdida en silencio es agotador.
+
+No tienes que atravesar este proceso solo/a.
+
+Te acompañamos a soltar con amor lo que ya no está.
+
+Hablemos cuando estés listo/a 👇
+```
+
+**Headline:** Acompañamiento en Tu Proceso
+**Description:** Conversación sin compromiso • Espacio seguro • A tu ritmo
+**CTA:** Más información
+**Destination:** `https://floresiendo.mx/f/duelo-acompanamiento`
+**Event:** Lead_Duelo
+
+---
+
+### Video 3: ESTRÉS - "Rutina que Consume"
+**Target:** Burned out professionals overwhelmed by responsibilities
+**Pain Point:** Daily emptiness, crushing routine, work/family/debt pressure
+**Meta Risk:** LOW
+
+**Video Summary:**
+Facilitator describes feeling trapped in work routine, family problems, and debt. Found an alternative and invites viewer to find their pause.
+
+**Primary Text:**
+```
+Trabajo, familia, deudas... todo al mismo tiempo.
+
+Si sientes que tu rutina te consume, hay otra forma de vivir.
+
+Encuentra la pausa que necesitas para recuperar tu centro.
+
+Conversemos 👇
+```
+
+**Headline:** Recupera Tu Paz Interior
+**Description:** Llamada gratuita • Sin presión • Escucha activa
+**CTA:** Más información
+**Destination:** `https://floresiendo.mx/f/estres`
+**Event:** Lead_Estres
+
+---
+
 ## Destination URLs
 
-| Lead Magnet | URL |
-|-------------|-----|
+| Funnel | URL |
+|--------|-----|
 | Meditación | `https://floresiendo.mx/f/meditacion-gratis` |
 | Conferencia | `https://floresiendo.mx/f/conferencia-vida-perfecta` |
+| Propósito | `https://floresiendo.mx/f/proposito` |
+| Duelo | `https://floresiendo.mx/f/duelo-acompanamiento` |
+| Estrés | `https://floresiendo.mx/f/estres` |
 
 ---
 
