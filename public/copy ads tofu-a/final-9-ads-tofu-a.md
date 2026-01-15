@@ -13,9 +13,9 @@ El éxito empresarial no llena el vacío de una ausencia. Date permiso de proces
 
 **Headline** (24 chars): Claridad tras la Pérdida
 
-**Description** (25 chars): 5 días transformacionales
+**Description** (25 chars): 4 días transformacionales
 
-**CTA**: Agenda Tu Llamada Estratégica
+**CTA**: Agenda Tu Llamada
 
 ---
 
@@ -26,22 +26,22 @@ Escalaste la montaña del éxito solo para descubrir que no era la cima que quer
 
 **Headline** (18 chars): Más allá del Éxito
 
-**Description** (22 chars): Breakthrough en 5 días
+**Description** (22 chars): Breakthrough de 4 días
 
-**CTA**: Agenda Tu Llamada Estratégica
+**CTA**: Agenda Tu Llamada
 
 ---
 
 ### Ad 3: Emprendedores × ESTRÉS
 
 **Primary Text** (144 chars):
-No puedes escalar tu negocio con un sistema nervioso colapsado. 5 días de silencio y claridad en Tepoztlán para volver con fuerza y visión total.
+No puedes escalar tu negocio con un sistema nervioso colapsado. 4 días de silencio y claridad en Morelos para volver con fuerza y visión total.
 
 **Headline** (22 chars): Reset para Líderes
 
-**Description** (16 chars): Solo 10 lugares
+**Description** (16 chars): Solo 12 lugares
 
-**CTA**: Agenda Tu Llamada Estratégica
+**CTA**: Agenda Tu Llamada
 
 ---
 
@@ -121,7 +121,7 @@ El precio del liderazgo no debe ser tu paz mental. Una invitación para directiv
 
 **Headline** (23 chars): Gestión de Alta Presión
 
-**Description** (17 chars): Tepoztlán, México
+**Description** (17 chars): Morelos, México
 
 **CTA**: Aplica Ahora
 
