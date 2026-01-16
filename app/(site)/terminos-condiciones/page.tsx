@@ -112,30 +112,51 @@ export default function TerminosCondiciones() {
             {/* Section IV - Cancellation Policy */}
             <section id="cancelacion">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                IV. Política de Cancelación y Transferencia
+                IV. Política de Cancelación y Reembolso
               </h2>
 
-              <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
-                <h3 className="text-xl font-bold text-red-800 mb-2">
-                  POLÍTICA DE CERO REEMBOLSOS MONETARIOS
-                </h3>
-                <p className="text-red-700">
-                  Debido a la logística, gastos de reservación y al cupo limitado (15 personas),
-                  aplicamos una política estricta de pagos y cancelaciones.
-                </p>
-              </div>
-
-              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">A. Regla General: No Hay Devoluciones Monetarias</h3>
-              <p className="leading-relaxed">
-                Todos los pagos realizados son <strong>definitivos y no reembolsables</strong> por
-                cancelaciones solicitadas por el participante, sean voluntarias o por imprevistos personales.
+              <p className="leading-relaxed text-lg mb-6">
+                Entendemos que pueden surgir imprevistos. A continuación, explicamos nuestras políticas de reembolso y cancelación.
               </p>
-              <p className="mt-2">Aplica para:</p>
-              <ul className="list-disc pl-6 space-y-1 mt-2">
-                <li>Depósito ($3,000 MXN)</li>
-                <li>Pago total</li>
-                <li>Paquetes de 2 o 3 noches</li>
-              </ul>
+
+              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">A. Casos con Derecho a Reembolso del 100%</h3>
+              <p className="leading-relaxed mb-4">
+                Se realizará reembolso completo (incluyendo depósito) en los siguientes casos:
+              </p>
+              <div className="space-y-4">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-800">1. Rechazo médico</h4>
+                  <p className="text-green-700">
+                    Si el participante es rechazado por el equipo del Proveedor debido a contraindicaciones
+                    de salud detectadas en el cuestionario de seguridad.
+                  </p>
+                </div>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-800">2. Cancelación por el Proveedor</h4>
+                  <p className="text-green-700">
+                    Si el Proveedor cancela el evento por causas operativas. El Cliente puede elegir:
+                  </p>
+                  <ul className="list-disc pl-6 mt-2 text-green-700">
+                    <li>Reembolso del 100% de todos los pagos realizados, O</li>
+                    <li>Reprogramación a otra fecha disponible sin costo adicional</li>
+                  </ul>
+                </div>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-800">3. Fuerza Mayor</h4>
+                  <p className="text-green-700">
+                    Si el retiro debe cancelarse por circunstancias fuera del control razonable del Proveedor:
+                  </p>
+                  <ul className="list-disc pl-6 mt-2 text-green-700">
+                    <li>Desastres naturales (terremoto, huracán, inundación)</li>
+                    <li>Emergencia sanitaria o pandemia declarada por autoridades</li>
+                    <li>Órdenes gubernamentales que impidan la realización del evento</li>
+                    <li>Enfermedad grave o fallecimiento del facilitador principal</li>
+                  </ul>
+                  <p className="text-green-700 mt-2">
+                    En estos casos, el Cliente puede elegir reembolso del 100% o crédito del 100% aplicable a cualquier retiro futuro (sin fecha límite).
+                  </p>
+                </div>
+              </div>
 
               <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">B. Opción de Transferencia a Terceros</h3>
               <p className="leading-relaxed mb-4">
@@ -181,41 +202,18 @@ export default function TerminosCondiciones() {
                 de lo abonado sin derecho a reclamo ni transferencia.
               </p>
 
-              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">D. Excepciones con Derecho a Reembolso del 100%</h3>
-              <p className="leading-relaxed mb-4">
-                Se realizará reembolso completo (incluyendo depósito) <strong>únicamente</strong> en los siguientes casos:
+              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">D. Cancelaciones por el Participante</h3>
+              <p className="leading-relaxed">
+                Debido a la logística, gastos de reservación y al cupo limitado (15 personas),
+                los pagos realizados son <strong>definitivos y no reembolsables</strong> por
+                cancelaciones solicitadas por el participante, sean voluntarias o por imprevistos personales.
               </p>
-              <div className="space-y-4">
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-green-800">1. Rechazo médico</h4>
-                  <p className="text-green-700">
-                    Si el participante es rechazado por el equipo del Proveedor debido a contraindicaciones
-                    de salud detectadas en el cuestionario de seguridad.
-                  </p>
-                </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-green-800">2. Cancelación por el Proveedor</h4>
-                  <p className="text-green-700">
-                    Si el Proveedor cancela el evento por causas operativas. El Cliente puede elegir:
-                  </p>
-                  <ul className="list-disc pl-6 mt-2 text-green-700">
-                    <li>Reembolso del 100% de todos los pagos realizados, O</li>
-                    <li>Reprogramación a otra fecha disponible sin costo adicional</li>
-                  </ul>
-                </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-green-800">3. Fuerza Mayor</h4>
-                  <p className="text-green-700">
-                    Si el retiro debe cancelarse por circunstancias fuera del control razonable del Proveedor:
-                  </p>
-                  <ul className="list-disc pl-6 mt-2 text-green-700">
-                    <li>Desastres naturales (terremoto, huracán, inundación)</li>
-                    <li>Emergencia sanitaria o pandemia declarada por autoridades</li>
-                    <li>Órdenes gubernamentales que impidan la realización del evento</li>
-                    <li>Enfermedad grave o fallecimiento del facilitador principal</li>
-                  </ul>
-                </div>
-              </div>
+              <p className="mt-2">Aplica para:</p>
+              <ul className="list-disc pl-6 space-y-1 mt-2">
+                <li>Depósito ($3,000 MXN)</li>
+                <li>Pago total</li>
+                <li>Paquetes de 2 o 3 noches</li>
+              </ul>
 
               <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">E. Procesamiento de Reembolsos</h3>
               <p className="leading-relaxed">Cuando aplique un reembolso según las excepciones anteriores:</p>

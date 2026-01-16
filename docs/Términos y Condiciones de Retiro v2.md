@@ -57,20 +57,29 @@ El Proveedor emitirá comprobante de pago por cada transacción realizada a trav
 
 ---
 
-## IV. POLÍTICA DE CANCELACIÓN Y TRANSFERENCIA
+## IV. POLÍTICA DE CANCELACIÓN Y REEMBOLSO
 
-**POLÍTICA DE CERO REEMBOLSOS MONETARIOS**
+Entendemos que pueden surgir imprevistos. A continuación, explicamos nuestras políticas de reembolso y cancelación.
 
-Debido a la logística, gastos de reservación y al cupo limitado (15 personas), aplicamos una política estricta de pagos y cancelaciones.
+### A. Casos con Derecho a Reembolso del 100%
 
-### A. Regla General: No Hay Devoluciones Monetarias
+Se realizará reembolso completo (incluyendo depósito) en los siguientes casos:
 
-Todos los pagos realizados son **definitivos y no reembolsables** por cancelaciones solicitadas por el participante, sean voluntarias o por imprevistos personales.
+1. **Rechazo médico:** Si el participante es rechazado por el equipo del Proveedor debido a contraindicaciones de salud detectadas en el cuestionario de seguridad.
 
-Aplica para:
-- Depósito ($3,000 MXN)
-- Pago total
-- Paquetes de 2 o 3 noches
+2. **Cancelación por el Proveedor:** Si el Proveedor cancela el evento por causas operativas. En este caso, el Cliente puede elegir:
+   - Reembolso del 100% de todos los pagos realizados, O
+   - Reprogramación a otra fecha disponible sin costo adicional
+
+3. **Fuerza Mayor (cancelación por el Proveedor):** Si el retiro debe cancelarse por circunstancias fuera del control razonable del Proveedor:
+   - Desastres naturales (terremoto, huracán, inundación)
+   - Emergencia sanitaria o pandemia declarada por autoridades
+   - Órdenes gubernamentales que impidan la realización del evento
+   - Enfermedad grave o fallecimiento del facilitador principal
+
+   En estos casos, el Cliente puede elegir:
+   - Reembolso del 100% de todos los pagos realizados, O
+   - Crédito del 100% aplicable a cualquier retiro futuro (sin fecha límite)
 
 ### B. Opción de Transferencia a Terceros
 
@@ -92,25 +101,14 @@ Si no puede asistir, puede ceder su lugar y saldo pagado a otra persona, cumplie
 
 Si el Cliente no se presenta el día y hora indicados del retiro, perderá la totalidad de lo abonado sin derecho a reclamo ni transferencia.
 
-### D. Excepciones con Derecho a Reembolso del 100%
+### D. Cancelaciones por el Participante
 
-Se realizará reembolso completo (incluyendo depósito) **únicamente** en los siguientes casos:
+Debido a la logística, gastos de reservación y al cupo limitado (15 personas), los pagos realizados son **definitivos y no reembolsables** por cancelaciones solicitadas por el participante, sean voluntarias o por imprevistos personales.
 
-1. **Rechazo médico:** Si el participante es rechazado por el equipo del Proveedor debido a contraindicaciones de salud detectadas en el cuestionario de seguridad.
-
-2. **Cancelación por el Proveedor:** Si el Proveedor cancela el evento por causas operativas. En este caso, el Cliente puede elegir:
-   - Reembolso del 100% de todos los pagos realizados, O
-   - Reprogramación a otra fecha disponible sin costo adicional
-
-3. **Fuerza Mayor (cancelación por el Proveedor):** Si el retiro debe cancelarse por circunstancias fuera del control razonable del Proveedor:
-   - Desastres naturales (terremoto, huracán, inundación)
-   - Emergencia sanitaria o pandemia declarada por autoridades
-   - Órdenes gubernamentales que impidan la realización del evento
-   - Enfermedad grave o fallecimiento del facilitador principal
-
-   En estos casos, el Cliente puede elegir:
-   - Reembolso del 100% de todos los pagos realizados, O
-   - Crédito del 100% aplicable a cualquier retiro futuro (sin fecha límite)
+Aplica para:
+- Depósito ($3,000 MXN)
+- Pago total
+- Paquetes de 2 o 3 noches
 
 ### E. Procesamiento de Reembolsos
 
