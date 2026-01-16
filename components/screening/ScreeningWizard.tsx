@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
+import { useScreeningStore, useCompletionPercentage, setOnSaveComplete } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
 import { trackEvent } from "@/lib/meta-tracking";
@@ -31,7 +31,6 @@ export function ScreeningWizard() {
     currentStep,
     riskLevel,
     riskMessages,
-    lastSavedAt,
     nextStep,
     prevStep,
     evaluateRisk,
@@ -48,7 +47,9 @@ export function ScreeningWizard() {
   const [knockoutData, setKnockoutData] = useState({ message: "", recommendation: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [showSaveIndicator, setShowSaveIndicator] = useState(false);
   const hasTrackedPageView = useRef(false);
+  const saveIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Handle hydration mismatch with localStorage
   useEffect(() => {
@@ -57,6 +58,29 @@ export function ScreeningWizard() {
     if (currentStep > 1 || formData.basicInfo?.fullName) {
       setShowWelcome(false);
     }
+  }, []);
+
+  // Save indicator - triggered by callback when localStorage write completes
+  useEffect(() => {
+    const handleSaveComplete = () => {
+      setShowSaveIndicator(true);
+      // Hide after 2 seconds
+      if (saveIndicatorTimeout.current) {
+        clearTimeout(saveIndicatorTimeout.current);
+      }
+      saveIndicatorTimeout.current = setTimeout(() => {
+        setShowSaveIndicator(false);
+      }, 2000);
+    };
+
+    setOnSaveComplete(handleSaveComplete);
+
+    return () => {
+      setOnSaveComplete(null);
+      if (saveIndicatorTimeout.current) {
+        clearTimeout(saveIndicatorTimeout.current);
+      }
+    };
   }, []);
 
   // Track ViewContent when user starts the screening form (only once)
@@ -269,21 +293,25 @@ export function ScreeningWizard() {
           completionPercentage={completionPercentage}
         />
 
-        {/* Auto-save indicator */}
-        {lastSavedAt && (
-          <div className="text-center mb-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">
-              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              Guardado automáticamente
-            </span>
-          </div>
-        )}
+        {/* Auto-save indicator - fixed height container to prevent layout shift */}
+        <div className="h-10 mb-4 flex items-center justify-center">
+          <span
+            className={`inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 transition-opacity duration-300 ${
+              showSaveIndicator ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+            Guardado automáticamente
+          </span>
+        </div>
 
-        {/* Risk indicator (only show if yellow) */}
-        {riskLevel === "yellow" && riskMessages.length > 0 && (
-          <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+        {/* Risk indicator - fixed height container to prevent layout shift */}
+        <div className={`mb-4 overflow-hidden transition-all duration-300 ${
+          riskLevel === "yellow" && riskMessages.length > 0 ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <div className="flex items-center">
               <div className={`w-3 h-3 rounded-full ${getRiskColor(riskLevel)} mr-2`} />
               <span className="text-yellow-700 font-medium">
@@ -294,7 +322,7 @@ export function ScreeningWizard() {
               Algunas respuestas requieren revisión de nuestro equipo.
             </p>
           </div>
-        )}
+        </div>
 
         {/* Current Step Card */}
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
