@@ -27,7 +27,7 @@ export function FunnelFooter() {
         {/* Bottom line */}
         <div className="border-t border-white/20 mt-6 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50">
-            <p>© 2025 FloreSiendo. Todos los derechos reservados.</p>
+            <p>© 2025 Ramon Alan Henriquez Gurrola. Todos los derechos reservados.</p>
             <div className="flex gap-4">
               <a href="/politica-privacidad" className="hover:text-white transition-colors">
                 Privacidad

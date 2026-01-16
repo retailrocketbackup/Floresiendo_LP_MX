@@ -115,7 +115,7 @@ export function SiteFooter() {
         <div className="section-container py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-coral-light/60 text-sm flex items-center gap-1">
-              © {new Date().getFullYear()} FloreSiendo México. Hecho con
+              © {new Date().getFullYear()} Ramon Alan Henriquez Gurrola. Hecho con
               <Heart size={14} className="text-coral fill-coral" />
               en México.
             </p>
