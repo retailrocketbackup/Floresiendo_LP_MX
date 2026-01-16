@@ -31,7 +31,7 @@ export function Footer() {
               <a href="/politica-privacidad" className="hover:text-white transition-colors">
                 Política de Privacidad
               </a>
-              <a href="#terminos" className="hover:text-white transition-colors">
+              <a href="/terminos-condiciones" className="hover:text-white transition-colors">
                 Términos y Condiciones
               </a>
             </div>

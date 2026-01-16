@@ -126,6 +126,12 @@ export function SiteFooter() {
               >
                 Política de Privacidad
               </Link>
+              <Link
+                href="/terminos-condiciones"
+                className="hover:text-white transition-colors"
+              >
+                Términos y Condiciones
+              </Link>
             </div>
           </div>
         </div>
