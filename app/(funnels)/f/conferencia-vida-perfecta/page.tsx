@@ -18,9 +18,13 @@ import {
 import { ConferenceRegistrationForm } from "@/components/conference-registration-form";
 import { trackEvent } from "@/lib/meta-tracking";
 import { ScrollAnimate } from "@/components/scroll-animate";
+import { CountdownTimer } from "@/components/countdown-timer";
 
 const FUNNEL_NAME = "conferencia_vida_perfecta";
 const EVENT_PREFIX = "Conferencia_VidaPerfecta";
+
+// Target date for countdown: February 11, 2026 at 7:00 PM CDMX (UTC-6)
+const EVENT_DATE = new Date("2026-02-11T19:00:00-06:00");
 
 // FAQ Accordion Item with improved styling
 function FAQItem({ question, answer }: { question: string; answer: string }) {
@@ -157,11 +161,22 @@ export default function ConferenciaVidaPerfectaPage() {
           </h1>
 
           <p
-            className="text-lg sm:text-xl md:text-2xl text-white/80 text-center mb-10 max-w-2xl mx-auto animate-slide-up"
+            className="text-lg sm:text-xl md:text-2xl text-white/80 text-center mb-6 max-w-2xl mx-auto animate-slide-up"
             style={{ animationDelay: "0.3s" }}
           >
             Una conversación honesta sobre el vacío que el éxito no llena
           </p>
+
+          {/* Countdown Timer */}
+          <div
+            className="mb-10 animate-slide-up"
+            style={{ animationDelay: "0.35s" }}
+          >
+            <p className="text-sm text-white/70 mb-3 uppercase tracking-wider text-center">
+              Comienza en:
+            </p>
+            <CountdownTimer targetDate={EVENT_DATE} variant="light" size="md" />
+          </div>
 
           {/* Registration Form Card */}
           <div

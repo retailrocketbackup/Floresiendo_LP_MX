@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
+import { CountdownTimer } from "@/components/countdown-timer";
 
 export default function MeditacionGratisPage() {
   const [formData, setFormData] = useState({
     firstname: "",
-    lastname: "",
     countryCode: "+52",
     phoneNumber: "",
   });
@@ -17,7 +17,10 @@ export default function MeditacionGratisPage() {
 
   // Session details - update these for each campaign
   const sessionDate = "Martes 10 de Febrero";
-  const sessionTime = "7:00 PM (Hora CDMX)";
+  const sessionTime = "8:00 PM (Hora CDMX)";
+
+  // Target date for countdown: February 10, 2026 at 8:00 PM CDMX (UTC-6)
+  const eventDate = new Date("2026-02-10T20:00:00-06:00");
 
   // Track page view on mount with funnel-specific event
   useEffect(() => {
@@ -66,7 +69,6 @@ export default function MeditacionGratisPage() {
           content_type: "lead_magnet",
           content_name: "meditacion_en_vivo",
           first_name: formData.firstname,
-          last_name: formData.lastname,
           phone: fullPhoneNumber,
         },
         { enableCAPI: true }
@@ -75,7 +77,6 @@ export default function MeditacionGratisPage() {
       // 2. Save to HubSpot
       const contactData = {
         firstname: formData.firstname,
-        lastname: formData.lastname,
         phone: fullPhoneNumber,
         funnel_source: "meditacion-gratis",
         landing_page: window.location.href,
@@ -95,7 +96,6 @@ export default function MeditacionGratisPage() {
           content_type: "meditation_registration",
           content_name: "meditacion_en_vivo",
           first_name: formData.firstname,
-          last_name: formData.lastname,
           phone: fullPhoneNumber,
           value: 0,
           currency: "MXN",
@@ -163,7 +163,13 @@ export default function MeditacionGratisPage() {
                 30 minutos para calmar tu mente y reconectar contigo
               </p>
 
-              <div className="space-y-4 mb-8">
+              {/* Countdown Timer */}
+              <div className="mb-8">
+                <p className="text-sm text-white/70 mb-3 uppercase tracking-wider">Comienza en:</p>
+                <CountdownTimer targetDate={eventDate} variant="light" size="md" />
+              </div>
+
+              <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-3 justify-center lg:justify-start">
                   <Calendar className="w-5 h-5 text-gold" />
                   <span className="text-lg">{sessionDate}</span>
@@ -174,64 +180,62 @@ export default function MeditacionGratisPage() {
                 </div>
                 <div className="flex items-center gap-3 justify-center lg:justify-start">
                   <Users className="w-5 h-5 text-gold" />
-                  <span className="text-lg">Cupo limitado - Grupos reducidos</span>
+                  <span className="text-lg">Solo 50 lugares disponibles</span>
                 </div>
               </div>
 
-              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
-                <h3 className="font-bold text-gold mb-3">Lo que experimentarás:</h3>
-                <ul className="space-y-2 text-coral-light text-left">
-                  <li>• Técnicas de respiración para encontrar calma</li>
-                  <li>• Meditación guiada por facilitadores certificados</li>
-                  <li>• Espacio seguro para compartir (opcional)</li>
-                  <li>• Herramientas que puedes usar en tu día a día</li>
-                </ul>
+              {/* Facilitator mini-bio in hero */}
+              <div className="flex items-center gap-4 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
+                <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
+                  <Image
+                    src="/facilitador.jpg"
+                    alt="Ramón Henríquez"
+                    width={56}
+                    height={56}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="text-left">
+                  <p className="font-semibold text-white">Ramón Henríquez</p>
+                  <p className="text-sm text-coral-light">10+ años en meditación y bienestar</p>
+                </div>
               </div>
             </div>
 
-            {/* Right - Form */}
+            {/* Right - Form (Optimized: 2 fields only) */}
             <div className="bg-white rounded-2xl p-8 shadow-2xl">
+              {/* Scarcity indicator */}
+              <div className="flex items-center justify-center gap-2 mb-4 text-coral text-sm font-medium">
+                <span className="w-2 h-2 bg-coral rounded-full animate-pulse" />
+                Solo 50 lugares disponibles
+              </div>
+
               <h2 className="text-2xl font-bold text-burgundy mb-2 text-center">
                 Reserva tu lugar
               </h2>
               <p className="text-warm-gray-600 mb-6 text-center">
-                Es 100% gratis. Solo necesitamos tus datos para enviarte el acceso.
+                Es 100% gratis. Registro en 30 segundos.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="firstname" className="block text-sm font-medium text-warm-gray-700 mb-1">
-                      Nombre *
-                    </label>
-                    <input
-                      type="text"
-                      id="firstname"
-                      name="firstname"
-                      required
-                      value={formData.firstname}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent"
-                      placeholder="Tu nombre"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="lastname" className="block text-sm font-medium text-warm-gray-700 mb-1">
-                      Apellido *
-                    </label>
-                    <input
-                      type="text"
-                      id="lastname"
-                      name="lastname"
-                      required
-                      value={formData.lastname}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent"
-                      placeholder="Tu apellido"
-                    />
-                  </div>
+                {/* Single Name Field (reduced from 2 fields per research) */}
+                <div>
+                  <label htmlFor="firstname" className="block text-sm font-medium text-warm-gray-700 mb-1">
+                    Tu nombre *
+                  </label>
+                  <input
+                    type="text"
+                    id="firstname"
+                    name="firstname"
+                    required
+                    value={formData.firstname}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent text-lg"
+                    placeholder="¿Cómo te llamas?"
+                  />
                 </div>
 
+                {/* WhatsApp Field */}
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-warm-gray-700 mb-1">
                     WhatsApp *
@@ -241,13 +245,15 @@ export default function MeditacionGratisPage() {
                       name="countryCode"
                       value={formData.countryCode}
                       onChange={handleInputChange}
-                      className="px-3 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral bg-warm-gray-50"
+                      className="px-3 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral bg-warm-gray-50"
                     >
                       <option value="+52">+52</option>
                       <option value="+1">+1</option>
                       <option value="+34">+34</option>
                       <option value="+54">+54</option>
-                      <option value="+598">+598</option>
+                      <option value="+57">+57</option>
+                      <option value="+51">+51</option>
+                      <option value="+56">+56</option>
                     </select>
                     <input
                       type="tel"
@@ -256,12 +262,12 @@ export default function MeditacionGratisPage() {
                       required
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
-                      className="flex-1 px-4 py-3 border border-warm-gray-300 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent"
-                      placeholder="Tu número"
+                      className="flex-1 px-4 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent text-lg"
+                      placeholder="10 dígitos"
                     />
                   </div>
                   <p className="text-xs text-warm-gray-500 mt-1">
-                    Te enviaremos el link de acceso por WhatsApp
+                    Te enviaremos el link de Zoom por WhatsApp
                   </p>
                 </div>
 
@@ -414,7 +420,7 @@ export default function MeditacionGratisPage() {
               },
               {
                 q: "¿Cómo me conecto a la sesión?",
-                a: "Te enviaremos un enlace de Google Meet por WhatsApp. Solo necesitas un dispositivo con conexión a internet.",
+                a: "Te enviaremos un enlace de Zoom por WhatsApp. Solo necesitas un dispositivo con conexión a internet.",
               },
               {
                 q: "¿Es realmente gratis?",
