@@ -40,3 +40,5 @@ public/images/originals/
 # Python test scripts (local dev only)
 *.py
 tmpclaude-*
+
+certificates

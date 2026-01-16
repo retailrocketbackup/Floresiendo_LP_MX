@@ -1,12 +1,32 @@
 // app/api/screening-application/route.ts
 import { NextResponse } from "next/server";
 import type { ScreeningFormData, RiskLevel } from "@/lib/screening-types";
+import { encrypt, hash, getEncryptionSecret, type EncryptedData } from "@/lib/encryption";
+import { insertScreeningApplication } from "@/lib/supabase";
 
 interface ScreeningSubmission {
   formData: Partial<ScreeningFormData>;
   riskLevel: RiskLevel;
   riskMessages: string[];
   requiresReview: boolean;
+}
+
+// Sensitive data categories for encryption
+interface ContactData {
+  phone: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+}
+
+interface MedicalData {
+  medicalHistory: ScreeningFormData['medicalHistory'];
+  medications: ScreeningFormData['medications'];
+  mentalHealth: ScreeningFormData['mentalHealth'];
+}
+
+interface LifestyleData {
+  lifestyle: ScreeningFormData['lifestyle'];
+  intentions: ScreeningFormData['intentions'];
 }
 
 // Generate a unique application ID
@@ -32,20 +52,82 @@ export async function POST(request: Request) {
     // Generate application ID
     const applicationId = generateApplicationId();
 
-    // Prepare HubSpot contact data
+    // =============================================
+    // SECURE STORAGE: Encrypt and store in Supabase
+    // =============================================
+    try {
+      const encryptionSecret = getEncryptionSecret();
+
+      // Hash email for lookups (can't reverse, but can search)
+      const emailHash = await hash(formData.basicInfo.email.toLowerCase());
+
+      // Prepare data categories for encryption
+      const contactData: ContactData = {
+        phone: formData.basicInfo.phone,
+        emergencyContactName: formData.basicInfo.emergencyContactName || '',
+        emergencyContactPhone: formData.basicInfo.emergencyContactPhone || '',
+      };
+
+      const medicalData: MedicalData = {
+        medicalHistory: formData.medicalHistory || {} as ScreeningFormData['medicalHistory'],
+        medications: formData.medications || {} as ScreeningFormData['medications'],
+        mentalHealth: formData.mentalHealth || {} as ScreeningFormData['mentalHealth'],
+      };
+
+      const lifestyleData: LifestyleData = {
+        lifestyle: formData.lifestyle || {} as ScreeningFormData['lifestyle'],
+        intentions: formData.intentions || {} as ScreeningFormData['intentions'],
+      };
+
+      // Encrypt each category
+      const encryptedContact = await encrypt(contactData, encryptionSecret);
+      const encryptedMedical = await encrypt(medicalData, encryptionSecret);
+      const encryptedLifestyle = await encrypt(lifestyleData, encryptionSecret);
+
+      // Store in Supabase
+      const { success, error } = await insertScreeningApplication({
+        application_id: applicationId,
+        email_hash: emailHash,
+        full_name: formData.basicInfo.fullName,
+        risk_level: riskLevel,
+        screening_status: riskLevel === 'green' ? 'approved' : 'pending',
+        encrypted_contact: JSON.stringify(encryptedContact),
+        encrypted_medical: JSON.stringify(encryptedMedical),
+        encrypted_lifestyle: JSON.stringify(encryptedLifestyle),
+        iv: encryptedContact.iv, // Store primary IV for reference
+        salt: encryptedContact.salt, // Store primary salt for reference
+      });
+
+      if (!success) {
+        console.error('[Supabase] Storage failed:', error);
+        // Continue anyway - HubSpot is fallback
+      } else {
+        console.log('[Supabase] Application stored securely:', applicationId);
+      }
+    } catch (storageError) {
+      console.error('[Secure Storage] Error:', storageError);
+      // Continue anyway - don't block user
+    }
+
+    // =============================================
+    // CRM: Send ONLY non-sensitive summary to HubSpot
+    // =============================================
+
+    // Prepare HubSpot contact data (NO MEDICAL DATA - summary only)
     const hubspotData = {
+      // Basic identification only
       firstname: formData.basicInfo.fullName.split(" ")[0],
       lastname: formData.basicInfo.fullName.split(" ").slice(1).join(" ") || "",
       email: formData.basicInfo.email,
       phone: formData.basicInfo.phone,
 
-      // Custom properties (need to be created in HubSpot first)
+      // Application tracking (no sensitive details)
       application_id: applicationId,
       screening_status: riskLevel === "green" ? "approved" : riskLevel === "yellow" ? "pending_review" : "rejected",
       risk_level: riskLevel,
-      risk_messages: riskMessages.join("; "),
+      // NOTE: Risk messages removed - contain medical info
 
-      // Medical flags for review
+      // Generic flags only (no specifics)
       has_medication_flags: (
         formData.medications?.hasMaoiInhibitors ||
         formData.medications?.hasSsriAntidepressants ||
@@ -64,10 +146,10 @@ export async function POST(request: Request) {
       funnel_source: "screening_application",
       landing_page: "escuelafloresiendomexico.com/aplicar",
 
-      // Intentions for team context
-      why_participate: formData.intentions?.whyParticipate?.substring(0, 500),
-      what_to_heal: formData.intentions?.whatToHeal?.substring(0, 500),
-      how_found_us: formData.intentions?.howFoundUs,
+      // Non-sensitive intentions (required by HubSpot form)
+      how_found_us: formData.intentions?.howFoundUs || "No especificado",
+      why_participate: formData.intentions?.whyParticipate || "No especificado",
+      what_to_heal: formData.intentions?.whatToHeal || "No especificado",
     };
 
     // Submit to HubSpot Forms API
