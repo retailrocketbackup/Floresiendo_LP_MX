@@ -53,16 +53,16 @@ export default async function EncuentroPage({
   }
 
   return (
-    <main className="min-h-screen bg-[#fdf8f4]">
+    <main className="min-h-screen bg-warm-gray-50">
       {/* Meta Tracking */}
       <EncuentroTracking slug={encuentro.slug} />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#8b2a4a] via-[#722240] to-[#5a1a33] text-white py-20 px-4">
+      <section className="relative bg-gradient-to-br from-burgundy via-burgundy-dark to-burgundy-dark text-white py-20 px-4">
         <div className="absolute inset-0 bg-[url('/images/cosmic-spiritual-background.webp')] opacity-20 bg-cover bg-center" />
         <div className="relative max-w-4xl mx-auto text-center">
           <Link
             href="/encuentros"
-            className="inline-flex items-center gap-2 text-[#f78080] hover:text-white transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-coral-light hover:text-white transition-colors mb-6"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -84,7 +84,7 @@ export default async function EncuentroPage({
             <span className="bg-white/10 px-4 py-2 rounded-full">
               📍 {encuentro.location}
             </span>
-            <span className="bg-[#d4a853]/20 text-[#d4a853] px-4 py-2 rounded-full border border-[#d4a853]/30">
+            <span className="bg-gold/20 text-gold px-4 py-2 rounded-full border border-gold/30">
               {encuentro.spotsRemaining} lugares disponibles
             </span>
           </div>
@@ -94,7 +94,7 @@ export default async function EncuentroPage({
       {/* Description */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xl text-gray-700 leading-relaxed">
+          <p className="text-xl text-warm-gray-700 leading-relaxed">
             {encuentro.description}
           </p>
         </div>
@@ -108,10 +108,10 @@ export default async function EncuentroPage({
         <div className="max-w-4xl mx-auto">
           {/* Section Header with Subtitle */}
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-burgundy mb-3">
               Tu Viaje de Transformación
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-warm-gray-600 max-w-2xl mx-auto">
               Cuatro días diseñados para reconectarte con tu esencia
             </p>
           </div>
@@ -128,14 +128,14 @@ export default async function EncuentroPage({
       {/* What's Included */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-12">
+          <h2 className="text-3xl font-bold text-burgundy text-center mb-12">
             ¿Qué Incluye?
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Included */}
-            <div className="bg-[#fdf8f4] p-8 rounded-2xl">
-              <h3 className="text-xl font-bold text-[#8b2a4a] mb-6 flex items-center gap-2">
+            <div className="bg-warm-gray-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold text-burgundy mb-6 flex items-center gap-2">
                 <span className="text-green-500">✓</span> Incluido
               </h3>
               <ul className="space-y-3">
@@ -144,24 +144,24 @@ export default async function EncuentroPage({
                     <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-700">{item}</span>
+                    <span className="text-warm-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Not Included */}
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <h3 className="text-xl font-bold text-gray-600 mb-6 flex items-center gap-2">
-                <span className="text-gray-400">○</span> No Incluido
+            <div className="bg-warm-gray-50 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold text-warm-gray-600 mb-6 flex items-center gap-2">
+                <span className="text-warm-gray-400">○</span> No Incluido
               </h3>
               <ul className="space-y-3">
                 {encuentro.notIncluded.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-warm-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
                     </svg>
-                    <span className="text-gray-600">{item}</span>
+                    <span className="text-warm-gray-600">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -174,7 +174,7 @@ export default async function EncuentroPage({
       <VideoTestimonialSection funnel={`encuentro_${encuentro.slug}`} />
 
       {/* Investment CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-[#8b2a4a] to-[#722240] text-white">
+      <section className="py-16 px-4 bg-gradient-to-br from-burgundy to-burgundy-dark text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Reserva Tu Lugar
@@ -185,7 +185,7 @@ export default async function EncuentroPage({
 
           <Link
             href="/encuentros/febrero-2026-precios"
-            className="inline-flex items-center gap-3 bg-[#d4a853] hover:bg-[#c49943] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
+            className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -201,18 +201,18 @@ export default async function EncuentroPage({
       {/* Preparation */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-12">
+          <h2 className="text-3xl font-bold text-burgundy text-center mb-12">
             Preparación para el Encuentro
           </h2>
 
-          <div className="bg-[#fdf8f4] p-8 rounded-2xl">
+          <div className="bg-warm-gray-50 p-8 rounded-2xl">
             <ul className="space-y-4">
               {encuentro.preparation.map((item, index) => (
                 <li key={index} className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 bg-[#8b2a4a] text-white rounded-full flex items-center justify-center font-bold text-sm">
+                  <span className="flex-shrink-0 w-8 h-8 bg-burgundy text-white rounded-full flex items-center justify-center font-bold text-sm">
                     {index + 1}
                   </span>
-                  <span className="text-gray-700 pt-1">{item}</span>
+                  <span className="text-warm-gray-700 pt-1">{item}</span>
                 </li>
               ))}
             </ul>
@@ -223,10 +223,10 @@ export default async function EncuentroPage({
       {/* Contraindications */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-4">
+          <h2 className="text-3xl font-bold text-burgundy text-center mb-4">
             Contraindicaciones
           </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-warm-gray-600 mb-12 max-w-2xl mx-auto">
             Por tu seguridad, es importante que revises estas condiciones antes de aplicar.
             Si tienes dudas, consúltanos.
           </p>
@@ -238,7 +238,7 @@ export default async function EncuentroPage({
                   <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
-                  <span className="text-gray-700">{item}</span>
+                  <span className="text-warm-gray-700">{item}</span>
                 </li>
               ))}
             </ul>
