@@ -1,30 +1,41 @@
 // app/api/hubspot-contact/route.ts
 import { NextResponse } from "next/server"
 
+const HUBSPOT_PORTAL_ID = "50499487"
+
+// Default form ID (fallback)
+const DEFAULT_FORM_ID = "f6eee3f9-ac31-41a6-8247-91039e58776e"
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { firstname, lastname, phone, funnel_source, landing_page } = body
+    const { firstname, lastname, email, phone, formId } = body
 
     // Validar que los datos necesarios están presentes
-    if (!firstname || !lastname || !phone) {
-      return NextResponse.json({ message: "Missing required fields" }, { status: 400 })
+    if (!firstname || !phone) {
+      return NextResponse.json({ message: "Missing required fields (firstname, phone)" }, { status: 400 })
     }
 
-    const hubspotPortalId = "50499487" // Tu Portal ID
-    const hubspotFormId = "9e9fc339-b779-491c-9659-27aa57781ed4" // Tu Form ID
-    const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${hubspotPortalId}/${hubspotFormId}`
+    // Use provided formId or default
+    const hubspotFormId = formId || DEFAULT_FORM_ID
+    const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${hubspotFormId}`
+
+    // Build fields array dynamically (only include fields that have values)
+    const fields: { name: string; value: string }[] = [
+      { name: "firstname", value: firstname },
+      { name: "phone", value: phone },
+    ]
+
+    if (lastname) {
+      fields.push({ name: "lastname", value: lastname })
+    }
+    if (email) {
+      fields.push({ name: "email", value: email })
+    }
 
     const payload = {
-      fields: [
-        { name: "firstname", value: firstname },
-        { name: "lastname", value: lastname },
-        { name: "phone", value: phone },
-        { name: "funnel_source", value: funnel_source },
-        { name: "landing_page", value: landing_page },
-      ],
+      fields,
       context: {
-        pageUri: landing_page,
         pageName: "Floresiendo Landing Page",
       },
     }

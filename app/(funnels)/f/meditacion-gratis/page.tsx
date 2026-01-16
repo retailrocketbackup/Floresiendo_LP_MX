@@ -74,12 +74,11 @@ export default function MeditacionGratisPage() {
         { enableCAPI: true }
       );
 
-      // 2. Save to HubSpot
+      // 2. Save to HubSpot (LM - Online Meditation Form)
       const contactData = {
         firstname: formData.firstname,
         phone: fullPhoneNumber,
-        funnel_source: "meditacion-gratis",
-        landing_page: window.location.href,
+        formId: "f6eee3f9-ac31-41a6-8247-91039e58776e",
       };
 
       await fetch("/api/hubspot-contact", {

@@ -36,9 +36,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Create HubSpot contact
+    // 1. Create HubSpot contact (LM - Conf - Vida Perfecta Form)
     const hubspotPortalId = "50499487";
-    const hubspotFormId = "9e9fc339-b779-491c-9659-27aa57781ed4"; // TODO: Create dedicated conference form in HubSpot
+    const hubspotFormId = "3c984755-ccd7-4769-a0b1-cd09678b464f";
     const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${hubspotPortalId}/${hubspotFormId}`;
 
     const hubspotPayload = {
@@ -47,11 +47,6 @@ export async function POST(request: Request) {
         { name: "lastname", value: lastName },
         { name: "email", value: email },
         { name: "phone", value: phone },
-        { name: "funnel_source", value: `conference_${funnelSource}` },
-        { name: "landing_page", value: landingPage },
-        // Custom properties - need to be created in HubSpot first
-        // { name: "conference_registered", value: new Date().toISOString() },
-        // { name: "conference_pain_point", value: painPoint || "" },
       ],
       context: {
         pageUri: landingPage,
