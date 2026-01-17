@@ -35,48 +35,41 @@ export default function CampaignSelector({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const allSelected = selectedCampaigns.length === 0;
-  const someSelected = selectedCampaigns.length > 0 && selectedCampaigns.length < campaigns.length;
+  // Standard multi-select logic:
+  // - Empty array = nothing selected (show all data by default)
+  // - Array with IDs = those specific campaigns are selected
+  const allSelected = campaigns.length > 0 && selectedCampaigns.length === campaigns.length;
+  const noneSelected = selectedCampaigns.length === 0;
+  const someSelected = !allSelected && !noneSelected;
 
   const handleSelectAll = () => {
-    // Toggle: if all selected (empty array), keep all; if some selected, clear to all
-    onSelectionChange([]);
+    if (allSelected) {
+      // Deselect all
+      onSelectionChange([]);
+    } else {
+      // Select all
+      onSelectionChange(campaigns.map(c => c.id));
+    }
   };
 
   const handleToggleCampaign = (campaignId: string) => {
-    // If currently showing "all" (empty array), switching to specific selection
-    if (allSelected) {
-      // Select all campaigns EXCEPT this one
-      const allExceptThis = campaigns.map(c => c.id).filter(id => id !== campaignId);
-      onSelectionChange(allExceptThis);
-    } else if (selectedCampaigns.includes(campaignId)) {
+    if (selectedCampaigns.includes(campaignId)) {
       // Remove from selection
-      const newSelection = selectedCampaigns.filter(id => id !== campaignId);
-      // If removing last one, go back to "all"
-      if (newSelection.length === 0) {
-        onSelectionChange([]);
-      } else {
-        onSelectionChange(newSelection);
-      }
+      onSelectionChange(selectedCampaigns.filter(id => id !== campaignId));
     } else {
       // Add to selection
-      const newSelection = [...selectedCampaigns, campaignId];
-      // If selecting all, switch to "all" mode (empty array)
-      if (newSelection.length === campaigns.length) {
-        onSelectionChange([]);
-      } else {
-        onSelectionChange(newSelection);
-      }
+      onSelectionChange([...selectedCampaigns, campaignId]);
     }
   };
 
   const getDisplayText = () => {
-    if (allSelected) return 'Todas las campanas';
+    if (allSelected) return 'Todas las campañas';
+    if (noneSelected) return 'Todas las campañas'; // Show all when none specifically selected
     if (selectedCampaigns.length === 1) {
       const campaign = campaigns.find(c => c.id === selectedCampaigns[0]);
-      return campaign?.name || 'Campana seleccionada';
+      return campaign?.name || 'Campaña seleccionada';
     }
-    return `${selectedCampaigns.length} campanas`;
+    return `${selectedCampaigns.length} campañas`;
   };
 
   if (loading) {
@@ -117,12 +110,12 @@ export default function CampaignSelector({
           {/* Header */}
           <div className="p-3 border-b border-warm-gray-100 bg-warm-gray-50">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-warm-gray-700">Filtrar por campana</span>
+              <span className="text-sm font-medium text-warm-gray-700">Filtrar por campaña</span>
               <button
                 onClick={handleSelectAll}
                 className="text-xs text-coral hover:text-coral/80 font-medium"
               >
-                {allSelected ? 'Deseleccionar' : 'Seleccionar todas'}
+                {allSelected ? 'Deseleccionar todas' : 'Seleccionar todas'}
               </button>
             </div>
           </div>
@@ -138,8 +131,8 @@ export default function CampaignSelector({
                 className="w-4 h-4 rounded border-warm-gray-300 text-coral focus:ring-coral/50"
               />
               <div className="flex-1">
-                <p className="text-sm font-medium text-warm-gray-800">Todas las campanas</p>
-                <p className="text-xs text-warm-gray-400">{campaigns.length} campanas disponibles</p>
+                <p className="text-sm font-medium text-warm-gray-800">Todas las campañas</p>
+                <p className="text-xs text-warm-gray-400">{campaigns.length} campañas disponibles</p>
               </div>
               <svg className="w-5 h-5 text-warm-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -148,7 +141,7 @@ export default function CampaignSelector({
 
             {/* Individual Campaigns */}
             {campaigns.map((campaign) => {
-              const isSelected = allSelected || selectedCampaigns.includes(campaign.id);
+              const isSelected = selectedCampaigns.includes(campaign.id);
               const statusColor = campaign.status === 'ACTIVE'
                 ? 'bg-green-500'
                 : campaign.status === 'PAUSED'

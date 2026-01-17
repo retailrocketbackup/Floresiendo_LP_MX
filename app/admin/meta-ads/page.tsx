@@ -180,6 +180,14 @@ export default function MetaAdsDashboardPage() {
     }
   }, []);
 
+  // Initialize campaign selection with all campaigns when data loads
+  useEffect(() => {
+    if (overview?.campaigns && selectedCampaignIds.length === 0) {
+      const allCampaignIds = (overview.campaigns as CampaignWithInsights[]).map(c => c.id);
+      setSelectedCampaignIds(allCampaignIds);
+    }
+  }, [overview?.campaigns]);
+
   // Fetch data when authenticated or time range changes
   useEffect(() => {
     if (isAuthenticated) {
@@ -304,8 +312,11 @@ export default function MetaAdsDashboardPage() {
 
   // Aggregated summary based on selected campaigns
   const aggregatedSummary = useMemo(() => {
-    // If no specific campaigns selected, use account-level summary
-    if (selectedCampaignIds.length === 0) {
+    const allCampaigns = overview?.campaigns as CampaignWithInsights[] || [];
+    const allSelected = selectedCampaignIds.length === allCampaigns.length;
+
+    // If all campaigns selected, use account-level summary
+    if (allSelected || selectedCampaignIds.length === 0) {
       return overview?.summary || null;
     }
 
@@ -627,10 +638,10 @@ export default function MetaAdsDashboardPage() {
           {/* Quick Stats Bar */}
           {aggregatedSummary && (
             <div className="flex items-center gap-6 text-sm border-t border-warm-gray-100 pt-3 overflow-x-auto">
-              {selectedCampaignIds.length > 0 && (
+              {selectedCampaignIds.length > 0 && selectedCampaignIds.length < (overview?.campaigns?.length || 0) && (
                 <div className="flex items-center gap-2 whitespace-nowrap">
                   <span className="px-2 py-0.5 text-xs bg-coral/10 text-coral rounded-full font-medium">
-                    {selectedCampaignIds.length} campana{selectedCampaignIds.length > 1 ? 's' : ''}
+                    {selectedCampaignIds.length} campaña{selectedCampaignIds.length > 1 ? 's' : ''}
                   </span>
                 </div>
               )}
