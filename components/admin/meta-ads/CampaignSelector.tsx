@@ -35,21 +35,38 @@ export default function CampaignSelector({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const allSelected = selectedCampaigns.length === 0 || selectedCampaigns.length === campaigns.length;
+  const allSelected = selectedCampaigns.length === 0;
   const someSelected = selectedCampaigns.length > 0 && selectedCampaigns.length < campaigns.length;
 
   const handleSelectAll = () => {
+    // Toggle: if all selected (empty array), keep all; if some selected, clear to all
     onSelectionChange([]);
   };
 
   const handleToggleCampaign = (campaignId: string) => {
-    if (selectedCampaigns.includes(campaignId)) {
+    // If currently showing "all" (empty array), switching to specific selection
+    if (allSelected) {
+      // Select all campaigns EXCEPT this one
+      const allExceptThis = campaigns.map(c => c.id).filter(id => id !== campaignId);
+      onSelectionChange(allExceptThis);
+    } else if (selectedCampaigns.includes(campaignId)) {
       // Remove from selection
       const newSelection = selectedCampaigns.filter(id => id !== campaignId);
-      onSelectionChange(newSelection);
+      // If removing last one, go back to "all"
+      if (newSelection.length === 0) {
+        onSelectionChange([]);
+      } else {
+        onSelectionChange(newSelection);
+      }
     } else {
       // Add to selection
-      onSelectionChange([...selectedCampaigns, campaignId]);
+      const newSelection = [...selectedCampaigns, campaignId];
+      // If selecting all, switch to "all" mode (empty array)
+      if (newSelection.length === campaigns.length) {
+        onSelectionChange([]);
+      } else {
+        onSelectionChange(newSelection);
+      }
     }
   };
 
