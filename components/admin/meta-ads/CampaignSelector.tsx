@@ -90,19 +90,19 @@ export default function CampaignSelector({
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-warm-gray-200 rounded-xl hover:border-coral/50 transition-colors text-sm font-medium text-warm-gray-700 shadow-sm"
+        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-warm-gray-200 rounded-xl hover:border-coral/50 transition-colors text-sm font-medium text-warm-gray-700 shadow-sm w-[200px]"
       >
-        <svg className="w-4 h-4 text-warm-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-4 h-4 text-warm-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
         </svg>
-        <span className="max-w-[150px] truncate">{getDisplayText()}</span>
+        <span className="flex-1 truncate text-left">{getDisplayText()}</span>
         {someSelected && (
-          <span className="px-1.5 py-0.5 text-xs bg-coral/10 text-coral rounded-full">
+          <span className="px-1.5 py-0.5 text-xs bg-coral/10 text-coral rounded-full flex-shrink-0">
             {selectedCampaigns.length}
           </span>
         )}
         <svg
-          className={`w-4 h-4 text-warm-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-warm-gray-400 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
