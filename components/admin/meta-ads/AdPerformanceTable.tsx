@@ -214,17 +214,17 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
   return (
     <div className="bg-white rounded-xl border border-warm-gray-200 shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="p-6 border-b border-warm-gray-100">
+      <div className="p-4 sm:p-6 border-b border-warm-gray-100">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-warm-gray-800">
+            <h3 className="text-base sm:text-lg font-semibold text-warm-gray-800">
               Rendimiento de Anuncios
             </h3>
-            <p className="text-sm text-warm-gray-500">
-              Comparacion de {ads.length} anuncios activos
+            <p className="text-xs sm:text-sm text-warm-gray-500">
+              Comparación de {ads.length} anuncios activos
             </p>
           </div>
-          <div className="flex items-center gap-3 text-xs">
+          <div className="hidden sm:flex items-center gap-3 text-xs">
             <span className="flex items-center gap-1 text-green-600">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
@@ -241,8 +241,81 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Mobile Card Layout */}
+      <div className="md:hidden divide-y divide-warm-gray-100">
+        {sortedAds.map((ad) => (
+          <div
+            key={ad.id}
+            className="p-4 hover:bg-warm-gray-50 transition-colors cursor-pointer"
+            onClick={() => onAdClick?.(ad.id)}
+          >
+            {/* Card Header */}
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1 min-w-0 pr-2">
+                <p className="text-sm font-medium text-warm-gray-900 truncate">{ad.name}</p>
+              </div>
+              <StatusBadge status={ad.status} />
+            </div>
+            {/* Metrics Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-warm-gray-50 rounded-lg p-2">
+                <p className="text-xs text-warm-gray-500">Gasto</p>
+                <p className="text-sm font-semibold text-warm-gray-800">{formatCurrency(ad.spend)}</p>
+              </div>
+              <div className="bg-warm-gray-50 rounded-lg p-2">
+                <p className="text-xs text-warm-gray-500">Impresiones</p>
+                <p className="text-sm font-semibold text-warm-gray-800">{formatNumber(ad.impressions)}</p>
+              </div>
+              <div className="bg-warm-gray-50 rounded-lg p-2">
+                <p className="text-xs text-warm-gray-500">Clics</p>
+                <p className="text-sm font-semibold text-warm-gray-800">{formatNumber(ad.clicks)}</p>
+              </div>
+              <div className="bg-warm-gray-50 rounded-lg p-2">
+                <p className="text-xs text-warm-gray-500">CTR</p>
+                <p className="text-sm font-semibold text-warm-gray-800">
+                  {formatPercentage(ad.ctr)}
+                  <PerformanceIndicator value={ad.ctr} type={ad.id === bestCtrAd.id ? 'best' : 'normal'} />
+                </p>
+              </div>
+              <div className="bg-warm-gray-50 rounded-lg p-2">
+                <p className="text-xs text-warm-gray-500">CPC</p>
+                <p className="text-sm font-semibold text-warm-gray-800">
+                  {formatCurrency(ad.cpc)}
+                  <PerformanceIndicator value={ad.cpc} type={ad.id === worstCpcAd.id ? 'worst' : 'normal'} />
+                </p>
+              </div>
+              <div className="bg-coral/10 rounded-lg p-2">
+                <p className="text-xs text-coral">Conversiones</p>
+                <p className="text-sm font-bold text-coral">
+                  {formatNumber(ad.conversions)}
+                  <PerformanceIndicator value={ad.conversions} type={ad.id === bestConversionAd.id ? 'best' : 'normal'} />
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+        {/* Mobile Totals */}
+        <div className="p-4 bg-warm-gray-50">
+          <p className="text-xs font-medium text-warm-gray-500 mb-2">TOTALES</p>
+          <div className="grid grid-cols-3 gap-2">
+            <div>
+              <p className="text-xs text-warm-gray-500">Gasto</p>
+              <p className="text-sm font-semibold">{formatCurrency(totals.spend)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-warm-gray-500">Clics</p>
+              <p className="text-sm font-semibold">{formatNumber(totals.clicks)}</p>
+            </div>
+            <div>
+              <p className="text-xs text-coral">Conversiones</p>
+              <p className="text-sm font-bold text-coral">{formatNumber(totals.conversions)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full divide-y divide-warm-gray-200">
           <thead className="bg-warm-gray-50">
             <tr>

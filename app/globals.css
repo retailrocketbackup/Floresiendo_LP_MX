@@ -568,6 +568,22 @@ html {
   }
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-data {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+}
+
 /* ========== SCROLLBAR STYLING ========== */
 ::-webkit-scrollbar {
   width: 8px;

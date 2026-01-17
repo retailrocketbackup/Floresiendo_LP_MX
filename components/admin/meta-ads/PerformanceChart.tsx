@@ -237,7 +237,7 @@ export default function PerformanceChart({
       </div>
 
       {/* Chart */}
-      <div className="h-[320px] w-full">
+      <div className="h-[240px] sm:h-[280px] md:h-[320px] lg:h-[400px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             data={chartData}

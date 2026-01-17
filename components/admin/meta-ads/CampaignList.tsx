@@ -104,7 +104,7 @@ function AdSetRow({
         <div className="p-3 bg-white border-t border-warm-gray-100 animate-[slide-down_0.2s_ease-out]">
           {/* Ad Set Metrics */}
           {adset.insights && (
-            <div className="grid grid-cols-4 gap-3 mb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
               <div className="text-center">
                 <p className="text-xs text-warm-gray-400">Gasto</p>
                 <p className="text-sm font-semibold text-coral">{formatCurrency(adset.insights.spend)}</p>
@@ -225,7 +225,7 @@ function CampaignRow({
         <div className="px-4 pb-4 border-t border-warm-gray-100 animate-[slide-down_0.2s_ease-out]">
           {/* Metrics Grid */}
           {campaign.insights ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-4">
               <MetricDisplay label="Gasto" value={formatCurrency(campaign.insights.spend)} color="text-coral" />
               <MetricDisplay label="Impresiones" value={formatNumber(campaign.insights.impressions)} color="text-blue-600" />
               <MetricDisplay label="Clics" value={formatNumber(campaign.insights.clicks)} color="text-green-600" />

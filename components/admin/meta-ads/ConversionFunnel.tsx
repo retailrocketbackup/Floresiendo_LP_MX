@@ -88,20 +88,20 @@ function FunnelStep({
 
       {/* Step box */}
       <div
-        className="relative w-full rounded-xl p-4 text-center transition-all hover:scale-105 hover:shadow-lg"
+        className="relative w-full rounded-xl p-2 sm:p-4 text-center transition-all hover:scale-105 hover:shadow-lg"
         style={{
           backgroundColor: step.color + '15',
           borderColor: step.color + '40',
           borderWidth: 2,
         }}
       >
-        <div className="flex justify-center mb-2" style={{ color: step.color }}>
+        <div className="flex justify-center mb-1 sm:mb-2" style={{ color: step.color }}>
           {step.icon}
         </div>
-        <p className="text-2xl font-bold" style={{ color: step.color }}>
+        <p className="text-lg sm:text-2xl font-bold" style={{ color: step.color }}>
           {formatNumber(step.value)}
         </p>
-        <p className="text-xs text-warm-gray-500 mt-1">{step.label}</p>
+        <p className="text-[10px] sm:text-xs text-warm-gray-500 mt-1 truncate">{step.label}</p>
       </div>
     </div>
   );
@@ -236,7 +236,7 @@ export default function ConversionFunnel({
       </div>
 
       {/* Funnel visualization */}
-      <div className="flex items-end justify-center gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:flex items-end justify-center gap-2 sm:gap-3 mb-6">
         {funnelSteps.map((step, index) => (
           <FunnelStep
             key={step.label}
@@ -249,7 +249,7 @@ export default function ConversionFunnel({
       </div>
 
       {/* Funnel rates summary */}
-      <div className="flex justify-center gap-8 mb-6 py-3 bg-warm-gray-50 rounded-lg">
+      <div className="flex justify-center gap-4 sm:gap-8 mb-6 py-3 bg-warm-gray-50 rounded-lg">
         <div className="text-center">
           <p className="text-lg font-bold text-green-600">{clickThroughRate}%</p>
           <p className="text-xs text-warm-gray-500">CTR</p>

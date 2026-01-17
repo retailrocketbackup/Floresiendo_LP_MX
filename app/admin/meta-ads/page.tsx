@@ -558,10 +558,10 @@ export default function MetaAdsDashboardPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Refresh countdown */}
               {lastRefresh && (
-                <div className="hidden md:flex items-center gap-2 text-xs text-warm-gray-400">
+                <div className="hidden lg:flex items-center gap-2 text-xs text-warm-gray-400">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                   <span>{getRelativeTime()}</span>
                   <span className="text-warm-gray-300">|</span>
@@ -637,7 +637,7 @@ export default function MetaAdsDashboardPage() {
 
           {/* Quick Stats Bar */}
           {aggregatedSummary && (
-            <div className="flex items-center gap-6 text-sm border-t border-warm-gray-100 pt-3 overflow-x-auto">
+            <div className="flex items-center gap-3 sm:gap-6 text-sm border-t border-warm-gray-100 pt-3 overflow-x-auto pb-1 scrollbar-hide">
               {selectedCampaignIds.length > 0 && selectedCampaignIds.length < (overview?.campaigns?.length || 0) && (
                 <div className="flex items-center gap-2 whitespace-nowrap">
                   <span className="px-2 py-0.5 text-xs bg-coral/10 text-coral rounded-full font-medium">
@@ -685,7 +685,7 @@ export default function MetaAdsDashboardPage() {
         {/* KPI Cards */}
         <section className="mb-8">
           <h2 className="text-lg font-semibold text-warm-gray-800 mb-4">Metricas Principales</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             <KPICard
               label="Gasto"
               value={formatCurrency(aggregatedSummary?.spend || '0')}

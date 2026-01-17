@@ -24,7 +24,7 @@ export default function SearchFilter({
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-4">
       {/* Search Input */}
-      <div className="relative flex-1 max-w-md w-full">
+      <div className="relative flex-1 w-full sm:max-w-md">
         <div
           className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-colors ${
             isFocused ? 'text-coral' : 'text-warm-gray-400'

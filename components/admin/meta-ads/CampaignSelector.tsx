@@ -83,12 +83,12 @@ export default function CampaignSelector({
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2.5 bg-white border border-warm-gray-200 rounded-xl hover:border-coral/50 transition-colors text-sm font-medium text-warm-gray-700 shadow-sm w-[200px]"
+        className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 bg-white border border-warm-gray-200 rounded-xl hover:border-coral/50 transition-colors text-sm font-medium text-warm-gray-700 shadow-sm w-auto sm:w-[200px] min-w-0"
       >
         <svg className="w-4 h-4 text-warm-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
         </svg>
-        <span className="flex-1 truncate text-left">{getDisplayText()}</span>
+        <span className="hidden sm:block flex-1 truncate text-left">{getDisplayText()}</span>
         {someSelected && (
           <span className="px-1.5 py-0.5 text-xs bg-coral/10 text-coral rounded-full flex-shrink-0">
             {selectedCampaigns.length}
@@ -106,7 +106,7 @@ export default function CampaignSelector({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-72 bg-white border border-warm-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+        <div className="absolute top-full right-0 sm:left-0 sm:right-auto mt-2 w-[calc(100vw-2rem)] sm:w-72 max-w-[288px] bg-white border border-warm-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
           {/* Header */}
           <div className="p-3 border-b border-warm-gray-100 bg-warm-gray-50">
             <div className="flex items-center justify-between">

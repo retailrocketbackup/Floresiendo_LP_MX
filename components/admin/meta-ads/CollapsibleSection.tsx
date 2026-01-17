@@ -28,17 +28,17 @@ export default function CollapsibleSection({
       {/* Header - Always visible */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-warm-gray-50 transition-colors"
+        className="w-full px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-warm-gray-50 transition-colors min-h-[56px]"
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {icon && (
-            <div className="p-2 rounded-lg bg-warm-gray-100 text-warm-gray-600">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-warm-gray-100 text-warm-gray-600 flex-shrink-0">
               {icon}
             </div>
           )}
-          <div className="text-left">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-warm-gray-800">{title}</h3>
+          <div className="text-left min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-base sm:text-lg font-semibold text-warm-gray-800 truncate">{title}</h3>
               {badge !== undefined && (
                 <span
                   className="px-2 py-0.5 text-xs font-medium rounded-full"
@@ -57,9 +57,9 @@ export default function CollapsibleSection({
           </div>
         </div>
 
-        {/* Chevron */}
+        {/* Chevron - min 44px touch target */}
         <div
-          className={`p-1 rounded-full transition-transform duration-300 ${
+          className={`p-2 sm:p-1 rounded-full transition-transform duration-300 flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center ${
             isOpen ? 'rotate-180' : ''
           }`}
         >
@@ -85,7 +85,7 @@ export default function CollapsibleSection({
           isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="px-6 pb-6 pt-2 border-t border-warm-gray-100">
+        <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 border-t border-warm-gray-100">
           {children}
         </div>
       </div>
