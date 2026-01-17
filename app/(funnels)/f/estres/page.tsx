@@ -15,7 +15,7 @@ const TrackedVimeoPlayer = dynamic(
 
 // V003 - "Sientes que tu rutina te consume"
 const VIMEO_VIDEO_ID = "1143232548";
-const MAIN_WHATSAPP = "526182301481";
+const MAIN_WHATSAPP = "524427845308";
 const WHATSAPP_MESSAGE = "Hola, vi el video sobre encontrar paz interior, y me gustaría saber cómo pueden acompañarme.";
 
 // WhatsApp button component with tracking

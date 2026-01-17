@@ -149,8 +149,8 @@
 | Funnel | URL | Video ID | WhatsApp | Event |
 |--------|-----|----------|----------|-------|
 | **Duelo** | `/f/duelo-acompanamiento` | 1142274109 | +52 1 55 4018 0914 (Karla) | `Lead_Duelo` |
-| **Propósito** | `/f/proposito` | 1143233296 | +52 618 230 1481 | `Lead_Proposito` |
-| **Estrés** | `/f/estres` | 1143232548 | +52 618 230 1481 | `Lead_Estres` |
+| **Propósito** | `/f/proposito` | 1143233296 | +52 442 784 5308 | `Lead_Proposito` |
+| **Estrés** | `/f/estres` | 1143232548 | +52 442 784 5308 | `Lead_Estres` |
 
 ### Lead Magnets (MOFU)
 
@@ -212,7 +212,7 @@ interface FloatingWhatsAppProps {
 }
 
 export function FloatingWhatsApp({
-  phoneNumber = "526182301481",
+  phoneNumber = "524427845308",
   message = "Hola, me gustaría saber más sobre los encuentros de FloreSiendo México",
   page = "general",
   encuentroSlug,
@@ -322,7 +322,7 @@ useEffect(() => {
 **Update FloatingWhatsApp:**
 ```tsx
 <FloatingWhatsApp
-  phoneNumber="526182301481"
+  phoneNumber="524427845308"
   message="Hola Ramón, me interesa el Encuentro de Febrero 2026..."
   page="precios"
   encuentroSlug="febrero-2026"

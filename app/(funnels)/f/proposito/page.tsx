@@ -15,7 +15,7 @@ const TrackedVimeoPlayer = dynamic(
 
 // V001 - "Vida sin sentido"
 const VIMEO_VIDEO_ID = "1143233296";
-const MAIN_WHATSAPP = "526182301481";
+const MAIN_WHATSAPP = "524427845308";
 const WHATSAPP_MESSAGE = "Hola, vi el video sobre encontrar propósito y me gustaría saber más sobre cómo pueden ayudarme.";
 
 // WhatsApp button component with tracking

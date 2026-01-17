@@ -23,7 +23,7 @@ export default function LlamadaPage() {
   useEffect(() => {
     if (isSubmitted && selectedOption === "whatsapp") {
       const userName = encodeURIComponent(formData.firstname);
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=+526182301481&text=Hola%20Ramon,%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20retiros.%20Me%20llamo%20${userName}.`;
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=+524427845308&text=Hola%20Ramon,%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20retiros.%20Me%20llamo%20${userName}.`;
 
       const redirectTimeout = setTimeout(() => {
         window.location.href = whatsappUrl;

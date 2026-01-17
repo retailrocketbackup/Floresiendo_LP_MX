@@ -31,7 +31,7 @@ export const metadata = {
 };
 
 export default function EscuelaPage() {
-  const whatsappNumber = "526182301481";
+  const whatsappNumber = "524427845308";
   const whatsappMessage = "Hola, me interesa la Formación de Facilitadores de Escuela FloreSiendo. Me gustaría recibir más información.";
 
   return (

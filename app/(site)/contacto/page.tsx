@@ -64,10 +64,10 @@ export default function ContactoPage() {
                 y te orientamos sin compromiso.
               </p>
               <p className="text-2xl font-bold text-green-600 mb-6">
-                +52 618 230 1481
+                +52 442 784 5308
               </p>
               <a
-                href="https://wa.me/526182301481?text=Hola,%20me%20gustaría%20saber%20más%20sobre%20los%20encuentros%20de%20FloreSiendo%20México"
+                href="https://wa.me/524427845308?text=Hola,%20me%20gustaría%20saber%20más%20sobre%20los%20encuentros%20de%20FloreSiendo%20México"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 text-lg font-bold bg-green-500 hover:bg-green-600 text-white rounded-full transition-all duration-300 hover:scale-105 shadow-lg"
@@ -158,7 +158,7 @@ export default function ContactoPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/526182301481?text=Hola,%20me%20gustaría%20agendar%20una%20llamada%20para%20conocer%20más%20sobre%20los%20encuentros"
+              href="https://wa.me/524427845308?text=Hola,%20me%20gustaría%20agendar%20una%20llamada%20para%20conocer%20más%20sobre%20los%20encuentros"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold bg-white text-coral hover:bg-warm-gray-50 rounded-full shadow-xl hover:scale-105 transition-all duration-300"

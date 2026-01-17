@@ -263,7 +263,7 @@ export const encuentroFebrero2026: Encuentro = {
     "Hipertensión no controlada",
   ],
 
-  whatsappNumber: "526182301481",
+  whatsappNumber: "524427845308",
   whatsappMessage: "Hola, me interesa el Encuentro de Febrero 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
 };
 

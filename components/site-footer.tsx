@@ -90,7 +90,7 @@ export function SiteFooter() {
                 <span>Morelos, México</span>
               </div>
               <a
-                href="https://wa.me/526182301481?text=Hola,%20me%20gustaría%20saber%20más%20sobre%20FloreSiendo%20México"
+                href="https://wa.me/524427845308?text=Hola,%20me%20gustaría%20saber%20más%20sobre%20FloreSiendo%20México"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-coral-light/80 hover:text-white transition-colors group"
@@ -103,7 +103,7 @@ export function SiteFooter() {
                     height={40}
                   />
                 </div>
-                <span>+52 618 230 1481</span>
+                <span>+52 442 784 5308</span>
               </a>
             </div>
           </div>

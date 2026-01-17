@@ -44,7 +44,7 @@ export default function MeditacionGratisPage() {
   useEffect(() => {
     if (isSubmitted) {
       const userName = encodeURIComponent(formData.firstname);
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=+526182301481&text=Hola%20Ramon,%20quiero%20confirmar%20mi%20lugar%20para%20la%20meditaci%C3%B3n%20en%20vivo.%20Me%20llamo%20${userName}.`;
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=+524427845308&text=Hola%20Ramon,%20quiero%20confirmar%20mi%20lugar%20para%20la%20meditaci%C3%B3n%20en%20vivo.%20Me%20llamo%20${userName}.`;
 
       const redirectTimeout = setTimeout(() => {
         window.location.href = whatsappUrl;

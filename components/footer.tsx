@@ -18,7 +18,7 @@ export function Footer() {
             <h4 className="font-semibold text-lg mb-4">Contacto</h4>
             <div className="space-y-2 text-purple-200">
               <p>Morelos, México</p>
-              <p>WhatsApp: +52 618 230 1481</p>
+              <p>WhatsApp: +52 442 784 5308</p>
             </div>
           </div>
         </div>

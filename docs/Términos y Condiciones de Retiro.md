@@ -9,7 +9,7 @@ Este documento constituye un contrato legal vinculante entre el participante ("E
 Prestador de Servicios: Ramon Alan Henriquez Gurrola  
 RFC: HEGR861016L97  
 Domicilio Fiscal: Jaral de Peña 241, Residencial El Refugio, Querétaro, Qro., C.P. 76146\.  
-Contacto: WhatsApp \+52 618 230 1481 | Email: henriquez.alan@gmail.com
+Contacto: WhatsApp \+52 442 784 5308 | Email: henriquez.alan@gmail.com
 
 #### **II. PRECIOS, PAGOS Y RESERVACIONES**
 
@@ -97,5 +97,5 @@ Si no llegas al retiro el día y hora indicados, se pierde el 100% de lo pagado.
 Si realizas tu pago y nuestro equipo médico determina que no eres apto/a para la ceremonia por razones de seguridad (contraindicaciones médicas), te reembolsaremos el 100% de tu dinero, incluyendo el depósito.  
 Contacto Administrativo  
 📧 henriquez.alan@gmail.com  
-📱 WhatsApp: \+52 618 230 1481  
+📱 WhatsApp: \+52 442 784 5308  
 📍 Domicilio Fiscal: Querétaro, Qro.

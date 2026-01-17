@@ -18,7 +18,7 @@ export function FunnelFooter() {
           {/* Contact */}
           <div className="text-center md:text-right">
             <p className="text-white/80 text-sm">
-              WhatsApp: <a href="https://wa.me/526182301481" className="text-[#f78080] hover:text-white transition-colors">+52 618 230 1481</a>
+              WhatsApp: <a href="https://wa.me/524427845308" className="text-[#f78080] hover:text-white transition-colors">+52 442 784 5308</a>
             </p>
             <p className="text-white/60 text-sm">Morelos, México</p>
           </div>

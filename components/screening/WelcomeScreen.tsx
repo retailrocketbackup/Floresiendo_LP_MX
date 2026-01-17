@@ -172,7 +172,7 @@ export function WelcomeScreen({ selectedPackage, onStart }: WelcomeScreenProps) 
               ¿Tienes dudas antes de comenzar?
             </p>
             <a
-              href="https://wa.me/5216182301481?text=Hola%20Ramón,%20tengo%20dudas%20sobre%20el%20cuestionario%20de%20elegibilidad"
+              href="https://wa.me/5214427845308?text=Hola%20Ramón,%20tengo%20dudas%20sobre%20el%20cuestionario%20de%20elegibilidad"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-white hover:text-[var(--coral)] transition-colors"

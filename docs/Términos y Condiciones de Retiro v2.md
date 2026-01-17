@@ -13,7 +13,7 @@ Este documento constituye un contrato legal vinculante entre el participante ("E
 | **Prestador de Servicios** | Ramon Alan Henriquez Gurrola |
 | **RFC** | HEGR861016L97 |
 | **Domicilio Fiscal** | Jaral de Peña 241, Residencial El Refugio, Querétaro, Qro., C.P. 76146 |
-| **Contacto WhatsApp** | +52 618 230 1481 |
+| **Contacto WhatsApp** | +52 442 784 5308 |
 | **Email** | henriquez.alan@gmail.com |
 | **Sitio Web** | www.escuelafloresiendomexicom.com |
 
@@ -325,7 +325,7 @@ Para cualquier consulta sobre estos términos:
 
 | Canal | Información |
 |-------|-------------|
-| **WhatsApp** | +52 618 230 1481 |
+| **WhatsApp** | +52 442 784 5308 |
 | **Email** | henriquez.alan@gmail.com |
 | **Sitio Web** | www.escuelafloresiendomexicom.com |
 
@@ -340,7 +340,7 @@ Para cualquier consulta sobre estos términos:
 ## Política de Pagos: Cero Reembolsos
 
 **Operado por:** Ramon Alan Henriquez Gurrola
-**Contacto:** WhatsApp +52 618 230 1481 | henriquez.alan@gmail.com
+**Contacto:** WhatsApp +52 442 784 5308 | henriquez.alan@gmail.com
 
 Debido a la logística, gastos de reservación y al cupo limitado (15 personas), aplicamos una política estricta.
 
@@ -390,6 +390,6 @@ Solo en estos casos hacemos reembolso completo:
 
 ### Contacto
 
-- 📱 WhatsApp: +52 618 230 1481
+- 📱 WhatsApp: +52 442 784 5308
 - 📧 Email: henriquez.alan@gmail.com
 - 📍 Domicilio Fiscal: Querétaro, Qro.

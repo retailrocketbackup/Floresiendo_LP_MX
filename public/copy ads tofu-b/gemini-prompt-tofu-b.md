@@ -30,7 +30,7 @@ Estos son eventos gratuitos diseñados para nutrir leads hacia el retiro:
 
 ### Facilitador
 - **Ramón Henríquez**: 10+ años de experiencia en meditación y bienestar espiritual
-- **WhatsApp**: +52 618 230 1481 (comunicación personal post-registro)
+- **WhatsApp**: +52 442 784 5308 (comunicación personal post-registro)
 
 ---
 

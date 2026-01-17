@@ -12,7 +12,7 @@ interface FloatingWhatsAppProps {
 }
 
 export function FloatingWhatsApp({
-  phoneNumber = "526182301481",
+  phoneNumber = "524427845308",
   message = "Hola, me gustaría saber más sobre los encuentros de FloreSiendo México",
   page = "general",
   encuentroSlug,

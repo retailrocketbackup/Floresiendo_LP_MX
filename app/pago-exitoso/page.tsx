@@ -126,7 +126,7 @@ export default function PagoExitoso({
             </p>
 
             <a
-              href="https://wa.me/5216182301481?text=Hola%20Ramón,%20acabo%20de%20realizar%20mi%20pago%20para%20el%20Encuentro%20de%20Febrero%202026"
+              href="https://wa.me/5214427845308?text=Hola%20Ramón,%20acabo%20de%20realizar%20mi%20pago%20para%20el%20Encuentro%20de%20Febrero%202026"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-coral hover:bg-coral-dark text-white font-bold rounded-full transition-all hover:scale-105 shadow-lg"

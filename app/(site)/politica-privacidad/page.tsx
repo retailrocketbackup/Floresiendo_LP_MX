@@ -31,7 +31,7 @@ export default function PoliticaPrivacidad() {
                 <p><strong>Responsable:</strong> Ramon Alan Henriquez Gurrola</p>
                 <p><strong>RFC:</strong> HEGR861016L97</p>
                 <p><strong>Domicilio:</strong> Jaral de Peña 241, Residencial El Refugio, Querétaro, Qro., C.P. 76146</p>
-                <p><strong>Contacto WhatsApp:</strong> +52 618 230 1481</p>
+                <p><strong>Contacto WhatsApp:</strong> +52 442 784 5308</p>
                 <p><strong>Email:</strong> henriquez.alan@gmail.com</p>
                 <p><strong>Sitio Web:</strong> www.escuelafloresiendomexicom.com</p>
               </div>
@@ -289,7 +289,7 @@ export default function PoliticaPrivacidad() {
               <div className="bg-purple-50 p-6 rounded-lg">
                 <p className="font-semibold text-purple-900">Ramon Alan Henriquez Gurrola</p>
                 <p className="text-purple-800">Domicilio: Querétaro, Qro., México</p>
-                <p className="text-purple-800">WhatsApp: +52 618 230 1481</p>
+                <p className="text-purple-800">WhatsApp: +52 442 784 5308</p>
                 <p className="text-purple-800">Email: henriquez.alan@gmail.com</p>
               </div>
             </section>

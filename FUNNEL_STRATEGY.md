@@ -112,7 +112,7 @@ FloreSiendo uses a **4-funnel architecture** with pain-specific TOFU entry point
 | Pain Point | Existential emptiness, no purpose, 9-5 burnout |
 | Target Audience | Corporate professionals, mid-career crisis |
 | CTA | WhatsApp to main business |
-| WhatsApp Number | +52 618 230 1481 |
+| WhatsApp Number | +52 442 784 5308 |
 | Lead Event | `Lead_Proposito` |
 | Video Events | `ViewContent`, `Video25`, `Video50`, `Video75`, `VideoComplete` |
 
@@ -126,7 +126,7 @@ FloreSiendo uses a **4-funnel architecture** with pain-specific TOFU entry point
 | Pain Point | Overwhelm, routine, work/family/debt stress |
 | Target Audience | Stressed professionals, burnout |
 | CTA | WhatsApp to main business |
-| WhatsApp Number | +52 618 230 1481 |
+| WhatsApp Number | +52 442 784 5308 |
 | Lead Event | `Lead_Estres` |
 | Video Events | `ViewContent`, `Video25`, `Video50`, `Video75`, `VideoComplete` |
 
@@ -182,8 +182,8 @@ All events use dual tracking: **Pixel (browser) + CAPI (server-side)** with dedu
 | Funnel | Facilitator | Number |
 |--------|-------------|--------|
 | Duelo | Karla Nava | +52 1 55 4018 0914 |
-| Proposito | Main Business | +52 618 230 1481 |
-| Estres | Main Business | +52 618 230 1481 |
+| Proposito | Main Business | +52 442 784 5308 |
+| Estres | Main Business | +52 442 784 5308 |
 
 ---
 

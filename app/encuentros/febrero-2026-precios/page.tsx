@@ -92,7 +92,7 @@ export default function PreciosFebrero2026() {
 
       {/* Floating WhatsApp Button */}
       <FloatingWhatsApp
-        phoneNumber="526182301481"
+        phoneNumber="524427845308"
         message="Hola Ramón, me interesa el Encuentro de Febrero 2026. ¿Podrías darme más información?"
         page="precios"
         encuentroSlug="febrero-2026"
@@ -478,7 +478,7 @@ export default function PreciosFebrero2026() {
             </p>
 
             <a
-              href="https://wa.me/5216182301481?text=Hola%20Ramón,%20me%20interesa%20el%20Encuentro%20de%20Febrero%202026.%20¿Podrías%20darme%20más%20información?"
+              href="https://wa.me/5214427845308?text=Hola%20Ramón,%20me%20interesa%20el%20Encuentro%20de%20Febrero%202026.%20¿Podrías%20darme%20más%20información?"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-white/90 text-burgundy font-bold text-xl rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all duration-300"
@@ -493,7 +493,7 @@ export default function PreciosFebrero2026() {
             </a>
 
             <p className="mt-8 text-white/60">
-              +52 618 230 1481 • Ramón
+              +52 442 784 5308 • Ramón
             </p>
           </div>
         </section>

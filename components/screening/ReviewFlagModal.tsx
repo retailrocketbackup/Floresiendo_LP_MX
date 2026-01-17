@@ -119,7 +119,7 @@ export function ReviewFlagModal({ isOpen, onClose }: ReviewFlagModalProps) {
           </a>
 
           <a
-            href="https://api.whatsapp.com/send?phone=+526182301481&text=Hola,%20acabo%20de%20enviar%20mi%20solicitud%20para%20el%20retiro%20y%20tengo%20preguntas."
+            href="https://api.whatsapp.com/send?phone=+524427845308&text=Hola,%20acabo%20de%20enviar%20mi%20solicitud%20para%20el%20retiro%20y%20tengo%20preguntas."
             className="w-full py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-center flex items-center justify-center"
           >
             <svg className="w-5 h-5 mr-2 text-green-600" fill="currentColor" viewBox="0 0 24 24">
