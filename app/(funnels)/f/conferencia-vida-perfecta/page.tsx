@@ -58,7 +58,8 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function ConferenciaVidaPerfectaPage() {
   const [showStickyBar, setShowStickyBar] = useState(false);
-  const formRef = useRef<HTMLDivElement>(null);
+  const mobileFormRef = useRef<HTMLDivElement>(null);
+  const desktopFormRef = useRef<HTMLDivElement>(null);
 
   // Track page view on mount with funnel-specific event
   useEffect(() => {
@@ -74,7 +75,7 @@ export default function ConferenciaVidaPerfectaPage() {
     );
   }, []);
 
-  // Show sticky bar when form is not visible on screen
+  // Show sticky bar when mobile form is not visible on screen (mobile only)
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -87,15 +88,21 @@ export default function ConferenciaVidaPerfectaPage() {
       }
     );
 
-    if (formRef.current) {
-      observer.observe(formRef.current);
+    if (mobileFormRef.current) {
+      observer.observe(mobileFormRef.current);
     }
 
     return () => observer.disconnect();
   }, []);
 
   const scrollToForm = () => {
-    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    // On mobile (< 640px), scroll to mobile form section
+    // On desktop, scroll to desktop form in hero
+    if (window.innerWidth < 640) {
+      mobileFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      desktopFormRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   };
 
   const faqs = [
@@ -150,8 +157,11 @@ export default function ConferenciaVidaPerfectaPage() {
         />
 
         <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-16 md:py-24">
-          {/* Mobile: Compact single-line info bar */}
-          <div className="sm:hidden text-center mb-3 animate-fade-in">
+          {/* Mobile: Compact info - two lines */}
+          <div className="sm:hidden text-center mb-3 animate-fade-in space-y-1.5">
+            <span className="inline-block px-3 py-1 bg-coral/90 text-white rounded-full text-[10px] font-semibold uppercase tracking-wide">
+              Conferencia Presencial Gratuita
+            </span>
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold/20 backdrop-blur-sm text-white rounded-full text-xs font-medium border border-gold/30">
               <MapPin className="w-3 h-3 text-gold" />
               <span>11 Feb • 7PM • CDMX</span>
@@ -185,24 +195,20 @@ export default function ConferenciaVidaPerfectaPage() {
             </span>
           </div>
 
-          {/* Headline - Smaller on mobile */}
+          {/* Headline - Full story on all devices */}
           <h1
             className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-2 sm:mb-6 leading-tight animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
-            <span className="sm:hidden">
-              &ldquo;Tu vida se ve perfecta <span className="text-coral">pero se siente vacía&rdquo;</span>
-            </span>
-            <span className="hidden sm:inline">
-              &ldquo;Cuando tu vida se ve perfecta
-              <br />
-              <span className="text-coral">pero se siente vacía&rdquo;</span>
-            </span>
+            &ldquo;Cuando tu vida se ve perfecta
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>
+            <span className="text-coral">pero se siente vacía&rdquo;</span>
           </h1>
 
-          {/* Subheadline - Hidden on mobile to save space */}
+          {/* Subheadline - Visible on all devices */}
           <p
-            className="hidden sm:block text-lg sm:text-xl md:text-2xl text-white/80 text-center mb-6 max-w-2xl mx-auto animate-slide-up"
+            className="text-sm sm:text-xl md:text-2xl text-white/80 text-center mb-3 sm:mb-6 max-w-2xl mx-auto animate-slide-up px-2"
             style={{ animationDelay: "0.3s" }}
           >
             Una conversación honesta sobre el vacío que el éxito no llena
@@ -226,10 +232,27 @@ export default function ConferenciaVidaPerfectaPage() {
             </div>
           </div>
 
-          {/* Registration Form Card */}
+          {/* Mobile CTA Button - scrolls to form below */}
           <div
-            ref={formRef}
-            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl max-w-lg mx-auto animate-scale-in border border-warm-gray-100 overflow-hidden"
+            className="sm:hidden mb-4 animate-slide-up"
+            style={{ animationDelay: "0.4s" }}
+          >
+            <button
+              onClick={scrollToForm}
+              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 text-base group"
+            >
+              <span>Reserva tu lugar gratis</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <p className="text-center text-white/60 text-xs mt-2">
+              Sin costo • Sin compromiso
+            </p>
+          </div>
+
+          {/* Registration Form Card - Desktop only */}
+          <div
+            ref={desktopFormRef}
+            className="hidden sm:block bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl max-w-lg mx-auto animate-scale-in border border-warm-gray-100 overflow-hidden"
             style={{ animationDelay: "0.4s" }}
           >
             {/* Urgency indicator */}
@@ -261,6 +284,27 @@ export default function ConferenciaVidaPerfectaPage() {
               Espacio seguro
             </span>
           </div>
+        </div>
+      </section>
+
+      {/* Mobile Form Section - Only visible on mobile, just below hero */}
+      <section id="mobile-form" className="sm:hidden py-6 px-4 bg-warm-white">
+        <div
+          ref={mobileFormRef}
+          className="bg-white rounded-2xl p-4 shadow-xl max-w-lg mx-auto border border-warm-gray-100"
+        >
+          <div className="flex items-center justify-center gap-2 mb-2 text-coral text-xs font-medium">
+            <span className="w-1.5 h-1.5 bg-coral rounded-full animate-pulse" />
+            Solo 60 lugares disponibles
+          </div>
+          <h2 className="text-lg font-bold text-burgundy text-center mb-3">
+            Reserva tu lugar gratis
+          </h2>
+          <ConferenceRegistrationForm
+            funnelName={FUNNEL_NAME}
+            eventNamePrefix={EVENT_PREFIX}
+            redirectPath="/f/conferencia-vida-perfecta/gracias"
+          />
         </div>
       </section>
 
