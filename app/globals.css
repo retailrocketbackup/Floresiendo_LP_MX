@@ -619,3 +619,18 @@ body {
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ========== MOBILE OVERFLOW FIX ========== */
+/* Force all grid and flex children to respect container width on mobile */
+@media (max-width: 640px) {
+  .grid > *,
+  .flex > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  main, section, .hero, [class*="hero"] {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+}
