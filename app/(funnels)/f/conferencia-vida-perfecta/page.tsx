@@ -135,8 +135,8 @@ export default function ConferenciaVidaPerfectaPage() {
 
   return (
     <main className="min-h-screen bg-warm-white">
-      {/* Hero Section - Compact for mobile, full on desktop */}
-      <section className="relative min-h-screen md:min-h-screen flex items-start md:items-center justify-center overflow-hidden">
+      {/* Hero Section - Auto height on mobile (form below), full screen on desktop */}
+      <section className="relative sm:min-h-screen flex items-start sm:items-center justify-center overflow-hidden pb-8 sm:pb-0">
         <div className="absolute inset-0">
           <Image
             src="/images/cosmic-spiritual-background.webp"
@@ -197,7 +197,7 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Headline - Full story on all devices */}
           <h1
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-2 sm:mb-6 leading-tight animate-slide-up"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-3 sm:mb-6 leading-tight animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
             &ldquo;Cuando tu vida se ve perfecta
@@ -208,23 +208,23 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Subheadline - Visible on all devices */}
           <p
-            className="text-sm sm:text-xl md:text-2xl text-white/80 text-center mb-3 sm:mb-6 max-w-2xl mx-auto animate-slide-up px-2"
+            className="text-base sm:text-xl md:text-2xl text-white/80 text-center mb-4 sm:mb-6 max-w-2xl mx-auto animate-slide-up px-2"
             style={{ animationDelay: "0.3s" }}
           >
             Una conversación honesta sobre el vacío que el éxito no llena
           </p>
 
-          {/* Countdown Timer - Extra small on mobile, medium on desktop */}
+          {/* Countdown Timer - Small on mobile, medium on desktop */}
           <div
-            className="mb-4 sm:mb-10 animate-slide-up"
+            className="mb-5 sm:mb-10 animate-slide-up"
             style={{ animationDelay: "0.35s" }}
           >
-            <p className="text-[10px] sm:text-sm text-white/70 mb-1.5 sm:mb-3 uppercase tracking-wider text-center">
+            <p className="text-xs sm:text-sm text-white/70 mb-2 sm:mb-3 uppercase tracking-wider text-center">
               Comienza en:
             </p>
-            {/* Mobile: xs size */}
+            {/* Mobile: sm size */}
             <div className="sm:hidden">
-              <CountdownTimer targetDate={EVENT_DATE} variant="light" size="xs" />
+              <CountdownTimer targetDate={EVENT_DATE} variant="light" size="sm" />
             </div>
             {/* Desktop: md size */}
             <div className="hidden sm:block">
@@ -234,17 +234,17 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Mobile CTA Button - scrolls to form below */}
           <div
-            className="sm:hidden mb-4 animate-slide-up"
+            className="sm:hidden mb-6 animate-slide-up"
             style={{ animationDelay: "0.4s" }}
           >
             <button
               onClick={scrollToForm}
-              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 text-base group"
+              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 text-lg group"
             >
               <span>Reserva tu lugar gratis</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <p className="text-center text-white/60 text-xs mt-2">
+            <p className="text-center text-white/60 text-sm mt-2">
               Sin costo • Sin compromiso
             </p>
           </div>
