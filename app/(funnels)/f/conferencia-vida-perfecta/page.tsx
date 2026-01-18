@@ -75,26 +75,21 @@ export default function ConferenciaVidaPerfectaPage() {
     );
   }, []);
 
-  // Show sticky bar when form is not visible on screen
+  // Show sticky bar ONLY when user scrolls DOWN past the form (not when above it)
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Show sticky bar when form is NOT intersecting (not visible)
-        setShowStickyBar(!entry.isIntersecting);
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px",
+    const handleScroll = () => {
+      const formToWatch = window.innerWidth < 640 ? mobileFormRef.current : desktopFormRef.current;
+      if (formToWatch) {
+        const rect = formToWatch.getBoundingClientRect();
+        // Show sticky bar only when form's bottom is above viewport (user scrolled past it)
+        setShowStickyBar(rect.bottom < 0);
       }
-    );
+    };
 
-    // Watch the mobile form on mobile, desktop form on desktop
-    const formToWatch = window.innerWidth < 640 ? mobileFormRef.current : desktopFormRef.current;
-    if (formToWatch) {
-      observer.observe(formToWatch);
-    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Check initial state
 
-    return () => observer.disconnect();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToForm = () => {
