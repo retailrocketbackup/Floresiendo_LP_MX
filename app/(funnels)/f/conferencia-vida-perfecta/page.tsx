@@ -457,107 +457,100 @@ export default function ConferenciaVidaPerfectaPage() {
       {/* Divider */}
       <div className="h-px bg-gradient-to-r from-transparent via-warm-gray-200 to-transparent" />
 
-      {/* About Ramón Section - Improved */}
+      {/* About Ramón Section - Stacked layout */}
       <section className="section-padding bg-warm-white px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto">
-          <ScrollAnimate animation="fade-up" className="text-center mb-12">
+        <div className="max-w-3xl mx-auto">
+          {/* Header */}
+          <ScrollAnimate animation="fade-up" className="text-center mb-8">
             <p className="text-coral font-semibold mb-3 uppercase tracking-wide text-sm">
               Tu facilitador
             </p>
             <h2 className="text-burgundy">Con Ramón Henríquez</h2>
           </ScrollAnimate>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-center">
-            {/* Photo */}
-            <ScrollAnimate
-              animation="fade-left"
-              className="md:col-span-2 order-2 md:order-1"
-            >
-              <div className="relative aspect-[4/5] max-w-[300px] mx-auto w-full rounded-3xl overflow-hidden shadow-xl group">
-                <Image
-                  src="/facilitador.jpg"
-                  alt="Ramón Henríquez"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-burgundy/40" />
-                {/* Experience badge */}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center">
-                        <Star className="w-5 h-5 text-gold" />
-                      </div>
-                      <div>
-                        <p className="text-burgundy font-bold text-sm">
-                          +10 años
-                        </p>
-                        <p className="text-warm-gray-600 text-xs">
-                          de experiencia
-                        </p>
-                      </div>
+          {/* Photo - Centered below header */}
+          <ScrollAnimate animation="fade-up" delay={100} className="mb-10">
+            <div className="relative aspect-[4/5] max-w-[280px] mx-auto w-full rounded-3xl overflow-hidden shadow-xl group">
+              <Image
+                src="/facilitador.jpg"
+                alt="Ramón Henríquez"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-burgundy/40" />
+              {/* Experience badge */}
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center">
+                      <Star className="w-5 h-5 text-gold" />
+                    </div>
+                    <div>
+                      <p className="text-burgundy font-bold text-sm">
+                        +10 años
+                      </p>
+                      <p className="text-warm-gray-600 text-xs">
+                        de experiencia
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </ScrollAnimate>
+            </div>
+          </ScrollAnimate>
 
-            {/* Bio */}
-            <ScrollAnimate
-              animation="fade-right"
-              className="md:col-span-3 order-1 md:order-2"
-            >
-              <div className="space-y-5 text-warm-gray-700 leading-relaxed">
-                <p className="text-lg">
-                  Ramón ha dedicado los últimos{" "}
-                  <strong className="text-burgundy">10 años</strong> a acompañar
-                  a personas en momentos de profunda transformación.
-                </p>
-                <p>
-                  No como experto que tiene todas las respuestas, sino como
-                  alguien que ha caminado por lugares oscuros y encontró un
-                  camino de regreso.
-                </p>
-                <p>
-                  En esta conferencia, comparte lo que ha aprendido acompañando
-                  a{" "}
-                  <strong className="text-burgundy">
-                    cientos de personas
-                  </strong>{" "}
-                  que, como tú, sentían que algo fundamental faltaba en sus
-                  vidas—a pesar de tenerlo &ldquo;todo&rdquo;.
-                </p>
-              </div>
+          {/* Bio - Below photo */}
+          <ScrollAnimate animation="fade-up" delay={200}>
+            <div className="space-y-5 text-warm-gray-700 leading-relaxed text-center sm:text-left">
+              <p className="text-lg">
+                Ramón ha dedicado los últimos{" "}
+                <strong className="text-burgundy">10 años</strong> a acompañar
+                a personas en momentos de profunda transformación.
+              </p>
+              <p>
+                No como experto que tiene todas las respuestas, sino como
+                alguien que ha caminado por lugares oscuros y encontró un
+                camino de regreso.
+              </p>
+              <p>
+                En esta conferencia, comparte lo que ha aprendido acompañando
+                a{" "}
+                <strong className="text-burgundy">
+                  cientos de personas
+                </strong>{" "}
+                que, como tú, sentían que algo fundamental faltaba en sus
+                vidas—a pesar de tenerlo &ldquo;todo&rdquo;.
+              </p>
+            </div>
 
-              {/* Quote */}
-              <div className="mt-8 p-6 bg-gradient-to-r from-coral/5 to-burgundy/5 rounded-2xl border-l-4 border-coral">
-                <p className="text-burgundy italic text-lg">
-                  &ldquo;No vengo a enseñarte nada. Vengo a recordarte lo que ya
-                  sabes pero has olvidado escuchar.&rdquo;
-                </p>
-                <p className="text-warm-gray-500 text-sm mt-3">
-                  — Ramón Henríquez
-                </p>
-              </div>
+            {/* Quote */}
+            <div className="mt-8 p-6 bg-gradient-to-r from-coral/5 to-burgundy/5 rounded-2xl border-l-4 border-coral">
+              <p className="text-burgundy italic text-lg">
+                &ldquo;No vengo a enseñarte nada. Vengo a recordarte lo que ya
+                sabes pero has olvidado escuchar.&rdquo;
+              </p>
+              <p className="text-warm-gray-500 text-sm mt-3">
+                — Ramón Henríquez
+              </p>
+            </div>
 
-              {/* Stats */}
-              <div className="mt-8 grid grid-cols-3 gap-4">
-                {[
-                  { value: "+1,000", label: "Participantes" },
-                  { value: "+100", label: "Retiros" },
-                  { value: "10", label: "Años" },
-                ].map((stat, i) => (
-                  <div
-                    key={i}
-                    className="text-center p-4 bg-white rounded-xl shadow-sm"
-                  >
-                    <p className="text-2xl font-bold text-coral">{stat.value}</p>
-                    <p className="text-warm-gray-500 text-xs">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </ScrollAnimate>
-          </div>
+            {/* Stats */}
+            <div className="mt-8 grid grid-cols-3 gap-4">
+              {[
+                { value: "+1,000", label: "Participantes" },
+                { value: "+100", label: "Retiros" },
+                { value: "10", label: "Años" },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="text-center p-4 bg-white rounded-xl shadow-sm"
+                >
+                  <p className="text-2xl font-bold text-coral">{stat.value}</p>
+                  <p className="text-warm-gray-500 text-xs">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </ScrollAnimate>
         </div>
       </section>
 
