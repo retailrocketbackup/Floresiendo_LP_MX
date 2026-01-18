@@ -146,10 +146,10 @@ export default function MeditacionGratisPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-burgundy/90 via-burgundy/80 to-burgundy-dark/95" />
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12 overflow-hidden">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left - Copy */}
-            <div className="text-white text-center lg:text-left overflow-hidden">
+            <div className="text-white text-center lg:text-left overflow-hidden max-w-full">
               <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-gold/20 rounded-full text-gold text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 EVENTO EN VIVO GRATUITO
               </div>
@@ -162,13 +162,16 @@ export default function MeditacionGratisPage() {
                 30 minutos para calmar tu mente y reconectar contigo
               </p>
 
-              {/* Countdown Timer - sm on mobile, md on desktop */}
+              {/* Countdown Timer - xs on mobile, sm on tablet, md on desktop */}
               <div className="mb-6 sm:mb-8">
                 <p className="text-xs sm:text-sm text-white/70 mb-2 sm:mb-3 uppercase tracking-wider">Comienza en:</p>
                 <div className="sm:hidden">
+                  <CountdownTimer targetDate={eventDate} variant="light" size="xs" />
+                </div>
+                <div className="hidden sm:block lg:hidden">
                   <CountdownTimer targetDate={eventDate} variant="light" size="sm" />
                 </div>
-                <div className="hidden sm:block">
+                <div className="hidden lg:block">
                   <CountdownTimer targetDate={eventDate} variant="light" size="md" />
                 </div>
               </div>
