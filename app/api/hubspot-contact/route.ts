@@ -1,52 +1,105 @@
 // app/api/hubspot-contact/route.ts
+// Uses HubSpot Contacts API to create contacts directly (more reliable than Forms API)
 import { NextResponse } from "next/server"
 
-const HUBSPOT_PORTAL_ID = "50499487"
-
-// Default form ID (fallback)
-const DEFAULT_FORM_ID = "f6eee3f9-ac31-41a6-8247-91039e58776e"
+const HUBSPOT_API_BASE = "https://api.hubapi.com"
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { firstname, lastname, email, phone, formId } = body
+    const { firstname, lastname, email, phone, pageUri, pageName, funnel_source } = body
 
     // Validar que los datos necesarios están presentes
     if (!firstname || !phone) {
       return NextResponse.json({ message: "Missing required fields (firstname, phone)" }, { status: 400 })
     }
 
-    // Use provided formId or default
-    const hubspotFormId = formId || DEFAULT_FORM_ID
-    const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${hubspotFormId}`
+    const hubspotToken = process.env.HUBSPOT_PRIVATE_APP_TOKEN
+    if (!hubspotToken) {
+      console.error("[HubSpot] HUBSPOT_PRIVATE_APP_TOKEN not configured")
+      return NextResponse.json({ message: "HubSpot not configured" }, { status: 500 })
+    }
 
-    // Build fields array dynamically (only include fields that have values)
-    const fields: { name: string; value: string }[] = [
-      { name: "firstname", value: firstname },
-      { name: "phone", value: phone },
-    ]
+    // Generate a placeholder email from phone if not provided
+    const cleanPhone = phone.replace(/\D/g, '') // Remove non-digits
+    const generatedEmail = email || `lead-${cleanPhone}@floresiendo.mx`
+
+    // Build contact properties
+    const properties: Record<string, string> = {
+      firstname,
+      phone,
+      email: generatedEmail,
+    }
 
     if (lastname) {
-      fields.push({ name: "lastname", value: lastname })
-    }
-    if (email) {
-      fields.push({ name: "email", value: email })
+      properties.lastname = lastname
     }
 
-    const payload = {
-      fields,
-      context: {
-        pageName: "Floresiendo Landing Page",
-      },
+    // Add source tracking using a writable property
+    if (pageUri) {
+      properties.website = pageUri
     }
 
-    const response = await fetch(hubspotUrl, {
+    // Track which funnel/form the lead came from
+    if (funnel_source) {
+      properties.funnel_source = funnel_source
+    }
+
+    console.log("[HubSpot] Creating contact via Contacts API:", {
+      firstname,
+      phone,
+      email: generatedEmail,
+      pageUri,
+      funnel_source
+    })
+
+    // First, try to find existing contact by email
+    const searchResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/search`, {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${hubspotToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        filterGroups: [{
+          filters: [{
+            propertyName: "email",
+            operator: "EQ",
+            value: generatedEmail
+          }]
+        }]
+      }),
     })
+
+    const searchData = await searchResponse.json()
+
+    let response
+    if (searchData.total > 0) {
+      // Contact exists, update it
+      const contactId = searchData.results[0].id
+      console.log("[HubSpot] Updating existing contact:", contactId)
+
+      response = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}`, {
+        method: "PATCH",
+        headers: {
+          "Authorization": `Bearer ${hubspotToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ properties }),
+      })
+    } else {
+      // Create new contact
+      console.log("[HubSpot] Creating new contact")
+
+      response = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${hubspotToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ properties }),
+      })
+    }
 
     if (!response.ok) {
       const errorBody = await response.text()

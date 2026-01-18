@@ -22,6 +22,7 @@ import CostBreakdown from '@/components/admin/meta-ads/CostBreakdown';
 import BudgetTracker from '@/components/admin/meta-ads/BudgetTracker';
 import CollapsibleSection from '@/components/admin/meta-ads/CollapsibleSection';
 import CampaignSelector from '@/components/admin/meta-ads/CampaignSelector';
+import HubSpotConversions from '@/components/admin/meta-ads/HubSpotConversions';
 import type {
   TimeRange,
   MetaAdsOverviewResponse,
@@ -78,6 +79,33 @@ export default function MetaAdsDashboardPage() {
     reach: number;
   }>>([]);
   const [demographicsLoading, setDemographicsLoading] = useState(false);
+
+  // HubSpot integration state
+  const [hubspotData, setHubspotData] = useState<{
+    total: number;
+    paid: number;
+    organic: number;
+    direct: number;
+    referral: number;
+    email: number;
+    social: number;
+    unknown: number;
+    byFunnel: Record<string, number>;
+    byDate: Record<string, { total: number; paid: number; organic: number }>;
+    recentContacts: Array<{
+      id: string;
+      name: string;
+      email?: string;
+      source: string;
+      sourceDetail?: string;
+      funnel?: string;
+      createdAt: string;
+      isPaid: boolean;
+    }>;
+  } | null>(null);
+  const [hubspotLoading, setHubspotLoading] = useState(false);
+  const [hubspotError, setHubspotError] = useState<string | null>(null);
+  const [hubspotConfigured, setHubspotConfigured] = useState(true);
 
   // Last refresh indicator
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
@@ -175,6 +203,50 @@ export default function MetaAdsDashboardPage() {
     }
   }, [timeRange]);
 
+  // Fetch HubSpot contacts data
+  const fetchHubspotContacts = useCallback(async () => {
+    setHubspotLoading(true);
+    setHubspotError(null);
+    try {
+      const storedPassword = localStorage.getItem('admin_password');
+      // Map time range to days
+      const daysMap: Record<TimeRange, number> = {
+        today: 1,
+        yesterday: 2,
+        last_7d: 7,
+        last_14d: 14,
+        last_30d: 30,
+        this_month: 31,
+        last_month: 60,
+        maximum: 365,
+      };
+      const days = daysMap[timeRange] || 30;
+
+      const res = await fetch(
+        `/api/admin/hubspot/contacts?days=${days}&password=${storedPassword}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setHubspotConfigured(data.configured !== false);
+        if (data.summary) {
+          setHubspotData(data.summary);
+        }
+        if (data.error && !data.configured) {
+          setHubspotError(data.error);
+        }
+      } else {
+        const errorData = await res.json();
+        setHubspotError(errorData.error || 'Error fetching HubSpot data');
+      }
+    } catch (err) {
+      console.error('Error fetching HubSpot contacts:', err);
+      setHubspotError('Error connecting to HubSpot');
+    } finally {
+      setHubspotLoading(false);
+    }
+  }, [timeRange]);
+
   // Check session on mount (also auto-auth in dev mode)
   useEffect(() => {
     const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -197,8 +269,9 @@ export default function MetaAdsDashboardPage() {
       fetchOverview();
       fetchInsights();
       fetchDemographics();
+      fetchHubspotContacts();
     }
-  }, [isAuthenticated, timeRange, fetchOverview, fetchInsights, fetchDemographics]);
+  }, [isAuthenticated, timeRange, fetchOverview, fetchInsights, fetchDemographics, fetchHubspotContacts]);
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
@@ -208,10 +281,11 @@ export default function MetaAdsDashboardPage() {
       fetchOverview();
       fetchInsights();
       fetchDemographics();
+      fetchHubspotContacts();
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [isAuthenticated, timeRange, fetchOverview, fetchInsights, fetchDemographics]);
+  }, [isAuthenticated, timeRange, fetchOverview, fetchInsights, fetchDemographics, fetchHubspotContacts]);
 
   // Countdown timer
   useEffect(() => {
@@ -304,6 +378,7 @@ export default function MetaAdsDashboardPage() {
     fetchOverview();
     fetchInsights();
     fetchDemographics();
+    fetchHubspotContacts();
   };
 
   // Handle logout
@@ -408,6 +483,20 @@ export default function MetaAdsDashboardPage() {
         count: c.count,
         color: ['#E07A5F', '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'][i % 6],
       }));
+  }, [conversions]);
+
+  // Calculate total Meta conversions for HubSpot comparison
+  const metaTotalConversions = useMemo(() => {
+    // Count primary conversion types from Meta
+    const conversionTypes = [
+      'offsite_conversion.fb_pixel_complete_registration',
+      'offsite_conversion.fb_pixel_lead',
+      'offsite_conversion.fb_pixel_purchase',
+      'complete_registration',
+    ];
+    return conversions
+      .filter(c => conversionTypes.includes(c.action_type))
+      .reduce((sum, c) => sum + c.count, 0);
   }, [conversions]);
 
   const adPerformanceData = useMemo(() => {
@@ -1019,6 +1108,30 @@ export default function MetaAdsDashboardPage() {
             }
           >
             <ConversionsTable conversions={conversions} loading={loading && conversions.length === 0} />
+          </CollapsibleSection>
+        </section>
+
+        {/* HubSpot Conversions Section - Paid vs Organic */}
+        <section className="mb-6">
+          <CollapsibleSection
+            title="HubSpot: Paid vs Organic"
+            subtitle="Comparacion de fuentes de conversion"
+            badge={hubspotData?.total || 0}
+            badgeColor="#FF7A59"
+            defaultOpen={true}
+            icon={
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            }
+          >
+            <HubSpotConversions
+              data={hubspotData}
+              loading={hubspotLoading}
+              error={hubspotError || undefined}
+              configured={hubspotConfigured}
+              metaConversions={metaTotalConversions}
+            />
           </CollapsibleSection>
         </section>
 

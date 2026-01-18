@@ -6,7 +6,7 @@ import { ContentCalendar } from '@/components/admin/social-media/ContentCalendar
 import { PostCreator } from '@/components/admin/social-media/PostCreator';
 import { ApprovalQueue } from '@/components/admin/social-media/ApprovalQueue';
 import { Analytics } from '@/components/admin/social-media/Analytics';
-import type { ScheduledPost, PostStatus } from '@/lib/social-publisher';
+import type { ScheduledPost } from '@/lib/social-publisher';
 
 type Tab = 'calendar' | 'create' | 'queue' | 'analytics';
 

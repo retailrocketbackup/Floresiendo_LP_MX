@@ -99,11 +99,22 @@ export default function MeditacionGratisPage() {
         { enableCAPI: true }
       );
 
-      // 2. Save to HubSpot (LM - Online Meditation Form)
+      // 2. Get HubSpot tracking cookie (hutk) for contact creation
+      const hutk = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("hubspotutk="))
+        ?.split("=")[1];
+
+      // 3. Save to HubSpot (LM - Online Meditation Form)
       const contactData = {
         firstname: formData.firstname,
         phone: fullPhoneNumber,
         formId: "f6eee3f9-ac31-41a6-8247-91039e58776e",
+        funnel_source: "meditacion-gratis",
+        // HubSpot context for contact creation
+        hutk: hutk || undefined,
+        pageUri: window.location.href,
+        pageName: "Meditación Gratis - Floresiendo",
       };
 
       await fetch("/api/hubspot-contact", {
@@ -112,7 +123,7 @@ export default function MeditacionGratisPage() {
         body: JSON.stringify(contactData),
       });
 
-      // 3. Meta tracking - CompleteRegistration after successful submission
+      // 4. Meta tracking - CompleteRegistration after successful submission
       await trackEvent(
         "CompleteRegistration",
         {

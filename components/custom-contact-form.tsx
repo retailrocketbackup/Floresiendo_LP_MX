@@ -59,16 +59,26 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           { enableCAPI: true }
         )
 
-        // 2. Prepara los datos para tu nueva API
+        // 2. Get HubSpot tracking cookie (hutk) for contact creation
+        const hutk = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("hubspotutk="))
+          ?.split("=")[1]
+
+        // 3. Prepara los datos para tu nueva API
         const contactData = {
           firstname: formData.firstname,
           lastname: formData.lastname,
           phone: fullPhoneNumber,
           funnel_source: funnel,
           landing_page: window.location.href,
+          // HubSpot context for contact creation
+          hutk: hutk || undefined,
+          pageUri: window.location.href,
+          pageName: document.title || "Floresiendo Landing Page",
         }
 
-        // 3. Llama a TU PROPIA API, no a la de HubSpot
+        // 4. Llama a TU PROPIA API, no a la de HubSpot
         await fetch("/api/hubspot-contact", {
           method: "POST",
           headers: {

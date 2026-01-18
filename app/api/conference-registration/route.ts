@@ -6,6 +6,8 @@ const CONFERENCE_DATE = "2026-02-11";
 const CONFERENCE_TIME = "19:00"; // 7 PM Mexico City
 const MAX_CAPACITY = 60;
 
+const HUBSPOT_API_BASE = "https://api.hubapi.com";
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -36,34 +38,90 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Create HubSpot contact (LM - Conf - Vida Perfecta Form)
-    const hubspotPortalId = "50499487";
-    const hubspotFormId = "3c984755-ccd7-4769-a0b1-cd09678b464f";
-    const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${hubspotPortalId}/${hubspotFormId}`;
+    const hubspotToken = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
+    if (!hubspotToken) {
+      console.error("[Conference Registration] HUBSPOT_PRIVATE_APP_TOKEN not configured");
+      // Continue without HubSpot - don't fail the registration
+    }
 
-    const hubspotPayload = {
-      fields: [
-        { name: "firstname", value: firstName },
-        { name: "lastname", value: lastName },
-        { name: "email", value: email },
-        { name: "phone", value: phone },
-      ],
-      context: {
-        pageUri: landingPage,
-        pageName: `Conferencia - ${funnelSource}`,
-      },
-    };
+    // 1. Create HubSpot contact via Contacts API
+    if (hubspotToken) {
+      const properties: Record<string, string> = {
+        firstname: firstName,
+        lastname: lastName,
+        email,
+        phone,
+        funnel_source: "conferencia-vida-perfecta",
+      };
 
-    const hubspotResponse = await fetch(hubspotUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(hubspotPayload),
-    });
+      if (landingPage) {
+        properties.website = landingPage;
+      }
 
-    if (!hubspotResponse.ok) {
-      const errorBody = await hubspotResponse.text();
-      console.error("[Conference Registration] HubSpot Error:", errorBody);
-      // Don't fail the whole request if HubSpot fails - still want to show thank you page
+      console.log("[Conference Registration] Creating contact via Contacts API:", {
+        firstName,
+        lastName,
+        email,
+        phone,
+        funnel_source: "conferencia-vida-perfecta",
+        landingPage,
+      });
+
+      // Search for existing contact by email
+      const searchResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/search`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${hubspotToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          filterGroups: [{
+            filters: [{
+              propertyName: "email",
+              operator: "EQ",
+              value: email,
+            }],
+          }],
+        }),
+      });
+
+      const searchData = await searchResponse.json();
+
+      let hubspotResponse;
+      if (searchData.total > 0) {
+        // Contact exists, update it
+        const contactId = searchData.results[0].id;
+        console.log("[Conference Registration] Updating existing contact:", contactId);
+
+        hubspotResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}`, {
+          method: "PATCH",
+          headers: {
+            "Authorization": `Bearer ${hubspotToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ properties }),
+        });
+      } else {
+        // Create new contact
+        console.log("[Conference Registration] Creating new contact");
+
+        hubspotResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${hubspotToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ properties }),
+        });
+      }
+
+      if (!hubspotResponse.ok) {
+        const errorBody = await hubspotResponse.text();
+        console.error("[Conference Registration] HubSpot API Error:", errorBody);
+        // Don't fail the whole request if HubSpot fails - still want to show thank you page
+      } else {
+        console.log("[Conference Registration] HubSpot contact created/updated successfully");
+      }
     }
 
     // 2. Log registration for debugging
