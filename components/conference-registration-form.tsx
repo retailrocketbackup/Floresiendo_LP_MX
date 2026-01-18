@@ -189,13 +189,13 @@ export function ConferenceRegistrationForm({
           >
             WhatsApp *
           </label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <select
               name="countryCode"
               id="countryCode"
               value={formData.countryCode}
               onChange={handleInputChange}
-              className="px-2 sm:px-3 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-xs sm:text-sm"
+              className="flex-shrink-0 w-16 sm:w-auto px-1.5 sm:px-3 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-xs sm:text-sm"
             >
               <option value="+52">+52</option>
               <option value="+1">+1</option>
@@ -212,7 +212,7 @@ export function ConferenceRegistrationForm({
               required
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base"
+              className="flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base"
               placeholder="10 dígitos"
             />
           </div>

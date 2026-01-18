@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import {
   Calendar,
@@ -57,6 +57,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export default function ConferenciaVidaPerfectaPage() {
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
+
   // Track page view on mount with funnel-specific event
   useEffect(() => {
     trackEvent(
@@ -70,6 +73,30 @@ export default function ConferenciaVidaPerfectaPage() {
       { enableCAPI: true }
     );
   }, []);
+
+  // Show sticky bar when form is not visible on screen
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Show sticky bar when form is NOT intersecting (not visible)
+        setShowStickyBar(!entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    if (formRef.current) {
+      observer.observe(formRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   const faqs = [
     {
@@ -101,8 +128,8 @@ export default function ConferenciaVidaPerfectaPage() {
 
   return (
     <main className="min-h-screen bg-warm-white">
-      {/* Hero Section - Full screen with brand gradient */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Hero Section - Compact for mobile, full on desktop */}
+      <section className="relative min-h-screen md:min-h-screen flex items-start md:items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="/images/cosmic-spiritual-background.webp"
@@ -115,25 +142,33 @@ export default function ConferenciaVidaPerfectaPage() {
           <div className="absolute inset-0 bg-gradient-hero" />
         </div>
 
-        {/* Floating decorative elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl animate-pulse-soft" />
+        {/* Floating decorative elements - hidden on mobile for performance */}
+        <div className="hidden sm:block absolute top-20 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl animate-pulse-soft" />
         <div
-          className="absolute bottom-20 right-10 w-40 h-40 bg-gold/20 rounded-full blur-3xl animate-pulse-soft"
+          className="hidden sm:block absolute bottom-20 right-10 w-40 h-40 bg-gold/20 rounded-full blur-3xl animate-pulse-soft"
           style={{ animationDelay: "1s" }}
         />
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24">
-          {/* Badge */}
-          <div className="text-center mb-6 sm:mb-8 animate-fade-in">
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-16 md:py-24">
+          {/* Mobile: Compact single-line info bar */}
+          <div className="sm:hidden text-center mb-3 animate-fade-in">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold/20 backdrop-blur-sm text-white rounded-full text-xs font-medium border border-gold/30">
+              <MapPin className="w-3 h-3 text-gold" />
+              <span>11 Feb • 7PM • CDMX</span>
+            </div>
+          </div>
+
+          {/* Desktop: Full badge */}
+          <div className="hidden sm:block text-center mb-6 sm:mb-8 animate-fade-in">
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-gold/20 backdrop-blur-sm text-white rounded-full text-sm font-medium border border-gold/30">
               <MapPin className="w-4 h-4 text-gold" />
               Conferencia Presencial Gratuita
             </span>
           </div>
 
-          {/* Date, Time & Location */}
+          {/* Desktop: Date, Time & Location pills */}
           <div
-            className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-8 text-white/90 text-sm animate-slide-up"
+            className="hidden sm:flex flex-row flex-wrap justify-center gap-3 sm:gap-4 mb-8 text-white/90 text-sm animate-slide-up"
             style={{ animationDelay: "0.1s" }}
           >
             <span className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
@@ -150,45 +185,59 @@ export default function ConferenciaVidaPerfectaPage() {
             </span>
           </div>
 
-          {/* Headline */}
+          {/* Headline - Smaller on mobile */}
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight animate-slide-up"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-2 sm:mb-6 leading-tight animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
-            &ldquo;Cuando tu vida se ve perfecta
-            <br />
-            <span className="text-coral">pero se siente vacía&rdquo;</span>
+            <span className="sm:hidden">
+              &ldquo;Tu vida se ve perfecta <span className="text-coral">pero se siente vacía&rdquo;</span>
+            </span>
+            <span className="hidden sm:inline">
+              &ldquo;Cuando tu vida se ve perfecta
+              <br />
+              <span className="text-coral">pero se siente vacía&rdquo;</span>
+            </span>
           </h1>
 
+          {/* Subheadline - Hidden on mobile to save space */}
           <p
-            className="text-lg sm:text-xl md:text-2xl text-white/80 text-center mb-6 max-w-2xl mx-auto animate-slide-up"
+            className="hidden sm:block text-lg sm:text-xl md:text-2xl text-white/80 text-center mb-6 max-w-2xl mx-auto animate-slide-up"
             style={{ animationDelay: "0.3s" }}
           >
             Una conversación honesta sobre el vacío que el éxito no llena
           </p>
 
-          {/* Countdown Timer */}
+          {/* Countdown Timer - Extra small on mobile, medium on desktop */}
           <div
-            className="mb-10 animate-slide-up"
+            className="mb-4 sm:mb-10 animate-slide-up"
             style={{ animationDelay: "0.35s" }}
           >
-            <p className="text-sm text-white/70 mb-3 uppercase tracking-wider text-center">
+            <p className="text-[10px] sm:text-sm text-white/70 mb-1.5 sm:mb-3 uppercase tracking-wider text-center">
               Comienza en:
             </p>
-            <CountdownTimer targetDate={EVENT_DATE} variant="light" size="md" />
+            {/* Mobile: xs size */}
+            <div className="sm:hidden">
+              <CountdownTimer targetDate={EVENT_DATE} variant="light" size="xs" />
+            </div>
+            {/* Desktop: md size */}
+            <div className="hidden sm:block">
+              <CountdownTimer targetDate={EVENT_DATE} variant="light" size="md" />
+            </div>
           </div>
 
           {/* Registration Form Card */}
           <div
-            className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl max-w-lg mx-auto animate-scale-in border border-warm-gray-100"
+            ref={formRef}
+            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl max-w-lg mx-auto animate-scale-in border border-warm-gray-100 overflow-hidden"
             style={{ animationDelay: "0.4s" }}
           >
             {/* Urgency indicator */}
-            <div className="flex items-center justify-center gap-2 mb-4 text-coral text-sm font-medium">
-              <span className="w-2 h-2 bg-coral rounded-full animate-pulse" />
+            <div className="flex items-center justify-center gap-2 mb-2 sm:mb-4 text-coral text-xs sm:text-sm font-medium">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-coral rounded-full animate-pulse" />
               Solo 60 lugares disponibles
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-burgundy text-center mb-6">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-burgundy text-center mb-3 sm:mb-6">
               Reserva tu lugar gratis
             </h2>
             <ConferenceRegistrationForm
@@ -521,9 +570,39 @@ export default function ConferenciaVidaPerfectaPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 bg-burgundy-dark text-white/60 text-center text-sm">
+      <footer className="py-8 px-4 bg-burgundy-dark text-white/60 text-center text-sm pb-24 md:pb-8">
         <p>© 2026 FloreSiendo. Todos los derechos reservados.</p>
       </footer>
+
+      {/* Sticky Mobile CTA Bar - Only visible on mobile when form is not in view */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-all duration-300 ${
+          showStickyBar
+            ? "translate-y-0 opacity-100"
+            : "translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-t border-warm-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] px-4 py-3 safe-area-bottom">
+          <div className="flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="w-1.5 h-1.5 bg-coral rounded-full animate-pulse" />
+                <span className="text-coral text-xs font-medium">Solo 60 lugares</span>
+              </div>
+              <p className="text-burgundy font-semibold text-sm truncate">
+                Conferencia Gratuita - 11 Feb
+              </p>
+            </div>
+            <button
+              onClick={scrollToForm}
+              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm"
+            >
+              Reservar
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

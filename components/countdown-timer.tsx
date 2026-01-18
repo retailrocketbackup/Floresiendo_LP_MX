@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 interface CountdownTimerProps {
   targetDate: Date;
   variant?: "light" | "dark";
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
 }
 
 interface TimeLeft {
@@ -60,6 +60,12 @@ export function CountdownTimer({
   }
 
   const sizeClasses = {
+    xs: {
+      container: "gap-1",
+      box: "w-10 h-10",
+      number: "text-sm",
+      label: "text-[7px]",
+    },
     sm: {
       container: "gap-2",
       box: "w-12 h-12 sm:w-14 sm:h-14",

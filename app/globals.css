@@ -608,3 +608,8 @@ html {
   background: var(--coral-light);
   color: var(--warm-gray-900);
 }
+
+/* ========== SAFE AREA FOR iOS ========== */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
