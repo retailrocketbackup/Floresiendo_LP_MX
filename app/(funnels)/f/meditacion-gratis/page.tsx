@@ -133,7 +133,7 @@ export default function MeditacionGratisPage() {
   return (
     <main className="overflow-x-hidden max-w-[100vw]">
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-16 sm:pt-20 md:items-center md:pt-0">
         <div className="absolute inset-0">
           <Image
             src="/cosmic-spiritual-background.webp"

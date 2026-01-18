@@ -136,7 +136,7 @@ export default function ConferenciaVidaPerfectaPage() {
   return (
     <main className="min-h-screen bg-warm-white">
       {/* Hero Section - Full screen on all devices */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-16 sm:pt-20 md:items-center md:pt-0">
         <div className="absolute inset-0">
           <Image
             src="/images/cosmic-spiritual-background.webp"
