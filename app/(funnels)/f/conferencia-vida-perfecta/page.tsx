@@ -57,7 +57,6 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export default function ConferenciaVidaPerfectaPage() {
-  const [showStickyBar, setShowStickyBar] = useState(false);
   const mobileFormRef = useRef<HTMLDivElement>(null);
   const desktopFormRef = useRef<HTMLDivElement>(null);
 
@@ -73,26 +72,6 @@ export default function ConferenciaVidaPerfectaPage() {
       },
       { enableCAPI: true }
     );
-  }, []);
-
-  // Show sticky bar when mobile form is not visible on screen (mobile only)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Show sticky bar when form is NOT intersecting (not visible)
-        setShowStickyBar(!entry.isIntersecting);
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px",
-      }
-    );
-
-    if (mobileFormRef.current) {
-      observer.observe(mobileFormRef.current);
-    }
-
-    return () => observer.disconnect();
   }, []);
 
   const scrollToForm = () => {
@@ -617,39 +596,9 @@ export default function ConferenciaVidaPerfectaPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 bg-burgundy-dark text-white/60 text-center text-sm pb-24 md:pb-8">
+      <footer className="py-8 px-4 bg-burgundy-dark text-white/60 text-center text-sm">
         <p>© 2026 FloreSiendo. Todos los derechos reservados.</p>
       </footer>
-
-      {/* Sticky Mobile CTA Bar - Only visible on mobile when form is not in view */}
-      <div
-        className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-all duration-300 ${
-          showStickyBar
-            ? "translate-y-0 opacity-100"
-            : "translate-y-full opacity-0"
-        }`}
-      >
-        <div className="bg-white border-t border-warm-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] px-4 py-3 safe-area-bottom">
-          <div className="flex items-center gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="w-1.5 h-1.5 bg-coral rounded-full animate-pulse" />
-                <span className="text-coral text-xs font-medium">Solo 60 lugares</span>
-              </div>
-              <p className="text-burgundy font-semibold text-sm truncate">
-                Conferencia Gratuita - 11 Feb
-              </p>
-            </div>
-            <button
-              onClick={scrollToForm}
-              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm"
-            >
-              Reservar
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
     </main>
   );
 }
