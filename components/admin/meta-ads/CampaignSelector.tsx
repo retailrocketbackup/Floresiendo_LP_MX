@@ -113,9 +113,18 @@ export default function CampaignSelector({
               <span className="text-sm font-medium text-warm-gray-700">Filtrar por campaña</span>
               <button
                 onClick={handleSelectAll}
-                className="text-xs text-coral hover:text-coral/80 font-medium"
+                className="flex items-center gap-1 text-xs text-coral hover:text-coral/80 font-medium"
               >
-                {allSelected ? 'Deseleccionar todas' : 'Seleccionar todas'}
+                {allSelected ? (
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+                Todas
               </button>
             </div>
           </div>

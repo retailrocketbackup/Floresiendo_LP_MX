@@ -83,6 +83,9 @@ export default function MetaAdsDashboardPage() {
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
   const [refreshCountdown, setRefreshCountdown] = useState(300); // 5 minutes in seconds
 
+  // Menu state for collapsible controls
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // Auth handler
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -558,42 +561,8 @@ export default function MetaAdsDashboardPage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              {/* Refresh countdown */}
-              {lastRefresh && (
-                <div className="hidden lg:flex items-center gap-2 text-xs text-warm-gray-400">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  <span>{getRelativeTime()}</span>
-                  <span className="text-warm-gray-300">|</span>
-                  <span>
-                    {Math.floor(refreshCountdown / 60)}:{(refreshCountdown % 60).toString().padStart(2, '0')}
-                  </span>
-                </div>
-              )}
-
-              {/* Campaign Selector */}
-              <CampaignSelector
-                campaigns={(overview?.campaigns as CampaignWithInsights[] || []).map(c => ({
-                  id: c.id,
-                  name: c.name,
-                  status: c.status,
-                }))}
-                selectedCampaigns={selectedCampaignIds}
-                onSelectionChange={setSelectedCampaignIds}
-                loading={loading && !overview}
-              />
-
-              <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
-
-              <ExportButton
-                campaigns={filteredCampaigns}
-                dailyData={dailyData}
-                conversions={conversions}
-                summary={overview?.summary}
-                timeRange={timeRangeLabels[timeRange]}
-                disabled={loading}
-              />
-
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Refresh Button - Always visible */}
               <button
                 onClick={handleRefresh}
                 disabled={loading}
@@ -613,25 +582,116 @@ export default function MetaAdsDashboardPage() {
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
-                <span className="hidden sm:inline">Actualizar</span>
               </button>
 
-              {/* Logout Button */}
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-3 py-2.5 bg-warm-gray-100 text-warm-gray-600 rounded-xl hover:bg-warm-gray-200 transition-colors font-medium text-sm"
-                title="Cerrar sesion"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                <span className="hidden sm:inline">Salir</span>
-              </button>
+              {/* Menu Toggle Button */}
+              <div className="relative">
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl transition-colors font-medium text-sm ${
+                    menuOpen
+                      ? 'bg-coral text-white'
+                      : 'bg-warm-gray-100 text-warm-gray-600 hover:bg-warm-gray-200'
+                  }`}
+                  title="Menu"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {menuOpen ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    )}
+                  </svg>
+                  <span className="hidden sm:inline">Menu</span>
+                </button>
+
+                {/* Dropdown Menu Panel */}
+                {menuOpen && (
+                  <>
+                    {/* Backdrop */}
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setMenuOpen(false)}
+                    />
+
+                    {/* Menu Panel */}
+                    <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-xl border border-warm-gray-200 z-50 overflow-hidden animate-[fade-in_0.15s_ease-out]">
+                      {/* Refresh countdown */}
+                      {lastRefresh && (
+                        <div className="flex items-center gap-2 px-4 py-3 bg-warm-gray-50 border-b border-warm-gray-100 text-xs text-warm-gray-500">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                          <span>Actualizado {getRelativeTime()}</span>
+                          <span className="text-warm-gray-300">|</span>
+                          <span>
+                            Prox: {Math.floor(refreshCountdown / 60)}:{(refreshCountdown % 60).toString().padStart(2, '0')}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Menu Items */}
+                      <div className="p-3 space-y-3">
+                        {/* Campaign Selector */}
+                        <div>
+                          <label className="block text-xs font-medium text-warm-gray-500 mb-1.5 px-1">
+                            Campanas
+                          </label>
+                          <CampaignSelector
+                            campaigns={(overview?.campaigns as CampaignWithInsights[] || []).map(c => ({
+                              id: c.id,
+                              name: c.name,
+                              status: c.status,
+                            }))}
+                            selectedCampaigns={selectedCampaignIds}
+                            onSelectionChange={setSelectedCampaignIds}
+                            loading={loading && !overview}
+                          />
+                        </div>
+
+                        {/* Time Range */}
+                        <div>
+                          <label className="block text-xs font-medium text-warm-gray-500 mb-1.5 px-1">
+                            Periodo
+                          </label>
+                          <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+                        </div>
+
+                        {/* Export */}
+                        <div>
+                          <label className="block text-xs font-medium text-warm-gray-500 mb-1.5 px-1">
+                            Exportar
+                          </label>
+                          <ExportButton
+                            campaigns={filteredCampaigns}
+                            dailyData={dailyData}
+                            conversions={conversions}
+                            summary={overview?.summary}
+                            timeRange={timeRangeLabels[timeRange]}
+                            disabled={loading}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Logout Footer */}
+                      <div className="px-3 py-3 bg-warm-gray-50 border-t border-warm-gray-100">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center justify-center gap-2 w-full px-3 py-2.5 bg-warm-gray-200 text-warm-gray-700 rounded-lg hover:bg-warm-gray-300 transition-colors font-medium text-sm"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                            />
+                          </svg>
+                          Cerrar Sesion
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
