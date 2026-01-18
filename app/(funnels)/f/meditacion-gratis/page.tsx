@@ -147,9 +147,9 @@ export default function MeditacionGratisPage() {
         </div>
 
         <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12 overflow-hidden box-border">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full min-w-0">
             {/* Left - Copy */}
-            <div className="text-white text-center lg:text-left overflow-hidden max-w-full">
+            <div className="text-white text-center lg:text-left overflow-hidden max-w-full min-w-0">
               <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-gold/20 rounded-full text-gold text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 EVENTO EN VIVO GRATUITO
               </div>
@@ -215,7 +215,7 @@ export default function MeditacionGratisPage() {
             </div>
 
             {/* Right - Form (Optimized: 2 fields only) */}
-            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl w-full max-w-full box-border">
+            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl w-full max-w-full box-border min-w-0">
               {/* Scarcity indicator */}
               <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 text-coral text-xs sm:text-sm font-medium">
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-coral rounded-full animate-pulse" />
@@ -252,12 +252,12 @@ export default function MeditacionGratisPage() {
                   <label htmlFor="phone" className="block text-sm font-medium text-warm-gray-700 mb-1">
                     WhatsApp *
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 min-w-0">
                     <select
                       name="countryCode"
                       value={formData.countryCode}
                       onChange={handleInputChange}
-                      className="px-3 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral bg-warm-gray-50"
+                      className="px-3 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral bg-warm-gray-50 flex-shrink-0"
                     >
                       <option value="+52">+52</option>
                       <option value="+1">+1</option>
@@ -274,7 +274,7 @@ export default function MeditacionGratisPage() {
                       required
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
-                      className="flex-1 px-4 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent text-lg"
+                      className="flex-1 min-w-0 px-4 py-3 border border-warm-gray-300 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent text-lg"
                       placeholder="10 dígitos"
                     />
                   </div>
