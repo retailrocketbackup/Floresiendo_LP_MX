@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
 import { CountdownTimer } from "@/components/countdown-timer";
 
@@ -14,6 +14,8 @@ export default function MeditacionGratisPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
 
   // Session details - update these for each campaign
   const sessionDate = "Martes 10 de Febrero";
@@ -35,6 +37,29 @@ export default function MeditacionGratisPage() {
       { enableCAPI: true }
     );
   }, []);
+
+  // Show sticky bar when form is not visible on screen
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowStickyBar(!entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px",
+      }
+    );
+
+    if (formRef.current) {
+      observer.observe(formRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -215,7 +240,7 @@ export default function MeditacionGratisPage() {
             </div>
 
             {/* Right - Form (Optimized: 2 fields only) */}
-            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl w-full max-w-full box-border min-w-0">
+            <div ref={formRef} className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl w-full max-w-full box-border min-w-0">
               {/* Scarcity indicator */}
               <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 text-coral text-xs sm:text-sm font-medium">
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-coral rounded-full animate-pulse" />
@@ -451,6 +476,36 @@ export default function MeditacionGratisPage() {
           </div>
         </div>
       </section>
+
+      {/* Sticky CTA Bar - Appears when form is not visible */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 sm:hidden transition-all duration-300 ${
+          showStickyBar
+            ? "translate-y-0 opacity-100"
+            : "translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-t border-warm-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] px-4 py-3 safe-area-bottom">
+          <div className="flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="w-1.5 h-1.5 bg-coral rounded-full animate-pulse" />
+                <span className="text-coral text-xs font-medium">Solo 50 lugares</span>
+              </div>
+              <p className="text-burgundy font-semibold text-sm truncate">
+                Meditación Gratuita - 10 Feb
+              </p>
+            </div>
+            <button
+              onClick={scrollToForm}
+              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm"
+            >
+              Reservar
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
