@@ -288,8 +288,14 @@ export default function ConferenciaVidaPerfectaPage() {
           {/* Mobile: Facilitator mini-bio in hero (like meditacion-gratis) */}
           <div className="sm:hidden mt-4 animate-slide-up" style={{ animationDelay: "0.5s" }}>
             <div className="flex items-center gap-3 p-3 bg-white/10 rounded-xl backdrop-blur-sm">
-              <div className="w-12 h-12 rounded-full bg-warm-gray-200 flex items-center justify-center flex-shrink-0">
-                <Users className="w-6 h-6 text-warm-gray-400" />
+              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
+                <Image
+                  src="/facilitador.jpg"
+                  alt="Ramón Henríquez"
+                  width={48}
+                  height={48}
+                  className="object-cover w-full h-full"
+                />
               </div>
               <div className="text-left">
                 <p className="text-white font-semibold text-sm">Con Ramón Henríquez</p>
