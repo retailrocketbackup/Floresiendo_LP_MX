@@ -149,43 +149,48 @@ export default function MeditacionGratisPage() {
         <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left - Copy */}
-            <div className="text-white text-center lg:text-left">
-              <div className="inline-block px-4 py-2 bg-gold/20 rounded-full text-gold text-sm font-medium mb-6">
+            <div className="text-white text-center lg:text-left overflow-hidden">
+              <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-gold/20 rounded-full text-gold text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 EVENTO EN VIVO GRATUITO
               </div>
 
-              <h1 className="text-3xl md:text-5xl font-bold mb-6 text-balance leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
                 Meditación Guiada en Vivo
               </h1>
 
-              <p className="text-xl md:text-2xl text-coral-light mb-6">
+              <p className="text-base sm:text-xl md:text-2xl text-coral-light mb-4 sm:mb-6">
                 30 minutos para calmar tu mente y reconectar contigo
               </p>
 
-              {/* Countdown Timer */}
-              <div className="mb-8">
-                <p className="text-sm text-white/70 mb-3 uppercase tracking-wider">Comienza en:</p>
-                <CountdownTimer targetDate={eventDate} variant="light" size="md" />
+              {/* Countdown Timer - sm on mobile, md on desktop */}
+              <div className="mb-6 sm:mb-8">
+                <p className="text-xs sm:text-sm text-white/70 mb-2 sm:mb-3 uppercase tracking-wider">Comienza en:</p>
+                <div className="sm:hidden">
+                  <CountdownTimer targetDate={eventDate} variant="light" size="sm" />
+                </div>
+                <div className="hidden sm:block">
+                  <CountdownTimer targetDate={eventDate} variant="light" size="md" />
+                </div>
               </div>
 
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Calendar className="w-5 h-5 text-gold" />
-                  <span className="text-lg">{sessionDate}</span>
+              <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                <div className="flex items-center gap-2 sm:gap-3 justify-center lg:justify-start">
+                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-gold flex-shrink-0" />
+                  <span className="text-sm sm:text-lg">{sessionDate}</span>
                 </div>
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Clock className="w-5 h-5 text-gold" />
-                  <span className="text-lg">{sessionTime}</span>
+                <div className="flex items-center gap-2 sm:gap-3 justify-center lg:justify-start">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gold flex-shrink-0" />
+                  <span className="text-sm sm:text-lg">{sessionTime}</span>
                 </div>
-                <div className="flex items-center gap-3 justify-center lg:justify-start">
-                  <Users className="w-5 h-5 text-gold" />
-                  <span className="text-lg">Solo 50 lugares disponibles</span>
+                <div className="flex items-center gap-2 sm:gap-3 justify-center lg:justify-start">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gold flex-shrink-0" />
+                  <span className="text-sm sm:text-lg">Solo 50 lugares disponibles</span>
                 </div>
               </div>
 
               {/* Facilitator mini-bio in hero */}
-              <div className="flex items-center gap-4 p-4 bg-white/10 rounded-xl backdrop-blur-sm">
-                <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
+              <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-xl backdrop-blur-sm">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
                   <Image
                     src="/facilitador.jpg"
                     alt="Ramón Henríquez"
@@ -195,24 +200,24 @@ export default function MeditacionGratisPage() {
                   />
                 </div>
                 <div className="text-left">
-                  <p className="font-semibold text-white">Ramón Henríquez</p>
-                  <p className="text-sm text-coral-light">10+ años en meditación y bienestar</p>
+                  <p className="font-semibold text-white text-sm sm:text-base">Ramón Henríquez</p>
+                  <p className="text-xs sm:text-sm text-coral-light">10+ años en meditación y bienestar</p>
                 </div>
               </div>
             </div>
 
             {/* Right - Form (Optimized: 2 fields only) */}
-            <div className="bg-white rounded-2xl p-8 shadow-2xl">
+            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl">
               {/* Scarcity indicator */}
-              <div className="flex items-center justify-center gap-2 mb-4 text-coral text-sm font-medium">
-                <span className="w-2 h-2 bg-coral rounded-full animate-pulse" />
+              <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 text-coral text-xs sm:text-sm font-medium">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-coral rounded-full animate-pulse" />
                 Solo 50 lugares disponibles
               </div>
 
-              <h2 className="text-2xl font-bold text-burgundy mb-2 text-center">
+              <h2 className="text-xl sm:text-2xl font-bold text-burgundy mb-2 text-center">
                 Reserva tu lugar
               </h2>
-              <p className="text-warm-gray-600 mb-6 text-center">
+              <p className="text-warm-gray-600 mb-4 sm:mb-6 text-center text-sm sm:text-base">
                 Es 100% gratis. Registro en 30 segundos.
               </p>
 
