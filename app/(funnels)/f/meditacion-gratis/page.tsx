@@ -131,7 +131,7 @@ export default function MeditacionGratisPage() {
   }
 
   return (
-    <main>
+    <main className="overflow-x-hidden max-w-[100vw]">
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
@@ -146,8 +146,8 @@ export default function MeditacionGratisPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-burgundy/90 via-burgundy/80 to-burgundy-dark/95" />
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12 overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-12 overflow-hidden box-border">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
             {/* Left - Copy */}
             <div className="text-white text-center lg:text-left overflow-hidden max-w-full">
               <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-gold/20 rounded-full text-gold text-xs sm:text-sm font-medium mb-4 sm:mb-6">
@@ -215,7 +215,7 @@ export default function MeditacionGratisPage() {
             </div>
 
             {/* Right - Form (Optimized: 2 fields only) */}
-            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl">
+            <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl w-full max-w-full box-border">
               {/* Scarcity indicator */}
               <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4 text-coral text-xs sm:text-sm font-medium">
                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-coral rounded-full animate-pulse" />

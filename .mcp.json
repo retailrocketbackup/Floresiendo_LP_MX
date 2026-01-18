@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "meta-ads": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-remote", "https://mcp.pipeboard.co/meta-ads-mcp?fb_access_token=EAAalVU5tt5UBQQZA3q0Rykor1ps98kZCPROcfUD7QuxZAISS2NEDWYcudZCZAClRZAwducz9Q2QkSU0ix8xna6c1AMQfC08WFWumDmU17M5UD8LV7jLlnrwfLYvat3jDOu7FZAXsXjJ8eKXK0kPq6AOMj1TmnnwNfhSJP5nqItQTqLY3NCQEq0J9GJDZCrJ8HvZB0EZCPGIAIIBkbmrsdu263PGJNM09B4YVZCBWaMNie6yv1PXimyla7RsJRjiNaKSiold4RaoMvRdNAXYnz6CHZAs6LQj3"]
+    }
+  }
+}

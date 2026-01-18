@@ -23,23 +23,30 @@
 ### Campaign Configuration
 
 ```
-Campaign Name: TOFU_LeadMagnets_Feb2026_CBO
+Campaign Name: FL - TOFU-B Lead Magnets | Feb26
 ├─ Objective: Leads (Clientes Potenciales) > Conversión Website
 ├─ Budget: $120 USD/día (CBO)
 ├─ Bid Strategy: Highest Volume
 ├─ Placements: Advantage+ (Automático - Facebook & Instagram)
 ├─ Schedule: 20 Enero 2026 (00:01) → 11 Febrero 2026 (16:00)
 │
-├─ Ad Set 1: 01_Meditacion_Virtual_Broad
+├─ Ad Set 1: TOFU-B | Virtual-Nacional | 25-55 | Mexico | CBO
 │  └─ Min Budget: $40/día | Max: $80/día
 │  └─ Optimization: Maximizar Leads
 │  └─ Conversion Window: 1 day click/view
 │
-└─ Ad Set 2: 02_Conferencia_CDMX_Geo
+└─ Ad Set 2: TOFU-B | Presencial-CDMX | 30-60 | GeoLocal | CBO
    └─ Min Budget: $40/día | Max: $80/día
    └─ Optimization: Maximizar Leads
    └─ Conversion Window: 1 day click/view
 ```
+
+### Naming Convention
+
+**Pattern:**
+- Campaign: `FL - [Funnel Stage] [Offer Type] | [Month][Year]`
+- Ad Set: `[Funnel Stage] | [Audience] | [Age] | [Geo] | [Budget Type]`
+- Ad: `TOFU-B-[Event] | [Format] | [Angle] | v[Version]`
 
 ---
 
@@ -71,6 +78,7 @@ Campaign Name: TOFU_LeadMagnets_Feb2026_CBO
 ## SECTION C: AD COPY - MEDITACIÓN GRATIS (6 Ads)
 
 ### Ad M1: Emprendedores × Ruido Mental
+**Ad Name**: `TOFU-B-Meditacion | IMG | RuidoMental | v1`
 
 **Primary Text** (138 chars):
 ```
@@ -88,6 +96,7 @@ Tu mente es el activo más valioso de tu negocio, pero nunca descansa. Regálate
 ---
 
 ### Ad M2: Emprendedores × Reconexión
+**Ad Name**: `TOFU-B-Meditacion | IMG | Reconexion | v1`
 
 **Primary Text** (145 chars):
 ```
@@ -105,6 +114,7 @@ Entre métricas y estrategias, te perdiste a ti mismo. Vuelve a tu centro antes 
 ---
 
 ### Ad M3: Wellness Seekers × Silencio Interior
+**Ad Name**: `TOFU-B-Meditacion | IMG | SilencioInterior | v1`
 
 **Primary Text** (128 chars):
 ```
@@ -122,6 +132,7 @@ El silencio no es la ausencia de ruido, es la presencia de ti mismo. Únete a nu
 ---
 
 ### Ad M4: Wellness Seekers × Pausa Personal
+**Ad Name**: `TOFU-B-Meditacion | IMG | PausaPersonal | v1`
 
 **Primary Text** (140 chars):
 ```
@@ -139,6 +150,7 @@ No necesitas "saber" meditar, solo necesitas querer parar. Ramón te guiará pas
 ---
 
 ### Ad M5: C-Suite × Claridad Mental
+**Ad Name**: `TOFU-B-Meditacion | IMG | ClaridadMental | v1`
 
 **Primary Text** (148 chars):
 ```
@@ -156,6 +168,7 @@ La claridad directiva nace del silencio, no del análisis. Únete a un grupo sel
 ---
 
 ### Ad M6: C-Suite × Reset Ejecutivo
+**Ad Name**: `TOFU-B-Meditacion | IMG | ResetEjecutivo | v1`
 
 **Primary Text** (135 chars):
 ```
@@ -175,6 +188,7 @@ High performance requiere high recovery. 30 minutos para resetear tu sistema ner
 ## SECTION D: AD COPY - CONFERENCIA VIDA PERFECTA (6 Ads)
 
 ### Ad C1: Emprendedores × Vacío del Éxito
+**Ad Name**: `TOFU-B-Conferencia | IMG | VacioExito | v1`
 
 **Primary Text** (142 chars):
 ```
@@ -192,6 +206,7 @@ Escalaste el negocio, pero ¿a qué costo personal? Descubre por qué el éxito 
 ---
 
 ### Ad C2: Emprendedores × Propósito Real
+**Ad Name**: `TOFU-B-Conferencia | IMG | PropositoReal | v1`
 
 **Primary Text** (150 chars):
 ```
@@ -209,6 +224,7 @@ Tu siguiente nivel no es más facturación, es más propósito. Conferencia excl
 ---
 
 ### Ad C3: Wellness Seekers × Plenitud Interior
+**Ad Name**: `TOFU-B-Conferencia | IMG | PlenitudInterior | v1`
 
 **Primary Text** (138 chars):
 ```
@@ -226,6 +242,7 @@ Tu siguiente nivel no es más facturación, es más propósito. Conferencia excl
 ---
 
 ### Ad C4: Wellness Seekers × Vida Auténtica
+**Ad Name**: `TOFU-B-Conferencia | IMG | VidaAutentica | v1`
 
 **Primary Text** (145 chars):
 ```
@@ -243,6 +260,7 @@ Deja de vivir el guion que otros escribieron para ti. Una noche para explorar tu
 ---
 
 ### Ad C5: C-Suite × Liderazgo Consciente
+**Ad Name**: `TOFU-B-Conferencia | IMG | LiderazgoConsciente | v1`
 
 **Primary Text** (149 chars):
 ```
@@ -260,6 +278,7 @@ Para el Director que ya logró todo: el siguiente reto es interno. Únete a pare
 ---
 
 ### Ad C6: C-Suite × Claridad Existencial
+**Ad Name**: `TOFU-B-Conferencia | IMG | ClaridadExistencial | v1`
 
 **Primary Text** (130 chars):
 ```
@@ -353,13 +372,13 @@ Para el Director que ya logró todo: el siguiente reto es interno. Únete a pare
 ```
 utm_source=facebook
 utm_medium=cpc
-utm_campaign=TOFU_LeadMagnets_Feb2026
-utm_content=Ad_M1_RuidoMental (variable por ad)
+utm_campaign=FL-TOFU-B-LeadMagnets-Feb26
+utm_content=TOFU-B-Meditacion-RuidoMental-v1 (variable por ad)
 ```
 
 **Full URL Example:**
 ```
-https://floresiendo.mx/f/meditacion-gratis?utm_source=facebook&utm_medium=cpc&utm_campaign=TOFU_LeadMagnets_Feb2026&utm_content=Ad_M1_RuidoMental
+https://floresiendo.mx/f/meditacion-gratis?utm_source=facebook&utm_medium=cpc&utm_campaign=FL-TOFU-B-LeadMagnets-Feb26&utm_content=TOFU-B-Meditacion-RuidoMental-v1
 ```
 
 ### Custom Conversions
@@ -428,26 +447,28 @@ Solo quería contarte que abrí 2 espacios para entrevistar candidatos al Retiro
 ## QUICK REFERENCE: AD COPY MATRIX
 
 ### Meditación Gratis (Virtual)
+**Ad Set**: `TOFU-B | Virtual-Nacional | 25-55 | Mexico | CBO`
 
-| Ad | Avatar | Angle | Headline | CTA |
-|----|--------|-------|----------|-----|
-| M1 | Emprendedores | Ruido Mental | ¿Tu mente nunca para? 🧠 | Más información |
-| M2 | Emprendedores | Reconexión | Reconecta contigo hoy | Registrarte |
-| M3 | Wellness | Silencio Interior | 30 Minutos de Paz Total | Reservar |
-| M4 | Wellness | Pausa Personal | Tu espacio sagrado hoy | Más información |
-| M5 | C-Suite | Claridad Mental | Claridad para Líderes | Registrarte |
-| M6 | C-Suite | Reset Ejecutivo | Reset Mental: 30min | Escuchar |
+| Ad Name | Avatar | Angle | Headline | CTA |
+|---------|--------|-------|----------|-----|
+| `TOFU-B-Meditacion \| IMG \| RuidoMental \| v1` | Emprendedores | Ruido Mental | ¿Tu mente nunca para? 🧠 | Más información |
+| `TOFU-B-Meditacion \| IMG \| Reconexion \| v1` | Emprendedores | Reconexión | Reconecta contigo hoy | Registrarte |
+| `TOFU-B-Meditacion \| IMG \| SilencioInterior \| v1` | Wellness | Silencio Interior | 30 Minutos de Paz Total | Reservar |
+| `TOFU-B-Meditacion \| IMG \| PausaPersonal \| v1` | Wellness | Pausa Personal | Tu espacio sagrado hoy | Más información |
+| `TOFU-B-Meditacion \| IMG \| ClaridadMental \| v1` | C-Suite | Claridad Mental | Claridad para Líderes | Registrarte |
+| `TOFU-B-Meditacion \| IMG \| ResetEjecutivo \| v1` | C-Suite | Reset Ejecutivo | Reset Mental: 30min | Escuchar |
 
 ### Conferencia Vida Perfecta (Presencial)
+**Ad Set**: `TOFU-B | Presencial-CDMX | 30-60 | GeoLocal | CBO`
 
-| Ad | Avatar | Angle | Headline | CTA |
-|----|--------|-------|----------|-----|
-| C1 | Emprendedores | Vacío del Éxito | ¿Éxito total o vacío real? | Registrarte |
-| C2 | Emprendedores | Propósito Real | Más allá del Éxito 🚀 | Más información |
-| C3 | Wellness | Plenitud Interior | Encuentra tu Plenitud | Ver detalles |
-| C4 | Wellness | Vida Auténtica | Vive tu Vida Auténtica | Registrarte |
-| C5 | C-Suite | Liderazgo Consciente | Liderazgo Consciente | Aplicar ahora |
-| C6 | C-Suite | Claridad Existencial | Claridad para tu Futuro | Reservar |
+| Ad Name | Avatar | Angle | Headline | CTA |
+|---------|--------|-------|----------|-----|
+| `TOFU-B-Conferencia \| IMG \| VacioExito \| v1` | Emprendedores | Vacío del Éxito | ¿Éxito total o vacío real? | Registrarte |
+| `TOFU-B-Conferencia \| IMG \| PropositoReal \| v1` | Emprendedores | Propósito Real | Más allá del Éxito 🚀 | Más información |
+| `TOFU-B-Conferencia \| IMG \| PlenitudInterior \| v1` | Wellness | Plenitud Interior | Encuentra tu Plenitud | Ver detalles |
+| `TOFU-B-Conferencia \| IMG \| VidaAutentica \| v1` | Wellness | Vida Auténtica | Vive tu Vida Auténtica | Registrarte |
+| `TOFU-B-Conferencia \| IMG \| LiderazgoConsciente \| v1` | C-Suite | Liderazgo Consciente | Liderazgo Consciente | Aplicar ahora |
+| `TOFU-B-Conferencia \| IMG \| ClaridadExistencial \| v1` | C-Suite | Claridad Existencial | Claridad para tu Futuro | Reservar |
 
 ---
 

@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   title: "FloreSiendo - Retiros y Escuela donde la maestra es el Amor",
   description: "Descubre tu potencial interior con nuestros retiros de transformación personal",
   generator: "v0.app",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 }
 
 export default function RootLayout({
