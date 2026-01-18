@@ -135,8 +135,8 @@ export default function ConferenciaVidaPerfectaPage() {
 
   return (
     <main className="min-h-screen bg-warm-white">
-      {/* Hero Section - Auto height on mobile (form below), full screen on desktop */}
-      <section className="relative sm:min-h-screen flex items-start sm:items-center justify-center overflow-hidden pb-8 sm:pb-0">
+      {/* Hero Section - Full screen on all devices */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="/images/cosmic-spiritual-background.webp"
@@ -156,7 +156,7 @@ export default function ConferenciaVidaPerfectaPage() {
           style={{ animationDelay: "1s" }}
         />
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-16 md:py-24">
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-16 md:py-24">
           {/* Mobile: Compact info - two lines */}
           <div className="sm:hidden text-center mb-3 animate-fade-in space-y-1.5">
             <span className="inline-block px-3 py-1 bg-coral/90 text-white rounded-full text-[10px] font-semibold uppercase tracking-wide">
@@ -197,7 +197,7 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Headline - Full story on all devices */}
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-3 sm:mb-6 leading-tight animate-slide-up"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-2 sm:mb-6 leading-tight animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
             &ldquo;Cuando tu vida se ve perfecta
@@ -208,23 +208,23 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Subheadline - Visible on all devices */}
           <p
-            className="text-base sm:text-xl md:text-2xl text-white/80 text-center mb-4 sm:mb-6 max-w-2xl mx-auto animate-slide-up px-2"
+            className="text-sm sm:text-xl md:text-2xl text-white/80 text-center mb-3 sm:mb-6 max-w-2xl mx-auto animate-slide-up px-2"
             style={{ animationDelay: "0.3s" }}
           >
             Una conversación honesta sobre el vacío que el éxito no llena
           </p>
 
-          {/* Countdown Timer - Small on mobile, medium on desktop */}
+          {/* Countdown Timer - xs on mobile, md on desktop */}
           <div
-            className="mb-5 sm:mb-10 animate-slide-up"
+            className="mb-4 sm:mb-10 animate-slide-up"
             style={{ animationDelay: "0.35s" }}
           >
-            <p className="text-xs sm:text-sm text-white/70 mb-2 sm:mb-3 uppercase tracking-wider text-center">
+            <p className="text-[10px] sm:text-sm text-white/70 mb-1.5 sm:mb-3 uppercase tracking-wider text-center">
               Comienza en:
             </p>
-            {/* Mobile: sm size */}
+            {/* Mobile: xs size for compactness */}
             <div className="sm:hidden">
-              <CountdownTimer targetDate={EVENT_DATE} variant="light" size="sm" />
+              <CountdownTimer targetDate={EVENT_DATE} variant="light" size="xs" />
             </div>
             {/* Desktop: md size */}
             <div className="hidden sm:block">
@@ -234,17 +234,17 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Mobile CTA Button - scrolls to form below */}
           <div
-            className="sm:hidden mb-6 animate-slide-up"
+            className="sm:hidden animate-slide-up"
             style={{ animationDelay: "0.4s" }}
           >
             <button
               onClick={scrollToForm}
-              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 text-lg group"
+              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 text-base group"
             >
               <span>Reserva tu lugar gratis</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <p className="text-center text-white/60 text-sm mt-2">
+            <p className="text-center text-white/60 text-xs mt-2">
               Sin costo • Sin compromiso
             </p>
           </div>
@@ -270,8 +270,8 @@ export default function ConferenciaVidaPerfectaPage() {
             />
           </div>
 
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 text-white/70 text-sm">
+          {/* Trust Indicators - Hidden on mobile, shown on desktop */}
+          <div className="hidden sm:flex flex-wrap justify-center gap-4 sm:gap-8 mt-8 text-white/70 text-sm">
             <span className="flex items-center gap-2">
               <Clock className="w-4 h-4" />1 hora
             </span>
@@ -283,6 +283,19 @@ export default function ConferenciaVidaPerfectaPage() {
               <Shield className="w-4 h-4" />
               Espacio seguro
             </span>
+          </div>
+
+          {/* Mobile: Facilitator mini-bio in hero (like meditacion-gratis) */}
+          <div className="sm:hidden mt-4 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+            <div className="flex items-center gap-3 p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+              <div className="w-12 h-12 rounded-full bg-warm-gray-200 flex items-center justify-center flex-shrink-0">
+                <Users className="w-6 h-6 text-warm-gray-400" />
+              </div>
+              <div className="text-left">
+                <p className="text-white font-semibold text-sm">Con Ramón Henríquez</p>
+                <p className="text-white/70 text-xs">+10 años acompañando transformaciones</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
