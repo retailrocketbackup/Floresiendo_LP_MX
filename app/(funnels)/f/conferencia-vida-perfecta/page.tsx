@@ -474,22 +474,13 @@ export default function ConferenciaVidaPerfectaPage() {
               className="md:col-span-2 order-2 md:order-1"
             >
               <div className="relative aspect-[4/5] max-w-[300px] mx-auto w-full rounded-3xl overflow-hidden shadow-xl group">
-                <div className="absolute inset-0 bg-gradient-to-b from-burgundy/20 to-burgundy/60" />
-                {/* Placeholder - replace with actual photo */}
-                <div className="absolute inset-0 flex items-center justify-center bg-warm-gray-100">
-                  <div className="text-center text-warm-gray-400">
-                    <Users className="w-16 h-16 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Foto de Ramón</p>
-                  </div>
-                </div>
-                {/* Uncomment when photo is available:
                 <Image
-                  src="/images/ramon-henriquez.webp"
+                  src="/facilitador.jpg"
                   alt="Ramón Henríquez"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-burgundy/40" />
                 {/* Experience badge */}
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
