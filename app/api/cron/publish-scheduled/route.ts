@@ -2,10 +2,16 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { publishToFacebook, publishToInstagram, type ScheduledPost } from '@/lib/social-publisher';
 
-const supabase = createClient(
-  process.env.SUPABASE_SOCIAL_URL!,
-  process.env.SUPABASE_SOCIAL_SERVICE_KEY!
-);
+// Force dynamic rendering to prevent build-time initialization
+export const dynamic = 'force-dynamic';
+
+// Create Supabase client lazily to avoid build-time errors
+function getSupabase() {
+  return createClient(
+    process.env.SUPABASE_SOCIAL_URL!,
+    process.env.SUPABASE_SOCIAL_SERVICE_KEY!
+  );
+}
 
 // Verify cron secret to prevent unauthorized access
 function verifyCronSecret(request: Request): boolean {
@@ -31,6 +37,7 @@ export async function GET(request: Request) {
 
     // Get all scheduled posts that are due
     const now = new Date();
+    const supabase = getSupabase();
     const { data: posts, error: fetchError } = await supabase
       .from('scheduled_posts')
       .select('*')
