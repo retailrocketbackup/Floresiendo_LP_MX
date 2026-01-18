@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon, ArrowRight } from "lucide-react";
+import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon, ArrowRight, Zap } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
 import { CountdownTimer } from "@/components/countdown-timer";
 
@@ -183,20 +183,21 @@ export default function MeditacionGratisPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full min-w-0">
             {/* Left - Copy */}
             <div className="text-white text-center lg:text-left overflow-hidden max-w-full min-w-0">
-              <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-gold/20 rounded-full text-gold text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <div className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-gold/20 backdrop-blur-sm rounded-full text-gold text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-gold/30">
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
                 EVENTO EN VIVO GRATUITO
               </div>
 
-              <h1 className="text-xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight break-words">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight break-words">
                 Meditación Guiada
-                <br className="sm:hidden" />
-                <span className="sm:hidden"> </span>
+                <br />
                 en Vivo
               </h1>
 
               <p className="text-sm sm:text-xl md:text-2xl text-coral-light mb-4 sm:mb-6 break-words">
                 30 minutos para calmar tu mente
                 <br className="sm:hidden" />
+                <span className="sm:hidden"> </span>
                 y reconectar contigo
               </p>
 
@@ -214,7 +215,7 @@ export default function MeditacionGratisPage() {
                 </div>
               </div>
 
-              <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+              <div className="space-y-1.5 sm:space-y-3 mb-5 sm:mb-8">
                 <div className="flex items-center gap-2 sm:gap-3 justify-center lg:justify-start">
                   <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-gold flex-shrink-0" />
                   <span className="text-sm sm:text-lg">{sessionDate}</span>
@@ -229,8 +230,22 @@ export default function MeditacionGratisPage() {
                 </div>
               </div>
 
+              {/* Mobile CTA Button - scrolls to form */}
+              <div className="sm:hidden mb-5">
+                <button
+                  onClick={scrollToForm}
+                  className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-[0_4px_20px_rgba(255,111,97,0.4)] hover:shadow-[0_6px_25px_rgba(255,111,97,0.5)] transition-all duration-300 flex items-center justify-center gap-2 text-base group"
+                >
+                  <span>Quiero mi lugar gratis</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <p className="text-center text-white/60 text-xs mt-2">
+                  100% gratis • Registro en 30 seg
+                </p>
+              </div>
+
               {/* Facilitator mini-bio in hero */}
-              <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-xl backdrop-blur-sm">
+              <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
                   <Image
                     src="/facilitador.jpg"

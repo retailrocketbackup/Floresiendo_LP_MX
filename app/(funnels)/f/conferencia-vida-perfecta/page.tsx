@@ -154,14 +154,22 @@ export default function ConferenciaVidaPerfectaPage() {
         />
 
         <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-16 md:py-24">
-          {/* Mobile: Compact info - two lines */}
-          <div className="sm:hidden text-center mb-3 animate-fade-in space-y-1.5">
-            <span className="inline-block px-3 py-1 bg-coral/90 text-white rounded-full text-[10px] font-semibold uppercase tracking-wide">
-              Conferencia Presencial Gratuita
-            </span>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold/20 backdrop-blur-sm text-white rounded-full text-xs font-medium border border-gold/30">
-              <MapPin className="w-3 h-3 text-gold" />
-              <span>11 Feb • 7PM • CDMX</span>
+          {/* Mobile: Cohesive badge card */}
+          <div className="sm:hidden text-center mb-4 animate-fade-in">
+            <div className="inline-flex flex-col items-center gap-2 px-4 py-2.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+              <span className="px-3 py-1 bg-coral text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                Conferencia Gratuita
+              </span>
+              <div className="flex items-center gap-2 text-white/90 text-xs font-medium">
+                <Calendar className="w-3.5 h-3.5 text-gold" />
+                <span>11 Feb</span>
+                <span className="text-white/40">•</span>
+                <Clock className="w-3.5 h-3.5 text-gold" />
+                <span>7PM</span>
+                <span className="text-white/40">•</span>
+                <MapPin className="w-3.5 h-3.5 text-gold" />
+                <span>CDMX</span>
+              </div>
             </div>
           </div>
 
@@ -194,7 +202,7 @@ export default function ConferenciaVidaPerfectaPage() {
 
           {/* Headline - Full story on all devices */}
           <h1
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-2 sm:mb-6 leading-tight animate-slide-up"
+            className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-2 sm:mb-6 leading-tight animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
             &ldquo;Cuando tu vida se ve perfecta
@@ -236,7 +244,7 @@ export default function ConferenciaVidaPerfectaPage() {
           >
             <button
               onClick={scrollToForm}
-              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 text-base group"
+              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-[0_4px_20px_rgba(255,111,97,0.4)] hover:shadow-[0_6px_25px_rgba(255,111,97,0.5)] transition-all duration-300 flex items-center justify-center gap-2 text-base group"
             >
               <span>Reserva tu lugar gratis</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -283,8 +291,8 @@ export default function ConferenciaVidaPerfectaPage() {
           </div>
 
           {/* Mobile: Facilitator mini-bio in hero (like meditacion-gratis) */}
-          <div className="sm:hidden mt-4 animate-slide-up" style={{ animationDelay: "0.5s" }}>
-            <div className="flex items-center gap-3 p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+          <div className="sm:hidden mt-6 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+            <div className="flex items-center gap-3 p-3.5 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
               <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
                 <Image
                   src="/facilitador.jpg"
