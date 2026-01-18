@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.SUPABASE_SOCIAL_URL!,
-  process.env.SUPABASE_SOCIAL_SERVICE_KEY!
-);
+export const dynamic = 'force-dynamic';
+
+function getSupabase() {
+  return createClient(
+    process.env.SUPABASE_SOCIAL_URL!,
+    process.env.SUPABASE_SOCIAL_SERVICE_KEY!
+  );
+}
 
 export async function GET(request: Request) {
   try {
@@ -26,6 +30,7 @@ export async function GET(request: Request) {
     }
 
     // Fetch all posts
+    const supabase = getSupabase();
     const { data: posts, error } = await supabase
       .from('scheduled_posts')
       .select('*')

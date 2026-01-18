@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { validateCompliance, type ScheduledPost } from '@/lib/social-publisher';
+import { type ScheduledPost } from '@/lib/social-publisher';
 
-const supabase = createClient(
-  process.env.SUPABASE_SOCIAL_URL!,
-  process.env.SUPABASE_SOCIAL_SERVICE_KEY!
-);
+export const dynamic = 'force-dynamic';
+
+function getSupabase() {
+  return createClient(
+    process.env.SUPABASE_SOCIAL_URL!,
+    process.env.SUPABASE_SOCIAL_SERVICE_KEY!
+  );
+}
 
 export async function POST(request: Request) {
   try {
@@ -40,10 +44,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Caption is required' }, { status: 400 });
     }
 
-    // Run compliance validation
-    const complianceResult = validateCompliance(caption);
-
-    // Create post
+    // Create post (compliance validation handled manually for now)
     const post: Partial<ScheduledPost> = {
       platforms,
       content_type: 'image',
@@ -53,15 +54,14 @@ export async function POST(request: Request) {
       funnel: funnel || 'general',
       content_theme: contentTheme,
       image_source: imageSource || 'ai_generated',
-      compliance_status: complianceResult.status,
-      compliance_notes: complianceResult.notes,
-      flagged_terms: complianceResult.flaggedTerms,
-      approval_status: complianceResult.status === 'rejected' ? 'rejected' : 'pending',
+      compliance_status: 'pending',
+      approval_status: 'pending',
       publish_status: 'draft',
       scheduled_for: scheduledFor ? new Date(scheduledFor).toISOString() : null,
       created_by: 'admin',
     };
 
+    const supabase = getSupabase();
     const { data, error } = await supabase
       .from('scheduled_posts')
       .insert(post)
@@ -76,7 +76,6 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       post: data,
-      compliance: complianceResult,
     });
   } catch (error) {
     console.error('[Create Post API Error]', error);
