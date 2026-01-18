@@ -154,12 +154,17 @@ export default function MeditacionGratisPage() {
                 EVENTO EN VIVO GRATUITO
               </div>
 
-              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
-                Meditación Guiada en Vivo
+              <h1 className="text-xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight break-words">
+                Meditación Guiada
+                <br className="sm:hidden" />
+                <span className="sm:hidden"> </span>
+                en Vivo
               </h1>
 
-              <p className="text-base sm:text-xl md:text-2xl text-coral-light mb-4 sm:mb-6">
-                30 minutos para calmar tu mente y reconectar contigo
+              <p className="text-sm sm:text-xl md:text-2xl text-coral-light mb-4 sm:mb-6 break-words">
+                30 minutos para calmar tu mente
+                <br className="sm:hidden" />
+                y reconectar contigo
               </p>
 
               {/* Countdown Timer - xs on mobile, sm on tablet, md on desktop */}
