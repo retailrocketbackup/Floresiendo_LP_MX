@@ -140,6 +140,7 @@ export default function ConferenciaVidaPerfectaPage() {
             alt="Fondo espiritual"
             fill
             priority
+            quality={60}
             sizes="100vw"
             className="object-cover scale-105 animate-[scale-in_20s_ease-out_forwards]"
           />
