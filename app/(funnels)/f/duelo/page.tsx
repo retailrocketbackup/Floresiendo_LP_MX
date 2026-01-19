@@ -15,7 +15,7 @@ const TrackedVimeoPlayer = dynamic(
 
 // V004 - "Duelo y pérdida"
 const VIMEO_VIDEO_ID = "1142274109";
-const MAIN_WHATSAPP = "524427845308";
+const MAIN_WHATSAPP = "5215540180914";
 const WHATSAPP_MESSAGE = "Hola, vi el video sobre el proceso de duelo y me gustaría saber cómo pueden acompañarme.";
 
 // WhatsApp button component with tracking
