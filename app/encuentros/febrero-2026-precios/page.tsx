@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from "next/image"
-import Script from 'next/script';
-import ConektaPaymentForm from "@/components/ConektaPaymentForm"
+import { Elements } from '@stripe/react-stripe-js';
+import { getStripe } from "@/lib/stripe-client"
+import StripePaymentForm from "@/components/StripePaymentForm"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
@@ -81,12 +82,6 @@ export default function PreciosFebrero2026() {
 
   return (
     <>
-      {/* Conekta.js Script */}
-      <Script
-        src="https://cdn.conekta.io/js/latest/conekta.js"
-        strategy="beforeInteractive"
-      />
-
       {/* Site Header */}
       <SiteHeader />
 
@@ -527,12 +522,15 @@ export default function PreciosFebrero2026() {
                 </svg>
               </button>
 
-              <ConektaPaymentForm
-                productId={selectedPayment.id}
-                productName={selectedPayment.name}
-                amount={selectedPayment.amount}
-                onCancel={closePaymentModal}
-              />
+              <Elements stripe={getStripe()}>
+                <StripePaymentForm
+                  productId={selectedPayment.id}
+                  productName={selectedPayment.name}
+                  amount={selectedPayment.amount}
+                  applicationId={applicationId || undefined}
+                  onCancel={closePaymentModal}
+                />
+              </Elements>
             </div>
           </div>
         )}

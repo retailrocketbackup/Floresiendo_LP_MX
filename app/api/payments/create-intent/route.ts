@@ -1,21 +1,21 @@
-// app/api/payments/create-charge/route.ts
+// app/api/payments/create-intent/route.ts
 import { NextResponse } from 'next/server';
-import { createCharge, PAYMENT_PRODUCTS, PaymentProductId } from '@/lib/conekta';
+import { createPaymentIntent, PAYMENT_PRODUCTS, PaymentProductId } from '@/lib/stripe';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
     const {
-      tokenId,
       productId,
       customerEmail,
       customerName,
-      customerPhone
+      customerPhone,
+      applicationId
     } = body;
 
     // Validate required fields
-    if (!tokenId || !productId || !customerEmail || !customerName) {
+    if (!productId || !customerEmail || !customerName) {
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
         { status: 400 }
@@ -32,44 +32,37 @@ export async function POST(request: Request) {
       );
     }
 
-    // Log payment attempt
-    console.log('=== PAYMENT ATTEMPT ===');
+    // Log payment intent creation
+    console.log('=== PAYMENT INTENT CREATION ===');
     console.log('Product:', product.name);
     console.log('Amount:', product.amount / 100, 'MXN');
     console.log('Customer:', customerName, customerEmail);
-    console.log('========================');
+    console.log('Application ID:', applicationId || 'N/A');
+    console.log('===============================');
 
-    // Create charge via Conekta
-    const result = await createCharge({
-      amount: product.amount,
-      description: product.description,
-      tokenId,
+    // Create Payment Intent via Stripe
+    const result = await createPaymentIntent({
+      productId: productId as PaymentProductId,
       customerEmail,
       customerName,
       customerPhone,
-      metadata: {
-        product_id: productId,
-        product_name: product.name
-      }
+      applicationId,
     });
 
     if (result.success) {
-      // Log successful payment
-      console.log('=== PAYMENT SUCCESS ===');
-      console.log('Charge ID:', result.charge?.id);
-      console.log('Order ID:', result.charge?.orderId);
-      console.log('Status:', result.charge?.status);
-      console.log('========================');
+      console.log('=== PAYMENT INTENT CREATED ===');
+      console.log('Payment Intent ID:', result.paymentIntentId);
+      console.log('==============================');
 
       return NextResponse.json({
         success: true,
-        charge: result.charge
+        clientSecret: result.clientSecret,
+        paymentIntentId: result.paymentIntentId,
       });
     } else {
-      // Log failed payment
-      console.log('=== PAYMENT FAILED ===');
+      console.log('=== PAYMENT INTENT FAILED ===');
       console.log('Error:', result.error);
-      console.log('========================');
+      console.log('=============================');
 
       return NextResponse.json(
         { success: false, error: result.error },
@@ -78,9 +71,9 @@ export async function POST(request: Request) {
     }
 
   } catch (error) {
-    console.error('[API Payment Error]', error);
+    console.error('[API Payment Intent Error]', error);
     return NextResponse.json(
-      { success: false, error: 'An error occurred processing your payment' },
+      { success: false, error: 'An error occurred creating payment intent' },
       { status: 500 }
     );
   }

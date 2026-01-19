@@ -1,102 +1,43 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import type { StripeCardElementChangeEvent } from '@stripe/stripe-js';
 import { trackEvent } from "@/lib/meta-tracking";
 
-// Declare Conekta global type
-declare global {
-  interface Window {
-    Conekta: {
-      setPublicKey: (key: string) => void;
-      Token: {
-        create: (
-          data: { card: CardData },
-          success: (token: { id: string }) => void,
-          error: (error: { message: string }) => void
-        ) => void;
-      };
-    };
-  }
-}
-
-interface CardData {
-  number: string;
-  name: string;
-  exp_month: string;
-  exp_year: string;
-  cvc: string;
-}
-
-interface ConektaPaymentFormProps {
+interface StripePaymentFormProps {
   productId: string;
   productName: string;
   amount: number; // In cents
-  onSuccess?: (chargeId: string) => void;
+  applicationId?: string;
+  onSuccess?: (paymentIntentId: string) => void;
   onCancel?: () => void;
 }
 
-export default function ConektaPaymentForm({
+export default function StripePaymentForm({
   productId,
   productName,
   amount,
+  applicationId,
   onSuccess,
   onCancel
-}: ConektaPaymentFormProps) {
+}: StripePaymentFormProps) {
   const router = useRouter();
+  const stripe = useStripe();
+  const elements = useElements();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [conektaReady, setConektaReady] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  const [cardComplete, setCardComplete] = useState(false);
+  const [cardError, setCardError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    cardNumber: '',
-    cardMonth: '',
-    cardYear: '',
-    cardCvc: ''
   });
-
-  // Initialize Conekta.js
-  useEffect(() => {
-    const initConekta = () => {
-      if (typeof window !== 'undefined' && window.Conekta) {
-        const publicKey = process.env.NEXT_PUBLIC_CONEKTA_PUBLIC_KEY;
-        if (publicKey) {
-          window.Conekta.setPublicKey(publicKey);
-          setConektaReady(true);
-        } else {
-          setError('Payment system not configured');
-        }
-      }
-    };
-
-    // Check if Conekta is already loaded
-    if (window.Conekta) {
-      initConekta();
-    } else {
-      // Wait for script to load
-      const checkConekta = setInterval(() => {
-        if (window.Conekta) {
-          initConekta();
-          clearInterval(checkConekta);
-        }
-      }, 100);
-
-      // Timeout after 10 seconds
-      setTimeout(() => {
-        clearInterval(checkConekta);
-        if (!conektaReady) {
-          setError('Payment system failed to load. Please refresh the page.');
-        }
-      }, 10000);
-
-      return () => clearInterval(checkConekta);
-    }
-  }, [conektaReady]);
 
   // Track InitiateCheckout when payment form is shown
   useEffect(() => {
@@ -115,17 +56,9 @@ export default function ConektaPaymentForm({
     setError(null);
   };
 
-  const formatCardNumber = (value: string) => {
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    const matches = v.match(/\d{4,16}/g);
-    const match = (matches && matches[0]) || '';
-    const parts = [];
-
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
-
-    return parts.length ? parts.join(' ') : value;
+  const handleCardChange = (event: StripeCardElementChangeEvent) => {
+    setCardComplete(event.complete);
+    setCardError(event.error ? event.error.message : null);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -134,52 +67,74 @@ export default function ConektaPaymentForm({
     setError(null);
 
     // Validate form
-    if (!formData.name || !formData.email || !formData.cardNumber) {
+    if (!formData.name || !formData.email) {
       setError('Por favor completa todos los campos requeridos');
       setLoading(false);
       return;
     }
 
-    if (!conektaReady || !window.Conekta) {
+    if (!stripe || !elements) {
       setError('Sistema de pago no disponible. Por favor recarga la página.');
       setLoading(false);
       return;
     }
 
-    try {
-      // Step 1: Tokenize card with Conekta.js
-      const token = await new Promise<{ id: string }>((resolve, reject) => {
-        window.Conekta.Token.create(
-          {
-            card: {
-              number: formData.cardNumber.replace(/\s/g, ''),
-              name: formData.name,
-              exp_month: formData.cardMonth,
-              exp_year: formData.cardYear.length === 2 ? `20${formData.cardYear}` : formData.cardYear,
-              cvc: formData.cardCvc
-            }
-          },
-          resolve,
-          reject
-        );
-      });
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      setError('Error al cargar el formulario de tarjeta');
+      setLoading(false);
+      return;
+    }
 
-      // Step 2: Send token to backend
-      const response = await fetch('/api/payments/create-charge', {
+    try {
+      // Step 1: Create Payment Intent on backend
+      const intentResponse = await fetch('/api/payments/create-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          tokenId: token.id,
           productId,
           customerEmail: formData.email,
           customerName: formData.name,
-          customerPhone: formData.phone || undefined
+          customerPhone: formData.phone || undefined,
+          applicationId,
         })
       });
 
-      const data = await response.json();
+      const intentData = await intentResponse.json();
 
-      if (data.success) {
+      if (!intentData.success) {
+        setError(intentData.error || 'Error al crear el pago');
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Confirm payment with card element
+      const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(
+        intentData.clientSecret,
+        {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone || undefined,
+            },
+          },
+        }
+      );
+
+      if (confirmError) {
+        // Handle specific error types
+        if (confirmError.type === 'card_error' || confirmError.type === 'validation_error') {
+          setError(confirmError.message || 'Error con la tarjeta');
+        } else {
+          setError('Error al procesar el pago. Por favor intenta de nuevo.');
+        }
+        setLoading(false);
+        return;
+      }
+
+      if (paymentIntent?.status === 'succeeded') {
         // Track Purchase event
         await trackEvent("Purchase", {
           funnel: "pricing",
@@ -195,21 +150,27 @@ export default function ConektaPaymentForm({
         setSuccess(true);
 
         if (onSuccess) {
-          onSuccess(data.charge.id);
+          onSuccess(paymentIntent.id);
         }
 
         // Redirect to success page
         setTimeout(() => {
-          router.push(`/pago-exitoso?charge_id=${data.charge.id}&product=${productId}`);
+          router.push(`/pago-exitoso?payment_intent=${paymentIntent.id}&product=${productId}`);
         }, 1500);
+
+      } else if (paymentIntent?.status === 'requires_action') {
+        // 3D Secure or other authentication required
+        // Stripe.js handles this automatically with confirmCardPayment
+        setError('Se requiere verificación adicional. Por favor completa la autenticación.');
+        setLoading(false);
       } else {
-        setError(data.error || 'El pago fue rechazado. Por favor verifica tus datos.');
+        setError('El pago está pendiente de confirmación.');
+        setLoading(false);
       }
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Payment error:', err);
-      setError(err.message || 'Error al procesar el pago. Por favor intenta de nuevo.');
-    } finally {
+      setError(err instanceof Error ? err.message : 'Error al procesar el pago. Por favor intenta de nuevo.');
       setLoading(false);
     }
   };
@@ -219,9 +180,35 @@ export default function ConektaPaymentForm({
     currency: 'MXN'
   });
 
+  // Stripe CardElement styling to match brand
+  const cardElementOptions = {
+    style: {
+      base: {
+        fontSize: '16px',
+        color: '#ffffff',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        '::placeholder': {
+          color: 'rgba(255, 255, 255, 0.4)',
+        },
+        iconColor: '#ffffff',
+      },
+      invalid: {
+        color: '#ff6b6b',
+        iconColor: '#ff6b6b',
+      },
+      complete: {
+        color: '#4ade80',
+        iconColor: '#4ade80',
+      },
+    },
+    hidePostalCode: true, // Mexico doesn't require postal code
+  };
+
+  const isFormValid = stripe && cardComplete && formData.name && formData.email;
+
   return (
     <div className="w-full max-w-md mx-auto">
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Header */}
         <div className="text-center mb-6">
           <h3 className="text-xl font-bold text-white mb-2">{productName}</h3>
@@ -229,9 +216,9 @@ export default function ConektaPaymentForm({
         </div>
 
         {/* Error Message */}
-        {error && (
+        {(error || cardError) && (
           <div className="bg-red-500/20 border border-red-400/50 rounded-xl p-4 text-red-200 text-sm">
-            {error}
+            {error || cardError}
           </div>
         )}
 
@@ -299,84 +286,18 @@ export default function ConektaPaymentForm({
             <div className="space-y-4 pt-4 border-t border-white/20">
               <p className="text-sm font-medium text-white/80">Datos de Tarjeta</p>
 
-              <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
-                  Número de Tarjeta *
-                </label>
-                <input
-                  type="text"
-                  name="cardNumber"
-                  value={formData.cardNumber}
-                  onChange={(e) => {
-                    const formatted = formatCardNumber(e.target.value);
-                    setFormData(prev => ({ ...prev, cardNumber: formatted }));
-                  }}
-                  placeholder="4242 4242 4242 4242"
-                  maxLength={19}
-                  disabled={loading}
-                  required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-coral/50 focus:border-coral/50 disabled:opacity-50 font-mono"
+              <div className="px-4 py-3 bg-white/10 border border-white/20 rounded-xl">
+                <CardElement
+                  options={cardElementOptions}
+                  onChange={handleCardChange}
                 />
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
-                    Mes *
-                  </label>
-                  <input
-                    type="text"
-                    name="cardMonth"
-                    value={formData.cardMonth}
-                    onChange={handleChange}
-                    placeholder="12"
-                    maxLength={2}
-                    disabled={loading}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-coral/50 focus:border-coral/50 disabled:opacity-50 text-center font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
-                    Año *
-                  </label>
-                  <input
-                    type="text"
-                    name="cardYear"
-                    value={formData.cardYear}
-                    onChange={handleChange}
-                    placeholder="26"
-                    maxLength={4}
-                    disabled={loading}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-coral/50 focus:border-coral/50 disabled:opacity-50 text-center font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-white/80 mb-2">
-                    CVC *
-                  </label>
-                  <input
-                    type="text"
-                    name="cardCvc"
-                    value={formData.cardCvc}
-                    onChange={handleChange}
-                    placeholder="123"
-                    maxLength={4}
-                    disabled={loading}
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-coral/50 focus:border-coral/50 disabled:opacity-50 text-center font-mono"
-                  />
-                </div>
               </div>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={loading || !conektaReady}
+              disabled={loading || !isFormValid}
               className="w-full py-4 bg-coral hover:bg-coral-dark text-white font-bold text-lg rounded-full transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed shadow-lg"
             >
               {loading ? (
@@ -407,7 +328,7 @@ export default function ConektaPaymentForm({
             {/* Security Badge */}
             <div className="text-center text-xs text-white/50 space-y-1">
               <p>Pago seguro con encriptación SSL</p>
-              <p>Procesado por Conekta</p>
+              <p>Procesado por Stripe</p>
             </div>
           </>
         )}
