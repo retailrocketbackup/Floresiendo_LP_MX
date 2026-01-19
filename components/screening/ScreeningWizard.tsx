@@ -143,7 +143,7 @@ export function ScreeningWizard() {
     };
 
     await trackEvent(
-      "Lead",
+      "Lead_Retreat_Application",
       {
         funnel: "screening_application",
         content_type: "retreat_application",
@@ -154,7 +154,7 @@ export function ScreeningWizard() {
       },
       { enableCAPI: true }
     );
-    console.log("📋 SCREENING: Lead event tracked - form submitted");
+    console.log("📋 SCREENING: Lead_Retreat_Application event tracked - form submitted");
 
     try {
       const response = await fetch("/api/screening-application", {
@@ -179,9 +179,9 @@ export function ScreeningWizard() {
           });
           setShowApproved(true);
 
-          // Track CompleteRegistration for approved applications
+          // Track CompleteRegistration_Retreat for approved applications
           await trackEvent(
-            "CompleteRegistration",
+            "CompleteRegistration_Retreat",
             {
               funnel: "screening_application",
               content_type: "retreat_application",
@@ -192,14 +192,14 @@ export function ScreeningWizard() {
             },
             { enableCAPI: true }
           );
-          console.log("📋 SCREENING: CompleteRegistration tracked - application approved");
+          console.log("📋 SCREENING: CompleteRegistration_Retreat tracked - application approved");
         } else if (result.level === "yellow") {
           // Soft flag: show review modal
           setShowReviewFlag(true);
 
-          // Track CompleteRegistration for pending review applications
+          // Track CompleteRegistration_Retreat for pending review applications
           await trackEvent(
-            "CompleteRegistration",
+            "CompleteRegistration_Retreat",
             {
               funnel: "screening_application",
               content_type: "retreat_application",
@@ -210,7 +210,7 @@ export function ScreeningWizard() {
             },
             { enableCAPI: true }
           );
-          console.log("📋 SCREENING: CompleteRegistration tracked - pending review");
+          console.log("📋 SCREENING: CompleteRegistration_Retreat tracked - pending review");
         }
       } else {
         console.error("Submission error:", data);
