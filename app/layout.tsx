@@ -40,8 +40,8 @@ export default function RootLayout({
         {/* -- Facebook Domain Verification -- */}
         <meta name="facebook-domain-verification" content="mmdw3nkuclo02a7bnon1g57cmuco52" />
 
-        {/* -- Píxel de Meta con carga perezosa -- */}
-        <Script id="meta-pixel" strategy="lazyOnload">
+        {/* -- Píxel de Meta -- */}
+        <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function (f, b, e, v, n, t, s) {
               if (f.fbq) return;
