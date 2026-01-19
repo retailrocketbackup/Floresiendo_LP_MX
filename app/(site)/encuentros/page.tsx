@@ -72,7 +72,7 @@ export default function EncuentrosPage() {
           {/* Events Container */}
           <div className="max-w-2xl mx-auto space-y-6">
 
-            {/* Free Meditation Card - Feb 10 */}
+            {/* Free Meditation Card - Feb 17 */}
             <Link
               href="/f/meditacion-gratis"
               className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-purple-400/40 hover:border-purple-400 hover:bg-white/15 transition-all duration-300 group"
@@ -81,8 +81,8 @@ export default function EncuentrosPage() {
                 {/* Date Box - Purple accent */}
                 <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
                   <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
-                  <div className="text-3xl font-bold text-white my-1">10</div>
-                  <span className="text-white/80 text-xs font-medium">7:00 PM</span>
+                  <div className="text-3xl font-bold text-white my-1">17</div>
+                  <span className="text-white/80 text-xs font-medium">8:00 PM</span>
                 </div>
 
                 {/* Event Details */}
@@ -105,7 +105,7 @@ export default function EncuentrosPage() {
               </div>
             </Link>
 
-            {/* Free Conference Card - Feb 11 */}
+            {/* Free Conference Card - Feb 18 */}
             <Link
               href="/f/conferencia-vida-perfecta"
               className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-gold/40 hover:border-gold hover:bg-white/15 transition-all duration-300 group"
@@ -114,7 +114,7 @@ export default function EncuentrosPage() {
                 {/* Date Box - Gold accent */}
                 <div className="bg-gradient-to-br from-gold to-gold-dark rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
                   <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
-                  <div className="text-3xl font-bold text-white my-1">11</div>
+                  <div className="text-3xl font-bold text-white my-1">18</div>
                   <span className="text-white/80 text-xs font-medium">7:00 PM</span>
                 </div>
 

@@ -15,7 +15,7 @@ import { trackEvent } from "@/lib/meta-tracking";
 
 const VENUE_ADDRESS = "Filadelfia 128, piso 3, Colonia Nápoles, CDMX";
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=Filadelfia+128+Colonia+Napoles+CDMX";
-const CONFERENCE_DATE = "Miércoles 11 de Febrero 2026";
+const CONFERENCE_DATE = "Miércoles 18 de Febrero 2026";
 const CONFERENCE_TIME = "7:00 PM (hora Ciudad de México)";
 
 // Google Calendar link generator
@@ -27,9 +27,9 @@ function generateGoogleCalendarLink() {
     `Conferencia presencial gratuita con Ramón Henríquez.\n\nDirección: ${VENUE_ADDRESS}\n\nUna conversación honesta sobre el vacío que el éxito no llena.\n\nTe recomendamos llegar 10-15 minutos antes.`
   );
   const location = encodeURIComponent(VENUE_ADDRESS);
-  // February 11, 2026, 7:00 PM - 8:30 PM Mexico City (UTC-6)
-  const startDate = "20260212T010000Z"; // UTC time
-  const endDate = "20260212T023000Z";
+  // February 18, 2026, 7:00 PM - 8:30 PM Mexico City (UTC-6)
+  const startDate = "20260219T010000Z"; // UTC time
+  const endDate = "20260219T023000Z";
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
 }
@@ -42,8 +42,8 @@ function generateOutlookCalendarLink() {
   const details = encodeURIComponent(
     `Conferencia presencial gratuita con Ramón Henríquez.\n\nDirección: ${VENUE_ADDRESS}\n\nTe recomendamos llegar 10-15 minutos antes.`
   );
-  const startDate = "2026-02-11T19:00:00";
-  const endDate = "2026-02-11T20:30:00";
+  const startDate = "2026-02-18T19:00:00";
+  const endDate = "2026-02-18T20:30:00";
 
   return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&startdt=${startDate}&enddt=${endDate}&path=/calendar/action/compose&location=${encodeURIComponent(VENUE_ADDRESS)}`;
 }
@@ -74,7 +74,7 @@ export default function GraciasPage() {
             ¡Tu lugar está reservado!
           </h1>
           <p className="text-xl text-gray-600">
-            Te esperamos el 11 de febrero para una conversación diferente.
+            Te esperamos el 18 de febrero para una conversación diferente.
           </p>
         </div>
 

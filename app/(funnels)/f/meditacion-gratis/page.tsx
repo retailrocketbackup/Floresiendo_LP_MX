@@ -18,11 +18,11 @@ export default function MeditacionGratisPage() {
   const formRef = useRef<HTMLDivElement>(null);
 
   // Session details - update these for each campaign
-  const sessionDate = "Martes 10 de Febrero";
+  const sessionDate = "Martes 17 de Febrero";
   const sessionTime = "8:00 PM (Hora CDMX)";
 
-  // Target date for countdown: February 10, 2026 at 8:00 PM CDMX (UTC-6)
-  const eventDate = new Date("2026-02-10T20:00:00-06:00");
+  // Target date for countdown: February 17, 2026 at 8:00 PM CDMX (UTC-6)
+  const eventDate = new Date("2026-02-17T20:00:00-06:00");
 
   // Track page view on mount with funnel-specific event
   useEffect(() => {
@@ -517,7 +517,7 @@ export default function MeditacionGratisPage() {
                 <span className="text-coral text-xs font-medium">Solo 50 lugares</span>
               </div>
               <p className="text-burgundy font-semibold text-sm truncate">
-                Meditación Gratuita - 10 Feb
+                Meditación Gratuita - 17 Feb
               </p>
             </div>
             <button
