@@ -256,7 +256,7 @@ export function ConferenceRegistrationForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 text-base group"
+          className="w-full bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 text-base group text-shadow-sm"
         >
           {isSubmitting ? (
             <>

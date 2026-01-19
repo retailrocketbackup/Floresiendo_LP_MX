@@ -235,7 +235,7 @@ export default function MeditacionGratisPage() {
               <div className="sm:hidden mb-5">
                 <button
                   onClick={scrollToForm}
-                  className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-[0_4px_20px_rgba(255,111,97,0.4)] hover:shadow-[0_6px_25px_rgba(255,111,97,0.5)] transition-all duration-300 flex items-center justify-center gap-2 text-base group"
+                  className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-[0_4px_20px_rgba(255,111,97,0.4)] hover:shadow-[0_6px_25px_rgba(255,111,97,0.5)] transition-all duration-300 flex items-center justify-center gap-2 text-base group text-shadow-sm"
                 >
                   <span>Quiero mi lugar gratis</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -335,7 +335,7 @@ export default function MeditacionGratisPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-bold py-4 rounded-full transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:cursor-not-allowed"
+                  className="w-full bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-bold py-4 rounded-full transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:cursor-not-allowed text-shadow-sm"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
@@ -522,7 +522,7 @@ export default function MeditacionGratisPage() {
             </div>
             <button
               onClick={scrollToForm}
-              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm"
+              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm text-shadow-sm"
             >
               Reservar
               <ArrowRight className="w-4 h-4" />

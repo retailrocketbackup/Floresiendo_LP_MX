@@ -158,7 +158,7 @@ export default function ConferenciaVidaPerfectaPage() {
           {/* Mobile: Cohesive badge card */}
           <div className="sm:hidden text-center mb-4 animate-fade-in">
             <div className="inline-flex flex-col items-center gap-2 px-4 py-2.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
-              <span className="px-3 py-1 bg-coral text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+              <span className="px-3 py-1 bg-coral text-white rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm text-shadow-sm">
                 Conferencia Gratuita
               </span>
               <div className="flex items-center gap-2 text-white/90 text-xs font-medium">
@@ -245,7 +245,7 @@ export default function ConferenciaVidaPerfectaPage() {
           >
             <button
               onClick={scrollToForm}
-              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-[0_4px_20px_rgba(255,111,97,0.4)] hover:shadow-[0_6px_25px_rgba(255,111,97,0.5)] transition-all duration-300 flex items-center justify-center gap-2 text-base group"
+              className="w-full bg-coral hover:bg-coral-dark text-white font-bold py-4 px-6 rounded-full shadow-[0_4px_20px_rgba(255,111,97,0.4)] hover:shadow-[0_6px_25px_rgba(255,111,97,0.5)] transition-all duration-300 flex items-center justify-center gap-2 text-base group text-shadow-sm"
             >
               <span>Reserva tu lugar gratis</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -648,7 +648,7 @@ export default function ConferenciaVidaPerfectaPage() {
             </div>
             <button
               onClick={scrollToForm}
-              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm"
+              className="flex-shrink-0 bg-coral hover:bg-coral-dark text-white font-semibold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 text-sm text-shadow-sm"
             >
               Reservar
               <ArrowRight className="w-4 h-4" />
