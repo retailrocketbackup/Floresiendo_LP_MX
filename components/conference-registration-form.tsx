@@ -90,7 +90,7 @@ export function ConferenceRegistrationForm({
 
       // 3. Track CompleteRegistration event
       await trackEvent(
-        `CompleteRegistration`,
+        `CompleteRegistration_Conferencia`,
         {
           funnel: funnelName,
           content_type: "conference_registration",

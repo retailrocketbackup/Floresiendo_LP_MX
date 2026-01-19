@@ -122,7 +122,7 @@ export default function MeditacionGratisPage() {
 
       // 4. Meta tracking - CompleteRegistration after successful submission
       await trackEvent(
-        "CompleteRegistration",
+        "CompleteRegistration_Meditacion",
         {
           funnel: "meditacion-gratis",
           content_type: "meditation_registration",
