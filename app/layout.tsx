@@ -32,6 +32,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* -- Preconnect to third-party origins for faster loading -- */}
+        <link rel="preconnect" href="https://forms.hscollectedforms.net" />
+        <link rel="preconnect" href="https://js.hs-analytics.net" />
+        <link rel="preconnect" href="https://connect.facebook.net" />
+
         {/* -- Facebook Domain Verification -- */}
         <meta name="facebook-domain-verification" content="mmdw3nkuclo02a7bnon1g57cmuco52" />
 

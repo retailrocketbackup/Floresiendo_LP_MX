@@ -173,6 +173,7 @@ export default function MeditacionGratisPage() {
             alt="Fondo meditación"
             fill
             priority
+            quality={60}
             sizes="100vw"
             className="object-cover"
           />
