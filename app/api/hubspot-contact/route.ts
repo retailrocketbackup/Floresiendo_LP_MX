@@ -7,7 +7,11 @@ const HUBSPOT_API_BASE = "https://api.hubapi.com"
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { firstname, lastname, email, phone, pageUri, pageName, funnel_source } = body
+    const {
+      firstname, lastname, email, phone, pageUri, pageName, funnel_source,
+      // Tracking parameters for attribution
+      fbclid, gclid, utm_source, utm_medium, utm_campaign
+    } = body
 
     // Validar que los datos necesarios están presentes
     if (!firstname || !phone) {
@@ -35,8 +39,35 @@ export async function POST(request: Request) {
       properties.lastname = lastname
     }
 
-    // Add source tracking using a writable property
+    // Set analytics source based on tracking parameters for proper attribution
+    if (fbclid) {
+      properties.hs_analytics_source = 'PAID_SOCIAL'
+      properties.hs_analytics_source_data_1 = 'facebook'
+      properties.hs_analytics_source_data_2 = fbclid
+    } else if (gclid) {
+      properties.hs_analytics_source = 'PAID_SEARCH'
+      properties.hs_analytics_source_data_1 = 'google'
+      properties.hs_analytics_source_data_2 = gclid
+    } else if (utm_medium === 'cpc' || utm_medium === 'paid') {
+      properties.hs_analytics_source = 'PAID_SOCIAL'
+      properties.hs_analytics_source_data_1 = utm_source || 'unknown'
+      if (utm_campaign) {
+        properties.hs_analytics_source_data_2 = utm_campaign
+      }
+    } else if (utm_source) {
+      // Has UTM but not paid - likely organic or referral
+      properties.hs_analytics_source = 'REFERRALS'
+      properties.hs_analytics_source_data_1 = utm_source
+      if (utm_campaign) {
+        properties.hs_analytics_source_data_2 = utm_campaign
+      }
+    } else {
+      properties.hs_analytics_source = 'DIRECT_TRAFFIC'
+    }
+
+    // Store the first URL for debugging and additional attribution checks
     if (pageUri) {
+      properties.hs_analytics_first_url = pageUri
       properties.website = pageUri
     }
 

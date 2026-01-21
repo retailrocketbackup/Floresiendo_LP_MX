@@ -102,7 +102,10 @@ export default function MeditacionGratisPage() {
         .find((row) => row.startsWith("hubspotutk="))
         ?.split("=")[1];
 
-      // 3. Save to HubSpot (LM - Online Meditation Form)
+      // 3. Extract tracking parameters for attribution
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // 4. Save to HubSpot (LM - Online Meditation Form)
       const contactData = {
         firstname: formData.firstname,
         phone: fullPhoneNumber,
@@ -112,6 +115,12 @@ export default function MeditacionGratisPage() {
         hutk: hutk || undefined,
         pageUri: window.location.href,
         pageName: "Meditación Gratis - Floresiendo",
+        // Tracking parameters for proper source attribution
+        fbclid: urlParams.get('fbclid') || undefined,
+        gclid: urlParams.get('gclid') || undefined,
+        utm_source: urlParams.get('utm_source') || undefined,
+        utm_medium: urlParams.get('utm_medium') || undefined,
+        utm_campaign: urlParams.get('utm_campaign') || undefined,
       };
 
       await fetch("/api/hubspot-contact", {
@@ -120,7 +129,7 @@ export default function MeditacionGratisPage() {
         body: JSON.stringify(contactData),
       });
 
-      // 4. Meta tracking - CompleteRegistration after successful submission
+      // 5. Meta tracking - CompleteRegistration after successful submission
       await trackEvent(
         "CompleteRegistration_Meditacion",
         {

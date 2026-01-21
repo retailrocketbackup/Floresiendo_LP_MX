@@ -65,7 +65,10 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           .find((row) => row.startsWith("hubspotutk="))
           ?.split("=")[1]
 
-        // 3. Prepara los datos para tu nueva API
+        // 3. Extract tracking parameters from URL for attribution
+        const urlParams = new URLSearchParams(window.location.search)
+
+        // 4. Prepara los datos para tu nueva API
         const contactData = {
           firstname: formData.firstname,
           lastname: formData.lastname,
@@ -76,9 +79,15 @@ export function CustomContactForm({ funnel = "unknown" }: CustomContactFormProps
           hutk: hutk || undefined,
           pageUri: window.location.href,
           pageName: document.title || "Floresiendo Landing Page",
+          // Tracking parameters for proper source attribution
+          fbclid: urlParams.get('fbclid') || undefined,
+          gclid: urlParams.get('gclid') || undefined,
+          utm_source: urlParams.get('utm_source') || undefined,
+          utm_medium: urlParams.get('utm_medium') || undefined,
+          utm_campaign: urlParams.get('utm_campaign') || undefined,
         }
 
-        // 4. Llama a TU PROPIA API, no a la de HubSpot
+        // 5. Llama a TU PROPIA API, no a la de HubSpot
         await fetch("/api/hubspot-contact", {
           method: "POST",
           headers: {

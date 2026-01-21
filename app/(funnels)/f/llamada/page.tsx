@@ -54,6 +54,9 @@ export default function LlamadaPage() {
         { enableCAPI: true }
       );
 
+      // Extract tracking parameters for attribution
+      const urlParams = new URLSearchParams(window.location.search);
+
       // Save to HubSpot
       const contactData = {
         firstname: formData.firstname,
@@ -61,6 +64,13 @@ export default function LlamadaPage() {
         phone: fullPhoneNumber,
         funnel_source: `llamada-${option}`,
         landing_page: window.location.href,
+        pageUri: window.location.href,
+        // Tracking parameters for proper source attribution
+        fbclid: urlParams.get('fbclid') || undefined,
+        gclid: urlParams.get('gclid') || undefined,
+        utm_source: urlParams.get('utm_source') || undefined,
+        utm_medium: urlParams.get('utm_medium') || undefined,
+        utm_campaign: urlParams.get('utm_campaign') || undefined,
       };
 
       await fetch("/api/hubspot-contact", {
