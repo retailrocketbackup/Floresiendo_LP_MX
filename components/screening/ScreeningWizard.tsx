@@ -8,6 +8,7 @@ import { ChevronRight } from "lucide-react";
 import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
+import { validateStep } from "@/lib/screening-validation";
 import { trackEvent } from "@/lib/meta-tracking";
 import { StepProgress } from "./StepProgress";
 import { WelcomeScreen } from "./WelcomeScreen";
@@ -47,6 +48,7 @@ export function ScreeningWizard() {
   const [knockoutData, setKnockoutData] = useState({ message: "", recommendation: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const hasTrackedPageView = useRef(false);
 
   // Handle hydration mismatch with localStorage
@@ -93,6 +95,17 @@ export function ScreeningWizard() {
   }, [evaluateRisk]);
 
   const handleNext = () => {
+    // First validate current step is complete
+    const validation = validateStep(currentStep, formData);
+    if (!validation.isValid) {
+      setValidationError(validation.errorMessage || 'Por favor completa todos los campos requeridos');
+      return;
+    }
+
+    // Clear any previous validation error
+    setValidationError(null);
+
+    // Then check for risk/knockout conditions
     const result = evaluateRisk();
     if (result.level === "red") {
       setKnockoutData({
@@ -106,6 +119,14 @@ export function ScreeningWizard() {
   };
 
   const handleSubmit = async () => {
+    // Validate consent step before submitting
+    const validation = validateStep(7, formData);
+    if (!validation.isValid) {
+      setValidationError(validation.errorMessage || 'Por favor acepta todos los consentimientos');
+      return;
+    }
+
+    setValidationError(null);
     setIsSubmitting(true);
     const result = evaluateRisk();
 
@@ -270,11 +291,7 @@ export function ScreeningWizard() {
         </div>
 
         {/* Progress Bar */}
-        <StepProgress
-          currentStep={currentStep}
-          steps={STEPS}
-          completionPercentage={completionPercentage}
-        />
+        <StepProgress completionPercentage={completionPercentage} />
 
         {/* Risk indicator - fixed height container to prevent layout shift */}
         <div className={`mb-4 overflow-hidden transition-all duration-300 ${
@@ -318,11 +335,23 @@ export function ScreeningWizard() {
             {renderCurrentStep()}
           </div>
 
+          {/* Validation Error */}
+          {validationError && (
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <p className="text-red-700 text-sm">{validationError}</p>
+              </div>
+            </div>
+          )}
+
           {/* Navigation */}
           <div className="flex justify-between pt-6 border-t border-[var(--warm-gray-200)]">
             <button
               type="button"
-              onClick={prevStep}
+              onClick={() => { setValidationError(null); prevStep(); }}
               disabled={currentStep === 1}
               className="px-6 py-3 text-[var(--burgundy)] font-medium rounded-lg hover:bg-[var(--warm-gray-100)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
