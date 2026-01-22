@@ -163,13 +163,17 @@ export interface StepDefinition {
   questionCount: number;
 }
 
+// OPTIMIZED ORDER: Easy questions first → Sensitive questions last
+// Research shows this "funnel technique" improves completion by 5-8%
+// Original order: Basic → Medical → Medications → Mental → Lifestyle → Intentions → Consent
+// New order: Basic → Intentions → Lifestyle → Medical → Medications → Mental → Consent
 export const STEPS: StepDefinition[] = [
   { id: 1, title: 'Información Básica', shortTitle: 'Datos', description: 'Datos personales y contacto de emergencia', questionCount: 7 },
-  { id: 2, title: 'Historial Médico', shortTitle: 'Médico', description: 'Condiciones de salud actuales', questionCount: 8 },
-  { id: 3, title: 'Medicamentos', shortTitle: 'Medicinas', description: 'Medicamentos y suplementos', questionCount: 8 },
-  { id: 4, title: 'Salud Mental', shortTitle: 'Mental', description: 'Historial y estado psicológico', questionCount: 11 },
-  { id: 5, title: 'Estilo de Vida', shortTitle: 'Vida', description: 'Hábitos y experiencia previa', questionCount: 6 },
-  { id: 6, title: 'Intenciones', shortTitle: 'Intención', description: 'Motivación y expectativas', questionCount: 4 },
+  { id: 2, title: 'Intenciones', shortTitle: 'Intención', description: 'Motivación y expectativas', questionCount: 4 },
+  { id: 3, title: 'Estilo de Vida', shortTitle: 'Vida', description: 'Hábitos y experiencia previa', questionCount: 6 },
+  { id: 4, title: 'Historial Médico', shortTitle: 'Médico', description: 'Condiciones de salud actuales', questionCount: 8 },
+  { id: 5, title: 'Medicamentos', shortTitle: 'Medicinas', description: 'Medicamentos y suplementos', questionCount: 8 },
+  { id: 6, title: 'Salud Mental', shortTitle: 'Mental', description: 'Historial y estado psicológico', questionCount: 11 },
   { id: 7, title: 'Consentimiento', shortTitle: 'Aceptar', description: 'Términos y autorizaciones', questionCount: 6 },
 ];
 

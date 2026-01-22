@@ -64,16 +64,24 @@ export function WelcomeScreen({ selectedPackage, onStart }: WelcomeScreenProps) 
         <div className="max-w-2xl mx-auto">
           {/* Main Card */}
           <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
-            {/* Why this form */}
+            {/* Preamble of Care */}
             <div className="text-center mb-8">
-              <h2 className="text-xl font-bold text-[var(--burgundy)] mb-3">
-                Cuestionario de Elegibilidad
+              <h2 className="text-xl font-bold text-[var(--burgundy)] mb-4">
+                Tu Proceso de Sanación Comienza Aquí
               </h2>
-              <p className="text-[var(--warm-gray-600)]">
-                Para garantizar tu seguridad y una experiencia transformadora, necesitamos
-                conocerte un poco mejor. Este breve cuestionario nos ayuda a personalizar
-                tu experiencia.
-              </p>
+
+              {/* Care Statement - NOT a waiver */}
+              <div className="bg-[var(--coral-light)]/30 border border-[var(--coral)]/30 rounded-xl p-5 mb-4 text-left">
+                <p className="text-[var(--burgundy-dark)] leading-relaxed">
+                  <span className="text-xl mr-2">🌸</span>
+                  <strong>Este formulario no es un examen.</strong> Es nuestra herramienta principal para
+                  conocerte y cuidarte. Tu honestidad nos permite crear un espacio seguro diseñado
+                  especialmente para ti.
+                </p>
+                <p className="text-[var(--warm-gray-600)] text-sm mt-3">
+                  Toda tu información está protegida y es tratada con absoluta confidencialidad.
+                </p>
+              </div>
             </div>
 
             {/* What to expect */}

@@ -33,8 +33,12 @@ export function MedicalHistoryStep() {
     <div className="py-4 border-b border-[var(--warm-gray-100)] last:border-0">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1">
-          <label className="font-medium text-[var(--warm-gray-800)]">{label}</label>
-          {helpText && <p className="text-sm text-[var(--warm-gray-500)] mt-1">{helpText}</p>}
+          <span className="font-medium text-[var(--warm-gray-800)]">{label}</span>
+          {helpText && (
+            <p className="text-sm text-[var(--burgundy-dark)] mt-2 bg-[var(--coral-light)]/30 px-3 py-2 rounded-lg border-l-4 border-[var(--coral)]">
+              <span className="opacity-80">💡</span> {helpText}
+            </p>
+          )}
         </div>
         <div className="flex gap-3">
           <button
@@ -73,7 +77,7 @@ export function MedicalHistoryStep() {
       <BooleanQuestion
         id="hasCardiacCondition"
         label="¿Tienes alguna condición cardíaca?"
-        helpText="Arritmia, soplo, enfermedad coronaria, etc."
+        helpText="Tu corazón trabajará un poco más durante la experiencia y queremos estar seguros de que está fuerte y listo para este viaje. (Ej: Arritmia, soplo, enfermedad coronaria)"
         value={medicalHistory.hasCardiacCondition}
       />
 
@@ -97,6 +101,7 @@ export function MedicalHistoryStep() {
       <BooleanQuestion
         id="hasHypertension"
         label="¿Tienes hipertensión (presión alta)?"
+        helpText="La medicina puede elevar temporalmente la presión; necesitamos saber esto para monitorearte adecuadamente y mantenerte seguro."
         value={medicalHistory.hasHypertension}
       />
 
@@ -160,6 +165,7 @@ export function MedicalHistoryStep() {
       <BooleanQuestion
         id="hasEpilepsy"
         label="¿Tienes epilepsia o historial de convulsiones?"
+        helpText="Buscamos prevenir cualquier estímulo intenso que pueda afectar tu sistema nervioso y mantenerte en un espacio de total tranquilidad."
         value={medicalHistory.hasEpilepsy}
       />
 
@@ -178,6 +184,7 @@ export function MedicalHistoryStep() {
       <BooleanQuestion
         id="isPregnant"
         label="¿Estás embarazada o crees que podrías estarlo?"
+        helpText="Es fundamental protegerte a ti y al bebé, ya que la intensidad energética y física de la experiencia no es recomendable durante esta etapa."
         value={medicalHistory.isPregnant}
       />
 
@@ -190,6 +197,7 @@ export function MedicalHistoryStep() {
       <BooleanQuestion
         id="hadRecentSurgery"
         label="¿Has tenido alguna cirugía en los últimos 6 meses?"
+        helpText="Tu cuerpo necesita energía para procesar la medicina; queremos asegurarnos de que tu recuperación física sea la prioridad en este momento."
         value={medicalHistory.hadRecentSurgery}
       />
 

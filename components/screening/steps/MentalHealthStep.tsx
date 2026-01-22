@@ -37,8 +37,12 @@ export function MentalHealthStep() {
     <div className="py-4 border-b border-[var(--warm-gray-100)] last:border-0">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1">
-          <label className="font-medium text-[var(--warm-gray-800)]">{label}</label>
-          {helpText && <p className="text-sm text-[var(--warm-gray-500)] mt-1">{helpText}</p>}
+          <span className="font-medium text-[var(--warm-gray-800)]">{label}</span>
+          {helpText && (
+            <p className="text-sm text-[var(--burgundy-dark)] mt-2 bg-[var(--coral-light)]/30 px-3 py-2 rounded-lg border-l-4 border-[var(--coral)]">
+              <span className="opacity-80">💡</span> {helpText}
+            </p>
+          )}
           {warning && value === true && (
             <p className="text-sm text-red-600 mt-1 flex items-center">
               <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -94,7 +98,7 @@ export function MentalHealthStep() {
       <BooleanQuestion
         id="hasPsychoticDisorder"
         label="¿Tienes o has tenido algún trastorno psicótico?"
-        helpText="Psicosis, delirios, alucinaciones persistentes"
+        helpText="La medicina abre puertas de la percepción que requieren una base sólida; esto nos ayuda a determinar si es el momento más seguro para ti. (Ej: Psicosis, delirios, alucinaciones persistentes)"
         value={mentalHealth.hasPsychoticDisorder}
         warning={true}
         sensitive={true}
@@ -103,6 +107,7 @@ export function MentalHealthStep() {
       <BooleanQuestion
         id="hasSchizophrenia"
         label="¿Tienes diagnóstico de esquizofrenia?"
+        helpText="Ciertas sensibilidades mentales requieren un cuidado especial; nuestra prioridad es que tu mente se mantenga en un lugar seguro y estable."
         value={mentalHealth.hasSchizophrenia}
         warning={true}
         sensitive={true}
@@ -111,6 +116,7 @@ export function MentalHealthStep() {
       <BooleanQuestion
         id="hasBipolar"
         label="¿Tienes diagnóstico de trastorno bipolar?"
+        helpText="Queremos evitar desequilibrios emocionales intensos y asegurarnos de que tengas la estabilidad necesaria para integrar bien la experiencia."
         value={mentalHealth.hasBipolar}
         sensitive={true}
       />
@@ -134,6 +140,7 @@ export function MentalHealthStep() {
       <BooleanQuestion
         id="isInPsychiatricTreatment"
         label="¿Estás actualmente en tratamiento psiquiátrico o psicológico?"
+        helpText="Saber esto nos permite apoyarte mejor, asegurando que tu proceso terapéutico actual se complemente con la ceremonia, y no que choque."
         value={mentalHealth.isInPsychiatricTreatment}
         sensitive={true}
       />
@@ -166,7 +173,7 @@ export function MentalHealthStep() {
         <BooleanQuestion
           id="hasSuicidalIdeation"
           label="¿Has tenido pensamientos suicidas en los últimos 6 meses?"
-          helpText="Por favor responde con honestidad - tu seguridad es lo primero"
+          helpText="Tu bienestar emocional es nuestra prioridad; esta información nos ayuda a brindarte la contención y el apoyo humano que necesitas."
           value={mentalHealth.hasSuicidalIdeation}
           warning={true}
           sensitive={true}
@@ -195,7 +202,7 @@ export function MentalHealthStep() {
       <BooleanQuestion
         id="hasActiveAddiction"
         label="¿Tienes una adicción activa actualmente?"
-        helpText="Alcohol, drogas, comportamiento compulsivo"
+        helpText="Para que la medicina trabaje profundamente, es ideal saber cómo está tu cuerpo y así guiarte hacia la mejor preparación posible. (Ej: Alcohol, drogas, comportamiento compulsivo)"
         value={mentalHealth.hasActiveAddiction}
         warning={true}
         sensitive={true}

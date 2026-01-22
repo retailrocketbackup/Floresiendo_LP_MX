@@ -35,8 +35,12 @@ export function MedicationsStep() {
     <div className="py-4 border-b border-[var(--warm-gray-100)] last:border-0">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex-1">
-          <label className="font-medium text-[var(--warm-gray-800)]">{label}</label>
-          {helpText && <p className="text-sm text-[var(--warm-gray-500)] mt-1">{helpText}</p>}
+          <span className="font-medium text-[var(--warm-gray-800)]">{label}</span>
+          {helpText && (
+            <p className="text-sm text-[var(--burgundy-dark)] mt-2 bg-[var(--coral-light)]/30 px-3 py-2 rounded-lg border-l-4 border-[var(--coral)]">
+              <span className="opacity-80">💡</span> {helpText}
+            </p>
+          )}
           {warning && value === true && (
             <p className="text-sm text-red-600 mt-1 flex items-center">
               <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -86,6 +90,7 @@ export function MedicationsStep() {
       <BooleanQuestion
         id="takingMedications"
         label="¿Estás tomando algún medicamento actualmente?"
+        helpText="Queremos asegurarnos de que nada interfiera químicamente con tu proceso; conocer esto nos ayuda a prevenir interacciones no deseadas."
         value={medications.takingMedications}
       />
 
@@ -98,7 +103,7 @@ export function MedicationsStep() {
           <BooleanQuestion
             id="hasMaoiInhibitors"
             label="Inhibidores de MAO (IMAOs)"
-            helpText="Fenelzina, tranilcipromina, isocarboxazida, moclobemida"
+            helpText="La medicina actúa de forma similar a estos compuestos; saber esto es vital para evitar una sobrecarga en tu sistema y cuidarte. (Ej: Fenelzina, tranilcipromina, isocarboxazida, moclobemida)"
             value={medications.hasMaoiInhibitors}
             warning={true}
           />
@@ -106,7 +111,7 @@ export function MedicationsStep() {
           <BooleanQuestion
             id="hasSsriAntidepressants"
             label="Antidepresivos ISRS"
-            helpText="Fluoxetina (Prozac), sertralina (Zoloft), escitalopram, paroxetina, etc."
+            helpText="Estos medicamentos y la medicina utilizan las mismas vías en el cerebro; necesitamos esta información para proteger tu equilibrio neuroquímico. (Ej: Fluoxetina, sertralina, escitalopram, paroxetina)"
             value={medications.hasSsriAntidepressants}
             warning={true}
           />
@@ -131,7 +136,7 @@ export function MedicationsStep() {
           <BooleanQuestion
             id="hasLithium"
             label="Litio"
-            helpText="Usado para trastorno bipolar"
+            helpText="La combinación con la medicina puede ser muy intensa físicamente; necesitamos saberlo para proteger tu sistema nervioso ante todo."
             value={medications.hasLithium}
             warning={true}
           />
@@ -139,7 +144,7 @@ export function MedicationsStep() {
           <BooleanQuestion
             id="hasAntipsychotics"
             label="Antipsicóticos"
-            helpText="Risperidona, quetiapina, olanzapina, aripiprazol, etc."
+            helpText="Algunos compuestos pueden bloquear o alterar los efectos de la medicina; queremos garantizar que tu experiencia fluya sin contratiempos. (Ej: Risperidona, quetiapina, olanzapina, aripiprazol)"
             value={medications.hasAntipsychotics}
             warning={true}
           />
@@ -147,7 +152,7 @@ export function MedicationsStep() {
           <BooleanQuestion
             id="hasCardiacMedications"
             label="Medicamentos cardíacos"
-            helpText="Para el corazón o presión arterial"
+            helpText="Es importante saber cómo apoyar a tu corazón, ya que la medicina puede influir levemente en la circulación y el ritmo cardíaco."
             value={medications.hasCardiacMedications}
           />
 

@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { useScreeningStore, useCompletionPercentage, setOnSaveComplete } from "@/lib/screening-store";
+import { useScreeningStore, useCompletionPercentage } from "@/lib/screening-store";
 import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
 import { trackEvent } from "@/lib/meta-tracking";
@@ -47,9 +47,7 @@ export function ScreeningWizard() {
   const [knockoutData, setKnockoutData] = useState({ message: "", recommendation: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
-  const [showSaveIndicator, setShowSaveIndicator] = useState(false);
   const hasTrackedPageView = useRef(false);
-  const saveIndicatorTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Handle hydration mismatch with localStorage
   useEffect(() => {
@@ -58,29 +56,6 @@ export function ScreeningWizard() {
     if (currentStep > 1 || formData.basicInfo?.fullName) {
       setShowWelcome(false);
     }
-  }, []);
-
-  // Save indicator - triggered by callback when localStorage write completes
-  useEffect(() => {
-    const handleSaveComplete = () => {
-      setShowSaveIndicator(true);
-      // Hide after 2 seconds
-      if (saveIndicatorTimeout.current) {
-        clearTimeout(saveIndicatorTimeout.current);
-      }
-      saveIndicatorTimeout.current = setTimeout(() => {
-        setShowSaveIndicator(false);
-      }, 2000);
-    };
-
-    setOnSaveComplete(handleSaveComplete);
-
-    return () => {
-      setOnSaveComplete(null);
-      if (saveIndicatorTimeout.current) {
-        clearTimeout(saveIndicatorTimeout.current);
-      }
-    };
   }, []);
 
   // Track ViewContent when user starts the screening form (only once)
@@ -224,14 +199,22 @@ export function ScreeningWizard() {
     }
   };
 
+  // OPTIMIZED ORDER: Easy questions first → Sensitive questions last
+  // Step 1: Basic Info (easy - personal data)
+  // Step 2: Intentions (easy - qualitative goals, builds emotional connection)
+  // Step 3: Lifestyle (medium - habits, non-threatening)
+  // Step 4: Medical History (medium - factual health data)
+  // Step 5: Medications (medium - medication list)
+  // Step 6: Mental Health (sensitive - moved LAST before consent for trust building)
+  // Step 7: Consent (closure)
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1: return <BasicInfoStep />;
-      case 2: return <MedicalHistoryStep />;
-      case 3: return <MedicationsStep />;
-      case 4: return <MentalHealthStep />;
-      case 5: return <LifestyleStep />;
-      case 6: return <IntentionsStep />;
+      case 2: return <IntentionsStep />;
+      case 3: return <LifestyleStep />;
+      case 4: return <MedicalHistoryStep />;
+      case 5: return <MedicationsStep />;
+      case 6: return <MentalHealthStep />;
       case 7: return <ConsentStep />;
       default: return <BasicInfoStep />;
     }
@@ -292,20 +275,6 @@ export function ScreeningWizard() {
           steps={STEPS}
           completionPercentage={completionPercentage}
         />
-
-        {/* Auto-save indicator - fixed height container to prevent layout shift */}
-        <div className="h-10 mb-4 flex items-center justify-center">
-          <span
-            className={`inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 transition-opacity duration-300 ${
-              showSaveIndicator ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-            Guardado automáticamente
-          </span>
-        </div>
 
         {/* Risk indicator - fixed height container to prevent layout shift */}
         <div className={`mb-4 overflow-hidden transition-all duration-300 ${
