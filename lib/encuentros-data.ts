@@ -114,9 +114,9 @@ export const encuentroFebrero2026: Encuentro = {
   slug: "febrero-2026",
   title: "Encuentro de Febrero",
   subtitle: "4 días de crecimiento personal",
-  startDate: "2026-02-19",
-  endDate: "2026-02-22",
-  displayDates: "19-22 de Febrero, 2026",
+  startDate: "2026-02-26",
+  endDate: "2026-03-01",
+  displayDates: "26 de Febrero - 1 de Marzo, 2026",
   location: "Morelos, México",
   venue: "Santuario FloreSiendo",
   spotsTotal: 15,
@@ -156,7 +156,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 1",
       weekday: "Jueves",
-      date: "19 de Febrero",
+      date: "26 de Febrero",
       theme: "Llegada y Apertura",
       tagline: "Cruzar el umbral hacia tu interior",
       items: [
@@ -169,7 +169,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 2",
       weekday: "Viernes",
-      date: "20 de Febrero",
+      date: "27 de Febrero",
       theme: "Inmersión Profunda",
       tagline: "Soltar lo que ya no sirve",
       items: [
@@ -188,7 +188,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 3",
       weekday: "Sábado",
-      date: "21 de Febrero",
+      date: "28 de Febrero",
       theme: "Expansión",
       tagline: "Encontrar tu centro y tu luz",
       items: [
@@ -206,7 +206,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 4",
       weekday: "Domingo",
-      date: "22 de Febrero",
+      date: "1 de Marzo",
       theme: "Integración y Cierre",
       tagline: "Renacer con claridad y propósito",
       items: [
