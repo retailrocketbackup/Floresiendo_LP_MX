@@ -2,6 +2,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   getEncuentroBySlug,
   encuentros,
@@ -57,9 +58,23 @@ export default async function EncuentroPage({
       {/* Meta Tracking */}
       <EncuentroTracking slug={encuentro.slug} />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-burgundy via-burgundy-dark to-burgundy-dark text-white py-20 px-4">
-        <div className="absolute inset-0 bg-[url('/images/cosmic-spiritual-background.webp')] opacity-20 bg-cover bg-center" />
-        <div className="relative max-w-4xl mx-auto text-center">
+      <section className="relative text-white py-20 md:py-32 px-4 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/venue-alberca.webp"
+            alt="Retiro FloreSiendo en Morelos"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />
+        </div>
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl animate-pulse-soft" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gold/20 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: "1s" }} />
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
           <Link
             href="/encuentros"
             className="inline-flex items-center gap-2 text-coral-light hover:text-white transition-colors mb-6"
@@ -97,6 +112,47 @@ export default async function EncuentroPage({
           <p className="text-xl text-warm-gray-700 leading-relaxed">
             {encuentro.description}
           </p>
+        </div>
+      </section>
+
+      {/* El Espacio - Venue Gallery */}
+      <section className="py-16 px-4 bg-warm-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">El espacio</span>
+            <h2 className="text-burgundy mt-3 mb-4 text-3xl md:text-4xl font-bold">Conoce tu refugio</h2>
+            <p className="text-warm-gray-600 max-w-2xl mx-auto">
+              Un espacio diseñado para tu proceso, rodeado de naturaleza y con todas las comodidades.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              { src: "/images/venue-alberca.webp", alt: "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
+              { src: "/images/venue-salon-ceremonias.webp", alt: "Salón de ceremonias", span: "" },
+              { src: "/images/venue-jardin.webp", alt: "Jardín", span: "" },
+              { src: "/images/venue-sala.webp", alt: "Sala común", span: "" },
+              { src: "/images/venue-terraza.webp", alt: "Terraza", span: "" },
+              { src: "/images/venue-habitacion-1.webp", alt: "Habitación", span: "" },
+            ].map((image, index) => (
+              <div
+                key={index}
+                className={`relative overflow-hidden rounded-2xl group ${image.span} ${index === 0 ? "aspect-square md:aspect-auto" : "aspect-square"}`}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes={index === 0 ? "(max-width: 768px) 50vw, 66vw" : "(max-width: 768px) 50vw, 33vw"}
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-burgundy/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute bottom-4 left-4 text-white font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {image.alt}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
