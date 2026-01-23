@@ -22,17 +22,8 @@ export default function EncuentrosPage() {
 
       {/* Hero */}
       <section className="relative py-32 md:py-40 overflow-hidden -mb-px">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/venue-alberca.webp"
-            alt="Retiro FloreSiendo en Morelos"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />
-        </div>
+        <div className="absolute inset-0 bg-[url('/images/cosmic-spiritual-background.webp')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />
 
         {/* Decorative elements */}
         <div className="absolute top-20 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl animate-pulse-soft" />
