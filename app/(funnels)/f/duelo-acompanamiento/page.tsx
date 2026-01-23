@@ -31,7 +31,7 @@ function WhatsAppCTA({
     trackWhatsAppLead({
       page: "duelo-acompanamiento",
       buttonLocation: location,
-      eventName: "Lead_Duelo",
+      eventName: "Whatsapp_a_Karla",
     });
   };
 

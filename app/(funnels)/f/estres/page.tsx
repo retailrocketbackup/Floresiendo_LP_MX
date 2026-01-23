@@ -15,8 +15,8 @@ const TrackedVimeoPlayer = dynamic(
 
 // V003 - "Sientes que tu rutina te consume"
 const VIMEO_VIDEO_ID = "1143232548";
-const MAIN_WHATSAPP = "524427845308";
-const WHATSAPP_MESSAGE = "Hola, vi el video sobre encontrar paz interior, y me gustaría saber cómo pueden acompañarme.";
+const MAIN_WHATSAPP = "34603701464"; // Roble (Spain)
+const WHATSAPP_MESSAGE = "Hola Roble, vi el video sobre encontrar paz interior, y me gustaría saber cómo pueden acompañarme.";
 
 // WhatsApp button component with tracking
 function WhatsAppCTA({
@@ -32,7 +32,7 @@ function WhatsAppCTA({
     trackWhatsAppLead({
       page: "estres",
       buttonLocation: location,
-      eventName: "Lead_Estres",
+      eventName: "Whatsapp_a_Roble",
     });
   };
 

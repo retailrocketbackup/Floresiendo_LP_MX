@@ -15,8 +15,8 @@ const TrackedVimeoPlayer = dynamic(
 
 // V004 - "Duelo y pérdida"
 const VIMEO_VIDEO_ID = "1142274109";
-const MAIN_WHATSAPP = "5215540180914";
-const WHATSAPP_MESSAGE = "Hola, vi el video sobre el proceso de duelo y me gustaría saber cómo pueden acompañarme.";
+const MAIN_WHATSAPP = "5215540180914"; // Karla (Mexico)
+const WHATSAPP_MESSAGE = "Hola Karla, vi el video sobre el proceso de duelo y me gustaría saber cómo pueden acompañarme.";
 
 // WhatsApp button component with tracking
 function WhatsAppCTA({
@@ -32,7 +32,7 @@ function WhatsAppCTA({
     trackWhatsAppLead({
       page: "duelo",
       buttonLocation: location,
-      eventName: "Lead_Duelo",
+      eventName: "Whatsapp_a_Karla",
     });
   };
 
