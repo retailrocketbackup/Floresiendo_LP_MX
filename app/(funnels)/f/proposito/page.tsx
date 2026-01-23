@@ -32,7 +32,7 @@ function WhatsAppCTA({
     trackWhatsAppLead({
       page: "proposito",
       buttonLocation: location,
-      eventName: "Whatsapp_a_Ramon",
+      eventName: "Lead_Proposito",
     });
   };
 

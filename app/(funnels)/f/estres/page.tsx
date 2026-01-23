@@ -32,7 +32,7 @@ function WhatsAppCTA({
     trackWhatsAppLead({
       page: "estres",
       buttonLocation: location,
-      eventName: "Whatsapp_a_Roble",
+      eventName: "Lead_Estres",
     });
   };
 
