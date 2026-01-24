@@ -137,7 +137,7 @@ export function ScreeningWizard() {
 
     // Track step completion for analytics
     const stepData = STEPS.find((s) => s.id === currentStep);
-    onStepComplete(currentStep, stepData?.name || `step${currentStep}`, validationAttempts);
+    onStepComplete(currentStep, stepData?.shortTitle || `step${currentStep}`, validationAttempts);
     setValidationAttempts(0); // Reset for next step
 
     nextStep();

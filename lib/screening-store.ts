@@ -1,6 +1,7 @@
 // lib/screening-store.ts
 // Zustand store with localStorage persistence for screening wizard
 
+import { useMemo } from 'react';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type {
@@ -187,13 +188,12 @@ export const useScreeningStore = create<ScreeningStore>()(
   )
 );
 
-// Helper hook to calculate completion percentage - memoized to prevent excessive recalculation
+// Helper hook to calculate completion percentage - properly memoized
 export function useCompletionPercentage(): number {
-  // Use shallow comparison selector to only recalculate when form structure changes
   const formData = useScreeningStore((state) => state.formData);
 
-  // Memoize the calculation by checking if form data changed
-  const calculatePercentage = () => {
+  // Properly memoize with useMemo to prevent re-renders on every keystroke
+  return useMemo(() => {
     let filledFields = 0;
 
     // Count filled fields per section
@@ -219,7 +219,5 @@ export function useCompletionPercentage(): number {
     // Estimate total expected fields (44 questions = roughly 44+ fields)
     const expectedTotal = 49; // 7 + 8 + 8 + 11 + 6 + 4 + 5
     return Math.round((filledFields / expectedTotal) * 100);
-  };
-
-  return calculatePercentage();
+  }, [formData]);
 }

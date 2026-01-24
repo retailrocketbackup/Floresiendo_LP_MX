@@ -16,6 +16,8 @@ export function LifestyleStep() {
   const handleBooleanChange = (e: React.MouseEvent, name: string, value: boolean) => {
     e.preventDefault();
     e.stopPropagation();
+    // Remove focus to prevent browser auto-scroll on state change
+    (e.target as HTMLButtonElement).blur();
     updateLifestyle({ [name]: value });
   };
 

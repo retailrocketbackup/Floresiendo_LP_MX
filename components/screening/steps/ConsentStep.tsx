@@ -8,7 +8,8 @@ export function ConsentStep() {
   const { formData, updateConsent } = useScreeningStore();
   const consent = (formData.consent || {}) as Partial<ConsentData>;
 
-  const handleCheckboxChange = (name: string, checked: boolean) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, name: string, checked: boolean) => {
+    e.target.blur(); // Prevent auto-scroll
     updateConsent({ [name]: checked });
   };
 
@@ -36,7 +37,7 @@ export function ConsentStep() {
             type="checkbox"
             id={id}
             checked={checked || false}
-            onChange={(e) => handleCheckboxChange(id, e.target.checked)}
+            onChange={(e) => handleCheckboxChange(e, id, e.target.checked)}
             className="peer sr-only"
             required={required}
           />
