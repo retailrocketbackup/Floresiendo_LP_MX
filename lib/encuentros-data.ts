@@ -232,8 +232,11 @@ export const encuentroFebrero2026: Encuentro = {
     {
       name: "Ramon Henriquez",
       role: "Terapeuta Holistico",
-      bio: `Terapeuta psicoemocional con formación en programación neurlinguista (PNL) y psicoterapia integrativa, con más de 10 años de experiencia en acompañamiento de procesos de expansión de consciencia.
-      Aporta una perspectiva integrativa que combina herramientas psicoterapeuticas modernas para trabajar la mente con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
+      bio: `Terapeuta psicoemocional con formación en Programación Neurolingüística (PNL) y psicoterapia integrativa.
+
+      Cuenta con más de 10 años de experiencia en acompañamiento de procesos de expansión de consciencia.
+
+      Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas para trabajar la mente con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
       image: "/images/ramon-henriquez.png",
     },
     {
