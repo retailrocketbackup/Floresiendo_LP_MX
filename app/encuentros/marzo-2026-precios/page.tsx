@@ -172,8 +172,7 @@ export default function PreciosFebrero2026() {
                 <div className="text-center pt-4">
                   <p className="text-warm-gray-600 text-lg mb-2">Aparta con solo</p>
                   <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-dark">$3,000 MXN</p>
-                  <p className="text-warm-gray-400 text-xs mb-2">+Impuestos</p>
-                  <p className="text-warm-gray-500 mb-8 text-sm">El resto lo pagas antes del encuentro</p>
+                  <p className="text-warm-gray-500 mb-8 text-sm mt-2">El resto lo pagas antes del encuentro</p>
                   <button
                     onClick={() => handlePackageSelect('DEPOSIT', 'Anticipo - Encuentro Febrero 2026', 300000)}
                     className="px-10 py-4 bg-gradient-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold text-warm-gray-900 font-bold text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-gold/30"
@@ -200,11 +199,10 @@ export default function PreciosFebrero2026() {
 
                   <div className="text-center mb-8">
                     <p className="text-warm-gray-400 line-through text-lg mb-1">$8,000 MXN</p>
-                    <p className="text-5xl font-bold text-warm-gray-800 mb-0">
+                    <p className="text-5xl font-bold text-warm-gray-800 mb-2">
                       $7,100 <span className="text-xl font-normal text-warm-gray-500">MXN</span>
                     </p>
-                    <p className="text-warm-gray-400 text-xs mb-1">+Impuestos</p>
-                    <span className="inline-block mt-2 bg-coral/10 text-coral-dark px-4 py-1.5 rounded-full text-sm font-medium border border-coral/20">
+                    <span className="inline-block bg-coral/10 text-coral-dark px-4 py-1.5 rounded-full text-sm font-medium border border-coral/20">
                       Ahorra $900
                     </span>
                   </div>
@@ -260,11 +258,10 @@ export default function PreciosFebrero2026() {
 
                   <div className="text-center mb-8">
                     <p className="text-warm-gray-400 line-through text-lg mb-1">$11,500 MXN</p>
-                    <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-coral to-coral-dark mb-0">
+                    <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-coral to-coral-dark mb-2">
                       $10,200 <span className="text-xl font-normal text-warm-gray-500">MXN</span>
                     </p>
-                    <p className="text-warm-gray-400 text-xs mb-1">+Impuestos</p>
-                    <span className="inline-block mt-2 bg-coral/10 text-coral-dark px-4 py-1.5 rounded-full text-sm font-medium border border-coral/20">
+                    <span className="inline-block bg-coral/10 text-coral-dark px-4 py-1.5 rounded-full text-sm font-medium border border-coral/20">
                       Ahorra $1,300
                     </span>
                   </div>
@@ -322,7 +319,6 @@ export default function PreciosFebrero2026() {
                       <h4 className="text-lg font-semibold text-warm-gray-800 mb-1">{addon.name}</h4>
                       <p className="text-warm-gray-500 text-sm mb-4">{addon.desc}</p>
                       <p className="text-2xl font-bold text-gold-dark">{addon.price} <span className="text-sm font-normal text-warm-gray-400">MXN</span></p>
-                      <p className="text-warm-gray-400 text-xs">+Impuestos</p>
                     </div>
                   </div>
                 ))}
