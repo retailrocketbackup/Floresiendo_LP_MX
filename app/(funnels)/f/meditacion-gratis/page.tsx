@@ -258,7 +258,7 @@ export default function MeditacionGratisPage() {
               <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
                   <Image
-                    src="/facilitador.jpg"
+                    src="/images/ramon-henriquez.png"
                     alt="Ramón Henríquez"
                     width={56}
                     height={56}
@@ -439,7 +439,7 @@ export default function MeditacionGratisPage() {
             <div className="w-full max-w-sm mx-auto">
               <div className="relative aspect-square rounded-full overflow-hidden shadow-2xl ring-4 ring-coral/30">
                 <Image
-                  src="/facilitador.jpg"
+                  src="/images/ramon-henriquez.png"
                   alt="Ramón Henríquez - Facilitador de meditación"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"

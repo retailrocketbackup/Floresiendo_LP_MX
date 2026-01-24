@@ -235,7 +235,7 @@ export const encuentroFebrero2026: Encuentro = {
       bio: `Psicoterapeuta con formación en acompañamiento de procesos de expansión de consciencia.
       Aporta una perspectiva integrativa que combina la psicología moderna con la sabiduría ancestral,
       creando un espacio seguro para la exploración interior.`,
-      image: "",
+      image: "/images/ramon-henriquez.png",
     },
     {
       name: "Karla Nava",

@@ -296,7 +296,7 @@ export default function ConferenciaVidaPerfectaPage() {
             <div className="flex items-center gap-3 p-3.5 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
               <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-gold/50">
                 <Image
-                  src="/facilitador.jpg"
+                  src="/images/ramon-henriquez.png"
                   alt="Ramón Henríquez"
                   width={48}
                   height={48}
@@ -478,7 +478,7 @@ export default function ConferenciaVidaPerfectaPage() {
           <ScrollAnimate animation="fade-up" delay={100} className="mb-10">
             <div className="relative aspect-[4/5] max-w-[280px] mx-auto w-full rounded-3xl overflow-hidden shadow-xl group">
               <Image
-                src="/facilitador.jpg"
+                src="/images/ramon-henriquez.png"
                 alt="Ramón Henríquez"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
