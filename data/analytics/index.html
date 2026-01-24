@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screening Analytics | FloreSiendo 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      /* Floresiendo Brand Colors */
+      --coral: #e85555;
+      --coral-light: #f78080;
+      --coral-dark: #d04545;
+      --burgundy: #8b2a4a;
+      --burgundy-light: #a64466;
+      --burgundy-dark: #6b1a3a;
+      --gold: #d4a853;
+      --gold-light: #e8c97a;
+      --gold-dark: #b8923d;
+      --warm-gray-900: #1a1a19;
+      --warm-gray-800: #2d2d2b;
+      --warm-gray-700: #4a4a48;
+      --warm-gray-600: #5d5f5d;
+      --warm-gray-500: #7a7368;
+      --warm-gray-400: #a8a198;
+      --warm-gray-100: #f0eeea;
+      --warm-white: #faf9f7;
+
+      /* Dashboard Theme */
+      --bg-primary: var(--warm-gray-900);
+      --bg-secondary: var(--warm-gray-800);
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.1);
+      --text-primary: var(--warm-white);
+      --text-secondary: var(--warm-gray-400);
+      --text-muted: var(--warm-gray-500);
+      --primary: var(--coral);
+      --primary-glow: rgba(232, 85, 85, 0.3);
+      --secondary: var(--burgundy);
+      --accent: var(--gold);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.3);
+      --warning: var(--gold);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.3);
+      --gradient-1: linear-gradient(135deg, var(--coral) 0%, var(--burgundy) 100%);
+      --gradient-2: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --gradient-3: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Animated background with Floresiendo brand glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(232, 85, 85, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(139, 42, 74, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(212, 168, 83, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .dashboard {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 50%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-left p {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .last-updated {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Cards */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-title svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-1);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-card.success::before { background: var(--gradient-2); }
+    .stat-card.warning::before { background: var(--gradient-3); }
+    .stat-card.danger::before { background: var(--danger); }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-card.primary .stat-value { color: var(--primary); }
+    .stat-card.success .stat-value { color: var(--success); }
+    .stat-card.warning .stat-value { color: var(--warning); }
+    .stat-card.danger .stat-value { color: var(--danger); }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .stat-change {
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .stat-change.up { color: var(--success); }
+    .stat-change.down { color: var(--danger); }
+
+    /* Charts Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .chart-card {
+      min-height: 300px;
+    }
+
+    .chart-card.wide { grid-column: span 8; }
+    .chart-card.narrow { grid-column: span 4; }
+    .chart-card.half { grid-column: span 6; }
+    .chart-card.third { grid-column: span 4; }
+
+    @media (max-width: 1200px) {
+      .chart-card.wide, .chart-card.narrow, .chart-card.half, .chart-card.third {
+        grid-column: span 12;
+      }
+    }
+
+    .chart-container {
+      position: relative;
+      height: 250px;
+    }
+
+    /* Funnel */
+    .funnel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .funnel-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .funnel-bar-container {
+      flex: 1;
+      position: relative;
+    }
+
+    .funnel-bar {
+      height: 36px;
+      background: var(--gradient-1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 1rem;
+      transition: width 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .funnel-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1));
+    }
+
+    .funnel-bar-value {
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: white;
+      z-index: 1;
+    }
+
+    .funnel-label {
+      width: 100px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-align: right;
+    }
+
+    .funnel-pct {
+      width: 60px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .funnel-dropoff {
+      font-size: 0.7rem;
+      color: var(--danger);
+      width: 70px;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metric-item:last-child {
+      border-bottom: none;
+    }
+
+    .metric-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .metric-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .metric-icon.desktop { background: rgba(232, 85, 85, 0.2); }
+    .metric-icon.mobile { background: rgba(139, 42, 74, 0.25); }
+    .metric-icon.tablet { background: rgba(212, 168, 83, 0.25); }
+
+    .metric-value {
+      font-weight: 700;
+      font-size: 1.125rem;
+    }
+
+    .metric-bar {
+      width: 100px;
+      height: 6px;
+      background: var(--bg-secondary);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-left: 1rem;
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    /* Sessions Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+
+    tr:hover td {
+      background: var(--bg-card-hover);
+    }
+
+    .session-id {
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.75rem;
+      color: var(--coral-light);
+      background: rgba(232, 85, 85, 0.15);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+    }
+
+    .badge-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* Step Progress */
+    .step-progress {
+      display: flex;
+      gap: 3px;
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .step-dot.completed {
+      background: var(--success);
+      color: white;
+    }
+
+    .step-dot.active {
+      background: var(--primary);
+      color: white;
+      animation: stepPulse 1.5s infinite;
+    }
+
+    @keyframes stepPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(232, 85, 85, 0.4); }
+      50% { box-shadow: 0 0 0 4px rgba(232, 85, 85, 0.4); }
+    }
+
+    /* Expand Button */
+    .expand-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .expand-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    /* Session Details */
+    .session-details {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .session-details.open {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .events-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border-radius: 8px;
+      font-size: 0.875rem;
+    }
+
+    .event-type {
+      background: var(--primary);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .event-type.start { background: var(--success); }
+    .event-type.complete { background: #10b981; }
+    .event-type.pause { background: var(--warning); }
+    .event-type.heartbeat { background: var(--text-muted); }
+
+    .event-time {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-left: auto;
+    }
+
+    /* Time of Day Heatmap */
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      gap: 2px;
+    }
+
+    .heatmap-cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .heatmap-cell.level-1 { background: rgba(232, 85, 85, 0.2); }
+    .heatmap-cell.level-2 { background: rgba(232, 85, 85, 0.4); }
+    .heatmap-cell.level-3 { background: rgba(232, 85, 85, 0.6); }
+    .heatmap-cell.level-4 { background: rgba(232, 85, 85, 0.9); color: white; }
+
+    .heatmap-labels {
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      gap: 2px;
+      margin-top: 0.5rem;
+    }
+
+    .heatmap-label {
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    /* Loading State */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 50vh;
+      gap: 1rem;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--success);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transform: translateX(calc(100% + 2rem));
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.75rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard { padding: 1rem; }
+      .header { flex-direction: column; align-items: flex-start; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-value { font-size: 1.75rem; }
+      .funnel-label { width: 70px; font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1>🌸 Screening Analytics</h1>
+        <p>FloreSiendo Retreat Application Tracking</p>
+      </div>
+      <div class="header-right">
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          <span>Live</span>
+        </div>
+        <span class="last-updated" id="lastUpdated">Updated just now</span>
+      </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <span class="loading-text">Loading analytics data...</span>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div id="dashboard" style="display: none;">
+      <!-- Stats Cards -->
+      <div class="stats-grid" id="stats"></div>
+
+      <!-- Charts Grid -->
+      <div class="charts-grid">
+        <!-- Funnel Chart -->
+        <div class="glass-card chart-card wide">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+            Conversion Funnel
+          </div>
+          <div class="funnel-container" id="funnel"></div>
+        </div>
+
+        <!-- Completion Rate Doughnut -->
+        <div class="glass-card chart-card narrow">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Completion Rate
+          </div>
+          <div class="chart-container">
+            <canvas id="completionChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Time per Step Bar Chart -->
+        <div class="glass-card chart-card half">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Average Time per Step
+          </div>
+          <div class="chart-container">
+            <canvas id="timePerStepChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Drop-off Rate Chart -->
+        <div class="glass-card chart-card half">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            Drop-off by Step
+          </div>
+          <div class="chart-container">
+            <canvas id="dropoffChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <!-- Device Breakdown -->
+        <div class="glass-card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Device Breakdown
+          </div>
+          <div id="deviceBreakdown"></div>
+        </div>
+
+        <!-- Time of Day -->
+        <div class="glass-card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            Sessions by Hour
+          </div>
+          <div class="heatmap" id="heatmap"></div>
+          <div class="heatmap-labels" id="heatmapLabels"></div>
+        </div>
+
+        <!-- Screen Width Distribution -->
+        <div class="glass-card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/></svg>
+            Screen Width Distribution
+          </div>
+          <div class="chart-container" style="height: 180px;">
+            <canvas id="screenWidthChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sessions Table -->
+      <div class="glass-card">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Session Details
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Session ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Device</th>
+                <th>Last Step</th>
+                <th>Duration</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sessions"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">+</div>
+    <span id="toastMessage">New session detected</span>
+  </div>
+
+  <script>
+    // Configuration
+    const SESSION_FILES = [
+      'session_1769133484269_2z809kc.json',
+      'session_1769215190675_1ji8pnv.json',
+      'session_1769215208066_34ywsyk.json',
+      'session_1769215682333_j3k2p7v.json',
+      'session_1769220273608_bg5jmzy.json',
+      'session_1769220642570_y20uc4w.json',
+      'session_1769220858380_35awqsl.json'
+    ];
+
+    const STEP_NAMES = ['Datos', 'Intención', 'Vida', 'Médico', 'Medicinas', 'Mental', 'Consentimiento', 'Confirmación'];
+    const REFRESH_INTERVAL = 10000; // 10 seconds
+
+    let sessions = [];
+    let previousSessionCount = 0;
+    let charts = {};
+
+    // Utility Functions
+    function parseDevice(userAgent) {
+      if (!userAgent) return 'Unknown';
+      if (/Mobile|Android|iPhone|iPad/.test(userAgent)) {
+        if (/iPad|Tablet/.test(userAgent)) return 'Tablet';
+        return 'Mobile';
+      }
+      return 'Desktop';
+    }
+
+    function formatDuration(ms) {
+      if (!ms || ms < 0) return '0s';
+      const seconds = Math.floor(ms / 1000);
+      if (seconds < 60) return `${seconds}s`;
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return `${minutes}m ${remainingSeconds}s`;
+    }
+
+    function animateNumber(element, target, duration = 500) {
+      const start = parseInt(element.textContent) || 0;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (target - start) * easeOut);
+        element.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Data Loading
+    async function loadSessions() {
+      try {
+        const promises = SESSION_FILES.map(async (file) => {
+          try {
+            const res = await fetch(file + '?t=' + Date.now());
+            return await res.json();
+          } catch (e) {
+            console.error('Failed to load', file, e);
+            return null;
+          }
+        });
+
+        sessions = (await Promise.all(promises)).filter(Boolean);
+        sessions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        // Check for new sessions
+        if (previousSessionCount > 0 && sessions.length > previousSessionCount) {
+          showToast(`${sessions.length - previousSessionCount} new session(s) detected!`);
+        }
+        previousSessionCount = sessions.length;
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('lastUpdated').textContent = `Updated ${new Date().toLocaleTimeString('es-MX')}`;
+
+        renderAll();
+      } catch (error) {
+        console.error('Error loading sessions:', error);
+      }
+    }
+
+    function renderAll() {
+      renderStats();
+      renderFunnel();
+      renderCompletionChart();
+      renderTimePerStepChart();
+      renderDropoffChart();
+      renderDeviceBreakdown();
+      renderHeatmap();
+      renderScreenWidthChart();
+      renderSessions();
+    }
+
+    // Render Functions
+    function renderStats() {
+      const total = sessions.length;
+      const completed = sessions.filter(s => s.completed).length;
+      const abandoned = total - completed;
+      const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      const durations = sessions.map(s => {
+        const start = s.events?.find(e => e.type === 'session_start')?.timestamp;
+        const end = s.events?.find(e => e.type === 'session_complete')?.timestamp;
+        return start && end ? end - start : null;
+      }).filter(Boolean);
+
+      const avgDuration = durations.length > 0
+        ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length / 1000)
+        : 0;
+
+      document.getElementById('stats').innerHTML = `
+        <div class="glass-card stat-card primary">
+          <div class="stat-value" id="statTotal">${total}</div>
+          <div class="stat-label">Total Sessions</div>
+        </div>
+        <div class="glass-card stat-card success">
+          <div class="stat-value" id="statCompleted">${completed}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="glass-card stat-card danger">
+          <div class="stat-value" id="statAbandoned">${abandoned}</div>
+          <div class="stat-label">Abandoned</div>
+        </div>
+        <div class="glass-card stat-card ${rate >= 50 ? 'success' : 'warning'}">
+          <div class="stat-value">${rate}%</div>
+          <div class="stat-label">Completion Rate</div>
+        </div>
+        <div class="glass-card stat-card primary">
+          <div class="stat-value">${avgDuration}s</div>
+          <div class="stat-label">Avg Duration</div>
+        </div>
+      `;
+    }
+
+    function renderFunnel() {
+      const stepCounts = {};
+      STEP_NAMES.forEach((_, i) => stepCounts[i + 1] = 0);
+
+      sessions.forEach(s => {
+        const maxStep = s.lastActiveStep || 1;
+        for (let i = 1; i <= maxStep; i++) {
+          stepCounts[i]++;
+        }
+      });
+
+      const total = sessions.length || 1;
+      let html = '';
+
+      STEP_NAMES.forEach((name, i) => {
+        const step = i + 1;
+        const count = stepCounts[step] || 0;
+        const pct = Math.round((count / total) * 100);
+        const prevCount = stepCounts[step - 1] || total;
+        const dropoff = prevCount > 0 ? Math.round(((prevCount - count) / prevCount) * 100) : 0;
+        const barWidth = pct;
+
+        html += `
+          <div class="funnel-step">
+            <span class="funnel-label">${name}</span>
+            <div class="funnel-bar-container">
+              <div class="funnel-bar" style="width: ${barWidth}%">
+                <span class="funnel-bar-value">${count}</span>
+              </div>
+            </div>
+            <span class="funnel-pct">${pct}%</span>
+            <span class="funnel-dropoff">${dropoff > 0 ? `-${dropoff}%` : ''}</span>
+          </div>
+        `;
+      });
+
+      document.getElementById('funnel').innerHTML = html;
+    }
+
+    function renderCompletionChart() {
+      const ctx = document.getElementById('completionChart').getContext('2d');
+      const completed = sessions.filter(s => s.completed).length;
+      const abandoned = sessions.length - completed;
+
+      if (charts.completion) charts.completion.destroy();
+
+      charts.completion = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completed', 'Abandoned'],
+          datasets: [{
+            data: [completed, abandoned],
+            backgroundColor: ['#10b981', '#8b2a4a'],
+            borderWidth: 0,
+            cutout: '75%'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#94a3b8', font: { size: 12 } }
+            }
+          }
+        }
+      });
+    }
+
+    function renderTimePerStepChart() {
+      const ctx = document.getElementById('timePerStepChart').getContext('2d');
+
+      const stepTimes = {};
+      STEP_NAMES.forEach((_, i) => stepTimes[i + 1] = []);
+
+      sessions.forEach(s => {
+        (s.stepAnalytics || []).forEach(sa => {
+          if (stepTimes[sa.stepId]) {
+            stepTimes[sa.stepId].push(sa.timeOnStepMs / 1000);
+          }
+        });
+      });
+
+      const avgTimes = STEP_NAMES.map((_, i) => {
+        const times = stepTimes[i + 1];
+        return times.length > 0 ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : 0;
+      });
+
+      if (charts.timePerStep) charts.timePerStep.destroy();
+
+      charts.timePerStep = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: STEP_NAMES,
+          datasets: [{
+            label: 'Avg Time (seconds)',
+            data: avgTimes,
+            backgroundColor: 'rgba(232, 85, 85, 0.85)',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(255,255,255,0.05)' },
+              ticks: { color: '#94a3b8' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8', maxRotation: 45 }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    function renderDropoffChart() {
+      const ctx = document.getElementById('dropoffChart').getContext('2d');
+
+      const stepCounts = {};
+      STEP_NAMES.forEach((_, i) => stepCounts[i + 1] = 0);
+
+      sessions.forEach(s => {
+        const maxStep = s.lastActiveStep || 1;
+        for (let i = 1; i <= maxStep; i++) {
+          stepCounts[i]++;
+        }
+      });
+
+      const total = sessions.length || 1;
+      const dropoffs = STEP_NAMES.map((_, i) => {
+        const step = i + 1;
+        const prevCount = stepCounts[step - 1] || total;
+        const count = stepCounts[step] || 0;
+        return prevCount > 0 ? Math.round(((prevCount - count) / prevCount) * 100) : 0;
+      });
+
+      if (charts.dropoff) charts.dropoff.destroy();
+
+      charts.dropoff = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: STEP_NAMES,
+          datasets: [{
+            label: 'Drop-off %',
+            data: dropoffs,
+            backgroundColor: dropoffs.map(d => d > 20 ? '#8b2a4a' : d > 10 ? '#d4a853' : '#10b981'),
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 100,
+              grid: { color: 'rgba(255,255,255,0.05)' },
+              ticks: { color: '#94a3b8', callback: v => v + '%' }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8' }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    function renderDeviceBreakdown() {
+      const devices = { Desktop: 0, Mobile: 0, Tablet: 0, Unknown: 0 };
+
+      sessions.forEach(s => {
+        const startEvent = s.events?.find(e => e.type === 'session_start');
+        const ua = startEvent?.data?.userAgent || '';
+        const device = parseDevice(ua);
+        devices[device]++;
+      });
+
+      const total = sessions.length || 1;
+      const icons = { Desktop: '💻', Mobile: '📱', Tablet: '📟', Unknown: '❓' };
+
+      let html = '';
+      ['Desktop', 'Mobile', 'Tablet'].forEach(device => {
+        const count = devices[device];
+        const pct = Math.round((count / total) * 100);
+        html += `
+          <div class="metric-item">
+            <div class="metric-label">
+              <span class="metric-icon ${device.toLowerCase()}">${icons[device]}</span>
+              ${device}
+            </div>
+            <div style="display: flex; align-items: center;">
+              <span class="metric-value">${count}</span>
+              <div class="metric-bar">
+                <div class="metric-bar-fill" style="width: ${pct}%"></div>
+              </div>
+              <span style="color: var(--text-muted); font-size: 0.75rem; margin-left: 0.5rem;">${pct}%</span>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('deviceBreakdown').innerHTML = html;
+    }
+
+    function renderHeatmap() {
+      const hours = new Array(24).fill(0);
+
+      sessions.forEach(s => {
+        const date = new Date(s.createdAt);
+        hours[date.getHours()]++;
+      });
+
+      const max = Math.max(...hours) || 1;
+
+      let heatmapHtml = '';
+      let labelsHtml = '';
+
+      hours.forEach((count, hour) => {
+        const level = count === 0 ? 0 : Math.ceil((count / max) * 4);
+        heatmapHtml += `<div class="heatmap-cell level-${level}" title="${hour}:00 - ${count} sessions">${count || ''}</div>`;
+        labelsHtml += `<div class="heatmap-label">${hour}</div>`;
+      });
+
+      document.getElementById('heatmap').innerHTML = heatmapHtml;
+      document.getElementById('heatmapLabels').innerHTML = labelsHtml;
+    }
+
+    function renderScreenWidthChart() {
+      const ctx = document.getElementById('screenWidthChart').getContext('2d');
+
+      const widthBuckets = { '<768': 0, '768-1024': 0, '1024-1440': 0, '>1440': 0 };
+
+      sessions.forEach(s => {
+        const startEvent = s.events?.find(e => e.type === 'session_start');
+        const width = startEvent?.data?.screenWidth || 0;
+
+        if (width < 768) widthBuckets['<768']++;
+        else if (width < 1024) widthBuckets['768-1024']++;
+        else if (width < 1440) widthBuckets['1024-1440']++;
+        else widthBuckets['>1440']++;
+      });
+
+      if (charts.screenWidth) charts.screenWidth.destroy();
+
+      charts.screenWidth = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: Object.keys(widthBuckets),
+          datasets: [{
+            data: Object.values(widthBuckets),
+            backgroundColor: ['#e85555', '#d4a853', '#8b2a4a', '#10b981'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 12 }
+            }
+          }
+        }
+      });
+    }
+
+    function renderSessions() {
+      const tbody = document.getElementById('sessions');
+
+      if (sessions.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty-state">
+              <div class="empty-state-icon">📊</div>
+              <p>No sessions recorded yet</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = sessions.map((s, idx) => {
+        const date = new Date(s.createdAt).toLocaleString('es-MX', {
+          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+        const lastStep = s.lastActiveStep || 1;
+        const stepName = STEP_NAMES[lastStep - 1] || `Step ${lastStep}`;
+
+        const startEvent = s.events?.find(e => e.type === 'session_start');
+        const endEvent = s.events?.find(e => e.type === 'session_complete') || s.events?.[s.events.length - 1];
+        const duration = startEvent && endEvent ? endEvent.timestamp - startEvent.timestamp : 0;
+
+        const ua = startEvent?.data?.userAgent || '';
+        const device = parseDevice(ua);
+        const deviceIcon = device === 'Mobile' ? '📱' : device === 'Tablet' ? '📟' : '💻';
+
+        const shortId = s.sessionId.split('_').pop();
+
+        const stepDots = STEP_NAMES.map((name, i) => {
+          const stepNum = i + 1;
+          const stepData = s.stepAnalytics?.find(sa => sa.stepId === stepNum);
+          const timeOnStep = stepData ? Math.round(stepData.timeOnStepMs / 1000) : 0;
+
+          let cls = '';
+          if (stepNum < lastStep || (stepNum === lastStep && s.completed)) cls = 'completed';
+          else if (stepNum === lastStep) cls = 'active';
+
+          return `<div class="step-dot ${cls}" title="${name}: ${timeOnStep}s">${stepNum}</div>`;
+        }).join('');
+
+        return `
+          <tr>
+            <td><span class="session-id">${shortId}</span></td>
+            <td>${date}</td>
+            <td>
+              <span class="badge ${s.completed ? 'badge-success' : 'badge-danger'}">
+                <span class="badge-dot"></span>
+                ${s.completed ? 'Completed' : 'Abandoned'}
+              </span>
+            </td>
+            <td>${deviceIcon} ${device}</td>
+            <td>${stepName}</td>
+            <td>${formatDuration(duration)}</td>
+            <td>
+              <div class="step-progress">${stepDots}</div>
+            </td>
+            <td>
+              <button class="expand-btn" onclick="toggleDetails(${idx})">Details</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" style="padding: 0;">
+              <div class="session-details" id="details-${idx}">
+                <strong style="color: var(--text-primary);">Events Timeline</strong>
+                <div class="events-timeline">
+                  ${(s.events || []).map(e => `
+                    <div class="event-item">
+                      <span class="event-type ${e.type.includes('start') ? 'start' : e.type.includes('complete') ? 'complete' : e.type.includes('pause') ? 'pause' : 'heartbeat'}">${e.type}</span>
+                      <span style="color: var(--text-secondary);">Step ${e.data?.lastActiveStep || 1}</span>
+                      <span class="event-time">${new Date(e.receivedAt || e.timestamp).toLocaleTimeString('es-MX')}</span>
+                    </div>
+                  `).join('')}
+                </div>
+                ${s.stepAnalytics?.length ? `
+                  <div style="margin-top: 1.5rem;">
+                    <strong style="color: var(--text-primary);">Step Analytics</strong>
+                    <table style="margin-top: 0.75rem; width: 100%;">
+                      <tr style="color: var(--text-muted); font-size: 0.75rem;">
+                        <th style="text-align: left; padding: 0.5rem;">Step</th>
+                        <th style="text-align: right; padding: 0.5rem;">Time</th>
+                        <th style="text-align: right; padding: 0.5rem;">Fields</th>
+                        <th style="text-align: right; padding: 0.5rem;">Validation Attempts</th>
+                      </tr>
+                      ${s.stepAnalytics.map(sa => `
+                        <tr style="font-size: 0.875rem;">
+                          <td style="padding: 0.5rem;">${sa.stepName}</td>
+                          <td style="text-align: right; padding: 0.5rem; color: var(--primary);">${Math.round(sa.timeOnStepMs / 1000)}s</td>
+                          <td style="text-align: right; padding: 0.5rem;">${sa.fieldsInteracted}</td>
+                          <td style="text-align: right; padding: 0.5rem; ${sa.validationAttempts > 0 ? 'color: var(--danger);' : ''}">${sa.validationAttempts}</td>
+                        </tr>
+                      `).join('')}
+                    </table>
+                  </div>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function toggleDetails(idx) {
+      const el = document.getElementById(`details-${idx}`);
+      el.classList.toggle('open');
+    }
+
+    // Initialize
+    loadSessions();
+
+    // Auto-refresh
+    setInterval(loadSessions, REFRESH_INTERVAL);
+  </script>
+</body>
+</html>
