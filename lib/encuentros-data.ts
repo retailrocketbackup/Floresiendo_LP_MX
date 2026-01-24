@@ -112,11 +112,11 @@ export interface Encuentro {
 // February 2026 Encuentro Data
 export const encuentroFebrero2026: Encuentro = {
   slug: "febrero-2026",
-  title: "Encuentro de Febrero",
+  title: "Encuentro de Marzo",
   subtitle: "4 días de crecimiento personal",
-  startDate: "2026-02-26",
-  endDate: "2026-03-01",
-  displayDates: "26 de Febrero - 1 de Marzo, 2026",
+  startDate: "2026-03-05",
+  endDate: "2026-03-08",
+  displayDates: "5-8 de Marzo, 2026",
   location: "Morelos, México",
   venue: "Santuario FloreSiendo",
   spotsTotal: 15,
@@ -156,7 +156,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 1",
       weekday: "Jueves",
-      date: "26 de Febrero",
+      date: "5 de Marzo",
       theme: "Llegada y Apertura",
       tagline: "Cruzar el umbral hacia tu interior",
       items: [
@@ -169,7 +169,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 2",
       weekday: "Viernes",
-      date: "27 de Febrero",
+      date: "6 de Marzo",
       theme: "Inmersión Profunda",
       tagline: "Soltar lo que ya no sirve",
       items: [
@@ -188,7 +188,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 3",
       weekday: "Sábado",
-      date: "28 de Febrero",
+      date: "7 de Marzo",
       theme: "Expansión",
       tagline: "Encontrar tu centro y tu luz",
       items: [
@@ -206,7 +206,7 @@ export const encuentroFebrero2026: Encuentro = {
     {
       day: "Día 4",
       weekday: "Domingo",
-      date: "1 de Marzo",
+      date: "8 de Marzo",
       theme: "Integración y Cierre",
       tagline: "Renacer con claridad y propósito",
       items: [
@@ -264,7 +264,7 @@ export const encuentroFebrero2026: Encuentro = {
   ],
 
   whatsappNumber: "524427845308",
-  whatsappMessage: "Hola, me interesa el Encuentro de Febrero 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
+  whatsappMessage: "Hola, me interesa el Encuentro de Marzo 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
 };
 
 // All encuentros

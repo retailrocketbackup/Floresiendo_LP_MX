@@ -136,19 +136,19 @@ export default function EncuentrosPage() {
               </div>
             </Link>
 
-            {/* Retreat Card - Feb 26 - Mar 1 */}
+            {/* Retreat Card - Mar 5-8 */}
             <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 {/* Date Box */}
                 <div className="bg-coral rounded-2xl p-6 text-center min-w-[140px] shadow-lg">
-                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Feb - Mar</span>
-                  <div className="text-4xl font-bold text-white my-1">26-1</div>
+                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Marzo</span>
+                  <div className="text-4xl font-bold text-white my-1">5-8</div>
                   <span className="text-white/80 text-sm font-medium">2026</span>
                 </div>
 
                 {/* Event Details */}
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-2xl font-bold text-white mb-2">Encuentro de Febrero</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">Encuentro de Marzo</h3>
                   <div className="flex flex-wrap justify-center md:justify-start gap-4 text-coral-light/90 text-sm mb-4">
                     <span className="flex items-center gap-1">
                       <MapPin size={16} />
