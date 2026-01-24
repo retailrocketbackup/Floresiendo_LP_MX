@@ -240,7 +240,7 @@ export default async function EncuentroPage({
           </p>
 
           <Link
-            href="/encuentros/febrero-2026-precios"
+            href="/encuentros/marzo-2026-precios"
             className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function TestimoniosRedirect() {
-  redirect("/encuentros/febrero-2026");
+  redirect("/encuentros/marzo-2026");
 }

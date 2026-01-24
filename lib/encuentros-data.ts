@@ -111,7 +111,7 @@ export interface Encuentro {
 
 // February 2026 Encuentro Data
 export const encuentroFebrero2026: Encuentro = {
-  slug: "febrero-2026",
+  slug: "marzo-2026",
   title: "Encuentro de Marzo",
   subtitle: "4 días de crecimiento personal",
   startDate: "2026-03-05",

@@ -20,7 +20,7 @@ interface UsePageTrackingOptions {
  * // In a page component:
  * usePageTracking({
  *   page: "encuentro",
- *   encuentroSlug: "febrero-2026",
+ *   encuentroSlug: "marzo-2026",
  *   value: 15000,
  * });
  */

@@ -10,6 +10,8 @@ import { STEPS } from "@/lib/screening-types";
 import { getRiskColor, getRiskStatus } from "@/lib/screening-logic";
 import { validateStep } from "@/lib/screening-validation";
 import { trackEvent } from "@/lib/meta-tracking";
+import { useAnalyticsStore, useStepAnalytics } from "@/lib/analytics";
+import { useExitTracking } from "@/lib/analytics/beacon";
 import { StepProgress } from "./StepProgress";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { BasicInfoStep } from "./steps/BasicInfoStep";
@@ -40,6 +42,11 @@ export function ScreeningWizard() {
 
   const completionPercentage = useCompletionPercentage();
 
+  // Field-level analytics
+  const { initSession, onStepComplete, markSessionComplete } = useStepAnalytics();
+  const { setCurrentStep: setAnalyticsStep } = useAnalyticsStore();
+  useExitTracking(); // Enable exit/pause tracking
+
   const [showWelcome, setShowWelcome] = useState(true);
   const [showKnockout, setShowKnockout] = useState(false);
   const [showReviewFlag, setShowReviewFlag] = useState(false);
@@ -49,7 +56,9 @@ export function ScreeningWizard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [validationAttempts, setValidationAttempts] = useState(0);
   const hasTrackedPageView = useRef(false);
+  const hasInitializedAnalytics = useRef(false);
 
   // Handle hydration mismatch with localStorage
   useEffect(() => {
@@ -59,6 +68,15 @@ export function ScreeningWizard() {
       setShowWelcome(false);
     }
   }, []);
+
+  // Initialize analytics session when form starts (not welcome screen)
+  useEffect(() => {
+    if (isHydrated && !showWelcome && !hasInitializedAnalytics.current) {
+      hasInitializedAnalytics.current = true;
+      initSession();
+      setAnalyticsStep(currentStep);
+    }
+  }, [isHydrated, showWelcome, initSession, setAnalyticsStep, currentStep]);
 
   // Track ViewContent when user starts the screening form (only once)
   useEffect(() => {
@@ -99,6 +117,7 @@ export function ScreeningWizard() {
     const validation = validateStep(currentStep, formData);
     if (!validation.isValid) {
       setValidationError(validation.errorMessage || 'Por favor completa todos los campos requeridos');
+      setValidationAttempts((prev) => prev + 1);
       return;
     }
 
@@ -115,6 +134,12 @@ export function ScreeningWizard() {
       setShowKnockout(true);
       return;
     }
+
+    // Track step completion for analytics
+    const stepData = STEPS.find((s) => s.id === currentStep);
+    onStepComplete(currentStep, stepData?.name || `step${currentStep}`, validationAttempts);
+    setValidationAttempts(0); // Reset for next step
+
     nextStep();
   };
 
@@ -123,12 +148,17 @@ export function ScreeningWizard() {
     const validation = validateStep(7, formData);
     if (!validation.isValid) {
       setValidationError(validation.errorMessage || 'Por favor acepta todos los consentimientos');
+      setValidationAttempts((prev) => prev + 1);
       return;
     }
 
     setValidationError(null);
     setIsSubmitting(true);
     const result = evaluateRisk();
+
+    // Track final step completion
+    onStepComplete(7, 'consent', validationAttempts);
+    markSessionComplete();
 
     // Track Lead event on form submission (before API call)
     const userData = {
@@ -270,8 +300,8 @@ export function ScreeningWizard() {
             Encuentros
           </Link>
           <ChevronRight size={14} className="text-[var(--warm-gray-400)]" />
-          <Link href="/encuentros/febrero-2026" className="text-[var(--coral)] hover:underline">
-            Febrero 2026
+          <Link href="/encuentros/marzo-2026" className="text-[var(--coral)] hover:underline">
+            Marzo 2026
           </Link>
           <ChevronRight size={14} className="text-[var(--warm-gray-400)]" />
           <span className="text-[var(--warm-gray-600)]">Tu Evaluación</span>
@@ -286,7 +316,7 @@ export function ScreeningWizard() {
             Creemos un plan que sea perfecto y seguro para ti
           </p>
           <p className="text-[var(--warm-gray-500)] text-sm mt-1">
-            Retiro Floresiendo · Febrero 2026
+            Retiro Floresiendo · Marzo 2026
           </p>
         </div>
 
@@ -418,7 +448,7 @@ export function ScreeningWizard() {
         userName={approvedData.userName}
         onProceedToPayment={() => {
           const packageParam = selectedPackage ? `&package=${selectedPackage}` : '';
-          router.push(`/encuentros/febrero-2026-precios?applicationId=${approvedData.applicationId}${packageParam}&autoOpenPayment=true`);
+          router.push(`/encuentros/marzo-2026-precios?applicationId=${approvedData.applicationId}${packageParam}&autoOpenPayment=true`);
         }}
       />
     </div>

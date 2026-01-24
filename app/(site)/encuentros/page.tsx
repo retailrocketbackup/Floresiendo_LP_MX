@@ -164,7 +164,7 @@ export default function EncuentrosPage() {
                     </span>
                   </div>
                   <Link
-                    href="/encuentros/febrero-2026"
+                    href="/encuentros/marzo-2026"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
                   >
                     Ver detalles
