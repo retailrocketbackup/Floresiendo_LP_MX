@@ -136,13 +136,13 @@ export default function EncuentrosPage() {
               </div>
             </Link>
 
-            {/* Retreat Card - Feb 19-22 */}
+            {/* Retreat Card - Feb 26 - Mar 1 */}
             <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 {/* Date Box */}
                 <div className="bg-coral rounded-2xl p-6 text-center min-w-[140px] shadow-lg">
-                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Febrero</span>
-                  <div className="text-4xl font-bold text-white my-1">19-22</div>
+                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Feb - Mar</span>
+                  <div className="text-4xl font-bold text-white my-1">26-1</div>
                   <span className="text-white/80 text-sm font-medium">2026</span>
                 </div>
 
