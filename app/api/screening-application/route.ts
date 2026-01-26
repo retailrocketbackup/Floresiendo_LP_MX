@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import type { ScreeningFormData, RiskLevel } from "@/lib/screening-types";
 import { encrypt, hash, getEncryptionSecret, type EncryptedData } from "@/lib/encryption";
 import { insertScreeningApplication } from "@/lib/supabase";
+import fs from "fs/promises";
+import path from "path";
 
 interface ScreeningSubmission {
   formData: Partial<ScreeningFormData>;
@@ -34,6 +36,28 @@ function generateApplicationId(): string {
   const timestamp = Date.now().toString(36);
   const random = Math.random().toString(36).substring(2, 8);
   return `FL-${timestamp}-${random}`.toUpperCase();
+}
+
+// =============================================
+// HUBSPOT BACKUP: Store copies of HubSpot submissions
+// =============================================
+const HUBSPOT_BACKUP_DIR = path.join(process.cwd(), "data", "hubspot-backup");
+
+async function ensureBackupDir() {
+  try {
+    await fs.access(HUBSPOT_BACKUP_DIR);
+  } catch {
+    await fs.mkdir(HUBSPOT_BACKUP_DIR, { recursive: true });
+  }
+}
+
+async function saveHubspotBackup(applicationId: string, data: Record<string, unknown>) {
+  await ensureBackupDir();
+  const filePath = path.join(HUBSPOT_BACKUP_DIR, `${applicationId}.json`);
+  await fs.writeFile(filePath, JSON.stringify({
+    ...data,
+    backupCreatedAt: new Date().toISOString(),
+  }, null, 2));
 }
 
 export async function POST(request: Request) {
@@ -155,6 +179,21 @@ export async function POST(request: Request) {
     // Submit to HubSpot Forms API
     const hubspotPortalId = "50499487";
     const hubspotFormId = "3c9a94a8-ced7-4b41-a287-387f2c2f37a9";
+
+    // Save backup before sending to HubSpot
+    try {
+      await saveHubspotBackup(applicationId, {
+        hubspotData,
+        riskLevel,
+        submittedAt: new Date().toISOString(),
+        hubspotPortalId,
+        hubspotFormId,
+      });
+      console.log('[HubSpot Backup] Saved:', applicationId);
+    } catch (backupError) {
+      console.error('[HubSpot Backup] Error:', backupError);
+      // Continue anyway - don't block submission
+    }
 
     const hubspotFields = Object.entries(hubspotData)
       .filter(([, value]) => value !== undefined && value !== "")
