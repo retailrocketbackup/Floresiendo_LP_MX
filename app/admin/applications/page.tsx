@@ -75,6 +75,30 @@ interface IntentionsData {
   questions?: string;
 }
 
+interface HubspotBackupData {
+  hubspotData: {
+    firstname: string;
+    lastname: string;
+    email: string;
+    phone: string;
+    application_id: string;
+    screening_status: string;
+    risk_level: string;
+    has_medication_flags: string;
+    has_mental_health_flags: string;
+    funnel_source: string;
+    landing_page: string;
+    how_found_us: string;
+    why_participate: string;
+    what_to_heal: string;
+  };
+  riskLevel: string;
+  submittedAt: string;
+  hubspotPortalId: string;
+  hubspotFormId: string;
+  backupCreatedAt: string;
+}
+
 interface DecryptedData {
   contact: {
     phone: string;
@@ -162,6 +186,7 @@ export default function AdminApplicationsPage() {
   const [loading, setLoading] = useState(false);
   const [selectedApp, setSelectedApp] = useState<string | null>(null);
   const [decryptedData, setDecryptedData] = useState<DecryptedData | null>(null);
+  const [hubspotBackup, setHubspotBackup] = useState<HubspotBackupData | null>(null);
   const [decrypting, setDecrypting] = useState(false);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [riskFilter, setRiskFilter] = useState<'all' | 'green' | 'yellow' | 'red'>('all');
@@ -230,17 +255,31 @@ export default function AdminApplicationsPage() {
     if (selectedApp === applicationId && decryptedData) {
       setSelectedApp(null);
       setDecryptedData(null);
+      setHubspotBackup(null);
       return;
     }
 
     setDecrypting(true);
     setSelectedApp(applicationId);
+    setHubspotBackup(null);
 
     try {
-      const res = await fetch(`/api/admin/decrypt?id=${applicationId}`);
-      if (res.ok) {
-        const data = await res.json();
+      // Fetch both decrypted data and HubSpot backup in parallel
+      const [decryptRes, hubspotRes] = await Promise.all([
+        fetch(`/api/admin/decrypt?id=${applicationId}`),
+        fetch(`/api/admin/hubspot-backup?applicationId=${applicationId}`)
+      ]);
+
+      if (decryptRes.ok) {
+        const data = await decryptRes.json();
         setDecryptedData(data);
+      }
+
+      if (hubspotRes.ok) {
+        const hubspotData = await hubspotRes.json();
+        if (!hubspotData.error) {
+          setHubspotBackup(hubspotData);
+        }
       }
     } catch (error) {
       console.error('Error decrypting:', error);
@@ -642,6 +681,58 @@ export default function AdminApplicationsPage() {
                             </div>
                           </div>
                         </div>
+
+                        {/* HubSpot CRM Data */}
+                        {hubspotBackup && (
+                          <div className="bg-orange-50 rounded-xl border border-orange-200 p-4">
+                            <div className="flex items-center gap-2 mb-4 text-orange-700">
+                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.164 7.93V5.084a2.198 2.198 0 001.267-1.986V3.06A2.06 2.06 0 0017.37 1h-.038a2.06 2.06 0 00-2.06 2.06v.038c0 .844.47 1.575 1.163 1.943v2.859c-.642.139-1.232.4-1.74.755l-5.905-4.608a2.635 2.635 0 00.135-.826A2.63 2.63 0 006.295 0a2.63 2.63 0 00-2.63 2.63 2.63 2.63 0 002.63 2.63c.467 0 .904-.12 1.285-.333l5.795 4.521a4.316 4.316 0 00-.536 2.09c0 .723.177 1.405.489 2.004l-2.072 2.072a2.397 2.397 0 00-.837-.15 2.41 2.41 0 00-2.41 2.41A2.41 2.41 0 0010.418 20a2.41 2.41 0 002.41-2.41c0-.31-.058-.607-.165-.88l2.025-2.025a4.322 4.322 0 002.849 1.071c2.393 0 4.333-1.94 4.333-4.333a4.333 4.333 0 00-3.706-4.285zM17.537 19.2a2.777 2.777 0 01-2.777-2.777 2.777 2.777 0 012.777-2.777 2.777 2.777 0 012.777 2.777 2.777 2.777 0 01-2.777 2.777z"/>
+                              </svg>
+                              <span className="font-medium">Datos en HubSpot CRM</span>
+                              <span className="ml-auto text-xs bg-orange-200 text-orange-800 px-2 py-0.5 rounded-full">
+                                Backup local
+                              </span>
+                            </div>
+                            <div className="grid md:grid-cols-3 gap-4 text-sm">
+                              <div>
+                                <p className="text-orange-600 mb-1">Email</p>
+                                <p className="font-medium text-warm-gray-800">{hubspotBackup.hubspotData.email}</p>
+                              </div>
+                              <div>
+                                <p className="text-orange-600 mb-1">Telefono</p>
+                                <p className="font-medium text-warm-gray-800">{hubspotBackup.hubspotData.phone}</p>
+                              </div>
+                              <div>
+                                <p className="text-orange-600 mb-1">Enviado a HubSpot</p>
+                                <p className="font-medium text-warm-gray-800">
+                                  {new Date(hubspotBackup.submittedAt).toLocaleString('es-MX')}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-4 mt-4 text-sm">
+                              <div className="flex items-center gap-2">
+                                <span className={`w-2 h-2 rounded-full ${hubspotBackup.hubspotData.has_medication_flags === 'true' ? 'bg-gold' : 'bg-green-500'}`} />
+                                <span className="text-warm-gray-600">Banderas de medicamentos:</span>
+                                <span className={`font-medium ${hubspotBackup.hubspotData.has_medication_flags === 'true' ? 'text-gold-dark' : 'text-green-600'}`}>
+                                  {hubspotBackup.hubspotData.has_medication_flags === 'true' ? 'Si' : 'No'}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className={`w-2 h-2 rounded-full ${hubspotBackup.hubspotData.has_mental_health_flags === 'true' ? 'bg-gold' : 'bg-green-500'}`} />
+                                <span className="text-warm-gray-600">Banderas de salud mental:</span>
+                                <span className={`font-medium ${hubspotBackup.hubspotData.has_mental_health_flags === 'true' ? 'text-gold-dark' : 'text-green-600'}`}>
+                                  {hubspotBackup.hubspotData.has_mental_health_flags === 'true' ? 'Si' : 'No'}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="mt-4 pt-4 border-t border-orange-200 text-xs text-orange-600">
+                              <span className="font-mono">Portal: {hubspotBackup.hubspotPortalId}</span>
+                              <span className="mx-2">•</span>
+                              <span className="font-mono">Form: {hubspotBackup.hubspotFormId}</span>
+                            </div>
+                          </div>
+                        )}
 
                         {/* Medical Sections */}
                         <div className="grid md:grid-cols-2 gap-4">
