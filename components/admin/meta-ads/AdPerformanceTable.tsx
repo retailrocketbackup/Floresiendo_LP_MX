@@ -1,16 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 interface AdPerformance {
   id: string;
   name: string;
+  campaignName?: string;
+  adsetName?: string;
   status: string;
   spend: number;
   impressions: number;
   clicks: number;
   ctr: number;
   cpc: number;
+  reach?: number;
   landingPageViews: number;
   videoViews?: number;
   conversions: number;
@@ -107,33 +110,92 @@ function PerformanceIndicator({ value, type }: { value: number; type: 'best' | '
   return null;
 }
 
-// Sortable header
+// Column definitions with default widths
+const DEFAULT_COLUMN_WIDTHS: Record<string, number> = {
+  name: 180,
+  adset: 120,
+  status: 90,
+  spend: 100,
+  impressions: 100,
+  clicks: 80,
+  ctr: 80,
+  cpc: 90,
+  conversions: 100,
+};
+
+// Resize handle component
+function ResizeHandle({
+  onMouseDown,
+}: {
+  onMouseDown: (e: React.MouseEvent) => void;
+}) {
+  return (
+    <div
+      className="absolute right-0 top-0 h-full w-1 cursor-col-resize hover:bg-coral/50 group-hover:bg-warm-gray-300 transition-colors"
+      onMouseDown={onMouseDown}
+      onClick={(e) => e.stopPropagation()}
+    />
+  );
+}
+
+// Sortable header with resize capability
 function SortableHeader({
   label,
   sortKey,
+  columnKey,
   currentSort,
   currentDirection,
   onSort,
+  width,
+  onResizeStart,
 }: {
   label: string;
   sortKey: SortKey;
+  columnKey: string;
   currentSort: SortKey;
   currentDirection: SortDirection;
   onSort: (key: SortKey) => void;
+  width: number;
+  onResizeStart: (e: React.MouseEvent, columnKey: string) => void;
 }) {
   const isActive = currentSort === sortKey;
 
   return (
     <th
-      className="px-3 py-3 text-left text-xs font-medium text-warm-gray-500 uppercase tracking-wider cursor-pointer hover:bg-warm-gray-100 transition-colors"
+      className="relative px-3 py-3 text-left text-xs font-medium text-warm-gray-500 uppercase tracking-wider cursor-pointer hover:bg-warm-gray-100 transition-colors group"
+      style={{ width: `${width}px`, minWidth: `${width}px` }}
       onClick={() => onSort(sortKey)}
     >
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 pr-2">
         {label}
         <span className={`transition-opacity ${isActive ? 'opacity-100' : 'opacity-30'}`}>
           {isActive && currentDirection === 'asc' ? '↑' : '↓'}
         </span>
       </div>
+      <ResizeHandle onMouseDown={(e) => onResizeStart(e, columnKey)} />
+    </th>
+  );
+}
+
+// Static header with resize capability (for non-sortable columns)
+function StaticHeader({
+  label,
+  columnKey,
+  width,
+  onResizeStart,
+}: {
+  label: string;
+  columnKey: string;
+  width: number;
+  onResizeStart: (e: React.MouseEvent, columnKey: string) => void;
+}) {
+  return (
+    <th
+      className="relative px-3 py-3 text-left text-xs font-medium text-warm-gray-500 uppercase tracking-wider group"
+      style={{ width: `${width}px`, minWidth: `${width}px` }}
+    >
+      <div className="pr-2">{label}</div>
+      <ResizeHandle onMouseDown={(e) => onResizeStart(e, columnKey)} />
     </th>
   );
 }
@@ -141,6 +203,48 @@ function SortableHeader({
 export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerformanceTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>('spend');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>(DEFAULT_COLUMN_WIDTHS);
+
+  // Refs for resize handling
+  const resizingColumn = useRef<string | null>(null);
+  const startX = useRef<number>(0);
+  const startWidth = useRef<number>(0);
+
+  // Handle resize start
+  const handleResizeStart = useCallback((e: React.MouseEvent, columnKey: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    resizingColumn.current = columnKey;
+    startX.current = e.clientX;
+    startWidth.current = columnWidths[columnKey] || DEFAULT_COLUMN_WIDTHS[columnKey];
+
+    document.addEventListener('mousemove', handleResizeMove);
+    document.addEventListener('mouseup', handleResizeEnd);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }, [columnWidths]);
+
+  // Handle resize move
+  const handleResizeMove = useCallback((e: MouseEvent) => {
+    if (!resizingColumn.current) return;
+
+    const diff = e.clientX - startX.current;
+    const newWidth = Math.max(50, startWidth.current + diff); // Minimum 50px
+
+    setColumnWidths(prev => ({
+      ...prev,
+      [resizingColumn.current!]: newWidth,
+    }));
+  }, []);
+
+  // Handle resize end
+  const handleResizeEnd = useCallback(() => {
+    resizingColumn.current = null;
+    document.removeEventListener('mousemove', handleResizeMove);
+    document.removeEventListener('mouseup', handleResizeEnd);
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  }, [handleResizeMove]);
 
   if (loading) {
     return (
@@ -204,11 +308,9 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
       spend: acc.spend + ad.spend,
       impressions: acc.impressions + ad.impressions,
       clicks: acc.clicks + ad.clicks,
-      landingPageViews: acc.landingPageViews + ad.landingPageViews,
-      videoViews: acc.videoViews + (ad.videoViews || 0),
       conversions: acc.conversions + ad.conversions,
     }),
-    { spend: 0, impressions: 0, clicks: 0, landingPageViews: 0, videoViews: 0, conversions: 0 }
+    { spend: 0, impressions: 0, clicks: 0, conversions: 0 }
   );
 
   return (
@@ -225,6 +327,12 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
             </p>
           </div>
           <div className="hidden sm:flex items-center gap-3 text-xs">
+            <span className="flex items-center gap-1 text-warm-gray-400" title="Arrastra el borde de las columnas para ajustar el ancho">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+              </svg>
+              Columnas ajustables
+            </span>
             <span className="flex items-center gap-1 text-green-600">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
@@ -253,6 +361,11 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0 pr-2">
                 <p className="text-sm font-medium text-warm-gray-900 truncate">{ad.name}</p>
+                {(ad.campaignName || ad.adsetName) && (
+                  <p className="text-xs text-warm-gray-500 truncate mt-0.5">
+                    {ad.campaignName}{ad.adsetName ? ` → ${ad.adsetName}` : ''}
+                  </p>
+                )}
               </div>
               <StatusBadge status={ad.status} />
             </div>
@@ -316,20 +429,18 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
 
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="min-w-full divide-y divide-warm-gray-200">
+        <table className="min-w-full divide-y divide-warm-gray-200" style={{ tableLayout: 'fixed' }}>
           <thead className="bg-warm-gray-50">
             <tr>
-              <SortableHeader label="Nombre" sortKey="name" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <th className="px-3 py-3 text-left text-xs font-medium text-warm-gray-500 uppercase tracking-wider">
-                Estado
-              </th>
-              <SortableHeader label="Gasto" sortKey="spend" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <SortableHeader label="Impresiones" sortKey="impressions" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <SortableHeader label="Clics" sortKey="clicks" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <SortableHeader label="CTR" sortKey="ctr" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <SortableHeader label="CPC" sortKey="cpc" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <SortableHeader label="LPV" sortKey="landingPageViews" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
-              <SortableHeader label="Conversiones" sortKey="conversions" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} />
+              <SortableHeader label="Nombre" sortKey="name" columnKey="name" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.name} onResizeStart={handleResizeStart} />
+              <StaticHeader label="Ad Set" columnKey="adset" width={columnWidths.adset} onResizeStart={handleResizeStart} />
+              <StaticHeader label="Estado" columnKey="status" width={columnWidths.status} onResizeStart={handleResizeStart} />
+              <SortableHeader label="Gasto" sortKey="spend" columnKey="spend" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.spend} onResizeStart={handleResizeStart} />
+              <SortableHeader label="Impresiones" sortKey="impressions" columnKey="impressions" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.impressions} onResizeStart={handleResizeStart} />
+              <SortableHeader label="Clics" sortKey="clicks" columnKey="clicks" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.clicks} onResizeStart={handleResizeStart} />
+              <SortableHeader label="CTR" sortKey="ctr" columnKey="ctr" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.ctr} onResizeStart={handleResizeStart} />
+              <SortableHeader label="CPC" sortKey="cpc" columnKey="cpc" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.cpc} onResizeStart={handleResizeStart} />
+              <SortableHeader label="Conversiones" sortKey="conversions" columnKey="conversions" currentSort={sortKey} currentDirection={sortDirection} onSort={handleSort} width={columnWidths.conversions} onResizeStart={handleResizeStart} />
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-warm-gray-100">
@@ -339,26 +450,29 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
                 className="hover:bg-warm-gray-50 transition-colors cursor-pointer"
                 onClick={() => onAdClick?.(ad.id)}
               >
-                <td className="px-3 py-4">
-                  <div className="flex items-center">
-                    <div className="text-sm font-medium text-warm-gray-900 max-w-[200px] truncate" title={ad.name}>
-                      {ad.name}
-                    </div>
+                <td className="px-3 py-4 overflow-hidden" style={{ width: `${columnWidths.name}px` }}>
+                  <div className="text-sm font-medium text-warm-gray-900 truncate" title={ad.name}>
+                    {ad.name}
                   </div>
                 </td>
-                <td className="px-3 py-4">
+                <td className="px-3 py-4 overflow-hidden" style={{ width: `${columnWidths.adset}px` }}>
+                  <div className="text-sm text-warm-gray-600 truncate" title={ad.adsetName || ''}>
+                    {ad.adsetName || '-'}
+                  </div>
+                </td>
+                <td className="px-3 py-4 overflow-hidden" style={{ width: `${columnWidths.status}px` }}>
                   <StatusBadge status={ad.status} />
                 </td>
-                <td className="px-3 py-4 text-sm text-warm-gray-700">
+                <td className="px-3 py-4 text-sm text-warm-gray-700 overflow-hidden" style={{ width: `${columnWidths.spend}px` }}>
                   {formatCurrency(ad.spend)}
                 </td>
-                <td className="px-3 py-4 text-sm text-warm-gray-700">
+                <td className="px-3 py-4 text-sm text-warm-gray-700 overflow-hidden" style={{ width: `${columnWidths.impressions}px` }}>
                   {formatNumber(ad.impressions)}
                 </td>
-                <td className="px-3 py-4 text-sm text-warm-gray-700">
+                <td className="px-3 py-4 text-sm text-warm-gray-700 overflow-hidden" style={{ width: `${columnWidths.clicks}px` }}>
                   {formatNumber(ad.clicks)}
                 </td>
-                <td className="px-3 py-4 text-sm">
+                <td className="px-3 py-4 text-sm overflow-hidden" style={{ width: `${columnWidths.ctr}px` }}>
                   <span className="font-medium text-warm-gray-700">
                     {formatPercentage(ad.ctr)}
                   </span>
@@ -367,7 +481,7 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
                     type={ad.id === bestCtrAd.id ? 'best' : 'normal'}
                   />
                 </td>
-                <td className="px-3 py-4 text-sm">
+                <td className="px-3 py-4 text-sm overflow-hidden" style={{ width: `${columnWidths.cpc}px` }}>
                   <span className="font-medium text-warm-gray-700">
                     {formatCurrency(ad.cpc)}
                   </span>
@@ -376,10 +490,7 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
                     type={ad.id === worstCpcAd.id ? 'worst' : 'normal'}
                   />
                 </td>
-                <td className="px-3 py-4 text-sm text-warm-gray-700">
-                  {formatNumber(ad.landingPageViews)}
-                </td>
-                <td className="px-3 py-4 text-sm">
+                <td className="px-3 py-4 text-sm overflow-hidden" style={{ width: `${columnWidths.conversions}px` }}>
                   <span className="font-bold text-coral">
                     {formatNumber(ad.conversions)}
                   </span>
@@ -394,19 +505,19 @@ export default function AdPerformanceTable({ ads, loading, onAdClick }: AdPerfor
           {/* Totals row */}
           <tfoot className="bg-warm-gray-50">
             <tr className="font-semibold">
-              <td className="px-3 py-4 text-sm text-warm-gray-800">Total</td>
-              <td className="px-3 py-4"></td>
-              <td className="px-3 py-4 text-sm text-warm-gray-800">{formatCurrency(totals.spend)}</td>
-              <td className="px-3 py-4 text-sm text-warm-gray-800">{formatNumber(totals.impressions)}</td>
-              <td className="px-3 py-4 text-sm text-warm-gray-800">{formatNumber(totals.clicks)}</td>
-              <td className="px-3 py-4 text-sm text-warm-gray-800">
+              <td className="px-3 py-4 text-sm text-warm-gray-800" style={{ width: `${columnWidths.name}px` }}>Total</td>
+              <td className="px-3 py-4" style={{ width: `${columnWidths.adset}px` }}></td>
+              <td className="px-3 py-4" style={{ width: `${columnWidths.status}px` }}></td>
+              <td className="px-3 py-4 text-sm text-warm-gray-800" style={{ width: `${columnWidths.spend}px` }}>{formatCurrency(totals.spend)}</td>
+              <td className="px-3 py-4 text-sm text-warm-gray-800" style={{ width: `${columnWidths.impressions}px` }}>{formatNumber(totals.impressions)}</td>
+              <td className="px-3 py-4 text-sm text-warm-gray-800" style={{ width: `${columnWidths.clicks}px` }}>{formatNumber(totals.clicks)}</td>
+              <td className="px-3 py-4 text-sm text-warm-gray-800" style={{ width: `${columnWidths.ctr}px` }}>
                 {formatPercentage(totals.impressions > 0 ? (totals.clicks / totals.impressions) * 100 : 0)}
               </td>
-              <td className="px-3 py-4 text-sm text-warm-gray-800">
+              <td className="px-3 py-4 text-sm text-warm-gray-800" style={{ width: `${columnWidths.cpc}px` }}>
                 {formatCurrency(totals.clicks > 0 ? totals.spend / totals.clicks : 0)}
               </td>
-              <td className="px-3 py-4 text-sm text-warm-gray-800">{formatNumber(totals.landingPageViews)}</td>
-              <td className="px-3 py-4 text-sm font-bold text-coral">{formatNumber(totals.conversions)}</td>
+              <td className="px-3 py-4 text-sm font-bold text-coral" style={{ width: `${columnWidths.conversions}px` }}>{formatNumber(totals.conversions)}</td>
             </tr>
           </tfoot>
         </table>

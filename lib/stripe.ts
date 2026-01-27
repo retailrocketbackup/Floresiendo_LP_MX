@@ -14,6 +14,13 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  * Amounts are in MXN cents (multiply by 100)
  */
 export const PAYMENT_PRODUCTS = {
+  // Test product - minimum $10 MXN for testing live payments
+  TEST: {
+    id: 'test',
+    name: 'Prueba de Pago - $10 MXN',
+    amount: 1000, // $10 MXN in cents (minimum allowed by Stripe)
+    description: 'Pago de prueba - se reembolsará inmediatamente'
+  },
   DEPOSIT: {
     id: 'deposit',
     name: 'Anticipo - Encuentro Febrero 2026',

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface ConversionSummary {
   total: number;
@@ -33,27 +33,80 @@ interface HubSpotConversionsProps {
   metaConversions?: number;
 }
 
+// Simplified source colors - only 3 categories
 const sourceColors: Record<string, { bg: string; text: string; icon: string }> = {
   paid: { bg: 'bg-coral/10', text: 'text-coral', icon: '💰' },
   organic: { bg: 'bg-green-100', text: 'text-green-700', icon: '🌱' },
-  direct: { bg: 'bg-blue-100', text: 'text-blue-700', icon: '🔗' },
-  referral: { bg: 'bg-purple-100', text: 'text-purple-700', icon: '👥' },
-  email: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: '📧' },
-  social: { bg: 'bg-pink-100', text: 'text-pink-700', icon: '📱' },
   unknown: { bg: 'bg-gray-100', text: 'text-gray-600', icon: '❓' },
 };
 
+// Hardcoded test data for visualization
+const MOCK_DATA: ConversionSummary = {
+  total: 47,
+  paid: 28,
+  organic: 8,
+  direct: 5,
+  referral: 2,
+  email: 1,
+  social: 2,
+  unknown: 1,
+  byFunnel: {
+    'meditacion-gratis': 22,
+    'conferencia-gratis': 15,
+    'estres': 6,
+    'proposito': 4,
+  },
+  byDate: {
+    '2025-01-23': { total: 8, paid: 5, organic: 3 },
+    '2025-01-22': { total: 12, paid: 8, organic: 4 },
+    '2025-01-21': { total: 9, paid: 6, organic: 3 },
+    '2025-01-20': { total: 7, paid: 4, organic: 3 },
+    '2025-01-19': { total: 11, paid: 5, organic: 6 },
+  },
+  recentContacts: [
+    { id: '1', name: 'María García', email: 'maria@test.com', source: 'paid', sourceDetail: 'Facebook Ads - TOFU-B Meditacion', funnel: 'meditacion-gratis', createdAt: '2025-01-23T14:30:00Z', isPaid: true },
+    { id: '2', name: 'Carlos López', email: 'carlos@test.com', source: 'paid', sourceDetail: 'Facebook Ads - TOFU-B Conferencia', funnel: 'conferencia-gratis', createdAt: '2025-01-23T12:15:00Z', isPaid: true },
+    { id: '3', name: 'Ana Martínez', source: 'organic', sourceDetail: 'Google Search', funnel: 'meditacion-gratis', createdAt: '2025-01-23T10:45:00Z', isPaid: false },
+    { id: '4', name: 'Roberto Hernández', source: 'paid', sourceDetail: 'Facebook Ads - TOFU-A Estres', funnel: 'estres', createdAt: '2025-01-22T18:20:00Z', isPaid: true },
+    { id: '5', name: 'Laura Sánchez', email: 'laura@test.com', source: 'organic', sourceDetail: 'Direct', createdAt: '2025-01-22T16:00:00Z', isPaid: false },
+  ],
+};
+
 export default function HubSpotConversions({
-  data,
+  data: rawData,
   loading,
   error,
   configured = true,
   metaConversions = 0,
 }: HubSpotConversionsProps) {
+  // Toggle for test data visualization (dev only)
+  const [useTestData, setUseTestData] = useState(false);
+  const isDev = process.env.NODE_ENV === 'development';
+
+  // Use test data if toggled on, otherwise use real data
+  const data = useTestData ? MOCK_DATA : rawData;
+
   // Calculate attribution rate
   const attributionRate = useMemo(() => {
     if (!data || data.total === 0) return 0;
     return Math.round((data.paid / data.total) * 100);
+  }, [data]);
+
+  // Calculate organic count (combines all non-paid, non-unknown sources)
+  const organicCount = useMemo(() => {
+    if (!data) return 0;
+    return data.organic + data.social + data.direct + data.referral + data.email;
+  }, [data]);
+
+  const organicRate = useMemo(() => {
+    if (!data || data.total === 0) return 0;
+    return Math.round((organicCount / data.total) * 100);
+  }, [data, organicCount]);
+
+  // Calculate unknown rate
+  const unknownRate = useMemo(() => {
+    if (!data || data.total === 0) return 0;
+    return Math.round((data.unknown / data.total) * 100);
   }, [data]);
 
   // Calculate gap between HubSpot and Meta
@@ -61,6 +114,16 @@ export default function HubSpotConversions({
     if (!data) return 0;
     return data.paid - metaConversions;
   }, [data, metaConversions]);
+
+  // Simplified breakdown data (only 3 categories) - must be before any returns
+  const simplifiedBreakdown = useMemo(() => {
+    if (!data) return [];
+    return [
+      { key: 'paid', label: 'Paid', count: data.paid, percentage: attributionRate },
+      { key: 'organic', label: 'Organic', count: organicCount, percentage: organicRate },
+      { key: 'unknown', label: 'Unknown', count: data.unknown, percentage: unknownRate },
+    ];
+  }, [data, attributionRate, organicCount, organicRate, unknownRate]);
 
   if (!configured) {
     return (
@@ -129,6 +192,25 @@ export default function HubSpotConversions({
 
   return (
     <div className="space-y-4">
+      {/* Dev Test Data Toggle */}
+      {isDev && (
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-xs text-warm-gray-500">Test Data</span>
+          <button
+            onClick={() => setUseTestData(!useTestData)}
+            className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+              useTestData ? 'bg-coral' : 'bg-warm-gray-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                useTestData ? 'translate-x-5' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+      )}
+
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {/* Total HubSpot */}
@@ -153,17 +235,17 @@ export default function HubSpotConversions({
           </div>
         </div>
 
-        {/* Organic */}
+        {/* Organic (excludes Unknown) */}
         <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 border border-green-200">
           <div className="flex items-center gap-2 text-green-700 text-sm">
             <span>🌱</span>
             <span>Organico</span>
           </div>
           <div className="text-2xl font-bold text-green-700 mt-1">
-            {data.organic + data.social + data.direct + data.referral}
+            {organicCount}
           </div>
           <div className="text-xs text-warm-gray-400 mt-1">
-            {100 - attributionRate}% del total
+            {organicRate}% del total
           </div>
         </div>
 
@@ -182,28 +264,30 @@ export default function HubSpotConversions({
         </div>
       </div>
 
-      {/* Source Breakdown */}
+      {/* Source Breakdown - Simplified to 3 categories */}
       <div className="bg-white rounded-xl p-4 border border-warm-gray-200">
         <h4 className="text-sm font-medium text-warm-gray-700 mb-3">Desglose por Fuente</h4>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
-          {(['paid', 'organic', 'social', 'direct', 'referral', 'email', 'unknown'] as const).map((source) => {
-            const count = data[source];
-            const { bg, text, icon } = sourceColors[source];
-            const percentage = data.total > 0 ? Math.round((count / data.total) * 100) : 0;
+        <div className="grid grid-cols-3 gap-3">
+          {simplifiedBreakdown.map(({ key, label, count, percentage }) => {
+            const { bg, text, icon } = sourceColors[key] || sourceColors.unknown;
 
             return (
               <div
-                key={source}
-                className={`${bg} rounded-lg p-3 text-center transition-transform hover:scale-105`}
+                key={key}
+                className={`${bg} rounded-lg p-4 text-center transition-transform hover:scale-105`}
               >
-                <div className="text-lg">{icon}</div>
-                <div className={`text-xl font-bold ${text}`}>{count}</div>
-                <div className="text-xs text-warm-gray-500 capitalize">{source}</div>
-                <div className="text-xs text-warm-gray-400">{percentage}%</div>
+                <div className="text-2xl mb-1">{icon}</div>
+                <div className={`text-3xl font-bold ${text}`}>{count}</div>
+                <div className="text-sm text-warm-gray-600 font-medium">{label}</div>
+                <div className="text-sm text-warm-gray-400">{percentage}%</div>
               </div>
             );
           })}
         </div>
+        {/* Hint about what Organic includes */}
+        <p className="text-xs text-warm-gray-400 mt-3 text-center">
+          Organic incluye: búsqueda orgánica, social orgánico, directo, referral y email
+        </p>
       </div>
 
       {/* Comparison Chart: Meta vs HubSpot */}
@@ -274,7 +358,10 @@ export default function HubSpotConversions({
           <h4 className="text-sm font-medium text-warm-gray-700 mb-3">Contactos Recientes</h4>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {data.recentContacts.map((contact) => {
-              const { bg, text, icon } = sourceColors[contact.source] || sourceColors.unknown;
+              // Map to simplified categories: paid, organic, unknown
+              const simplifiedSource = contact.isPaid ? 'paid' :
+                (contact.source === 'unknown' ? 'unknown' : 'organic');
+              const { bg, text, icon } = sourceColors[simplifiedSource];
               const date = new Date(contact.createdAt);
 
               return (

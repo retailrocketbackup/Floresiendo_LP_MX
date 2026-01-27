@@ -9,6 +9,7 @@ import {
   getAdSets,
   getAds,
   getInsights,
+  clearCache,
 } from '@/lib/meta-ads';
 import type {
   MetaAdsOverviewResponse,
@@ -39,12 +40,26 @@ export async function GET(request: Request) {
     }
 
     const timeRange = (searchParams.get('timeRange') as TimeRange) || 'maximum';
+    const includeArchived = searchParams.get('includeArchived') === 'true';
+    const bustCache = searchParams.get('bustCache') === 'true';
+
+    // Clear cache if requested
+    if (bustCache) {
+      clearCache();
+      console.log('[Meta Ads API] Cache cleared');
+    }
 
     // Fetch account info and campaigns in parallel
-    const [account, campaigns] = await Promise.all([
+    const [account, allCampaigns] = await Promise.all([
       getAccountInfo(),
       getCampaigns(),
     ]);
+
+    // Filter out DELETED and ARCHIVED campaigns by default
+    // This ensures visible campaigns better match account-level insights
+    const campaigns = includeArchived
+      ? allCampaigns
+      : allCampaigns.filter(c => c.status !== 'DELETED' && c.status !== 'ARCHIVED');
 
     // Fetch account-level insights
     const accountId = getAccountId();
@@ -126,8 +141,18 @@ export async function GET(request: Request) {
     return NextResponse.json(response);
   } catch (error) {
     console.error('[Meta Ads API Error]', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch Meta Ads data';
+
+    // Check for rate limit error
+    if (errorMessage.includes('request limit') || errorMessage.includes('limit reached')) {
+      return NextResponse.json(
+        { error: 'Límite de API alcanzado. Espera 2-3 minutos y recarga la página.' },
+        { status: 429 }
+      );
+    }
+
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to fetch Meta Ads data' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

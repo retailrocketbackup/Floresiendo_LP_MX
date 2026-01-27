@@ -32,6 +32,11 @@ function setCache(key: string, data: unknown): void {
   cache.set(key, { data, timestamp: Date.now() });
 }
 
+// Clear all cached data
+export function clearCache(): void {
+  cache.clear();
+}
+
 // Get access token from environment
 function getAccessToken(): string {
   const token = process.env.META_ADS_ACCESS_TOKEN;
@@ -114,7 +119,7 @@ export async function getAccountInfo(): Promise<MetaAccount> {
   return data;
 }
 
-export async function getCampaigns(limit = 25): Promise<MetaCampaign[]> {
+export async function getCampaigns(limit = 100): Promise<MetaCampaign[]> {
   const accountId = getAccountId();
   const data = await metaFetch<{ data: MetaCampaign[] }>(`/${accountId}/campaigns`, {
     fields: 'id,name,objective,status,buying_type,start_time,created_time,updated_time,daily_budget,lifetime_budget',
@@ -123,7 +128,7 @@ export async function getCampaigns(limit = 25): Promise<MetaCampaign[]> {
   return data.data || [];
 }
 
-export async function getAdSets(campaignId?: string, limit = 25): Promise<MetaAdSet[]> {
+export async function getAdSets(campaignId?: string, limit = 100): Promise<MetaAdSet[]> {
   const accountId = getAccountId();
   const endpoint = campaignId
     ? `/${campaignId}/adsets`
@@ -136,7 +141,7 @@ export async function getAdSets(campaignId?: string, limit = 25): Promise<MetaAd
   return data.data || [];
 }
 
-export async function getAds(adsetId?: string, limit = 25): Promise<MetaAd[]> {
+export async function getAds(adsetId?: string, limit = 100): Promise<MetaAd[]> {
   const accountId = getAccountId();
   const endpoint = adsetId
     ? `/${adsetId}/ads`
@@ -158,7 +163,7 @@ export async function getInsights(
 
   try {
     const data = await metaFetch<{ data: MetaInsights[] }>(`/${objectId}/insights`, {
-      fields: 'spend,impressions,clicks,ctr,cpc,cpm,reach,frequency,actions,cost_per_action_type,date_start,date_stop',
+      fields: 'spend,impressions,clicks,ctr,cpc,cpm,reach,frequency,actions,conversions,cost_per_action_type,date_start,date_stop',
       level,
       ...timeParams,
     });
@@ -200,7 +205,7 @@ export async function getDailyInsights(
 }
 
 export function parseConversions(insights: MetaInsights | null): ConversionRow[] {
-  if (!insights?.actions) return [];
+  if (!insights) return [];
 
   const actionLabels: Record<string, string> = {
     'offsite_conversion.fb_pixel_lead': 'Leads',
@@ -216,6 +221,47 @@ export function parseConversions(insights: MetaInsights | null): ConversionRow[]
     'page_engagement': 'Interacciones de Pagina',
     'video_view': 'Vistas de Video',
     'onsite_conversion.messaging_conversation_started_7d': 'Conversaciones Iniciadas',
+    // Floresiendo TOFU-B Lead Magnet events (full Meta API format)
+    'offsite_conversion.fb_pixel_custom.Lead_Meditacion_Gratis': 'Leads Meditación',
+    'offsite_conversion.fb_pixel_custom.Lead_Conferencia_Gratis': 'Leads Conferencia',
+    'offsite_conversion.fb_pixel_custom.CompleteRegistration_Meditacion': 'Registros Meditación',
+    'offsite_conversion.fb_pixel_custom.CompleteRegistration_Conferencia': 'Registros Conferencia',
+    // Floresiendo TOFU-A Pain Funnel events
+    'offsite_conversion.fb_pixel_custom.Lead_Estres': 'Leads Estrés',
+    'offsite_conversion.fb_pixel_custom.Lead_Duelo': 'Leads Duelo',
+    'offsite_conversion.fb_pixel_custom.Lead_Proposito': 'Leads Propósito',
+    'offsite_conversion.fb_pixel_custom.ViewContent_Estres': 'Vista Estrés',
+    'offsite_conversion.fb_pixel_custom.ViewContent_Duelo': 'Vista Duelo',
+    'offsite_conversion.fb_pixel_custom.ViewContent_Proposito': 'Vista Propósito',
+  };
+
+  // Helper to extract event name from Meta's full format
+  // e.g. "offsite_conversion.fb_pixel_custom.Lead_Meditacion_Gratis" -> "Lead_Meditacion_Gratis"
+  const extractEventName = (type: string) => {
+    if (type.startsWith('offsite_conversion.fb_pixel_custom.')) {
+      return type.replace('offsite_conversion.fb_pixel_custom.', '');
+    }
+    return type;
+  };
+
+  // Helper to check if action should be included
+  const isFloresiendo = (type: string) => {
+    const eventName = extractEventName(type);
+    return (
+      eventName.startsWith('Lead_') ||
+      eventName.startsWith('CompleteRegistration_') ||
+      eventName.startsWith('ViewContent_') ||
+      eventName.includes('Video') ||
+      eventName.includes('Llamada') ||
+      eventName.includes('Whatsapp')
+    );
+  };
+
+  // Helper to create a readable label
+  const getLabel = (type: string) => {
+    if (actionLabels[type]) return actionLabels[type];
+    const eventName = extractEventName(type);
+    return eventName.replace(/_/g, ' ');
   };
 
   const costMap = new Map<string, number>();
@@ -223,11 +269,26 @@ export function parseConversions(insights: MetaInsights | null): ConversionRow[]
     costMap.set(action.action_type, parseFloat(action.value));
   });
 
-  return insights.actions
-    .filter((action) => actionLabels[action.action_type] || action.action_type.includes('Llamada') || action.action_type.includes('Whatsapp'))
+  // Combine both actions and conversions arrays
+  // Meta returns custom pixel events in the 'conversions' array with full event names
+  const allActions = [
+    ...(insights.actions || []),
+    ...(insights.conversions || []),
+  ];
+
+  // Dedupe by action_type (prefer conversions array as it has more specific event names)
+  const actionMap = new Map<string, { action_type: string; value: string }>();
+  for (const action of allActions) {
+    // Skip the aggregated "offsite_conversion.fb_pixel_custom" entry (no specific event name)
+    if (action.action_type === 'offsite_conversion.fb_pixel_custom') continue;
+    actionMap.set(action.action_type, action);
+  }
+
+  return Array.from(actionMap.values())
+    .filter((action) => actionLabels[action.action_type] || isFloresiendo(action.action_type))
     .map((action) => ({
       action_type: action.action_type,
-      label: actionLabels[action.action_type] || action.action_type.replace(/_/g, ' '),
+      label: getLabel(action.action_type),
       count: parseInt(action.value, 10),
       cost_per: costMap.get(action.action_type),
     }))

@@ -22,6 +22,9 @@ interface ConversionFunnelProps {
   conversions: ConversionItem[];
   totalSpend: number;
   loading?: boolean;
+  // New: separate leads and registrations for distinct funnel stages
+  totalLeads?: number;
+  totalRegistrations?: number;
 }
 
 // Skeleton loader
@@ -30,7 +33,7 @@ function FunnelSkeleton() {
     <div className="animate-pulse space-y-4">
       <div className="h-6 w-32 bg-warm-gray-200 rounded" />
       <div className="flex justify-center gap-2">
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="flex-1 h-32 bg-warm-gray-200 rounded-lg" />
         ))}
       </div>
@@ -161,6 +164,8 @@ export default function ConversionFunnel({
   conversions,
   totalSpend,
   loading,
+  totalLeads,
+  totalRegistrations,
 }: ConversionFunnelProps) {
   if (loading) {
     return (
@@ -170,8 +175,16 @@ export default function ConversionFunnel({
     );
   }
 
-  const totalConversions = conversions.reduce((sum, c) => sum + c.value, 0);
+  // Calculate leads and registrations from conversions if not provided
+  const leadsCount = totalLeads ?? conversions
+    .filter(c => c.action_type.startsWith('Lead_') || c.action_type === 'offsite_conversion.fb_pixel_lead')
+    .reduce((sum, c) => sum + c.value, 0);
 
+  const registrationsCount = totalRegistrations ?? conversions
+    .filter(c => c.action_type.startsWith('CompleteRegistration_') || c.action_type === 'offsite_conversion.fb_pixel_complete_registration')
+    .reduce((sum, c) => sum + c.value, 0);
+
+  // Build funnel steps - separate Leads and Registrations
   const funnelSteps: FunnelStep[] = [
     {
       label: 'Impresiones',
@@ -205,9 +218,19 @@ export default function ConversionFunnel({
       ),
     },
     {
-      label: 'Conversiones',
-      value: totalConversions,
-      color: '#E07A5F', // coral
+      label: 'Leads',
+      value: leadsCount,
+      color: '#F59E0B', // amber/gold for leads
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ),
+    },
+    {
+      label: 'Registros',
+      value: registrationsCount,
+      color: '#E07A5F', // coral for registrations
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -216,8 +239,10 @@ export default function ConversionFunnel({
     },
   ];
 
-  // Calculate conversion rate
-  const conversionRate = impressions > 0 ? ((totalConversions / impressions) * 100).toFixed(2) : '0';
+  // Calculate conversion rates
+  const leadRate = landingPageViews > 0 ? ((leadsCount / landingPageViews) * 100).toFixed(1) : '0';
+  const registrationRate = leadsCount > 0 ? ((registrationsCount / leadsCount) * 100).toFixed(1) : '0';
+  const overallConversionRate = impressions > 0 ? ((registrationsCount / impressions) * 100).toFixed(2) : '0';
   const clickThroughRate = impressions > 0 ? ((clicks / impressions) * 100).toFixed(2) : '0';
   const lpvRate = clicks > 0 ? ((landingPageViews / clicks) * 100).toFixed(1) : '0';
 
@@ -227,11 +252,11 @@ export default function ConversionFunnel({
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-lg font-semibold text-warm-gray-800">Embudo de Conversion</h3>
-          <p className="text-sm text-warm-gray-500">Floresiendo - Llamadas y WhatsApp</p>
+          <p className="text-sm text-warm-gray-500">Floresiendo - Lead Magnets y Funnels</p>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-coral">{conversionRate}%</p>
-          <p className="text-xs text-warm-gray-400">Tasa de conversion</p>
+          <p className="text-2xl font-bold text-coral">{overallConversionRate}%</p>
+          <p className="text-xs text-warm-gray-400">Impresion → Registro</p>
         </div>
       </div>
 
@@ -249,18 +274,22 @@ export default function ConversionFunnel({
       </div>
 
       {/* Funnel rates summary */}
-      <div className="flex justify-center gap-4 sm:gap-8 mb-6 py-3 bg-warm-gray-50 rounded-lg">
-        <div className="text-center">
+      <div className="flex justify-center gap-3 sm:gap-6 mb-6 py-3 bg-warm-gray-50 rounded-lg flex-wrap">
+        <div className="text-center px-2">
           <p className="text-lg font-bold text-green-600">{clickThroughRate}%</p>
           <p className="text-xs text-warm-gray-500">CTR</p>
         </div>
-        <div className="text-center">
+        <div className="text-center px-2">
           <p className="text-lg font-bold text-purple-600">{lpvRate}%</p>
-          <p className="text-xs text-warm-gray-500">Landing View Rate</p>
+          <p className="text-xs text-warm-gray-500">LPV Rate</p>
         </div>
-        <div className="text-center">
-          <p className="text-lg font-bold text-coral">{conversionRate}%</p>
-          <p className="text-xs text-warm-gray-500">Conversion Rate</p>
+        <div className="text-center px-2">
+          <p className="text-lg font-bold text-amber-500">{leadRate}%</p>
+          <p className="text-xs text-warm-gray-500">Lead Rate</p>
+        </div>
+        <div className="text-center px-2">
+          <p className="text-lg font-bold text-coral">{registrationRate}%</p>
+          <p className="text-xs text-warm-gray-500">Reg Rate</p>
         </div>
       </div>
 

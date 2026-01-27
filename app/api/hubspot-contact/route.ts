@@ -39,30 +39,43 @@ export async function POST(request: Request) {
       properties.lastname = lastname
     }
 
-    // Set analytics source based on tracking parameters for proper attribution
+    // IMPORTANT: hs_analytics_source is READ-ONLY via API - HubSpot ignores these values.
+    // Instead, we store tracking data in CUSTOM properties for attribution.
+    // These custom properties must be created in HubSpot first (single-line text):
+    // - floresiendo_source: 'paid_facebook', 'paid_google', 'organic', 'direct', etc.
+    // - floresiendo_medium: 'cpc', 'organic', 'referral', etc.
+    // - floresiendo_campaign: UTM campaign name
+    // - floresiendo_fbclid: Facebook click ID for attribution
+
     if (fbclid) {
-      properties.hs_analytics_source = 'PAID_SOCIAL'
-      properties.hs_analytics_source_data_1 = 'facebook'
-      properties.hs_analytics_source_data_2 = fbclid
-    } else if (gclid) {
-      properties.hs_analytics_source = 'PAID_SEARCH'
-      properties.hs_analytics_source_data_1 = 'google'
-      properties.hs_analytics_source_data_2 = gclid
-    } else if (utm_medium === 'cpc' || utm_medium === 'paid') {
-      properties.hs_analytics_source = 'PAID_SOCIAL'
-      properties.hs_analytics_source_data_1 = utm_source || 'unknown'
+      properties.floresiendo_source = 'paid_facebook'
+      properties.floresiendo_medium = 'cpc'
+      properties.floresiendo_fbclid = fbclid
       if (utm_campaign) {
-        properties.hs_analytics_source_data_2 = utm_campaign
+        properties.floresiendo_campaign = utm_campaign
+      }
+    } else if (gclid) {
+      properties.floresiendo_source = 'paid_google'
+      properties.floresiendo_medium = 'cpc'
+      if (utm_campaign) {
+        properties.floresiendo_campaign = utm_campaign
+      }
+    } else if (utm_medium === 'cpc' || utm_medium === 'paid') {
+      properties.floresiendo_source = `paid_${utm_source || 'unknown'}`
+      properties.floresiendo_medium = utm_medium
+      if (utm_campaign) {
+        properties.floresiendo_campaign = utm_campaign
       }
     } else if (utm_source) {
       // Has UTM but not paid - likely organic or referral
-      properties.hs_analytics_source = 'REFERRALS'
-      properties.hs_analytics_source_data_1 = utm_source
+      properties.floresiendo_source = utm_source
+      properties.floresiendo_medium = utm_medium || 'referral'
       if (utm_campaign) {
-        properties.hs_analytics_source_data_2 = utm_campaign
+        properties.floresiendo_campaign = utm_campaign
       }
     } else {
-      properties.hs_analytics_source = 'DIRECT_TRAFFIC'
+      properties.floresiendo_source = 'direct'
+      properties.floresiendo_medium = 'none'
     }
 
     // Store the first URL for debugging and additional attribution checks

@@ -14,6 +14,7 @@ interface KPICardProps {
   sparklineData?: number[];
   loading?: boolean;
   previousValue?: string;
+  tooltip?: string;
 }
 
 const colorClasses: Record<string, { bg: string; text: string; border: string; sparkline: string }> = {
@@ -51,6 +52,7 @@ export default function KPICard({
   sparklineData,
   loading,
   previousValue,
+  tooltip,
 }: KPICardProps) {
   if (loading) {
     return <KPICardSkeleton />;
@@ -93,11 +95,21 @@ export default function KPICard({
   return (
     <div
       className={`rounded-xl p-4 border ${colors.bg} ${colors.border} transition-all hover:shadow-md hover:-translate-y-0.5 group`}
+      title={tooltip}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <p className={`text-sm font-medium ${colors.text} opacity-80`}>{label}</p>
-        {icon && <span className={`${colors.text} opacity-60 group-hover:opacity-100 transition-opacity`}>{icon}</span>}
+        <div className="flex items-center gap-1">
+          {tooltip && (
+            <span className="text-warm-gray-400 opacity-60 group-hover:opacity-100 transition-opacity cursor-help">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
+          )}
+          {icon && <span className={`${colors.text} opacity-60 group-hover:opacity-100 transition-opacity`}>{icon}</span>}
+        </div>
       </div>
 
       {/* Value with trend */}

@@ -27,12 +27,17 @@ interface HubSpotContact {
     email?: string;
     phone?: string;
     createdate?: string;
+    // HubSpot automatic analytics (READ-ONLY, often empty for API-created contacts)
     hs_analytics_source?: string;
     hs_analytics_source_data_1?: string;
     hs_analytics_source_data_2?: string;
     hs_analytics_first_url?: string;
     lifecyclestage?: string;
-    // Custom properties we may have created
+    // Custom Floresiendo properties for attribution (we set these via API)
+    floresiendo_source?: string;      // 'paid_facebook', 'paid_google', 'direct', etc.
+    floresiendo_medium?: string;      // 'cpc', 'organic', 'referral', 'none'
+    floresiendo_campaign?: string;    // UTM campaign name
+    floresiendo_fbclid?: string;      // Facebook click ID
     funnel_source?: string;
     landing_page?: string;
   };
@@ -77,12 +82,73 @@ function categorizeSource(contact: HubSpotContact): {
   isPaid: boolean;
   sourceDetail?: string;
 } {
+  // PRIORITY 1: Check our custom Floresiendo properties (we set these via API)
+  const floresSource = contact.properties.floresiendo_source?.toLowerCase() || '';
+  const floresMedium = contact.properties.floresiendo_medium?.toLowerCase() || '';
+  const floresFbclid = contact.properties.floresiendo_fbclid;
+  const floresCampaign = contact.properties.floresiendo_campaign;
+
+  if (floresSource) {
+    // Paid Facebook/Instagram
+    if (floresSource.includes('paid_facebook') || floresSource === 'facebook' && floresMedium === 'cpc') {
+      return {
+        category: 'paid',
+        isPaid: true,
+        sourceDetail: floresCampaign ? `Facebook Ads - ${floresCampaign}` : 'Facebook Ads'
+      };
+    }
+
+    // Paid Google
+    if (floresSource.includes('paid_google') || floresSource === 'google' && floresMedium === 'cpc') {
+      return {
+        category: 'paid',
+        isPaid: true,
+        sourceDetail: floresCampaign ? `Google Ads - ${floresCampaign}` : 'Google Ads'
+      };
+    }
+
+    // Other paid sources
+    // IMPORTANT: Only consider 'cpc' medium as paid if the source isn't 'direct'
+    // This prevents false positives when medium is 'cpc' but source is 'direct'
+    if (floresSource.startsWith('paid_') || (floresMedium === 'cpc' && floresSource !== 'direct')) {
+      return {
+        category: 'paid',
+        isPaid: true,
+        sourceDetail: floresCampaign || floresSource.replace('paid_', '')
+      };
+    }
+
+    // Direct
+    if (floresSource === 'direct') {
+      return { category: 'direct', isPaid: false };
+    }
+
+    // Organic/referral (has UTM source but not paid)
+    if (floresSource && floresMedium !== 'cpc') {
+      return {
+        category: 'referral',
+        isPaid: false,
+        sourceDetail: floresSource
+      };
+    }
+  }
+
+  // Has fbclid custom property (definite paid Facebook)
+  if (floresFbclid) {
+    return {
+      category: 'paid',
+      isPaid: true,
+      sourceDetail: floresCampaign ? `Facebook Ads - ${floresCampaign}` : 'Facebook Ads'
+    };
+  }
+
+  // PRIORITY 2: Fall back to HubSpot's automatic analytics (often empty for API contacts)
   const source = contact.properties.hs_analytics_source?.toLowerCase() || '';
   const sourceData1 = contact.properties.hs_analytics_source_data_1?.toLowerCase() || '';
   const sourceData2 = contact.properties.hs_analytics_source_data_2?.toLowerCase() || '';
   const firstUrl = contact.properties.hs_analytics_first_url?.toLowerCase() || '';
 
-  // Check for paid traffic indicators
+  // Check for paid traffic indicators in URL
   const hasFbclid = firstUrl.includes('fbclid') || sourceData1.includes('fbclid');
   const hasGclid = firstUrl.includes('gclid') || sourceData1.includes('gclid');
   const hasUtmPaid =
@@ -212,11 +278,17 @@ export async function GET(request: NextRequest) {
       'email',
       'phone',
       'createdate',
+      // HubSpot automatic analytics (often empty for API-created contacts)
       'hs_analytics_source',
       'hs_analytics_source_data_1',
       'hs_analytics_source_data_2',
       'hs_analytics_first_url',
       'lifecyclestage',
+      // Custom Floresiendo properties for attribution
+      'floresiendo_source',
+      'floresiendo_medium',
+      'floresiendo_campaign',
+      'floresiendo_fbclid',
       'funnel_source',
       'landing_page',
     ].join(',');

@@ -3,3 +3,5 @@ export { default as TimeRangeSelector } from './TimeRangeSelector';
 export { default as CampaignList } from './CampaignList';
 export { default as PerformanceChart } from './PerformanceChart';
 export { default as ConversionsTable } from './ConversionsTable';
+export { default as AdSetPerformanceTable } from './AdSetPerformanceTable';
+export { default as AdPerformanceTable } from './AdPerformanceTable';

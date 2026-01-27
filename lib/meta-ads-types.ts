@@ -72,6 +72,7 @@ export interface MetaInsights {
   reach: string;
   frequency?: string;
   actions?: MetaAction[];
+  conversions?: MetaAction[]; // Custom pixel events with full event names
   cost_per_action_type?: MetaAction[];
   date_start: string;
   date_stop: string;

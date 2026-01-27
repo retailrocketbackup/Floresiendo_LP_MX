@@ -13,6 +13,8 @@ interface CampaignSelectorProps {
   selectedCampaigns: string[];
   onSelectionChange: (selected: string[]) => void;
   loading?: boolean;
+  /** Render the campaign list inline (no dropdown popup). Use when inside a parent menu. */
+  inline?: boolean;
 }
 
 export default function CampaignSelector({
@@ -20,12 +22,14 @@ export default function CampaignSelector({
   selectedCampaigns,
   onSelectionChange,
   loading,
+  inline = false,
 }: CampaignSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
+    if (inline) return; // No dropdown to close in inline mode
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -33,7 +37,7 @@ export default function CampaignSelector({
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [inline]);
 
   // Standard multi-select logic:
   // - Empty array = nothing selected (show all data by default)
@@ -78,6 +82,88 @@ export default function CampaignSelector({
     );
   }
 
+  // Shared campaign list content
+  const campaignList = (
+    <>
+      {/* Header */}
+      <div className={`flex items-center justify-between ${inline ? 'pb-2' : 'p-3 border-b border-warm-gray-100 bg-warm-gray-50'}`}>
+        <span className="text-sm font-medium text-warm-gray-700">Filtrar por campaña</span>
+        <button
+          onClick={handleSelectAll}
+          className="flex items-center gap-1 text-xs text-coral hover:text-coral/80 font-medium"
+        >
+          {allSelected ? (
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          )}
+          Todas
+        </button>
+      </div>
+
+      {/* Campaign List */}
+      <div className={`${inline ? 'max-h-52' : 'max-h-64'} overflow-y-auto`}>
+        {/* All Campaigns Option */}
+        <label className={`flex items-center gap-3 px-3 py-2 hover:bg-warm-gray-50 cursor-pointer border-b border-warm-gray-100 ${inline ? 'rounded-t-lg' : ''}`}>
+          <input
+            type="checkbox"
+            checked={allSelected}
+            onChange={handleSelectAll}
+            className="w-4 h-4 rounded border-warm-gray-300 text-coral focus:ring-coral/50"
+          />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-warm-gray-800">Todas las campañas</p>
+            <p className="text-xs text-warm-gray-400">{campaigns.length} campañas disponibles</p>
+          </div>
+        </label>
+
+        {/* Individual Campaigns */}
+        {campaigns.map((campaign) => {
+          const isSelected = selectedCampaigns.includes(campaign.id);
+          const statusColor = campaign.status === 'ACTIVE'
+            ? 'bg-green-500'
+            : campaign.status === 'PAUSED'
+              ? 'bg-yellow-500'
+              : 'bg-gray-400';
+
+          return (
+            <label
+              key={campaign.id}
+              className="flex items-center gap-3 px-3 py-2 hover:bg-warm-gray-50 cursor-pointer"
+            >
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => handleToggleCampaign(campaign.id)}
+                className="w-4 h-4 rounded border-warm-gray-300 text-coral focus:ring-coral/50"
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-warm-gray-800 truncate">
+                  {campaign.name}
+                </p>
+              </div>
+              <div className={`w-2 h-2 rounded-full ${statusColor}`} title={campaign.status} />
+            </label>
+          );
+        })}
+      </div>
+    </>
+  );
+
+  // Inline mode: render list directly without dropdown wrapper
+  if (inline) {
+    return (
+      <div className="border border-warm-gray-200 rounded-xl overflow-hidden bg-white">
+        {campaignList}
+      </div>
+    );
+  }
+
+  // Dropdown mode: trigger button + popup
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Trigger Button */}
@@ -107,77 +193,7 @@ export default function CampaignSelector({
       {/* Dropdown */}
       {isOpen && (
         <div className="absolute top-full right-0 sm:left-0 sm:right-auto mt-2 w-[calc(100vw-2rem)] sm:w-72 max-w-[288px] bg-white border border-warm-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
-          {/* Header */}
-          <div className="p-3 border-b border-warm-gray-100 bg-warm-gray-50">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-warm-gray-700">Filtrar por campaña</span>
-              <button
-                onClick={handleSelectAll}
-                className="flex items-center gap-1 text-xs text-coral hover:text-coral/80 font-medium"
-              >
-                {allSelected ? (
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-                Todas
-              </button>
-            </div>
-          </div>
-
-          {/* Campaign List */}
-          <div className="max-h-64 overflow-y-auto">
-            {/* All Campaigns Option */}
-            <label className="flex items-center gap-3 px-4 py-3 hover:bg-warm-gray-50 cursor-pointer border-b border-warm-gray-100">
-              <input
-                type="checkbox"
-                checked={allSelected}
-                onChange={handleSelectAll}
-                className="w-4 h-4 rounded border-warm-gray-300 text-coral focus:ring-coral/50"
-              />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-warm-gray-800">Todas las campañas</p>
-                <p className="text-xs text-warm-gray-400">{campaigns.length} campañas disponibles</p>
-              </div>
-              <svg className="w-5 h-5 text-warm-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-              </svg>
-            </label>
-
-            {/* Individual Campaigns */}
-            {campaigns.map((campaign) => {
-              const isSelected = selectedCampaigns.includes(campaign.id);
-              const statusColor = campaign.status === 'ACTIVE'
-                ? 'bg-green-500'
-                : campaign.status === 'PAUSED'
-                  ? 'bg-yellow-500'
-                  : 'bg-gray-400';
-
-              return (
-                <label
-                  key={campaign.id}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-warm-gray-50 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={() => handleToggleCampaign(campaign.id)}
-                    className="w-4 h-4 rounded border-warm-gray-300 text-coral focus:ring-coral/50"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-warm-gray-800 truncate">
-                      {campaign.name}
-                    </p>
-                  </div>
-                  <div className={`w-2 h-2 rounded-full ${statusColor}`} title={campaign.status} />
-                </label>
-              );
-            })}
-          </div>
+          {campaignList}
 
           {/* Footer */}
           {someSelected && (
