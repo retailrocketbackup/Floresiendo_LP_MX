@@ -5,11 +5,10 @@ import Image from 'next/image';
 import {
   KPICard,
   TimeRangeSelector,
-  CampaignList,
   PerformanceChart,
   ConversionsTable,
 } from '@/components/admin/meta-ads';
-import SearchFilter from '@/components/admin/meta-ads/SearchFilter';
+import AdSetPerformanceTable from '@/components/admin/meta-ads/AdSetPerformanceTable';
 import ExportButton from '@/components/admin/meta-ads/ExportButton';
 import { DashboardSkeleton } from '@/components/admin/meta-ads/Skeleton';
 import { ErrorEmptyState } from '@/components/admin/meta-ads/EmptyState';
@@ -113,6 +112,9 @@ export default function MetaAdsDashboardPage() {
 
   // Menu state for collapsible controls
   const [menuOpen, setMenuOpen] = useState(false);
+  // Pending state: staged values edited inside the menu, applied on "Aplicar"
+  const [pendingCampaignIds, setPendingCampaignIds] = useState<string[]>([]);
+  const [pendingTimeRange, setPendingTimeRange] = useState<TimeRange>('last_30d');
 
   // Auth handler
   const handleLogin = async (e: React.FormEvent) => {
@@ -135,13 +137,14 @@ export default function MetaAdsDashboardPage() {
   };
 
   // Fetch overview data
-  const fetchOverview = useCallback(async () => {
+  const fetchOverview = useCallback(async (bustCache = false) => {
     setLoading(true);
     setError(null);
 
     try {
       const storedPassword = localStorage.getItem('admin_password');
-      const res = await fetch(`/api/admin/meta-ads?timeRange=${timeRange}&password=${storedPassword}`);
+      const cacheParam = bustCache ? '&bustCache=true' : '';
+      const res = await fetch(`/api/admin/meta-ads?timeRange=${timeRange}&password=${storedPassword}${cacheParam}`);
 
       if (!res.ok) {
         if (res.status === 401) {
@@ -342,9 +345,14 @@ export default function MetaAdsDashboardPage() {
   }, [overview?.campaigns, searchQuery, statusFilter, selectedCampaignIds]);
 
   // Sparkline data from daily breakdown (last 7 points)
+  // Sort by date to ensure correct trend visualization
   const sparklineData = useMemo(() => {
     if (dailyData.length === 0) return {};
-    const last7 = dailyData.slice(-7);
+    // Sort by date ascending before slicing to ensure correct order
+    const sortedData = [...dailyData].sort((a, b) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+    const last7 = sortedData.slice(-7);
     return {
       spend: last7.map((d) => d.spend),
       impressions: last7.map((d) => d.impressions),
@@ -373,12 +381,33 @@ export default function MetaAdsDashboardPage() {
     return `hace ${minutes} min`;
   };
 
-  // Handle refresh
+  // Handle refresh - clears cache and fetches fresh data
   const handleRefresh = () => {
-    fetchOverview();
+    fetchOverview(true); // bustCache=true
     fetchInsights();
     fetchDemographics();
     fetchHubspotContacts();
+  };
+
+  // Menu handlers: stage changes, apply on confirm
+  const handleMenuToggle = () => {
+    if (!menuOpen) {
+      // Opening: snapshot current state into pending
+      setPendingCampaignIds(selectedCampaignIds);
+      setPendingTimeRange(timeRange);
+    }
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleMenuApply = () => {
+    setSelectedCampaignIds(pendingCampaignIds);
+    setTimeRange(pendingTimeRange);
+    setMenuOpen(false);
+  };
+
+  const handleMenuClose = () => {
+    // Discard pending changes
+    setMenuOpen(false);
   };
 
   // Handle logout
@@ -389,11 +418,13 @@ export default function MetaAdsDashboardPage() {
   };
 
   // Aggregated summary based on selected campaigns
+  // NOTE: Reach cannot be summed across campaigns (unique users would be double-counted)
+  // When filtering campaigns, reach shows "N/A" or account-level value when all selected
   const aggregatedSummary = useMemo(() => {
     const allCampaigns = overview?.campaigns as CampaignWithInsights[] || [];
     const allSelected = selectedCampaignIds.length === allCampaigns.length;
 
-    // If all campaigns selected, use account-level summary
+    // If all campaigns selected, use account-level summary (includes correct reach)
     if (allSelected || selectedCampaignIds.length === 0) {
       return overview?.summary || null;
     }
@@ -405,19 +436,143 @@ export default function MetaAdsDashboardPage() {
     const totalSpend = campaigns.reduce((sum, c) => sum + parseFloat(c.insights?.spend || '0'), 0);
     const totalImpressions = campaigns.reduce((sum, c) => sum + parseInt(c.insights?.impressions || '0', 10), 0);
     const totalClicks = campaigns.reduce((sum, c) => sum + parseInt(c.insights?.clicks || '0', 10), 0);
-    const totalReach = campaigns.reduce((sum, c) => sum + parseInt(c.insights?.reach || '0', 10), 0);
     const ctr = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
     const cpc = totalClicks > 0 ? totalSpend / totalClicks : 0;
 
+    // IMPORTANT: Reach is NOT aggregated when filtering campaigns
+    // Setting to empty string signals the UI to show "N/A" for filtered selections
     return {
       spend: totalSpend.toString(),
       impressions: totalImpressions.toString(),
       clicks: totalClicks.toString(),
-      reach: totalReach.toString(),
+      reach: '', // Cannot sum reach across campaigns - show N/A in UI
       ctr: ctr.toString(),
       cpc: cpc.toString(),
+      isFiltered: true, // Flag to indicate this is aggregated from filtered campaigns
     };
-  }, [overview?.summary, filteredCampaigns, selectedCampaignIds]);
+  }, [overview?.summary, filteredCampaigns, selectedCampaignIds, overview?.campaigns]);
+
+  // Filtered conversions based on selected campaigns
+  // When all campaigns selected: use account-level conversions (most accurate)
+  // When filtered: aggregate actions+conversions from each campaign's insights
+  const filteredConversions = useMemo(() => {
+    const allCampaigns = overview?.campaigns as CampaignWithInsights[] || [];
+    const allSelected = selectedCampaignIds.length === allCampaigns.length
+                        || selectedCampaignIds.length === 0;
+
+    if (allSelected) return conversions;
+
+    // Aggregate from filtered campaigns' insights
+    const actionSums = new Map<string, number>();
+    const costTotals = new Map<string, { totalCost: number; totalCount: number }>();
+
+    const campaignsToAggregate = allCampaigns.filter(c => selectedCampaignIds.includes(c.id));
+
+    for (const campaign of campaignsToAggregate) {
+      if (!campaign.insights) continue;
+
+      // Combine actions + conversions arrays from each campaign
+      const allActions = [
+        ...(campaign.insights.actions || []),
+        ...(campaign.insights.conversions || []),
+      ];
+
+      // Dedupe within this campaign (prefer conversions array)
+      const campaignActionMap = new Map<string, { action_type: string; value: string }>();
+      for (const action of allActions) {
+        if (action.action_type === 'offsite_conversion.fb_pixel_custom') continue;
+        campaignActionMap.set(action.action_type, action);
+      }
+
+      // Sum values by action_type across campaigns
+      for (const [actionType, action] of campaignActionMap) {
+        const count = parseInt(action.value, 10);
+        actionSums.set(actionType, (actionSums.get(actionType) || 0) + count);
+      }
+
+      // Aggregate cost_per_action_type
+      for (const costAction of campaign.insights.cost_per_action_type || []) {
+        const costValue = parseFloat(costAction.value);
+        // Find the count for this action in this campaign
+        const actionEntry = campaignActionMap.get(costAction.action_type);
+        const count = actionEntry ? parseInt(actionEntry.value, 10) : 0;
+        const existing = costTotals.get(costAction.action_type) || { totalCost: 0, totalCount: 0 };
+        costTotals.set(costAction.action_type, {
+          totalCost: existing.totalCost + (costValue * count),
+          totalCount: existing.totalCount + count,
+        });
+      }
+    }
+
+    // Build ConversionRow[] using same label logic as parseConversions
+    const actionLabels: Record<string, string> = {
+      'offsite_conversion.fb_pixel_lead': 'Leads',
+      'offsite_conversion.fb_pixel_purchase': 'Compras',
+      'offsite_conversion.fb_pixel_view_content': 'Vistas de Contenido',
+      'offsite_conversion.fb_pixel_initiate_checkout': 'Inicios de Checkout',
+      'offsite_conversion.fb_pixel_add_to_cart': 'Agregar al Carrito',
+      'offsite_conversion.fb_pixel_complete_registration': 'Registros',
+      'offsite_conversion.fb_pixel_schedule': 'Citas Agendadas',
+      'link_click': 'Clics en Enlace',
+      'landing_page_view': 'Vistas de Landing',
+      'post_engagement': 'Interacciones',
+      'page_engagement': 'Interacciones de Pagina',
+      'video_view': 'Vistas de Video',
+      'onsite_conversion.messaging_conversation_started_7d': 'Conversaciones Iniciadas',
+      'offsite_conversion.fb_pixel_custom.Lead_Meditacion_Gratis': 'Leads Meditación',
+      'offsite_conversion.fb_pixel_custom.Lead_Conferencia_Gratis': 'Leads Conferencia',
+      'offsite_conversion.fb_pixel_custom.CompleteRegistration_Meditacion': 'Registros Meditación',
+      'offsite_conversion.fb_pixel_custom.CompleteRegistration_Conferencia': 'Registros Conferencia',
+      'offsite_conversion.fb_pixel_custom.Lead_Estres': 'Leads Estrés',
+      'offsite_conversion.fb_pixel_custom.Lead_Duelo': 'Leads Duelo',
+      'offsite_conversion.fb_pixel_custom.Lead_Proposito': 'Leads Propósito',
+      'offsite_conversion.fb_pixel_custom.ViewContent_Estres': 'Vista Estrés',
+      'offsite_conversion.fb_pixel_custom.ViewContent_Duelo': 'Vista Duelo',
+      'offsite_conversion.fb_pixel_custom.ViewContent_Proposito': 'Vista Propósito',
+    };
+
+    const extractEventName = (type: string) => {
+      if (type.startsWith('offsite_conversion.fb_pixel_custom.')) {
+        return type.replace('offsite_conversion.fb_pixel_custom.', '');
+      }
+      return type;
+    };
+
+    const isFloresiendo = (type: string) => {
+      const eventName = extractEventName(type);
+      return (
+        eventName.startsWith('Lead_') ||
+        eventName.startsWith('CompleteRegistration_') ||
+        eventName.startsWith('ViewContent_') ||
+        eventName.includes('Video') ||
+        eventName.includes('Llamada') ||
+        eventName.includes('Whatsapp')
+      );
+    };
+
+    const getLabel = (type: string) => {
+      if (actionLabels[type]) return actionLabels[type];
+      const eventName = extractEventName(type);
+      return eventName.replace(/_/g, ' ');
+    };
+
+    const rows: ConversionRow[] = [];
+    for (const [actionType, count] of actionSums) {
+      if (!actionLabels[actionType] && !isFloresiendo(actionType)) continue;
+      const costEntry = costTotals.get(actionType);
+      const costPer = costEntry && costEntry.totalCount > 0
+        ? costEntry.totalCost / costEntry.totalCount
+        : undefined;
+      rows.push({
+        action_type: actionType,
+        label: getLabel(actionType),
+        count,
+        cost_per: costPer,
+      });
+    }
+
+    return rows.sort((a, b) => b.count - a.count);
+  }, [conversions, selectedCampaignIds, overview?.campaigns]);
 
   // Prepare Dashboard 3.0 data
   const funnelData = useMemo(() => {
@@ -428,12 +583,35 @@ export default function MetaAdsDashboardPage() {
     const clicks = parseInt(aggregatedSummary.clicks || '0', 10);
 
     // Get landing page views from conversions
-    const lpvConversion = conversions.find(c => c.action_type === 'landing_page_view');
+    const lpvConversion = filteredConversions.find(c => c.action_type === 'landing_page_view');
     const landingPageViews = lpvConversion?.count || Math.floor(clicks * 0.6);
 
-    // Get Floresiendo-specific conversions
-    const conversionItems = conversions
+    // Calculate total LEADS (form submissions - first funnel stage after landing)
+    // Only count Floresiendo custom events (Lead_*) to avoid double-counting with
+    // the generic offsite_conversion.fb_pixel_lead which overlaps
+    const totalLeads = filteredConversions
+      .filter(c => c.action_type.includes('Lead_'))
+      .reduce((sum, c) => sum + c.count, 0);
+
+    // Calculate total REGISTRATIONS (complete registration - final funnel stage)
+    // Only count Floresiendo custom events (CompleteRegistration_*) to avoid
+    // double-counting with the generic offsite_conversion.fb_pixel_complete_registration
+    const totalRegistrations = filteredConversions
+      .filter(c => c.action_type.includes('CompleteRegistration_'))
+      .reduce((sum, c) => sum + c.count, 0);
+
+    // Get Floresiendo-specific conversions for breakdown cards
+    const conversionItems = filteredConversions
       .filter(c =>
+        // TOFU-B Lead Magnet events
+        c.action_type.includes('Lead_Meditacion') ||
+        c.action_type.includes('Lead_Conferencia') ||
+        c.action_type.includes('CompleteRegistration_') ||
+        // TOFU-A Pain Funnel events
+        c.action_type.includes('Lead_Estres') ||
+        c.action_type.includes('Lead_Duelo') ||
+        c.action_type.includes('Lead_Proposito') ||
+        // Legacy events (calls/WhatsApp)
         c.action_type.includes('Llamada') ||
         c.action_type.includes('Whatsapp') ||
         c.action_type.includes('Schedule')
@@ -443,7 +621,10 @@ export default function MetaAdsDashboardPage() {
         label: c.label,
         value: c.count,
         cost_per: c.cost_per,
-        color: ['#E07A5F', '#10B981', '#3B82F6', '#8B5CF6'][i % 4],
+        // Color coding: amber for leads, coral for registrations, others get blue/green
+        color: c.action_type.includes('Lead_') ? '#F59E0B' :
+               c.action_type.includes('CompleteRegistration_') ? '#E07A5F' :
+               ['#10B981', '#3B82F6', '#8B5CF6'][i % 3],
       }));
 
     return {
@@ -452,13 +633,15 @@ export default function MetaAdsDashboardPage() {
       landingPageViews,
       conversions: conversionItems,
       totalSpend: parseFloat(aggregatedSummary.spend || '0'),
+      totalLeads,
+      totalRegistrations,
     };
-  }, [aggregatedSummary, conversions]);
+  }, [aggregatedSummary, filteredConversions]);
 
   const engagementData = useMemo(() => {
     // Extract engagement metrics from conversions
     const getCount = (type: string) =>
-      conversions.find(c => c.action_type === type)?.count || 0;
+      filteredConversions.find(c => c.action_type === type)?.count || 0;
 
     return {
       postEngagement: getCount('post_engagement'),
@@ -470,10 +653,10 @@ export default function MetaAdsDashboardPage() {
       messagingStarted: getCount('onsite_conversion.messaging_conversation_started_7d'),
       pageEngagement: getCount('page_engagement'),
     };
-  }, [conversions]);
+  }, [filteredConversions]);
 
   const costMetrics = useMemo(() => {
-    return conversions
+    return filteredConversions
       .filter(c => c.cost_per && c.cost_per > 0)
       .slice(0, 6)
       .map((c, i) => ({
@@ -483,7 +666,7 @@ export default function MetaAdsDashboardPage() {
         count: c.count,
         color: ['#E07A5F', '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'][i % 6],
       }));
-  }, [conversions]);
+  }, [filteredConversions]);
 
   // Calculate total Meta conversions for HubSpot comparison
   const metaTotalConversions = useMemo(() => {
@@ -494,60 +677,136 @@ export default function MetaAdsDashboardPage() {
       'offsite_conversion.fb_pixel_purchase',
       'complete_registration',
     ];
-    return conversions
+    return filteredConversions
       .filter(c => conversionTypes.includes(c.action_type))
       .reduce((sum, c) => sum + c.count, 0);
-  }, [conversions]);
+  }, [filteredConversions]);
 
+  // Ad Set Performance Data - extract from campaigns hierarchy
+  const adSetPerformanceData = useMemo(() => {
+    const adSets: Array<{
+      id: string;
+      name: string;
+      campaignName: string;
+      status: string;
+      dailyBudget?: number;
+      optimizationGoal?: string;
+      spend: number;
+      impressions: number;
+      clicks: number;
+      ctr: number;
+      cpc: number;
+      reach: number;
+      adsCount: number;
+    }> = [];
+
+    filteredCampaigns.forEach((campaign) => {
+      campaign.adsets?.forEach((adset) => {
+        if (adset.insights) {
+          adSets.push({
+            id: adset.id,
+            name: adset.name,
+            campaignName: campaign.name,
+            status: adset.status,
+            dailyBudget: adset.daily_budget ? parseFloat(adset.daily_budget) / 100 : undefined,
+            optimizationGoal: adset.optimization_goal,
+            spend: parseFloat(adset.insights.spend || '0'),
+            impressions: parseInt(adset.insights.impressions || '0', 10),
+            clicks: parseInt(adset.insights.clicks || '0', 10),
+            ctr: parseFloat(adset.insights.ctr || '0'),
+            cpc: parseFloat(adset.insights.cpc || '0'),
+            reach: parseInt(adset.insights.reach || '0', 10),
+            adsCount: adset.ads?.length || 0,
+          });
+        }
+      });
+    });
+
+    return adSets;
+  }, [filteredCampaigns]);
+
+  // Ad Performance Data - extract ACTUAL ad data from campaigns hierarchy
   const adPerformanceData = useMemo(() => {
-    // This would come from ad-level API, for now extract from campaigns
     const ads: Array<{
       id: string;
       name: string;
+      campaignName?: string;
+      adsetName?: string;
       status: string;
       spend: number;
       impressions: number;
       clicks: number;
       ctr: number;
       cpc: number;
+      reach?: number;
       landingPageViews: number;
       conversions: number;
     }> = [];
 
-    // Flatten campaign data to simulate ad data
     filteredCampaigns.forEach((campaign) => {
-      if (campaign.insights) {
-        ads.push({
-          id: campaign.id,
-          name: campaign.name,
-          status: campaign.status,
-          spend: parseFloat(campaign.insights.spend || '0'),
-          impressions: parseInt(campaign.insights.impressions || '0', 10),
-          clicks: parseInt(campaign.insights.clicks || '0', 10),
-          ctr: parseFloat(campaign.insights.ctr || '0'),
-          cpc: parseFloat(campaign.insights.cpc || '0'),
-          landingPageViews: Math.floor(parseInt(campaign.insights.clicks || '0', 10) * 0.6),
-          conversions: campaign.insights.actions?.reduce(
-            (sum, a) =>
-              a.action_type.includes('Llamada') || a.action_type.includes('conversion')
-                ? sum + parseInt(a.value, 10)
-                : sum,
-            0
-          ) || 0,
+      campaign.adsets?.forEach((adset) => {
+        adset.ads?.forEach((ad) => {
+          if (ad.insights) {
+            ads.push({
+              id: ad.id,
+              name: ad.name,
+              campaignName: campaign.name,
+              adsetName: adset.name,
+              status: ad.status,
+              spend: parseFloat(ad.insights.spend || '0'),
+              impressions: parseInt(ad.insights.impressions || '0', 10),
+              clicks: parseInt(ad.insights.clicks || '0', 10),
+              ctr: parseFloat(ad.insights.ctr || '0'),
+              cpc: parseFloat(ad.insights.cpc || '0'),
+              reach: parseInt(ad.insights.reach || '0', 10),
+              // Use actual landing_page_view from actions, fallback to 60% estimate
+              landingPageViews: (() => {
+                const lpvAction = ad.insights.actions?.find(a => a.action_type === 'landing_page_view');
+                return lpvAction
+                  ? parseInt(lpvAction.value, 10)
+                  : Math.floor(parseInt(ad.insights.clicks || '0', 10) * 0.6);
+              })(),
+              // Count Floresiendo-specific pixel events
+              conversions: ad.insights.actions?.reduce(
+                (sum, a) =>
+                  // Floresiendo custom events (full format: offsite_conversion.fb_pixel_custom.Lead_*)
+                  a.action_type.includes('Lead_') ||
+                  a.action_type.includes('CompleteRegistration_') ||
+                  // Standard Meta pixel events
+                  a.action_type === 'offsite_conversion.fb_pixel_lead' ||
+                  a.action_type === 'offsite_conversion.fb_pixel_complete_registration'
+                    ? sum + parseInt(a.value, 10)
+                    : sum,
+                0
+              ) || 0,
+            });
+          }
         });
-      }
+      });
     });
 
     return ads;
   }, [filteredCampaigns]);
 
   const budgetData = useMemo(() => {
-    const dailyBudget = 15; // MXN - from ad set config
+    // Calculate daily budget from actual ad set configurations
+    let totalDailyBudget = 0;
+    filteredCampaigns.forEach((campaign) => {
+      campaign.adsets?.forEach((adset) => {
+        if (adset.status === 'ACTIVE' && adset.daily_budget) {
+          // daily_budget is in cents, convert to dollars
+          totalDailyBudget += parseFloat(adset.daily_budget) / 100;
+        }
+      });
+    });
+
+    // Fallback to default if no active ad sets with budgets
+    const dailyBudget = totalDailyBudget > 0 ? totalDailyBudget : 15;
     const totalSpent = parseFloat(aggregatedSummary?.spend || '0');
     const daysActive = dailyData.length || 1;
 
     return { dailyBudget, totalSpent, daysActive };
-  }, [overview?.summary?.spend, dailyData.length]);
+  }, [aggregatedSummary?.spend, dailyData.length, filteredCampaigns]);
 
   // Auth screen
   if (!isAuthenticated) {
@@ -676,7 +935,7 @@ export default function MetaAdsDashboardPage() {
               {/* Menu Toggle Button */}
               <div className="relative">
                 <button
-                  onClick={() => setMenuOpen(!menuOpen)}
+                  onClick={handleMenuToggle}
                   className={`flex items-center gap-2 px-3 py-2.5 rounded-xl transition-colors font-medium text-sm ${
                     menuOpen
                       ? 'bg-coral text-white'
@@ -700,7 +959,7 @@ export default function MetaAdsDashboardPage() {
                     {/* Backdrop */}
                     <div
                       className="fixed inset-0 z-40"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={handleMenuClose}
                     />
 
                     {/* Menu Panel */}
@@ -730,9 +989,10 @@ export default function MetaAdsDashboardPage() {
                               name: c.name,
                               status: c.status,
                             }))}
-                            selectedCampaigns={selectedCampaignIds}
-                            onSelectionChange={setSelectedCampaignIds}
+                            selectedCampaigns={pendingCampaignIds}
+                            onSelectionChange={setPendingCampaignIds}
                             loading={loading && !overview}
+                            inline
                           />
                         </div>
 
@@ -741,7 +1001,7 @@ export default function MetaAdsDashboardPage() {
                           <label className="block text-xs font-medium text-warm-gray-500 mb-1.5 px-1">
                             Periodo
                           </label>
-                          <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+                          <TimeRangeSelector value={pendingTimeRange} onChange={setPendingTimeRange} />
                         </div>
 
                         {/* Export */}
@@ -752,7 +1012,7 @@ export default function MetaAdsDashboardPage() {
                           <ExportButton
                             campaigns={filteredCampaigns}
                             dailyData={dailyData}
-                            conversions={conversions}
+                            conversions={filteredConversions}
                             summary={overview?.summary}
                             timeRange={timeRangeLabels[timeRange]}
                             disabled={loading}
@@ -760,11 +1020,24 @@ export default function MetaAdsDashboardPage() {
                         </div>
                       </div>
 
+                      {/* Apply Button */}
+                      <div className="px-3 py-3 border-t border-warm-gray-100">
+                        <button
+                          onClick={handleMenuApply}
+                          className="flex items-center justify-center gap-2 w-full px-3 py-2.5 bg-coral text-white rounded-lg hover:bg-coral/90 transition-colors font-medium text-sm shadow-sm"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          Aplicar
+                        </button>
+                      </div>
+
                       {/* Logout Footer */}
-                      <div className="px-3 py-3 bg-warm-gray-50 border-t border-warm-gray-100">
+                      <div className="px-3 pb-3 pt-0">
                         <button
                           onClick={handleLogout}
-                          className="flex items-center justify-center gap-2 w-full px-3 py-2.5 bg-warm-gray-200 text-warm-gray-700 rounded-lg hover:bg-warm-gray-300 transition-colors font-medium text-sm"
+                          className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-warm-gray-100 text-warm-gray-500 rounded-lg hover:bg-warm-gray-200 transition-colors font-medium text-xs"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path
@@ -796,19 +1069,19 @@ export default function MetaAdsDashboardPage() {
               )}
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-warm-gray-400">Gasto:</span>
-                <span className="font-semibold text-coral">{formatCurrency(aggregatedSummary.spend)}</span>
+                <span className="font-semibold text-coral">{formatCurrency(aggregatedSummary?.spend || '0')}</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-warm-gray-400">Impresiones:</span>
-                <span className="font-semibold text-blue-600">{formatNumber(aggregatedSummary.impressions)}</span>
+                <span className="font-semibold text-blue-600">{formatNumber(aggregatedSummary?.impressions || '0')}</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-warm-gray-400">Clics:</span>
-                <span className="font-semibold text-green-600">{formatNumber(aggregatedSummary.clicks)}</span>
+                <span className="font-semibold text-green-600">{formatNumber(aggregatedSummary?.clicks || '0')}</span>
               </div>
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <span className="text-warm-gray-400">CTR:</span>
-                <span className="font-semibold text-gold">{formatPercentage(aggregatedSummary.ctr)}</span>
+                <span className="font-semibold text-gold">{formatPercentage(aggregatedSummary?.ctr || '0')}</span>
               </div>
             </div>
           )}
@@ -897,10 +1170,11 @@ export default function MetaAdsDashboardPage() {
             />
             <KPICard
               label="Alcance"
-              value={formatNumber(aggregatedSummary?.reach || '0')}
+              value={aggregatedSummary?.reach ? formatNumber(aggregatedSummary.reach) : 'N/A'}
               color="teal"
               loading={loading && !overview}
-              sparklineData={sparklineData.reach}
+              sparklineData={aggregatedSummary?.reach ? sparklineData.reach : undefined}
+              tooltip={!aggregatedSummary?.reach ? 'El alcance no puede sumarse entre campañas filtradas (usuarios únicos)' : undefined}
               icon={
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -936,8 +1210,8 @@ export default function MetaAdsDashboardPage() {
           <section className="mb-6">
             <CollapsibleSection
               title="Embudo de Conversion"
-              subtitle="Floresiendo - Llamadas y WhatsApp"
-              badge={funnelData.conversions.reduce((sum, c) => sum + c.value, 0)}
+              subtitle={`${funnelData.totalLeads} Leads → ${funnelData.totalRegistrations} Registros`}
+              badge={funnelData.totalRegistrations}
               badgeColor="#E07A5F"
               icon={
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -951,6 +1225,8 @@ export default function MetaAdsDashboardPage() {
                 landingPageViews={funnelData.landingPageViews}
                 conversions={funnelData.conversions}
                 totalSpend={funnelData.totalSpend}
+                totalLeads={funnelData.totalLeads}
+                totalRegistrations={funnelData.totalRegistrations}
                 loading={loading && !overview}
               />
             </CollapsibleSection>
@@ -1041,7 +1317,29 @@ export default function MetaAdsDashboardPage() {
           </CollapsibleSection>
         </section>
 
-        {/* Dashboard 3.0: Ad Performance Table */}
+        {/* Ad Set Performance Table */}
+        {adSetPerformanceData.length > 0 && (
+          <section className="mb-6">
+            <CollapsibleSection
+              title="Conjuntos de Anuncios"
+              subtitle="Metricas por ad set"
+              badge={adSetPerformanceData.length}
+              badgeColor="#8B5CF6"
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+              }
+            >
+              <AdSetPerformanceTable
+                adSets={adSetPerformanceData}
+                loading={loading && !overview}
+              />
+            </CollapsibleSection>
+          </section>
+        )}
+
+        {/* Ad Performance Table */}
         {adPerformanceData.length > 0 && (
           <section className="mb-6">
             <CollapsibleSection
@@ -1063,43 +1361,12 @@ export default function MetaAdsDashboardPage() {
           </section>
         )}
 
-        {/* Campaigns Section */}
-        <section className="mb-6">
-          <CollapsibleSection
-            title="Campanas"
-            subtitle="Gestion de campanas publicitarias"
-            badge={filteredCampaigns.length}
-            badgeColor="#6366F1"
-            icon={
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-            }
-          >
-            <SearchFilter
-              searchValue={searchQuery}
-              onSearchChange={setSearchQuery}
-              statusFilter={statusFilter}
-              onStatusFilterChange={setStatusFilter}
-              totalCount={(overview?.campaigns as CampaignWithInsights[] || []).length}
-              filteredCount={filteredCampaigns.length}
-            />
-            <CampaignList
-              campaigns={filteredCampaigns}
-              loading={loading && !overview}
-              searchQuery={searchQuery}
-              onClearSearch={() => setSearchQuery('')}
-              onRefresh={handleRefresh}
-            />
-          </CollapsibleSection>
-        </section>
-
         {/* Conversions Section */}
         <section className="mb-6">
           <CollapsibleSection
             title="Conversiones"
             subtitle="Desglose de acciones de conversion"
-            badge={conversions.reduce((sum, c) => sum + c.count, 0)}
+            badge={filteredConversions.reduce((sum, c) => sum + c.count, 0)}
             badgeColor="#E07A5F"
             icon={
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1107,7 +1374,7 @@ export default function MetaAdsDashboardPage() {
               </svg>
             }
           >
-            <ConversionsTable conversions={conversions} loading={loading && conversions.length === 0} />
+            <ConversionsTable conversions={filteredConversions} loading={loading && filteredConversions.length === 0} />
           </CollapsibleSection>
         </section>
 
