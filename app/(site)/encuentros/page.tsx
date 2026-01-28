@@ -105,7 +105,7 @@ export default function EncuentrosPage() {
                 {/* Date Box - Gold accent */}
                 <div className="bg-gradient-to-br from-gold to-gold-dark rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
                   <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
-                  <div className="text-3xl font-bold text-white my-1">18</div>
+                  <div className="text-3xl font-bold text-white my-1">26</div>
                   <span className="text-white/80 text-xs font-medium">7:00 PM</span>
                 </div>
 

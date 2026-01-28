@@ -23,8 +23,8 @@ import { CountdownTimer } from "@/components/countdown-timer";
 const FUNNEL_NAME = "conferencia_vida_perfecta";
 const EVENT_PREFIX = "Conferencia_VidaPerfecta";
 
-// Target date for countdown: February 18, 2026 at 7:00 PM CDMX (UTC-6)
-const EVENT_DATE = new Date("2026-02-18T19:00:00-06:00");
+// Target date for countdown: February 26, 2026 at 7:00 PM CDMX (UTC-6)
+const EVENT_DATE = new Date("2026-02-26T19:00:00-06:00");
 
 // FAQ Accordion Item with improved styling
 function FAQItem({ question, answer }: { question: string; answer: string }) {
@@ -163,7 +163,7 @@ export default function ConferenciaVidaPerfectaPage() {
               </span>
               <div className="flex items-center gap-2 text-white/90 text-xs font-medium">
                 <Calendar className="w-3.5 h-3.5 text-gold" />
-                <span>18 Feb</span>
+                <span>26 Feb</span>
                 <span className="text-white/40">•</span>
                 <Clock className="w-3.5 h-3.5 text-gold" />
                 <span>7PM</span>
@@ -189,7 +189,7 @@ export default function ConferenciaVidaPerfectaPage() {
           >
             <span className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
               <Calendar className="w-4 h-4 text-gold" />
-              Miércoles 18 de Febrero 2026
+              Jueves 26 de Febrero 2026
             </span>
             <span className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
               <Clock className="w-4 h-4 text-gold" />
@@ -596,7 +596,7 @@ export default function ConferenciaVidaPerfectaPage() {
               El primer paso es dejar de fingir que todo está bien
             </h2>
             <p className="text-white/90 mb-10 text-lg max-w-2xl mx-auto">
-              18 de febrero a las 7:00 PM en Col. Nápoles, CDMX. Una hora que
+              26 de febrero a las 7:00 PM en Col. Nápoles, CDMX. Una hora que
               puede cambiar tu perspectiva.
             </p>
 
@@ -643,7 +643,7 @@ export default function ConferenciaVidaPerfectaPage() {
                 <span className="text-coral text-xs font-medium">Solo 60 lugares</span>
               </div>
               <p className="text-burgundy font-semibold text-sm truncate">
-                Conferencia Gratuita - 18 Feb
+                Conferencia Gratuita - 26 Feb
               </p>
             </div>
             <button
