@@ -172,8 +172,16 @@ export default function MetaAdsDashboardPage() {
   const fetchInsights = useCallback(async () => {
     try {
       const storedPassword = localStorage.getItem('admin_password');
+
+      // Only pass campaignIds when filtering (not all campaigns selected)
+      const allCampaignCount = overview?.campaigns?.length || 0;
+      const isFiltered = selectedCampaignIds.length > 0 && selectedCampaignIds.length < allCampaignCount;
+      const campaignParam = isFiltered
+        ? `&campaignIds=${selectedCampaignIds.join(',')}`
+        : '';
+
       const res = await fetch(
-        `/api/admin/meta-ads/insights?timeRange=${timeRange}&password=${storedPassword}`
+        `/api/admin/meta-ads/insights?timeRange=${timeRange}&password=${storedPassword}${campaignParam}`
       );
 
       if (res.ok) {
@@ -184,15 +192,23 @@ export default function MetaAdsDashboardPage() {
     } catch (err) {
       console.error('Error fetching insights:', err);
     }
-  }, [timeRange]);
+  }, [timeRange, selectedCampaignIds, overview?.campaigns?.length]);
 
   // Fetch demographics data (Dashboard 3.0)
   const fetchDemographics = useCallback(async () => {
     setDemographicsLoading(true);
     try {
       const storedPassword = localStorage.getItem('admin_password');
+
+      // Only pass campaignIds when filtering (not all campaigns selected)
+      const allCampaignCount = overview?.campaigns?.length || 0;
+      const isFiltered = selectedCampaignIds.length > 0 && selectedCampaignIds.length < allCampaignCount;
+      const campaignParam = isFiltered
+        ? `&campaignIds=${selectedCampaignIds.join(',')}`
+        : '';
+
       const res = await fetch(
-        `/api/admin/meta-ads/demographics?timeRange=${timeRange}&password=${storedPassword}`
+        `/api/admin/meta-ads/demographics?timeRange=${timeRange}&password=${storedPassword}${campaignParam}`
       );
 
       if (res.ok) {
@@ -204,7 +220,7 @@ export default function MetaAdsDashboardPage() {
     } finally {
       setDemographicsLoading(false);
     }
-  }, [timeRange]);
+  }, [timeRange, selectedCampaignIds, overview?.campaigns?.length]);
 
   // Fetch HubSpot contacts data
   const fetchHubspotContacts = useCallback(async () => {

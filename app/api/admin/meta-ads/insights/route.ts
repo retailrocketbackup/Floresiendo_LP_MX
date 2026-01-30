@@ -8,7 +8,35 @@ import {
   getDailyInsights,
   parseConversions,
 } from '@/lib/meta-ads';
-import type { MetaAdsInsightsResponse, TimeRange } from '@/lib/meta-ads-types';
+import type { MetaAdsInsightsResponse, TimeRange, DailyDataPoint } from '@/lib/meta-ads-types';
+
+// Helper to aggregate daily data from multiple campaigns
+function aggregateDailyData(allData: DailyDataPoint[][]): DailyDataPoint[] {
+  const byDate = new Map<string, DailyDataPoint>();
+
+  for (const campaignData of allData) {
+    for (const day of campaignData) {
+      const existing = byDate.get(day.date);
+      if (existing) {
+        existing.spend += day.spend;
+        existing.impressions += day.impressions;
+        existing.clicks += day.clicks;
+        // Reach cannot be summed (unique users would be double-counted)
+        // We keep the first reach value as a rough approximation
+      } else {
+        byDate.set(day.date, { ...day });
+      }
+    }
+  }
+
+  // Recalculate CTR for aggregated data
+  return Array.from(byDate.values())
+    .map(d => ({
+      ...d,
+      ctr: d.impressions > 0 ? (d.clicks / d.impressions) * 100 : 0,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
 
 export async function GET(request: Request) {
   try {
@@ -34,11 +62,25 @@ export async function GET(request: Request) {
     const objectId = searchParams.get('objectId') || getAccountId();
     const level = (searchParams.get('level') as 'account' | 'campaign' | 'adset' | 'ad') || 'account';
 
-    // Fetch insights and daily breakdown in parallel
-    const [insights, dailyBreakdown] = await Promise.all([
-      getInsights(objectId, timeRange, level),
-      getDailyInsights(objectId, timeRange),
-    ]);
+    // Parse campaignIds for filtered daily data
+    const campaignIds = searchParams.get('campaignIds')?.split(',').filter(Boolean) || [];
+
+    // Fetch insights (always account-level for summary)
+    const insights = await getInsights(objectId, timeRange, level);
+
+    // Fetch daily breakdown - either per-campaign or account-level
+    let dailyBreakdown: DailyDataPoint[];
+
+    if (campaignIds.length > 0) {
+      // Fetch daily insights for each selected campaign and aggregate
+      const allDailyData = await Promise.all(
+        campaignIds.map(id => getDailyInsights(id, timeRange))
+      );
+      dailyBreakdown = aggregateDailyData(allDailyData);
+    } else {
+      // Default: account-level daily breakdown
+      dailyBreakdown = await getDailyInsights(objectId, timeRange);
+    }
 
     if (!insights) {
       return NextResponse.json({
