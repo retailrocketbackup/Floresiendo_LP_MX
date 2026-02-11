@@ -2,23 +2,24 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { Calendar, Clock, Users, CheckCircle, Brain, Heart, Moon, ArrowRight, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Calendar, Clock, Users, Brain, Heart, Moon, ArrowRight, Zap } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
 import { CountdownTimer } from "@/components/countdown-timer";
 
 export default function MeditacionGratisPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstname: "",
     countryCode: "+52",
     phoneNumber: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
   // Session details - update these for each campaign
-  const sessionDate = "Martes 17 de Febrero";
+  const sessionDate = "Lunes 17 de Febrero";
   const sessionTime = "8:00 PM (Hora CDMX)";
 
   // Target date for countdown: February 17, 2026 at 8:00 PM CDMX (UTC-6)
@@ -62,19 +63,6 @@ export default function MeditacionGratisPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  useEffect(() => {
-    if (isSubmitted) {
-      const userName = encodeURIComponent(formData.firstname);
-      const whatsappUrl = `https://api.whatsapp.com/send?phone=+524427845308&text=Hola%20Ramon,%20quiero%20confirmar%20mi%20lugar%20para%20la%20meditaci%C3%B3n%20en%20vivo.%20Me%20llamo%20${userName}.`;
-
-      const redirectTimeout = setTimeout(() => {
-        window.location.href = whatsappUrl;
-      }, 3000);
-
-      return () => clearTimeout(redirectTimeout);
-    }
-  }, [isSubmitted, formData.firstname]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,32 +133,12 @@ export default function MeditacionGratisPage() {
       );
 
       setIsSubmitting(false);
-      setIsSubmitted(true);
+      router.push("/f/meditacion-gratis/gracias");
     } catch (error) {
       console.error("Error submitting form:", error);
       setIsSubmitting(false);
     }
   };
-
-  if (isSubmitted) {
-    return (
-      <main className="min-h-screen bg-gradient-to-b from-burgundy to-burgundy-dark flex items-center justify-center px-4">
-        <div className="max-w-xl mx-auto text-center text-white">
-          <div className="mb-8">
-            <CheckCircle className="w-20 h-20 text-green-400 mx-auto" />
-          </div>
-          <h2 className="text-3xl font-bold mb-4">¡Registro exitoso!</h2>
-          <p className="text-xl text-coral-light mb-6">
-            En un momento te redirigiremos a WhatsApp para confirmar tu lugar
-            y enviarte el enlace de acceso.
-          </p>
-          <p className="text-coral-light/70">
-            Redirigiendo...
-          </p>
-        </div>
-      </main>
-    );
-  }
 
   return (
     <main className="overflow-x-hidden max-w-[100vw]">
@@ -337,7 +305,7 @@ export default function MeditacionGratisPage() {
                     />
                   </div>
                   <p className="text-xs text-warm-gray-500 mt-1">
-                    Te enviaremos el link de Zoom por WhatsApp
+                    Te enviaremos el link de Google Meet por WhatsApp
                   </p>
                 </div>
 
@@ -490,7 +458,7 @@ export default function MeditacionGratisPage() {
               },
               {
                 q: "¿Cómo me conecto a la sesión?",
-                a: "Te enviaremos un enlace de Zoom por WhatsApp. Solo necesitas un dispositivo con conexión a internet.",
+                a: "Te enviaremos un enlace de Google Meet por WhatsApp. Solo necesitas un dispositivo con conexión a internet.",
               },
               {
                 q: "¿Es realmente gratis?",

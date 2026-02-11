@@ -5,62 +5,62 @@ import Link from "next/link";
 import {
   Calendar,
   Clock,
-  MapPin,
   CheckCircle,
-  Mail,
-  MessageCircle,
-  Navigation,
+  Video,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
 
-const VENUE_ADDRESS = "Filadelfia 128, piso 3, Colonia Nápoles, CDMX";
-const GOOGLE_MAPS_URL = "https://maps.google.com/?q=Filadelfia+128+Colonia+Napoles+CDMX";
-const CONFERENCE_DATE = "Jueves 26 de Febrero 2026";
-const CONFERENCE_TIME = "7:00 PM (hora Ciudad de México)";
+const MEET_URL = "https://meet.google.com/vom-orye-woa";
+const EVENT_DATE = "Lunes 17 de Febrero 2026";
+const EVENT_TIME = "8:00 PM (hora Ciudad de México)";
 
 // Google Calendar link generator
 function generateGoogleCalendarLink() {
   const title = encodeURIComponent(
-    "Conferencia: Cuando tu vida se ve perfecta pero se siente vacía"
+    "Meditación Guiada en Vivo - FloreSiendo"
   );
   const details = encodeURIComponent(
-    `Conferencia presencial gratuita con Ramón Henríquez.\n\nDirección: ${VENUE_ADDRESS}\n\nUna conversación honesta sobre el vacío que el éxito no llena.\n\nTe recomendamos llegar 10-15 minutos antes.`
+    `Meditación guiada gratuita con Ramón Henríquez.\n\nEnlace de Google Meet: ${MEET_URL}\n\nDuración: 30 minutos.\n\nTe recomendamos conectarte 5 minutos antes para probar tu audio.`
   );
-  const location = encodeURIComponent(VENUE_ADDRESS);
-  // February 26, 2026, 7:00 PM - 8:30 PM Mexico City (UTC-6)
-  const startDate = "20260227T010000Z"; // UTC time
-  const endDate = "20260227T023000Z";
+  // February 17, 2026, 8:00 PM - 8:30 PM Mexico City (UTC-6) = Feb 18, 2:00 AM - 2:30 AM UTC
+  const startDate = "20260218T020000Z";
+  const endDate = "20260218T023000Z";
 
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${startDate}/${endDate}`;
 }
 
 // Outlook/Office 365 calendar link
 function generateOutlookCalendarLink() {
   const title = encodeURIComponent(
-    "Conferencia: Cuando tu vida se ve perfecta pero se siente vacía"
+    "Meditación Guiada en Vivo - FloreSiendo"
   );
   const details = encodeURIComponent(
-    `Conferencia presencial gratuita con Ramón Henríquez.\n\nDirección: ${VENUE_ADDRESS}\n\nTe recomendamos llegar 10-15 minutos antes.`
+    `Meditación guiada gratuita con Ramón Henríquez.\n\nEnlace de Google Meet: ${MEET_URL}\n\nTe recomendamos conectarte 5 minutos antes.`
   );
-  const startDate = "2026-02-26T19:00:00";
-  const endDate = "2026-02-26T20:30:00";
+  const startDate = "2026-02-17T20:00:00";
+  const endDate = "2026-02-17T20:30:00";
 
-  return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&startdt=${startDate}&enddt=${endDate}&path=/calendar/action/compose&location=${encodeURIComponent(VENUE_ADDRESS)}`;
+  return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&startdt=${startDate}&enddt=${endDate}&path=/calendar/action/compose`;
 }
 
-export default function GraciasPage() {
+export default function MeditacionGraciasPage() {
   useEffect(() => {
-    // Track thank you page view
     trackEvent(
       "ViewContent",
       {
-        funnel: "conferencia_vida_perfecta",
+        funnel: "meditacion_gratis",
         content_type: "thank_you_page",
-        content_name: "conferencia_vida_perfecta_gracias",
+        content_name: "meditacion_gratis_gracias",
       },
       { enableCAPI: false }
     );
   }, []);
+
+  const handleCopyMeetLink = () => {
+    navigator.clipboard.writeText(MEET_URL);
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#fdf8f4] to-white">
@@ -74,21 +74,21 @@ export default function GraciasPage() {
             ¡Tu lugar está reservado!
           </h1>
           <p className="text-xl text-gray-600">
-            Te esperamos el 26 de febrero para una conversación diferente.
+            Te esperamos el 17 de febrero para meditar juntos.
           </p>
         </div>
 
-        {/* Conference Details Card */}
+        {/* Event Details Card */}
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg mb-8">
           <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">
-            Detalles de la conferencia
+            Detalles del evento
           </h2>
 
           <div className="space-y-4 mb-8">
             <div className="flex items-center gap-4 p-4 bg-[#fdf8f4] rounded-xl">
               <Calendar className="w-6 h-6 text-[#8b2a4a]" />
               <div>
-                <p className="font-semibold text-gray-900">{CONFERENCE_DATE}</p>
+                <p className="font-semibold text-gray-900">{EVENT_DATE}</p>
                 <p className="text-sm text-gray-600">Marca tu calendario</p>
               </div>
             </div>
@@ -96,38 +96,41 @@ export default function GraciasPage() {
             <div className="flex items-center gap-4 p-4 bg-[#fdf8f4] rounded-xl">
               <Clock className="w-6 h-6 text-[#8b2a4a]" />
               <div>
-                <p className="font-semibold text-gray-900">{CONFERENCE_TIME}</p>
-                <p className="text-sm text-gray-600">Duración: 1 hora</p>
+                <p className="font-semibold text-gray-900">{EVENT_TIME}</p>
+                <p className="text-sm text-gray-600">Duración: 30 minutos</p>
               </div>
             </div>
 
             <div className="flex items-center gap-4 p-4 bg-[#fdf8f4] rounded-xl">
-              <MapPin className="w-6 h-6 text-[#8b2a4a]" />
+              <Video className="w-6 h-6 text-[#8b2a4a]" />
               <div>
-                <p className="font-semibold text-gray-900">Evento presencial</p>
+                <p className="font-semibold text-gray-900">Evento en línea vía Google Meet</p>
                 <p className="text-sm text-gray-600">
-                  Solo 60 lugares disponibles. Te recomendamos llegar 10-15 min antes.
+                  Conéctate desde cualquier lugar con internet.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Venue Location */}
+          {/* Google Meet Link */}
           <div className="bg-[#8b2a4a] rounded-xl p-6 text-center">
-            <p className="text-white/80 text-sm mb-3">Dirección:</p>
-            <p className="text-white font-semibold text-lg mb-4">{VENUE_ADDRESS}</p>
+            <p className="text-white/80 text-sm mb-3">Enlace de Google Meet:</p>
             <a
-              href={GOOGLE_MAPS_URL}
+              href={MEET_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-white text-[#8b2a4a] font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <Navigation className="w-5 h-5" />
-              Ver en Google Maps
+              <ExternalLink className="w-5 h-5" />
+              Abrir Google Meet
             </a>
-            <p className="text-white/60 text-xs mt-3">
-              Col. Nápoles, cerca del metro Insurgentes Sur
-            </p>
+            <button
+              onClick={handleCopyMeetLink}
+              className="mt-3 inline-flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors"
+            >
+              <Copy className="w-4 h-4" />
+              Copiar enlace
+            </button>
           </div>
         </div>
 
@@ -158,7 +161,7 @@ export default function GraciasPage() {
           </div>
         </div>
 
-        {/* What to Expect */}
+        {/* What's Next */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4">
             ¿Qué sigue ahora?
@@ -166,37 +169,36 @@ export default function GraciasPage() {
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#8b2a4a]/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Mail className="w-3 h-3 text-[#8b2a4a]" />
+                <ExternalLink className="w-3 h-3 text-[#8b2a4a]" />
               </div>
               <div>
-                <p className="font-medium text-gray-900">Revisa tu correo</p>
+                <p className="font-medium text-gray-900">Guarda el enlace de Google Meet</p>
                 <p className="text-sm text-gray-600">
-                  Recibirás un email de confirmación con todos los detalles.
+                  Cópialo o agréga la sesión a tu calendario para tenerlo a la mano.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#8b2a4a]/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <MessageCircle className="w-3 h-3 text-[#8b2a4a]" />
+                <Calendar className="w-3 h-3 text-[#8b2a4a]" />
               </div>
               <div>
-                <p className="font-medium text-gray-900">WhatsApp</p>
+                <p className="font-medium text-gray-900">Agrega al calendario</p>
                 <p className="text-sm text-gray-600">
-                  Ramón te enviará un mensaje personal de bienvenida y
-                  recordatorios.
+                  Para que no se te pase. Usa los botones de arriba.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#8b2a4a]/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <MapPin className="w-3 h-3 text-[#8b2a4a]" />
+                <Clock className="w-3 h-3 text-[#8b2a4a]" />
               </div>
               <div>
-                <p className="font-medium text-gray-900">El día del evento</p>
+                <p className="font-medium text-gray-900">Llega 5 minutos antes</p>
                 <p className="text-sm text-gray-600">
-                  Llega 10-15 minutos antes. Busca el piso 3 en Filadelfia 128.
+                  Para probar tu audio y video, y estar listo/a cuando comencemos.
                 </p>
               </div>
             </div>
@@ -206,10 +208,10 @@ export default function GraciasPage() {
         {/* Share Section */}
         <div className="text-center p-6 bg-[#fdf8f4] rounded-2xl">
           <p className="text-gray-700 mb-2">
-            ¿Conoces a alguien que necesite escuchar esto?
+            ¿Conoces a alguien que necesite un momento de calma?
           </p>
           <p className="text-sm text-gray-500">
-            Comparte esta conferencia con quien creas que le puede servir.
+            Comparte esta meditación con quien creas que le puede servir.
           </p>
         </div>
 
