@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Play, Battery, Heart, Sparkles, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
-import { trackWhatsAppLead, trackEvent } from "@/lib/meta-tracking";
+import { Play, Battery, Heart, Sparkles, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
+import { trackEvent } from "@/lib/meta-tracking";
 
 // Lazy load Vimeo player - only loads when user clicks play
 const TrackedVimeoPlayer = dynamic(
@@ -15,40 +14,205 @@ const TrackedVimeoPlayer = dynamic(
 
 // V003 - "Sientes que tu rutina te consume"
 const VIMEO_VIDEO_ID = "1143232548";
-const MAIN_WHATSAPP = "34603701464"; // Roble (Spain)
-const WHATSAPP_MESSAGE = "Hola Roble, vi el video sobre encontrar paz interior, y me gustaría saber cómo pueden acompañarme.";
+const ANA_WHATSAPP = "5219981984389"; // Ana (Mexico)
+const WHATSAPP_MESSAGE = "Hola Ana, vi el video de Rodrigo sobre el estrés. Quiero el acceso a la meditación gratuita y saber más";
 
-// WhatsApp button component with tracking
-function WhatsAppCTA({
+// WhatsApp icon SVG path (reused across components)
+const WHATSAPP_SVG_PATH = "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z";
+
+// Zero-friction lead form with validation and WhatsApp redirect
+function LeadForm({
   location,
-  className = "",
-  children
+  variant,
 }: {
   location: string;
-  className?: string;
-  children: React.ReactNode;
+  variant: "dark" | "burgundy";
 }) {
-  const handleClick = () => {
-    trackWhatsAppLead({
-      page: "estres",
-      buttonLocation: location,
-      eventName: "Lead_Estres",
-    });
+  const [formData, setFormData] = useState({ name: "", phone: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (isSubmitted) {
+      const encodedName = encodeURIComponent(formData.name.split(" ")[0]);
+      const msg = encodeURIComponent(
+        `Hola Ana, soy ${formData.name.split(" ")[0]}. Vi el video de Rodrigo sobre el estrés. Quiero el acceso a la meditación gratuita y saber más`
+      );
+      const whatsappUrl = `https://wa.me/${ANA_WHATSAPP}?text=${msg}`;
+
+      const timeout = setTimeout(() => {
+        window.location.href = whatsappUrl;
+      }, 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isSubmitted, formData.name]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    // Validate phone: exactly 10 digits
+    const cleanPhone = formData.phone.replace(/\s/g, "");
+    if (!/^\d{10}$/.test(cleanPhone)) {
+      setError("Ingresa un número válido de 10 dígitos");
+      return;
+    }
+
+    if (!formData.name.trim()) {
+      setError("Ingresa tu nombre");
+      return;
+    }
+
+    setIsSubmitting(true);
+    const fullPhone = `+52${cleanPhone}`;
+
+    try {
+      // 1. Meta tracking - Lead event
+      await trackEvent(
+        "Lead_Estres",
+        {
+          funnel: "estres",
+          content_type: "form_submission",
+          content_name: "estres_lead_form",
+          first_name: formData.name,
+          phone: fullPhone,
+        },
+        { enableCAPI: true }
+      );
+
+      // 2. Get HubSpot tracking cookie
+      const hutk = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("hubspotutk="))
+        ?.split("=")[1];
+
+      // 3. Extract UTM params
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // 4. Save to HubSpot
+      await fetch("/api/hubspot-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstname: formData.name,
+          phone: fullPhone,
+          funnel_source: "estres",
+          hutk: hutk || undefined,
+          pageUri: window.location.href,
+          pageName: "Estrés Somático - Floresiendo",
+          fbclid: urlParams.get("fbclid") || undefined,
+          gclid: urlParams.get("gclid") || undefined,
+          utm_source: urlParams.get("utm_source") || undefined,
+          utm_medium: urlParams.get("utm_medium") || undefined,
+          utm_campaign: urlParams.get("utm_campaign") || undefined,
+        }),
+      });
+
+      // 5. Meta tracking - CompleteRegistration
+      await trackEvent(
+        "CompleteRegistration_Estres",
+        {
+          funnel: "estres",
+          content_type: "estres_registration",
+          content_name: "estres_lead_form",
+          first_name: formData.name,
+          phone: fullPhone,
+          value: 0,
+          currency: "MXN",
+        },
+        { enableCAPI: true }
+      );
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      setIsSubmitting(false);
+      // Still redirect on error — don't lose the lead
+      setIsSubmitted(true);
+    }
   };
 
-  const encodedMessage = encodeURIComponent(WHATSAPP_MESSAGE);
-  const whatsappUrl = `https://wa.me/${MAIN_WHATSAPP}?text=${encodedMessage}`;
+  if (isSubmitted) {
+    return (
+      <div className="text-center py-6">
+        <p className={`text-xl font-bold mb-2 ${variant === "dark" ? "text-white" : "text-white"}`}>
+          ¡Gracias {formData.name.split(" ")[0]}!
+        </p>
+        <p className={`${variant === "dark" ? "text-white/70" : "text-white/80"}`}>
+          Te redirigimos a WhatsApp con Ana...
+        </p>
+      </div>
+    );
+  }
+
+  const isDark = variant === "dark";
+  const inputClasses = isDark
+    ? "w-full px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-[#25D366] focus:border-transparent backdrop-blur-sm"
+    : "w-full px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-[#25D366] focus:border-transparent";
 
   return (
-    <a
-      href={whatsappUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={handleClick}
-      className={className}
-    >
-      {children}
-    </a>
+    <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto space-y-3">
+      <div>
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+          className={inputClasses}
+          placeholder="¿Cómo te llamas?"
+          required
+        />
+      </div>
+      <div>
+        <div className="flex gap-2">
+          <span className={`flex items-center px-3 py-3 rounded-xl text-sm font-medium ${isDark ? "bg-white/10 border border-white/30 text-white/70" : "bg-white/10 border border-white/30 text-white/70"}`}>
+            +52
+          </span>
+          <input
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+              setFormData((prev) => ({ ...prev, phone: val }));
+            }}
+            className={`flex-1 ${inputClasses}`}
+            placeholder="10 dígitos"
+            required
+            inputMode="numeric"
+          />
+        </div>
+      </div>
+
+      {error && (
+        <p className="text-red-300 text-sm text-center">{error}</p>
+      )}
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] disabled:bg-[#25D366]/50 text-white font-bold py-4 px-6 rounded-full text-lg transition-all hover:scale-105 shadow-lg disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? (
+          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        ) : (
+          <>
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d={WHATSAPP_SVG_PATH} />
+            </svg>
+            Quiero mi meditación gratuita
+          </>
+        )}
+      </button>
+
+      <p className={`text-sm text-center ${isDark ? "text-white/50" : "text-white/60"}`}>
+        Te responde Ana, quien te escucha en FloreSiendo
+      </p>
+    </form>
   );
 }
 
@@ -113,8 +277,8 @@ export default function EstresPage() {
       answer: "Para mejores resultados recomendamos vivir las tres noches completas.",
     },
     {
-      question: "¿Cómo puedo reservar?",
-      answer: "Envía un mensaje al WhatsApp que aparece en la página y te guiaremos.",
+      question: "¿Cómo puedo registrarme?",
+      answer: "Deja tu nombre y WhatsApp en el formulario de esta página. Ana te contactará con el acceso a la meditación gratuita y toda la información que necesites.",
     },
   ];
 
@@ -142,32 +306,21 @@ export default function EstresPage() {
             </span>
           </div>
 
-          {/* Headline - Based on V003 video */}
+          {/* Headline */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-4 leading-tight">
-            &ldquo;Atrapado en una rutina
+            El estrés no solo está en tu mente
             <br />
-            <span className="text-[#f78080]">que resta tu paz.&rdquo;</span>
+            <span className="text-[#f78080]">— lo cargas en el cuerpo.</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-white/80 text-center mb-10 max-w-2xl mx-auto">
-            Sé lo que es despertar con un peso inmenso, ahogado entre trabajo,
-            problemas y deudas. Encontré una alternativa—y quiero compartirla contigo, sin juicios ni prisas.
+            Esa tensión en los hombros, el nudo en el pecho, el cansancio que no se va con descanso.
+            Existe una forma de soltarlo — y el primer paso es una meditación gratuita que puedes vivir esta semana.
           </p>
 
-          {/* CTA - Primary focus */}
-          <div className="text-center mb-10">
-            <WhatsAppCTA
-              location="hero"
-              className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Escríbenos por WhatsApp
-            </WhatsAppCTA>
-            <p className="mt-4 text-white/60 text-sm">
-              Sin costo. Sin presión. Solo una conversación para escucharte.
-            </p>
+          {/* Lead Form - Hero */}
+          <div className="mb-10">
+            <LeadForm location="hero" variant="dark" />
           </div>
 
           {/* Video Section */}
@@ -194,7 +347,7 @@ export default function EstresPage() {
         </div>
       </section>
 
-      {/* Validation Section */}
+      {/* Validation Section — Somatic Angle */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] text-center mb-4">
@@ -206,11 +359,11 @@ export default function EstresPage() {
 
           <div className="space-y-4">
             {[
-              "Despiertas con una sensación de vacío y un peso inmenso",
-              "Te sientes atrapado en una rutina de trabajo y reuniones interminables",
-              "Problemas familiares, de pareja y deudas que restan tu paz",
-              "Un trabajo que te agota día a día sin darte nada a cambio",
-              "Buscas un respiro verdadero que te ayude a reencontrarte",
+              "Despiertas con tensión en el cuerpo antes de que empiece el día",
+              "El estrés se acumula en tu espalda, cuello y mandíbula",
+              "Sientes un peso en el pecho que no se va con descanso",
+              "Tu mente no para, y tu cuerpo paga las consecuencias",
+              "Sabes que necesitas algo más profundo que unas vacaciones",
             ].map((item, index) => (
               <div
                 key={index}
@@ -225,42 +378,39 @@ export default function EstresPage() {
           </div>
 
           <p className="text-center text-[#8b2a4a] font-medium mt-10 text-lg">
-            No estás solo. Y hay una alternativa.
+            Tu cuerpo ya te está pidiendo un cambio. El primer paso es gratis.
           </p>
         </div>
       </section>
 
-      {/* Solution Section */}
+      {/* Solution Section — Lead Magnets */}
       <section className="py-20 px-4 bg-[#fdf8f4]">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] text-center mb-6">
-            Recupera tu paz interior
+            Tu primer paso: una meditación gratuita para soltar
           </h2>
-          <p className="text-xl text-gray-600 text-center mb-6 max-w-2xl mx-auto">
-            En FloreSiendo ofrecemos un espacio donde puedes soltar el peso,
-            reconectar contigo mismo y encontrar claridad.
-          </p>
-          <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            A través de prácticas ancestrales, te acompañamos a:
+          <p className="text-xl text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Regístrate y recibe acceso a una sesión de meditación guiada
+            diseñada para liberar la tensión acumulada en tu cuerpo. Sin costo. Sin compromiso.
           </p>
 
           {/* Benefits Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 icon: Sparkles,
-                title: "Rituales y prácticas ancestrales para soltar cargas",
-                description: "Técnicas para aquietar el ruido mental y encontrar claridad interior.",
+                title: "Meditación guiada para soltar tensión",
+                description: "Una sesión online donde aprenderás a liberar el estrés acumulado en tu cuerpo.",
+              },
+              {
+                icon: MessageCircle,
+                title: "Acompañamiento personal por WhatsApp",
+                description: "Ana, quien te escucha en FloreSiendo, te orientará según lo que necesites.",
               },
               {
                 icon: Heart,
-                title: "Un espacio seguro sin presión ni juicios",
-                description: "Reconectar con fuentes de vitalidad que van más allá del descanso físico.",
-              },
-              {
-                icon: Battery,
-                title: "Renueva tu energía y perspectiva",
-                description: "Alinear lo que piensas, sientes y haces para vivir con autenticidad.",
+                title: "Acceso a experiencias presenciales",
+                description: "Si resuena contigo, hay conferencias y encuentros inmersivos como siguiente paso.",
               },
             ].map((item, index) => (
               <div
@@ -279,24 +429,6 @@ export default function EstresPage() {
               </div>
             ))}
           </div>
-
-          {/* Hint at Encuentros */}
-          <div className="bg-white rounded-2xl p-8 border border-[#8b2a4a]/10">
-            <p className="text-gray-700 text-center mb-4">
-              Para quienes buscan una inmersión más profunda, también facilitamos
-              <strong className="text-[#8b2a4a]"> encuentros de 3 noches en Morelos, México</strong>—retiros
-              donde puedes desconectarte completamente y reconectar con tu esencia.
-            </p>
-            <div className="text-center">
-              <Link
-                href="/encuentros"
-                className="inline-flex items-center gap-2 text-[#8b2a4a] font-semibold hover:text-[#722240] transition-colors"
-              >
-                Conocer los encuentros
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -313,7 +445,7 @@ export default function EstresPage() {
               a soltar y a volver a mi centro.
               <br /><br />
               <span className="text-[#8b2a4a] font-semibold not-italic">
-                Si esto resuena contigo, juntos podremos encontrar un camino.
+                Si esto resuena contigo, regístrate arriba — el primer paso es gratis.
               </span>&rdquo;
             </blockquote>
           </div>
@@ -335,25 +467,31 @@ export default function EstresPage() {
         </div>
       </section>
 
+      {/* Trust Bridge — Ana */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-lg text-gray-700 leading-relaxed">
+            Cuando te registres, quien te recibe es{" "}
+            <strong className="text-[#8b2a4a]">Ana</strong>. Ella te escucha
+            en FloreSiendo México, te compartirá el acceso a la meditación
+            gratuita y, si lo deseas, te acompañará sin prisa para entender
+            qué necesitas. Ana lleva años acompañando procesos de sanación
+            y caminando su propio camino.
+          </p>
+        </div>
+      </section>
+
       {/* Final CTA Section */}
       <section className="py-20 px-4 bg-burgundy text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Recupera tu paz
+            Empieza a soltar hoy
           </h2>
           <p className="text-xl text-white/80 mb-10">
-            Una conversación puede ser el primer paso para salir del ciclo.
+            Regístrate en 10 segundos y recibe tu meditación gratuita por WhatsApp.
           </p>
 
-          <WhatsAppCTA
-            location="footer"
-            className="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
-          >
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            Escríbenos por WhatsApp
-          </WhatsAppCTA>
+          <LeadForm location="footer" variant="burgundy" />
 
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-6 mt-8 text-white/60 text-sm">

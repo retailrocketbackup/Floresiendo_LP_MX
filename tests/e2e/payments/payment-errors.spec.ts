@@ -9,7 +9,7 @@ test.describe('Conekta Payment Errors', () => {
   });
 
   test('should show error for declined card', async ({ page }) => {
-    await page.goto('/encuentros/febrero-2026-precios');
+    await page.goto('/encuentros/marzo-2026-precios');
     await page.waitForLoadState('networkidle');
 
     await page.waitForFunction(() => typeof (window as any).Conekta !== 'undefined', {

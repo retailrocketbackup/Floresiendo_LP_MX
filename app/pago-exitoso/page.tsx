@@ -19,14 +19,14 @@ export default function PagoExitoso({
 
   // Get product name based on ID
   const productNames: Record<string, string> = {
-    'DEPOSIT': 'Anticipo - Encuentro Febrero 2026',
+    'DEPOSIT': 'Anticipo - Encuentro Marzo 2026',
     'TWO_NIGHTS_EARLY': 'Retiro 2 Noches - Precio Especial',
     'TWO_NIGHTS_REGULAR': 'Retiro 2 Noches',
     'THREE_NIGHTS_EARLY': 'Retiro 3 Noches - Precio Especial',
     'THREE_NIGHTS_REGULAR': 'Retiro 3 Noches'
   };
 
-  const productName = productNames[productId] || 'Encuentro Febrero 2026';
+  const productName = productNames[productId] || 'Encuentro Marzo 2026';
 
   return (
     <main className="min-h-screen bg-gradient-warm">
@@ -76,7 +76,7 @@ export default function PagoExitoso({
           </h1>
 
           <p className="text-xl text-muted-foreground mb-8">
-            Tu lugar en el Encuentro de Febrero 2026 ha sido reservado.
+            Tu lugar en el Encuentro de Marzo 2026 ha sido reservado.
           </p>
 
           {/* Order Details */}
@@ -126,7 +126,7 @@ export default function PagoExitoso({
             </p>
 
             <a
-              href="https://wa.me/5214427845308?text=Hola%20Ramón,%20acabo%20de%20realizar%20mi%20pago%20para%20el%20Encuentro%20de%20Febrero%202026"
+              href="https://wa.me/5214427845308?text=Hola%20Ramón,%20acabo%20de%20realizar%20mi%20pago%20para%20el%20Encuentro%20de%20Marzo%202026"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-coral hover:bg-coral-dark text-white font-bold rounded-full transition-all hover:scale-105 shadow-lg"

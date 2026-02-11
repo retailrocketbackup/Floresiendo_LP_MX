@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     // Generate a placeholder email from phone if not provided
     const cleanPhone = phone.replace(/\D/g, '') // Remove non-digits
-    const generatedEmail = email || `lead-${cleanPhone}@floresiendo.mx`
+    const generatedEmail = email || `lead-${cleanPhone}@escuelafloresiendomexico.com`
 
     // Build contact properties
     const properties: Record<string, string> = {

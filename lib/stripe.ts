@@ -23,33 +23,33 @@ export const PAYMENT_PRODUCTS = {
   },
   DEPOSIT: {
     id: 'deposit',
-    name: 'Anticipo - Encuentro Febrero 2026',
+    name: 'Anticipo - Encuentro Marzo 2026',
     amount: 300000, // $3,000 MXN in cents
-    description: 'Anticipo para reservar tu lugar en el Encuentro de Febrero 2026'
+    description: 'Anticipo para reservar tu lugar en el Encuentro de Marzo 2026'
   },
   TWO_NIGHTS_EARLY: {
     id: '2nights_early',
     name: 'Retiro 2 Noches - Precio Especial',
     amount: 710000, // $7,100 MXN
-    description: 'Paquete completo de 2 noches - Encuentro Febrero 2026 (Precio especial)'
+    description: 'Paquete completo de 2 noches - Encuentro Marzo 2026 (Precio especial)'
   },
   TWO_NIGHTS_REGULAR: {
     id: '2nights_regular',
     name: 'Retiro 2 Noches',
     amount: 800000, // $8,000 MXN
-    description: 'Paquete completo de 2 noches - Encuentro Febrero 2026'
+    description: 'Paquete completo de 2 noches - Encuentro Marzo 2026'
   },
   THREE_NIGHTS_EARLY: {
     id: '3nights_early',
     name: 'Retiro 3 Noches - Precio Especial',
     amount: 1020000, // $10,200 MXN
-    description: 'Paquete completo de 3 noches - Encuentro Febrero 2026 (Precio especial)'
+    description: 'Paquete completo de 3 noches - Encuentro Marzo 2026 (Precio especial)'
   },
   THREE_NIGHTS_REGULAR: {
     id: '3nights_regular',
     name: 'Retiro 3 Noches',
     amount: 1150000, // $11,500 MXN
-    description: 'Paquete completo de 3 noches - Encuentro Febrero 2026'
+    description: 'Paquete completo de 3 noches - Encuentro Marzo 2026'
   }
 } as const;
 

@@ -109,8 +109,8 @@ export interface Encuentro {
   whatsappMessage: string;
 }
 
-// February 2026 Encuentro Data
-export const encuentroFebrero2026: Encuentro = {
+// March 2026 Encuentro Data
+export const encuentroMarzo2026: Encuentro = {
   slug: "marzo-2026",
   title: "Encuentro de Marzo",
   subtitle: "4 días de crecimiento personal",
@@ -270,7 +270,7 @@ export const encuentroFebrero2026: Encuentro = {
 };
 
 // All encuentros
-export const encuentros: Encuentro[] = [encuentroFebrero2026];
+export const encuentros: Encuentro[] = [encuentroMarzo2026];
 
 // Helper function to get encuentro by slug
 export function getEncuentroBySlug(slug: string): Encuentro | undefined {

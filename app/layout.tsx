@@ -36,6 +36,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://forms.hscollectedforms.net" />
         <link rel="preconnect" href="https://js.hs-analytics.net" />
         <link rel="preconnect" href="https://connect.facebook.net" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
 
         {/* -- Facebook Domain Verification -- */}
         <meta name="facebook-domain-verification" content="mmdw3nkuclo02a7bnon1g57cmuco52" />
@@ -74,6 +75,22 @@ export default function RootLayout({
           />
         </noscript>
         {/* -- Fin del código del Píxel -- */}
+
+        {/* -- Google Analytics 4 + Google Ads -- */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}');
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
+          `}
+        </Script>
+        {/* -- Fin del código de Google -- */}
 
         {/* -- HubSpot/Hotjar con carga perezosa -- */}
         <Script id="hubspot-tracking" strategy="lazyOnload">

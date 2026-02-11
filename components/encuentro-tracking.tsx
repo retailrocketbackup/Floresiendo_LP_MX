@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { trackEvent } from "@/lib/meta-tracking";
+import { trackGoogleEvent, getGclid } from "@/lib/google-tracking";
 
 interface EncuentroTrackingProps {
   slug: string;
@@ -19,6 +20,7 @@ export function EncuentroTracking({ slug, value }: EncuentroTrackingProps) {
     if (hasTracked.current) return;
     hasTracked.current = true;
 
+    // Meta Pixel + CAPI
     trackEvent(
       "ViewContent_Retreat",
       {
@@ -31,6 +33,15 @@ export function EncuentroTracking({ slug, value }: EncuentroTrackingProps) {
       },
       { enableCAPI: true }
     );
+
+    // Google Analytics 4 — view_item (standard e-commerce event)
+    getGclid();
+    trackGoogleEvent("view_item", {
+      item_name: slug,
+      item_category: "retreat",
+      value: value || 10200,
+      currency: "MXN",
+    });
   }, [slug, value]);
 
   // This component doesn't render anything

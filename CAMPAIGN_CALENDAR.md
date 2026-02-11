@@ -1,5 +1,5 @@
 # FloreSiendo Campaign Calendar
-## Encuentro Feb 19-22, 2026 | Morelos, México
+## Encuentro Mar 5-8, 2026 | Morelos, México
 
 ---
 
@@ -7,10 +7,10 @@
 
 | Item | Details |
 |------|---------|
-| **Event Date** | February 19-22, 2026 (Thu-Sun) |
+| **Event Date** | March 5-8, 2026 (Thu-Sun) |
 | **Campaign Start** | December 9, 2025 |
-| **Total Duration** | 11 weeks |
-| **Free Meditations** | 3 sessions (Dec, Jan x2) |
+| **Total Duration** | 13 weeks |
+| **Free Meditations** | 4 sessions (Dec, Jan x2, Feb) |
 | **TOFU Funnels** | 3 (Duelo, Propósito, Estrés) |
 | **Lead Magnet** | 1 (Meditación Gratis) |
 
@@ -19,12 +19,12 @@
 ## Campaign Timeline Overview
 
 ```
-DEC 2025                          JAN 2026                          FEB 2026
-├─────────────────────────────────┼─────────────────────────────────┼──────────────────┤
-Week:  1    2    3    4           5    6    7    8    9   10   11   EVENT
-       ▼                          ▼         ▼              ▼         ▼
-      Med#1                    TOFU      Med#2          Med#3     19-22
-      Launch                   Ads                      Final     Encuentro
+DEC 2025                          JAN 2026                          FEB 2026          MAR 2026
+├─────────────────────────────────┼─────────────────────────────────┼──────────────────┼────────┤
+Week:  1    2    3    4           5    6    7    8    9   10   11   12   13   EVENT
+       ▼                          ▼         ▼              ▼         ▼         ▼
+      Med#1                    TOFU      Med#2          Med#3     Med#4     5-8
+      Launch                   Ads                                Final     Encuentro
 ```
 
 ---
@@ -96,96 +96,68 @@ Week:  1    2    3    4           5    6    7    8    9   10   11   EVENT
 | Sat | Jan 18 | Content creation | Testimonial collection |
 | Sun | Jan 19 | Weekly review | Prepare optimization phase |
 
-### TOFU Launch Summary
-
-| Funnel | Launch | Event | Target Audience |
-|--------|--------|-------|-----------------|
-| `/f/duelo-acompanamiento` | Jan 6 | `Lead_Duelo` | Grief, loss, difficult moments |
-| `/f/proposito` | Jan 8 | `Lead_Proposito` | Purpose, meaning, direction |
-| `/f/estres` | Jan 13 | `Lead_Estres` | Stress, burnout, overwhelm |
-
 ---
 
 ## Phase 3: Optimization & Retargeting
-### January 20 - February 2, 2026 (Weeks 7-8)
+### January 20 - February 16, 2026 (Weeks 7-10)
 
-**Goal:** Scale winners, build retargeting audiences, final lead push
+**Goal:** Scale winners, build retargeting audiences, lead magnet push
 
-### Week 7: Jan 20-26
+### Week 7-8: Jan 20 - Feb 2
 
 | Day | Date | Activity | Details |
 |-----|------|----------|---------|
 | Mon | Jan 20 | Deep performance analysis | Identify winning funnel |
-| Tue | Jan 21 | Create retargeting audiences | Video75%+, WhatsApp clickers |
 | Wed | Jan 22 | Launch retargeting ads | Different creative, urgency |
-| Thu | Jan 23 | Scale winning funnel | 2x budget on best performer |
-| Fri | Jan 24 | Prepare Meditation #3 | Final push messaging |
 | **Sat** | **Jan 25** | **🧘 Free Meditation #3** | **7:00 PM CST - Conversion focus** |
-| Sun | Jan 26 | Alternative date | Backup for Meditation #3 |
+| Tue | Jan 28 | Testimonial ads launch | Social proof creatives |
+| Thu | Jan 30 | Reduce cold prospecting | Shift budget to warm |
 
-### Week 8: Jan 27 - Feb 2
+### Week 9-10: Feb 3 - Feb 16
 
 | Day | Date | Activity | Details |
 |-----|------|----------|---------|
-| Mon | Jan 27 | Post-meditation follow-up | Strong CTA to WhatsApp |
-| Tue | Jan 28 | Testimonial ads launch | Social proof creatives |
-| Wed | Jan 29 | WhatsApp broadcast | "Últimos lugares" message |
-| Thu | Jan 30 | Reduce cold prospecting | Shift budget to warm |
-| Fri | Jan 31 | Review all leads | Qualify, prioritize hot leads |
-| Sat | Feb 1 | Final creative refresh | Urgency messaging |
-| Sun | Feb 2 | Week review | Prepare final push |
-
-### Retargeting Audiences
-
-| Audience | Source | Size Est. | Priority |
-|----------|--------|-----------|----------|
-| Video 75%+ | All 3 funnels | High intent | ⭐⭐⭐ |
-| Video Complete | All 3 funnels | Highest intent | ⭐⭐⭐⭐ |
-| WhatsApp Clickers | Lead events | Warm | ⭐⭐⭐ |
-| Meditation Attendees | Cal.com | Very warm | ⭐⭐⭐⭐ |
-| Page Visitors 30d | Pixel | Broad retarget | ⭐⭐ |
+| Mon | Feb 3 | Refresh lead magnet ads | Push for Feb 22 session |
+| Wed | Feb 5 | Email sequence - nurture | Success stories |
+| Mon | Feb 10 | Mid-month review | Budget check for final push |
+| Fri | Feb 13 | Prepare final meditation | Med #4 logistics |
 
 ---
 
 ## Phase 4: Final Push & Conversion
-### February 3 - February 18, 2026 (Weeks 9-11)
+### February 17 - March 4, 2026 (Weeks 11-13)
 
 **Goal:** Convert warm leads, fill remaining spots, final urgency
 
-### Week 9: Feb 3-9
+### Week 11: Feb 17-23
 
 | Day | Date | Activity | Details |
 |-----|------|----------|---------|
-| Mon | Feb 3 | Urgency campaign launch | "Solo quedan X lugares" |
-| Tue | Feb 4 | Personal WhatsApp outreach | 1:1 messages to hot leads |
-| Wed | Feb 5 | Email sequence - urgency | Countdown begins |
-| Thu | Feb 6 | Review conversion rate | Adjust messaging if needed |
-| Fri | Feb 7 | Weekend prep | Final push content |
-| Sat | Feb 8 | Social proof push | Share testimonials |
-| Sun | Feb 9 | Capacity check | How many spots left? |
+| Mon | Feb 17 | Urgency campaign launch | "Solo quedan X lugares" |
+| Tue | Feb 18 | Personal WhatsApp outreach | 1:1 messages to hot leads |
+| **Sat** | **Feb 22** | **🧘 Free Meditation #4** | **7:00 PM CST - Last Chance Session** |
+| Sun | Feb 23 | Immediate follow-up | Book appointments from Med #4 |
 
-### Week 10: Feb 10-16
+### Week 12: Feb 24 - Mar 2
 
 | Day | Date | Activity | Details |
 |-----|------|----------|---------|
-| Mon | Feb 10 | Final WhatsApp broadcast | "Última semana para inscribirse" |
-| Tue | Feb 11 | Reduce ad spend | Only retargeting |
-| Wed | Feb 12 | Personal calls to warm leads | High-touch conversion |
-| Thu | Feb 13 | Final spot allocation | Confirm attendees |
-| **Fri** | **Feb 14** | **🛑 Pause prospecting ads** | Only retargeting active |
-| Sat | Feb 15 | Preparation communications | What to bring, logistics |
-| Sun | Feb 16 | Final confirmations | Last chance messages |
+| Mon | Feb 24 | Final WhatsApp broadcast | "Última semana para inscribirse" |
+| Tue | Feb 25 | Reduce ad spend | Only retargeting |
+| Wed | Feb 26 | Personal calls to warm leads | High-touch conversion |
+| Thu | Feb 27 | Final spot allocation | Confirm attendees |
+| **Fri** | **Feb 28** | **🛑 Pause prospecting ads** | Only retargeting active |
 
-### Week 11: Feb 17-22
+### Week 13: Mar 3-8
 
 | Day | Date | Activity | Details |
 |-----|------|----------|---------|
-| Mon | Feb 17 | Final logistics | Transportation, materials |
-| Tue | Feb 18 | Pre-event communications | Arrival instructions |
-| **Wed** | **Feb 19** | **🎉 ENCUENTRO BEGINS** | Day 1 - Welcome |
-| Thu | Feb 20 | Encuentro Day 2 | Core practices |
-| Fri | Feb 21 | Encuentro Day 3 | Deep work |
-| **Sat** | **Feb 22** | **Encuentro ENDS** | Closing ceremony |
+| Mon | Mar 3 | Final logistics | Transportation, materials |
+| Tue | Mar 4 | Pre-event communications | Arrival instructions |
+| **Wed** | **Mar 5** | **🎉 ENCUENTRO BEGINS** | Day 1 - Welcome |
+| Thu | Mar 6 | Encuentro Day 2 | Core practices |
+| Fri | Mar 7 | Encuentro Day 3 | Deep work |
+| **Sat** | **Mar 8** | **Encuentro ENDS** | Closing ceremony |
 
 ---
 
@@ -195,154 +167,45 @@ Week:  1    2    3    4           5    6    7    8    9   10   11   EVENT
 | Item | Details |
 |------|---------|
 | **Date** | Saturday, December 14 |
-| **Time** | 7:00 PM CST (Mexico City) |
-| **Platform** | Zoom |
-| **Duration** | 45-60 minutes |
-| **Purpose** | Build initial list, test Cal.com flow |
-| **Landing Page** | `/f/meditacion` |
-| **Tracking Event** | `CompleteRegistration` |
-| **Follow-up** | Email + WhatsApp within 24hrs |
+| **Time** | 7:00 PM CST |
+| **Purpose** | Build initial list |
 
 ### Session #2: January 11, 2026
 | Item | Details |
 |------|---------|
 | **Date** | Saturday, January 11 |
 | **Time** | 7:00 PM CST |
-| **Platform** | Zoom |
-| **Duration** | 45-60 minutes |
-| **Purpose** | Nurture TOFU leads, mid-funnel warm-up |
-| **Audience** | New + returning participants |
-| **CTA** | Soft mention of Encuentro |
-| **Follow-up** | WhatsApp with Encuentro info |
+| **Purpose** | Nurture TOFU leads |
 
 ### Session #3: January 25, 2026
 | Item | Details |
 |------|---------|
 | **Date** | Saturday, January 25 |
 | **Time** | 7:00 PM CST |
-| **Platform** | Zoom |
-| **Duration** | 45-60 minutes |
+| **Purpose** | Conversion warm-up |
+
+### Session #4: February 22, 2026
+| Item | Details |
+|------|---------|
+| **Date** | Saturday, February 22 |
+| **Time** | 7:00 PM CST |
 | **Purpose** | Final conversion push, urgency |
-| **Audience** | All warm leads |
-| **CTA** | Direct invitation to Encuentro |
-| **Follow-up** | Immediate WhatsApp, "últimos lugares" |
 
 ---
 
 ## Budget Allocation
 
-### Recommended Budget: $800 - $1,200 USD Total
+### Recommended Budget: $1,200 - $1,800 USD Total
 
-| Phase | Dates | Duration | Daily Budget | Total |
-|-------|-------|----------|--------------|-------|
-| Awareness | Dec 9-22 | 14 days | $5-10 | $70-140 |
-| Holiday | Dec 23 - Jan 5 | 14 days | $3-5 | $42-70 |
-| TOFU Launch | Jan 6-19 | 14 days | $30-45 | $420-630 |
-| Optimization | Jan 20 - Feb 2 | 14 days | $25-35 | $350-490 |
-| Final Push | Feb 3-18 | 16 days | $10-15 | $160-240 |
-| **TOTAL** | | **72 days** | | **$1,042-1,570** |
-
-### Budget by Funnel (TOFU Phase)
-
-| Funnel | Daily | 14 Days | Priority |
-|--------|-------|---------|----------|
-| Duelo | $10-15 | $140-210 | Test first |
-| Propósito | $10-15 | $140-210 | Scale if winning |
-| Estrés | $10-15 | $140-210 | Scale if winning |
-| Meditación | $5-10 | $70-140 | Lead magnet |
+| Phase | Duration | Daily Budget | Total |
+|-------|----------|--------------|-------|
+| Awareness (Dec) | 14 days | $5-10 | $70-140 |
+| Holiday | 14 days | $3-5 | $42-70 |
+| TOFU Launch (Jan) | 14 days | $30-45 | $420-630 |
+| Optimization (Feb) | 28 days | $25-35 | $700-980 |
+| Final Push (Mar) | 4 days | $15-20 | $60-80 |
+| **TOTAL** | **~90 days** | | **$1,292-1,900** |
 
 ---
 
-## Key Performance Indicators (KPIs)
-
-### Funnel Metrics
-
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| CTR (Click-through rate) | >1.5% | Meta Ads Manager |
-| Video 25% | >40% of plays | Custom event |
-| Video 75% | >15% of plays | Custom event |
-| Video Complete | >8% of plays | Custom event |
-| WhatsApp Click Rate | >3% of page visitors | Lead events |
-| Cost per WhatsApp Lead | <$5 USD | CPA calculation |
-
-### Conversion Funnel
-
-```
-Impressions → Clicks → Page Views → Video Play → Video 75% → WhatsApp Lead → Conversation → Booking
-   100%        2%         1.8%        1.2%         0.3%          0.1%          0.05%        0.02%
-```
-
-### Target Numbers (Example: $1,000 budget)
-
-| Stage | Est. Number |
-|-------|-------------|
-| Impressions | 100,000+ |
-| Link Clicks | 2,000+ |
-| Page Views | 1,800+ |
-| Video Plays | 1,200+ |
-| Video 75%+ | 300+ |
-| WhatsApp Leads | 100-200 |
-| Conversations | 50-100 |
-| Encuentro Bookings | 5-15 |
-
----
-
-## Meta Ads Setup Checklist
-
-### Before Launch (Dec 8)
-
-- [ ] Pixel verified and firing correctly
-- [ ] CAPI configured and tested
-- [ ] Custom events created:
-  - [ ] `Lead_Duelo`
-  - [ ] `Lead_Proposito`
-  - [ ] `Lead_Estres`
-  - [ ] `Video25`, `Video50`, `Video75`, `VideoComplete`
-- [ ] Custom conversions set up in Events Manager
-- [ ] Ad account payment method verified
-- [ ] Business verification complete
-
-### Ad Creative Checklist
-
-- [ ] 3 video creatives per funnel (test variations)
-- [ ] 2-3 image creatives per funnel
-- [ ] Ad copy variations (3 per funnel)
-- [ ] UTM parameters configured
-- [ ] Mobile-optimized landing pages tested
-
-### Audience Setup
-
-- [ ] Lookalike 1% - Mexico - based on website visitors
-- [ ] Interest targeting: espiritualidad, meditación, crecimiento personal
-- [ ] Age range: 28-55
-- [ ] Exclude: current customers, recent converters
-
----
-
-## Contact & Escalation
-
-### Campaign Owner
-- **WhatsApp for Leads:** +52 442 784 5308
-- **Website:** www.escuelafloresiendomexico.com
-
-### Important Links
-| Page | URL |
-|------|-----|
-| Duelo Funnel | `/f/duelo-acompanamiento` |
-| Propósito Funnel | `/f/proposito` |
-| Estrés Funnel | `/f/estres` |
-| Meditación (Lead Magnet) | `/f/meditacion` |
-| Encuentros Info | `/encuentros` |
-
----
-
-## Revision History
-
-| Date | Version | Changes |
-|------|---------|---------|
-| Dec 3, 2025 | 1.0 | Initial calendar created |
-
----
-
-*Generated for FloreSiendo - Encuentro Feb 19-22, 2026*
+*Generated for FloreSiendo - Encuentro Mar 5-8, 2026*

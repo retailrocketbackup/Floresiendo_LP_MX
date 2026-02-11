@@ -1,213 +1,197 @@
-# Meta Ads Campaign Architecture - Floresiendo
+# Floresiendo Meta Ads Campaign Architecture
 
-## Campaign Overview
-
-**Retreat:** Feb 19-22, 2026 (15 spots)
-**Total Budget:** 1,000 MXN/day (~$58 USD)
+## Encuentro Mar 5-8, 2026 | 15 Spots | Morelos, Mexico
 
 ---
 
-## Campaign Structure (CBO)
+## Executive Summary
+
+| Item | Details |
+|------|---------|
+| **Campaign Type** | CBO (Campaign Budget Optimization) with Audience Stacking |
+| **Total Budget** | 50,000 MXN/month (~$2,900 USD) or 15,000 MXN minimum |
+| **Campaigns** | 3 (TOFU, MOFU, BOFU) |
+| **Funnels** | 3 pain-point + 2 lead magnets |
+| **Pixel ID** | 1337956628128088 |
+| **CAPI Status** | Implemented with double deduplication |
+
+---
+
+## Campaign Architecture Overview
 
 ```
-                    ┌─────────────────────────────────────────────────────────────┐
-                    │                    FLORESIENDO META ADS                      │
-                    │                    CBO Campaign Structure                    │
-                    └─────────────────────────────────────────────────────────────┘
-                                                 │
-           ┌─────────────────────────────────────┼─────────────────────────────────┐
-           │                                     │                                 │
-           ▼                                     ▼                                 ▼
-┌─────────────────────┐            ┌─────────────────────┐            ┌─────────────────────┐
-│   TOFU DISCOVERY    │            │   MOFU RETARGETING  │            │   BOFU CONVERSION   │
-│   500 MXN/day       │            │   300 MXN/day       │            │   200 MXN/day       │
-│   ($29 USD)         │            │   ($17 USD)         │            │   ($12 USD)         │
-└─────────────────────┘            └─────────────────────┘            └─────────────────────┘
-           │                                     │                                 │
-     Ad Sets:                              Ad Sets:                          Ad Sets:
-     ├─ Duelo Interests                    ├─ Video 50%+ (14d)               ├─ Lead Magnet Registrants
-     ├─ Proposito Interests                ├─ Page Visitors (14d)            ├─ WhatsApp Leads
-     ├─ Estres Interests                   └─ Social Engagers (30d)          ├─ High-Intent (/precios)
-     ├─ Broad MX 28-55                                                       └─ Checkout Abandoners
-     └─ LAL 1% Purchasers
-           │                                     │                                 │
-     Creatives:                            Creatives:                         Creatives:
-     ├─ 3 Funnel Videos                    ├─ Meditación Lead Magnet         ├─ Testimonial Videos
-     ├─ Meditación Images (3)              ├─ Conferencia Lead Magnet        ├─ "Solo 15 lugares"
-     └─ Conferencia Images (3)             └─ Testimonial Snippets           └─ Urgency/Scarcity
-           │                                     │                                 │
-     Destinations:                         Destinations:                      Destinations:
-     ├─ /f/meditacion-gratis               ├─ /f/meditacion-gratis           ├─ /encuentros/.../precios
-     ├─ /f/conferencia-vida-perfecta       └─ /f/conferencia-vida-perfecta   └─ /f/llamada
-     ├─ /f/duelo                                  │                                 │
-     ├─ /f/proposito                              │                                 │
-     └─ /f/estres                                 │                                 │
-           │                                     │                                 │
-     Events Tracked:                       Events Tracked:                    Events Tracked:
-     ├─ Lead_Meditacion_Gratis             ├─ CompleteRegistration            ├─ ViewContent
-     ├─ Lead_Conferencia_VidaPerfecta      └─ Lead_*                          ├─ InitiateCheckout
-     ├─ Lead_Duelo                                                            └─ Purchase
-     ├─ Lead_Proposito
-     └─ Lead_Estres
-           │                                     │                                 │
-           └─────────────────────────────────────┴─────────────────────────────────┘
-                                                 │
-                                    ┌────────────┴────────────┐
-                                    │     CUSTOM AUDIENCES    │
-                                    └─────────────────────────┘
-                                    │ Video 50%+ Viewers (14d)
-                                    │ Video 75%+ Viewers (30d)
-                                    │ All WhatsApp Leads (30d)
-                                    │ Lead Magnet Registrants (60d)
-                                    │ High-Intent Visitors (14d)
-                                    │ Checkout Abandoners (7d)
-                                    │ Purchasers - EXCLUDE (180d)
-                                    └─────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    FLORESIENDO META ADS ARCHITECTURE                        │
+│                         CBO with Audience Stacking                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                              ┌─────────────────┐
+                              │   COLD TRAFFIC  │
+                              │   (Unknown)     │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  CAMPAIGN 1: TOFU DISCOVERY                                                 │
+│  Objective: Leads | Budget: 25,000 MXN/month CBO                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐    │
+│  │  Duelo    │ │ Propósito │ │  Estrés   │ │   Broad   │ │ Lookalike │    │
+│  │ Interests │ │ Interests │ │ Interests │ │  Mexico   │ │    1%     │    │
+│  │  35-55    │ │   28-45   │ │   30-50   │ │   28-55   │ │ Purchasers│    │
+│  └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘    │
+│        │             │             │             │             │           │
+│        └─────────────┴─────────────┴─────────────┴─────────────┘           │
+│                                    │                                        │
+│                    ┌───────────────┼───────────────┐                       │
+│                    ▼               ▼               ▼                        │
+│              ┌──────────┐   ┌──────────┐   ┌──────────┐                    │
+│              │  Video   │   │  Video   │   │  Static  │                    │
+│              │  Duelo   │   │ Propósito│   │   Lead   │                    │
+│              │          │   │  Estrés  │   │  Magnets │                    │
+│              └────┬─────┘   └────┬─────┘   └────┬─────┘                    │
+│                   │              │              │                           │
+│                   ▼              ▼              ▼                           │
+│  ┌────────────────────────────────────────────────────────────────────┐   │
+│  │ DESTINATIONS:                                                       │   │
+│  │ • /f/duelo-acompanamiento  → Lead_Duelo (WhatsApp)                 │   │
+│  │ • /f/proposito             → Lead_Proposito (WhatsApp)             │   │
+│  │ • /f/estres                → Lead_Estres (WhatsApp)                │   │
+│  │ • /f/meditacion-gratis     → Lead_Meditacion_Gratis (Form)         │   │
+│  │ • /f/conferencia-vida-perfecta → Lead_Conferencia (Form)           │   │
+│  └────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+│  EVENT TRACKED: Lead (any funnel)                                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+                              ┌─────────────────┐
+                              │   WARM TRAFFIC  │
+                              │ (Engaged Users) │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  CAMPAIGN 2: MOFU ENGAGEMENT                                                │
+│  Objective: Conversions | Budget: 15,000 MXN/month CBO                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │
+│  │  Video Viewers  │  │  Page Visitors  │  │ Social Engagers │            │
+│  │     50%+ (7d)   │  │     (14d)       │  │     (30d)       │            │
+│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘            │
+│           │                    │                    │                      │
+│           └────────────────────┼────────────────────┘                      │
+│                                │                                           │
+│                                ▼                                           │
+│                    ┌───────────────────────┐                              │
+│                    │     LEAD MAGNETS      │                              │
+│                    │  • Meditación Gratis  │                              │
+│                    │  • Conferencia VP     │                              │
+│                    └───────────┬───────────┘                              │
+│                                │                                           │
+│  EVENT TRACKED: CompleteRegistration                                       │
+│  EXCLUSIONS: Purchasers                                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+                              ┌─────────────────┐
+                              │   HOT TRAFFIC   │
+                              │  (High Intent)  │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  CAMPAIGN 3: BOFU PURCHASE                                                  │
+│  Objective: Conversions | Budget: 10,000 MXN/month CBO                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐      │
+│  │ Lead Magnet  │ │   WhatsApp   │ │  High-Intent │ │   Checkout   │      │
+│  │ Registrants  │ │   Clickers   │ │   Visitors   │ │  Abandoners  │      │
+│  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘ └──────┬───────┘      │
+│         │                │                │                │               │
+│         └────────────────┴────────────────┴────────────────┘               │
+│                                   │                                        │
+│                                   ▼                                        │
+│                    ┌───────────────────────┐                              │
+│                    │    RETREAT OFFER      │                              │
+│                    │  • Testimonials       │                              │
+│                    │  • Urgency/Scarcity   │                              │
+│                    │  • Pricing            │                              │
+│                    └───────────┬───────────┘                              │
+│                                │                                           │
+│                                ▼                                           │
+│                    ┌───────────────────────┐                              │
+│                    │  /encuentros/         │                              │
+│                    │  marzo-2026-precios   │                              │
+│                    └───────────────────────┘                              │
+│                                                                             │
+│  EVENT TRACKED: Purchase                                                    │
+│  EXCLUSIONS: Purchasers (180d)                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                                       ▼
+                         ┌─────────────────────────┐
+                         │      CONVERSION        │
+                         │  15-person Retreat     │
+                         │   Mar 5-8, 2026        │
+                         └─────────────────────────┘
 ```
 
 ---
 
-## Timeline
+## Part 1: Assets Inventory
 
-```
-        Jan 14          Jan 21          Feb 4           Feb 11          Feb 19-22
-           │               │               │               │               │
-           ▼               ▼               ▼               ▼               ▼
-    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-    │  LAUNCH  │    │  SCALE   │    │MEDITACIÓN│    │CONFERENCIA│   │ RETREAT  │
-    │  TOFU    │    │  MOFU    │    │  EN VIVO │    │  EN VIVO  │   │ FEB 2026 │
-    │Campaign 1│    │Campaign 2│    │  8pm MX  │    │  8pm MX   │   │ 15 spots │
-    └──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
-           │               │               │               │               │
-           └───────────────┴───────────────┴───────────────┴───────────────┘
-                                    BOFU Campaign 3 activates
-                                    when leads > 50
-```
+### Pain-Point Funnels (TOFU)
 
----
+| Funnel | URL | Video ID | WhatsApp | Event |
+|--------|-----|----------|----------|-------|
+| **Duelo** | `/f/duelo-acompanamiento` | 1142274109 | +52 1 55 4018 0914 (Karla) | `Lead_Duelo` |
+| **Propósito** | `/f/proposito` | 1143233296 | +52 442 784 5308 | `Lead_Proposito` |
+| **Estrés** | `/f/estres` | 1143232548 | +52 442 784 5308 | `Lead_Estres` |
 
-## Event Calendar
+### Lead Magnets (MOFU)
 
-| Event | Date | Day | Time | Funnel URL |
-|-------|------|-----|------|------------|
-| Meditación en Vivo | Feb 4, 2026 | Martes | 8pm CDMX | `/f/meditacion-gratis` |
-| Conferencia Vida Perfecta | Feb 11, 2026 | Martes | 8pm CDMX | `/f/conferencia-vida-perfecta` |
-| **Retreat** | Feb 19-22, 2026 | Jue-Dom | - | `/encuentros/febrero-2026-precios` |
+| Magnet | URL | Type | Event |
+|--------|-----|------|-------|
+| **Meditación Gratis** | `/f/meditacion-gratis` | Form → WhatsApp → Cal.com | `Lead_Meditacion_Gratis` + `CompleteRegistration` |
+| **Conferencia Vida Perfecta** | `/f/conferencia-vida-perfecta` | Form → Thank You Page | `Lead_Conferencia_VidaPerfecta` + `CompleteRegistration` |
+
+### Purchase Flow (BOFU)
+
+| Page | URL | Events |
+|------|-----|--------|
+| **Pricing** | `/encuentros/marzo-2026-precios` | `ViewContent` → `InitiateCheckout` → `Purchase` |
 
 ---
 
-## Budget Allocation
+## Part 2: Technical Implementation
 
-| Campaign | Daily (MXN) | Monthly (MXN) | Monthly (USD) | % of Budget |
-|----------|-------------|---------------|---------------|-------------|
-| TOFU Discovery | 500 | 15,000 | $870 | 50% |
-| MOFU Retargeting | 300 | 9,000 | $522 | 30% |
-| BOFU Conversion | 200 | 6,000 | $348 | 20% |
-| **Total** | **1,000** | **30,000** | **$1,740** | 100% |
+### 2.1 Tracking Status
 
----
-
-## Ad Sets by Campaign
-
-### Campaign 1: TOFU Discovery
-| Ad Set | Targeting | Budget Share |
-|--------|-----------|--------------|
-| Duelo | Interests: grief, loss, healing, widows | 20% |
-| Proposito | Interests: life purpose, personal growth, coaching | 20% |
-| Estres | Interests: stress relief, burnout, wellness | 20% |
-| Broad MX | Demographics: 28-55, Mexico, middle-upper class | 20% |
-| LAL Purchasers | 1% Lookalike of past buyers | 20% |
-
-### Campaign 2: MOFU Retargeting
-| Ad Set | Audience | Window |
-|--------|----------|--------|
-| Video Viewers | 50%+ video completion | 14 days |
-| Website Visitors | All page visitors | 14 days |
-| Social Engagers | Post engagers + followers | 30 days |
-
-### Campaign 3: BOFU Conversion
-| Ad Set | Audience | Window |
-|--------|----------|--------|
-| Lead Magnet | Meditación + Conferencia registrants | 60 days |
-| WhatsApp Leads | All Lead_WhatsApp_* events | 30 days |
-| High-Intent | ViewContent on /precios | 14 days |
-| Abandoners | InitiateCheckout minus Purchase | 7 days |
+| Component | Status | File |
+|-----------|--------|------|
+| Meta Pixel | ✅ Ready | `app/layout.tsx` |
+| CAPI Endpoint | ✅ Ready | `app/api/meta-capi/route.ts` |
+| Tracking Library | ✅ Ready | `lib/meta-tracking.ts` |
+| Deduplication | ✅ Ready | event_id + external_id |
+| Video Milestones | ✅ Ready | `components/tracked-vimeo-player.tsx` |
+| WhatsApp Leads | ✅ Ready | Funnel pages |
+| Form Tracking | ✅ Ready | `components/conference-registration-form.tsx` |
 
 ---
 
-## Creatives Summary
+## Revision History
 
-### TOFU Creatives
-- **Videos (3):** Duelo, Proposito, Estres funnels
-- **Meditación Images (3):** Person meditating, Nature/spiritual, Butterfly
-- **Conferencia Images (3):** Successful but empty, Breaking free, New beginning
-
-### MOFU Creatives
-- Meditación lead magnet ads
-- Conferencia lead magnet ads
-- Short testimonial snippets
-
-### BOFU Creatives
-- Full testimonial videos
-- "Solo quedan X lugares" urgency
-- Scarcity messaging
-- Direct CTA to pricing/call
+| Date | Version | Changes |
+|------|---------|---------|
+| Jan 14, 2026 | 1.0 | Initial campaign architecture plan |
+| Feb 07, 2026 | 1.1 | Updated for March 5-8 retreat |
 
 ---
 
-## Tracking Events
-
-| Event Name | Stage | Trigger |
-|------------|-------|---------|
-| `Lead_Meditacion_Gratis` | TOFU | Meditation form submit |
-| `Lead_Conferencia_VidaPerfecta` | TOFU | Conference form submit |
-| `Lead_Duelo` | TOFU | Duelo funnel submit |
-| `Lead_Proposito` | TOFU | Proposito funnel submit |
-| `Lead_Estres` | TOFU | Estres funnel submit |
-| `Lead_WhatsApp_Sticky` | All | Floating WhatsApp click |
-| `CompleteRegistration` | MOFU | Lead magnet confirmation |
-| `ViewContent` | BOFU | Pricing page view |
-| `InitiateCheckout` | BOFU | Payment modal opens |
-| `Purchase` | BOFU | Payment success |
-
----
-
-## Pixel Configuration
-
-- **Pixel ID:** `1337956628128088`
-- **CAPI:** Enabled (server-side tracking)
-- **Deduplication:** event_id based
-
----
-
-## Exclusions
-
-All campaigns exclude:
-- **Purchasers** (180 day window) - Don't show ads to people who already bought
-
----
-
-## Optimization Goals
-
-| Campaign | Objective | Optimization Event |
-|----------|-----------|-------------------|
-| TOFU | Leads | Lead (any Lead_* event) |
-| MOFU | Conversions | CompleteRegistration |
-| BOFU | Conversions | Purchase |
-
----
-
-## Launch Checklist
-
-- [ ] CAPI Access Token in Vercel env vars
-- [ ] All events verified in Events Manager
-- [ ] Custom Audiences created
-- [ ] Ad images uploaded to Meta
-- [ ] Ad copy finalized (see META_ADS_COPY.md)
-- [ ] Campaign 1 created and paused
-- [ ] Campaign 2 created and paused
-- [ ] Campaign 3 created and paused
-- [ ] Budget allocated in bank/card
-- [ ] Launch Campaign 1
-- [ ] Monitor for 3-5 days
-- [ ] Activate Campaigns 2-3 when audiences ready
+*Generated for Floresiendo - Encuentro Mar 5-8, 2026*
+*Architecture: CBO with Audience Stacking*
+*Pixel ID: 1337956628128088*
