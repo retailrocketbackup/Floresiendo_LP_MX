@@ -126,7 +126,7 @@ export default function MeditacionGraciasPage() {
             </a>
             <button
               onClick={handleCopyMeetLink}
-              className="mt-3 inline-flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors"
+              className="mt-2 inline-flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors py-3 px-4"
             >
               <Copy className="w-4 h-4" />
               Copiar enlace
@@ -144,7 +144,7 @@ export default function MeditacionGraciasPage() {
               href={generateGoogleCalendarLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+              className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
             >
               <Calendar className="w-4 h-4" />
               Google Calendar
@@ -153,7 +153,7 @@ export default function MeditacionGraciasPage() {
               href={generateOutlookCalendarLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+              className="flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
             >
               <Calendar className="w-4 h-4" />
               Outlook
@@ -219,7 +219,7 @@ export default function MeditacionGraciasPage() {
         <div className="text-center mt-8">
           <Link
             href="/"
-            className="text-[#8b2a4a] hover:text-[#722240] transition-colors text-sm"
+            className="text-[#8b2a4a] hover:text-[#722240] transition-colors text-sm py-3 inline-block"
           >
             Volver al inicio →
           </Link>

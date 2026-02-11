@@ -16,8 +16,8 @@ export default function EnlaceMeditacionPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#fdf8f4] to-white flex items-center justify-center px-4">
-      <div className="max-w-md w-full text-center">
+    <main className="min-h-screen bg-gradient-to-b from-[#fdf8f4] to-white px-4 pt-16 sm:pt-24">
+      <div className="max-w-md w-full text-center mx-auto">
         <div className="w-16 h-16 bg-[#8b2a4a]/10 rounded-full flex items-center justify-center mx-auto mb-6">
           <Video className="w-8 h-8 text-[#8b2a4a]" />
         </div>
@@ -49,7 +49,7 @@ export default function EnlaceMeditacionPage() {
 
           <button
             onClick={handleCopy}
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#8b2a4a] transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#8b2a4a] transition-colors py-3 px-4"
           >
             {copied ? (
               <>
@@ -72,7 +72,7 @@ export default function EnlaceMeditacionPage() {
         <div className="mt-8">
           <Link
             href="/f/meditacion-gratis"
-            className="text-[#8b2a4a] hover:text-[#722240] text-sm transition-colors"
+            className="text-[#8b2a4a] hover:text-[#722240] text-sm transition-colors py-3 inline-block"
           >
             Ver detalles del evento →
           </Link>
