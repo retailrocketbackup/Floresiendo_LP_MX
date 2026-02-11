@@ -36,6 +36,7 @@ next-env.d.ts
 # Large media files (stored on Vimeo/external)
 public/video ads/
 public/images/originals/
+public/*.mp4
 
 # Ad creatives (stored locally, not needed in deploy)
 public/copy ads tofu-b/
