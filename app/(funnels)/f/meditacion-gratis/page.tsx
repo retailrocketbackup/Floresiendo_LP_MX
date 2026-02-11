@@ -305,7 +305,7 @@ export default function MeditacionGratisPage() {
                     />
                   </div>
                   <p className="text-xs text-warm-gray-500 mt-1">
-                    Te enviaremos el link de Google Meet por WhatsApp
+                    Recibirás el enlace de Google Meet en la siguiente página
                   </p>
                 </div>
 
