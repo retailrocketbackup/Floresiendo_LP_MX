@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 // Conference venue details
 const VENUE_ADDRESS = "Filadelfia 128, piso 3, Colonia Nápoles, CDMX";
-const CONFERENCE_DATE = "2026-02-11";
+const CONFERENCE_DATE = "2026-02-26";
 const CONFERENCE_TIME = "19:00"; // 7 PM Mexico City
 const MAX_CAPACITY = 60;
 
@@ -19,6 +19,11 @@ export async function POST(request: Request) {
       painPoint,
       funnelSource,
       landingPage,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      fbclid,
+      gclid,
     } = body;
 
     // Validate required fields
@@ -57,6 +62,11 @@ export async function POST(request: Request) {
       if (landingPage) {
         properties.website = landingPage;
       }
+      if (utm_source) properties.utm_source = utm_source;
+      if (utm_medium) properties.utm_medium = utm_medium;
+      if (utm_campaign) properties.utm_campaign = utm_campaign;
+      if (fbclid) properties.hs_facebook_click_id = fbclid;
+      if (gclid) properties.hs_google_click_id = gclid;
 
       console.log("[Conference Registration] Creating contact via Contacts API:", {
         firstName,

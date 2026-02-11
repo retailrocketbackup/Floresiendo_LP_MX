@@ -68,7 +68,10 @@ export function ConferenceRegistrationForm({
         { enableCAPI: true }
       );
 
-      // 2. Submit to registration API
+      // 2. Extract tracking parameters for attribution
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // 3. Submit to registration API
       const response = await fetch("/api/conference-registration", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -80,6 +83,11 @@ export function ConferenceRegistrationForm({
           painPoint: formData.painPoint,
           funnelSource: funnelName,
           landingPage: window.location.href,
+          utm_source: urlParams.get("utm_source") || undefined,
+          utm_medium: urlParams.get("utm_medium") || undefined,
+          utm_campaign: urlParams.get("utm_campaign") || undefined,
+          fbclid: urlParams.get("fbclid") || undefined,
+          gclid: urlParams.get("gclid") || undefined,
         }),
       });
 
@@ -88,7 +96,7 @@ export function ConferenceRegistrationForm({
         throw new Error(errorData.error || "Error al registrar");
       }
 
-      // 3. Track CompleteRegistration event
+      // 4. Track CompleteRegistration event
       await trackEvent(
         `CompleteRegistration_Conferencia`,
         {
@@ -105,7 +113,7 @@ export function ConferenceRegistrationForm({
         { enableCAPI: true }
       );
 
-      // 4. Redirect to thank you page
+      // 5. Redirect to thank you page
       router.push(redirectPath);
     } catch (err) {
       console.error("[ConferenceForm] Error:", err);
