@@ -37,6 +37,19 @@ next-env.d.ts
 public/video ads/
 public/images/originals/
 
+# Ad creatives (stored locally, not needed in deploy)
+public/copy ads tofu-b/
+public/images/ads/
+
+# Screenshots (local testing only)
+screenshots/
+
+# Analytics session data (local dev only)
+data/analytics/
+
+# Docs with large images
+docs/*.png
+
 # Python test scripts (local dev only)
 *.py
 tmpclaude-*
