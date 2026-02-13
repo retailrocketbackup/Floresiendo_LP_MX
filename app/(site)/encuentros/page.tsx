@@ -71,8 +71,8 @@ export default function EncuentrosPage() {
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 {/* Date Box - Purple accent */}
                 <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
-                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Marzo</span>
-                  <div className="text-3xl font-bold text-white my-1">3</div>
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
+                  <div className="text-3xl font-bold text-white my-1">17</div>
                   <span className="text-white/80 text-xs font-medium">8:00 PM</span>
                 </div>
 
@@ -104,8 +104,8 @@ export default function EncuentrosPage() {
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 {/* Date Box - Gold accent */}
                 <div className="bg-gradient-to-br from-gold to-gold-dark rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
-                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Marzo</span>
-                  <div className="text-3xl font-bold text-white my-1">4</div>
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
+                  <div className="text-3xl font-bold text-white my-1">26</div>
                   <span className="text-white/80 text-xs font-medium">7:00 PM</span>
                 </div>
 

@@ -13,7 +13,7 @@ import {
 import { trackEvent } from "@/lib/meta-tracking";
 
 const MEET_URL = "https://meet.google.com/vom-orye-woa";
-const EVENT_DATE = "Lunes 17 de Febrero 2026";
+const EVENT_DATE = "Martes 17 de Febrero 2026";
 const EVENT_TIME = "8:00 PM (hora Ciudad de México)";
 
 // Google Calendar link generator

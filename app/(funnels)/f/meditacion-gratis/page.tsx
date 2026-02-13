@@ -19,7 +19,7 @@ export default function MeditacionGratisPage() {
   const formRef = useRef<HTMLDivElement>(null);
 
   // Session details - update these for each campaign
-  const sessionDate = "Lunes 17 de Febrero";
+  const sessionDate = "Martes 17 de Febrero";
   const sessionTime = "8:00 PM (Hora CDMX)";
 
   // Target date for countdown: February 17, 2026 at 8:00 PM CDMX (UTC-6)
