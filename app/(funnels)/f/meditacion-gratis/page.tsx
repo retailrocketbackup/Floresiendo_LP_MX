@@ -15,6 +15,7 @@ export default function MeditacionGratisPage() {
     phoneNumber: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +68,7 @@ export default function MeditacionGratisPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
     const fullPhoneNumber = `${formData.countryCode}${formData.phoneNumber}`;
 
@@ -111,11 +113,17 @@ export default function MeditacionGratisPage() {
         utm_campaign: urlParams.get('utm_campaign') || undefined,
       };
 
-      await fetch("/api/hubspot-contact", {
+      const hubspotResponse = await fetch("/api/hubspot-contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contactData),
       });
+
+      if (!hubspotResponse.ok) {
+        const errorData = await hubspotResponse.json().catch(() => ({}));
+        console.error("[MeditacionForm] HubSpot error:", hubspotResponse.status, errorData);
+        throw new Error(errorData.message || "Error al registrar. Intenta de nuevo.");
+      }
 
       // 5. Meta tracking - CompleteRegistration after successful submission
       await trackEvent(
@@ -134,8 +142,13 @@ export default function MeditacionGratisPage() {
 
       setIsSubmitting(false);
       router.push("/f/meditacion-gratis/gracias");
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Hubo un error al registrarte. Por favor intenta de nuevo."
+      );
       setIsSubmitting(false);
     }
   };
@@ -308,6 +321,12 @@ export default function MeditacionGratisPage() {
                     Recibirás el enlace de Google Meet en la siguiente página
                   </p>
                 </div>
+
+                {error && (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                    {error}
+                  </div>
+                )}
 
                 <button
                   type="submit"

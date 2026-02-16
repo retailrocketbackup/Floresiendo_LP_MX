@@ -78,9 +78,8 @@ export async function POST(request: Request) {
       properties.floresiendo_medium = 'none'
     }
 
-    // Store the first URL for debugging and additional attribution checks
+    // Store the landing page URL (hs_analytics_first_url is READ-ONLY — do NOT set it)
     if (pageUri) {
-      properties.hs_analytics_first_url = pageUri
       properties.website = pageUri
     }
 
