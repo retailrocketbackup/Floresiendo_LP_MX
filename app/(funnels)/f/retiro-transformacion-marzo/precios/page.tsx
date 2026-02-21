@@ -318,9 +318,9 @@ export default function PreciosRetiroClean() {
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
                 {[
                   { name: 'Inmersión en Hielo', desc: 'Terapia de frío', price: '$1,500', icon: '&#129482;' },
-                  { name: 'Purificación Ancestral', desc: 'Sesión individual', price: '$1,500', icon: '&#127807;' },
-                  { name: 'Ceremonia Breve', desc: 'Integración profunda', price: '$2,000', icon: '&#10024;' },
-                  { name: 'Purificación Completa', desc: 'Tratamiento integral', price: '$4,000', icon: '&#128171;' }
+                  { name: 'Purificación Física Ancestral', desc: 'Sesión individual', price: '$1,500', icon: '&#127807;' },
+                  { name: 'Ceremonia de Renacimiento / Disolución del Ego', desc: 'Integración profunda', price: '$2,000', icon: '&#10024;' },
+                  { name: 'Purificación Física Ancestral Completa', desc: 'Tratamiento integral', price: '$4,000', icon: '&#128171;' }
                 ].map((addon, i) => (
                   <div key={i} className="group relative">
                     <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
