@@ -282,7 +282,7 @@ export default function RetiroTransformacionMarzo() {
           </p>
 
           <Link
-            href="/retiro-transformacion-marzo/precios"
+            href="/f/retiro-transformacion-marzo/precios"
             className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -337,7 +337,7 @@ export default function RetiroTransformacionMarzo() {
               Contáctanos por WhatsApp
             </TrackedWhatsAppLink>
             <Link
-              href="/retiro-transformacion-marzo/precios"
+              href="/f/retiro-transformacion-marzo/precios"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
             >
               Ver Inversión
