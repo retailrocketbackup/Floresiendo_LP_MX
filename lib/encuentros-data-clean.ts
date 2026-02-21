@@ -119,14 +119,6 @@ export const encuentroMarzo2026Clean: Encuentro = {
 
   facilitators: [
     {
-      name: "Rodrigo Roble",
-      role: "Facilitador Egresado de Escuela FloreSiendo",
-      bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
-      Su enfoque integra la conexión con la naturaleza y las prácticas ancestrales para guiar
-      experiencias profundas de bienestar y autodescubrimiento.`,
-      image: "/images/Roble.jpg",
-    },
-    {
       name: "Ramon Henriquez",
       role: "Terapeuta Holístico",
       bio: `Terapeuta psicoemocional con formación en Programación Neurolingüística (PNL) y psicoterapia integrativa.
@@ -135,6 +127,14 @@ export const encuentroMarzo2026Clean: Encuentro = {
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
       image: "/images/ramon-henriquez.png",
+    },
+    {
+      name: "Rodrigo Roble",
+      role: "Facilitador Egresado de Escuela FloreSiendo",
+      bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
+      Su enfoque integra la conexión con la naturaleza y las prácticas ancestrales para guiar
+      experiencias profundas de bienestar y autodescubrimiento.`,
+      image: "/images/Roble.jpg",
     },
     {
       name: "Karla Nava",

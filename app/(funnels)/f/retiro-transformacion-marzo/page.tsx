@@ -294,7 +294,7 @@ export default function RetiroTransformacionMarzo() {
       </section>
 
       {/* Facilitators */}
-      <FacilitadoresCarousel facilitators={encuentro.facilitators} />
+      <FacilitadoresCarousel facilitators={encuentro.facilitators} autoPlay={false} />
 
       {/* Screening note (replaces detailed contraindications) */}
       <section className="py-12 px-4 bg-white">
