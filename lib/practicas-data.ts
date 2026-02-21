@@ -19,35 +19,35 @@ export interface Practica {
 
 export const practicas: Practica[] = [
   {
-    slug: "planta-amazonica",
+    slug: "ceremonia-bienestar",
     name: "Planta Amazónica",
     sessions: "2-3 sesiones",
     description:
       "Experimenta un viaje que trasciende lo ordinario, abriendo caminos hacia una profunda introspección psicológica y bienestar emocional.",
     details:
       "Esta preparación natural ancestral actúa como un poderoso catalizador para la conexión mente-cuerpo-espíritu, ayudando a liberar bloqueos mentales y fomentar el crecimiento interior. En un entorno seguro y amoroso, te guía a través de una exploración interna profunda, promoviendo la renovación y el bienestar duradero.",
-    image: "/images/planta-amazonica.jpg",
+    image: "/images/ceremonia-bienestar.jpg",
     bgColor: "bg-gold/10",
     borderColor: "border-gold/30",
     textColor: "text-gold-dark",
     accentColor: "bg-gold",
   },
   {
-    slug: "sapo-sonora",
+    slug: "integracion-ceremonial",
     name: "El Sapo de Sonora",
     optional: true,
     description:
       "Embárcate en un encuentro breve pero profundo con uno de los regalos más potentes de la naturaleza.",
     details:
       "Esta ceremonia única ofrece una intensa liberación emocional y claridad espiritual en un corto periodo de tiempo, apoyando avances personales y una consciencia expandida.",
-    image: "/images/sapo-sonora.jpg",
+    image: "/images/integracion-ceremonial.jpg",
     bgColor: "bg-coral/10",
     borderColor: "border-coral/30",
     textColor: "text-coral-dark",
     accentColor: "bg-coral",
   },
   {
-    slug: "rana-mono-gigante",
+    slug: "purificacion-ancestral",
     name: "Rana Mono Gigante",
     subtitle: "Práctica de Purificación",
     optional: true,
@@ -55,14 +55,14 @@ export const practicas: Practica[] = [
       "Descubre un intenso ritual de purificación que aprovecha la secreción de un extraordinario anfibio.",
     details:
       "Aplicada mediante técnicas tradicionales precisas, esta práctica activa los procesos naturales de limpieza del cuerpo, liberando toxinas y fortaleciendo el sistema inmunológico. La experiencia es breve pero poderosa, ayudando a restaurar la energía, claridad y equilibrio desde adentro.",
-    image: "/images/rana-mono-gigante.jpg",
+    image: "/images/purificacion-ancestral.jpg",
     bgColor: "bg-burgundy/10",
     borderColor: "border-burgundy/30",
     textColor: "text-burgundy",
     accentColor: "bg-burgundy",
   },
   {
-    slug: "rape-dioses",
+    slug: "tradicion-ceremonial",
     name: "El Rapé de los Dioses",
     subtitle: "Tradición Ceremonial Ancestral",
     optional: true,
@@ -70,7 +70,7 @@ export const practicas: Practica[] = [
       "Adéntrate en una tradición ceremonial ancestral que utiliza un rapé sagrado natural derivado de una semilla poderosa.",
     details:
       "Esta práctica abre la mente a nuevas perspectivas y estados elevados de consciencia, frecuentemente acompañados de una limpieza física y sutil. Enraizada en la sabiduría ancestral, sirve como puerta hacia una conexión más profunda con uno mismo y el cosmos.",
-    image: "/images/rape-dioses.jpg",
+    image: "/images/tradicion-ceremonial.jpg",
     bgColor: "bg-warm-gray-100",
     borderColor: "border-warm-gray-200",
     textColor: "text-warm-gray-800",
@@ -121,9 +121,9 @@ export function getPracticasForEncuentro(slugs: string[]): Practica[] {
 // Default practices for encuentros (included first, then optional)
 export const defaultEncuentroPracticas = [
   "meditacion",
-  "planta-amazonica",
+  "ceremonia-bienestar",
   "integracion-terapeutica",
-  "rana-mono-gigante",
-  "sapo-sonora",
-  "rape-dioses",
+  "purificacion-ancestral",
+  "integracion-ceremonial",
+  "tradicion-ceremonial",
 ];

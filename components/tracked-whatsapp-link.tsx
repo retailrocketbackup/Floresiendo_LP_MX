@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { trackWhatsAppLead, type WhatsAppLeadData } from "@/lib/meta-tracking";
 import { trackGoogleLead } from "@/lib/google-tracking";
 
@@ -28,8 +29,22 @@ export function TrackedWhatsAppLink({
   children,
   className,
 }: TrackedWhatsAppLinkProps) {
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${phone}${message ? `?text=${encodedMessage}` : ""}`;
+  const [finalMessage, setFinalMessage] = useState(message);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get("utm_source");
+    const utmCampaign = params.get("utm_campaign");
+    const utmTerm = params.get("utm_term");
+
+    if (utmSource === "google") {
+      const utmSuffix = `\n[Fuente: Google | Campaña: ${utmCampaign || "—"} | Keyword: ${utmTerm || "—"}]`;
+      setFinalMessage(message + utmSuffix);
+    }
+  }, [message]);
+
+  const encodedMessage = encodeURIComponent(finalMessage);
+  const whatsappUrl = `https://wa.me/${phone}${finalMessage ? `?text=${encodedMessage}` : ""}`;
 
   const handleClick = () => {
     // Meta Pixel + CAPI

@@ -7,6 +7,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { getStripe } from "@/lib/stripe-client"
 import StripePaymentForm from "@/components/StripePaymentForm"
 import { FloatingWhatsApp } from "@/components/floating-whatsapp"
+import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { trackEvent } from "@/lib/meta-tracking"
@@ -466,10 +467,12 @@ export default function PreciosRetiroClean() {
               Solo {encuentro.spotsRemaining} lugares disponibles. Reserva ahora y asegura tu espacio en este encuentro transformador.
             </p>
 
-            <a
-              href={`https://wa.me/5214427845308?text=${encodeURIComponent(encuentro.whatsappMessage)}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedWhatsAppLink
+              phone="524427845308"
+              message={encuentro.whatsappMessage}
+              page="retiro-google-precios"
+              buttonLocation="cta"
+              eventName="Lead_Retiro_Google_Precios"
               className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-white/90 text-burgundy font-bold text-xl rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all duration-300"
             >
               <Image
@@ -479,7 +482,7 @@ export default function PreciosRetiroClean() {
                 height={28}
               />
               Contáctanos por WhatsApp
-            </a>
+            </TrackedWhatsAppLink>
 
             <p className="mt-8 text-white/60">
               +52 442 784 5308

@@ -25,11 +25,11 @@ const encuentro = encuentroMarzo2026Clean;
 // Clean practices for the grid (same images, sanitized names)
 const practicasClean = [
   { name: "Meditación", desc: "Conexión interior", image: "/images/meditacion.jpg" },
-  { name: "Ceremonia de Bienestar", desc: "2-3 sesiones guiadas", image: "/images/planta-amazonica.jpg" },
+  { name: "Ceremonia de Bienestar", desc: "2-3 sesiones guiadas", image: "/images/ceremonia-bienestar.jpg" },
   { name: "Integración Terapéutica", desc: "Círculos de preparación", image: "/images/psicoterapia.jpg" },
-  { name: "Purificación Ancestral", desc: "Práctica opcional", image: "/images/rana-mono-gigante.jpg" },
-  { name: "Ceremonia de Integración", desc: "Práctica opcional", image: "/images/sapo-sonora.jpg" },
-  { name: "Tradición Ceremonial", desc: "Práctica opcional", image: "/images/rape-dioses.jpg" },
+  { name: "Purificación Ancestral", desc: "Práctica opcional", image: "/images/purificacion-ancestral.jpg" },
+  { name: "Ceremonia de Integración", desc: "Práctica opcional", image: "/images/integracion-ceremonial.jpg" },
+  { name: "Tradición Ceremonial", desc: "Práctica opcional", image: "/images/tradicion-ceremonial.jpg" },
 ];
 
 export default function RetiroTransformacionMarzo() {
