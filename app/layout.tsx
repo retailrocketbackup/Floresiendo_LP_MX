@@ -2,14 +2,16 @@
 
 import type React from "react"
 import type { Metadata } from "next"
-import { RocknRoll_One } from "next/font/google"
+import localFont from "next/font/local"
 import { Suspense } from "react"
 import { Analytics } from "@vercel/analytics/react"
 
-
-const rocknrollOne = RocknRoll_One({
-  subsets: ["latin"],
+const rocknrollOne = localFont({
+  src: "../public/fonts/rocknroll-one-latin-400.woff2",
   weight: "400",
+  style: "normal",
+  display: "swap",
+  variable: "--font-rocknroll-one",
 })
 
 export const metadata: Metadata = {
