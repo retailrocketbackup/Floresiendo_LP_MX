@@ -11,7 +11,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { trackEvent } from "@/lib/meta-tracking"
 import { trackGoogleEvent, trackGoogleAdsConversion, getGclid } from "@/lib/google-tracking"
-import { encuentroMarzo2026 } from "@/lib/encuentros-data"
+import { encuentroAbril2026 } from "@/lib/encuentros-data"
 
 type PaymentOption = {
   id: string;
@@ -19,14 +19,13 @@ type PaymentOption = {
   amount: number;
 } | null;
 
-// Package configuration mapping
 const PACKAGE_CONFIG: Record<string, { id: string; name: string; amount: number }> = {
-  DEPOSIT: { id: 'DEPOSIT', name: 'Anticipo - Encuentro Marzo 2026', amount: 300000 },
+  DEPOSIT: { id: 'DEPOSIT', name: 'Anticipo - Encuentro Abril 2026', amount: 300000 },
   TWO_NIGHTS_EARLY: { id: 'TWO_NIGHTS_EARLY', name: 'Retiro 2 Noches - Precio Especial', amount: 710000 },
   THREE_NIGHTS_EARLY: { id: 'THREE_NIGHTS_EARLY', name: 'Retiro 3 Noches - Precio Especial', amount: 1020000 },
 };
 
-export default function PreciosMarzo2026() {
+export default function PreciosAbril2026() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const applicationId = searchParams.get('applicationId');
@@ -36,15 +35,13 @@ export default function PreciosMarzo2026() {
   const [selectedPayment, setSelectedPayment] = useState<PaymentOption>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  // Track high-intent pricing page view with funnel-specific event
   useEffect(() => {
-    // Meta Pixel + CAPI
     trackEvent(
       "ViewContent_Precios",
       {
         funnel: "precios",
         content_type: "pricing",
-        content_name: "marzo_2026_precios",
+        content_name: "abril_2026_precios",
         content_category: "high_intent",
         value: 10200,
         currency: "MXN",
@@ -52,16 +49,14 @@ export default function PreciosMarzo2026() {
       { enableCAPI: true }
     );
 
-    // Google Analytics 4 — view_item_list (standard e-commerce event)
     getGclid();
     trackGoogleEvent("view_item_list", {
-      item_list_name: "marzo_2026_precios",
+      item_list_name: "abril_2026_precios",
       value: 10200,
       currency: "MXN",
     });
   }, []);
 
-  // Auto-open payment modal when coming from approved application
   useEffect(() => {
     if (autoOpenPayment && applicationId && packageParam) {
       const packageConfig = PACKAGE_CONFIG[packageParam];
@@ -72,10 +67,7 @@ export default function PreciosMarzo2026() {
     }
   }, [autoOpenPayment, applicationId, packageParam]);
 
-  // If user has applicationId, they can proceed to payment directly
-  // Otherwise, redirect to application form first
   const handlePackageSelect = (packageId: string, productName: string, amount: number) => {
-    // Google Analytics 4 — begin_checkout
     trackGoogleEvent("begin_checkout", {
       item_name: productName,
       value: amount / 100,
@@ -84,11 +76,9 @@ export default function PreciosMarzo2026() {
     trackGoogleAdsConversion(amount / 100);
 
     if (applicationId) {
-      // User already completed application, open payment modal
       setSelectedPayment({ id: packageId, name: productName, amount });
       setShowPaymentModal(true);
     } else {
-      // User needs to complete application first
       router.push(`/aplicar?package=${packageId}`);
     }
   };
@@ -100,19 +90,17 @@ export default function PreciosMarzo2026() {
 
   return (
     <>
-      {/* Site Header */}
       <SiteHeader />
 
-      {/* Floating WhatsApp Button */}
       <FloatingWhatsApp
         phoneNumber="526182301481"
-        message="Hola Ramón, me interesa el Encuentro de Marzo 2026. ¿Podrías darme más información?"
+        message="Hola Ramón, me interesa el Encuentro de Abril 2026. ¿Podrías darme más información?"
         page="precios"
-        encuentroSlug="marzo-2026"
+        encuentroSlug="abril-2026"
       />
 
       <main className="min-h-screen bg-warm-white">
-        {/* Hero Section - extends under header for transparent effect */}
+        {/* Hero Section */}
         <section className="relative min-h-[55vh] flex items-center justify-center overflow-hidden pt-20">
           <div className="absolute inset-0">
             <Image
@@ -126,7 +114,6 @@ export default function PreciosMarzo2026() {
             <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy-dark/70 to-warm-white" />
           </div>
 
-          {/* Decorative elements */}
           <div className="absolute top-20 left-10 w-72 h-72 bg-coral/20 rounded-full blur-3xl animate-pulse-soft" />
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-burgundy/30 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: '1s' }} />
 
@@ -144,10 +131,10 @@ export default function PreciosMarzo2026() {
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-balance drop-shadow-lg">
-              Encuentro de Marzo 2026
+              Encuentro de Abril 2026
             </h1>
             <p className="text-xl md:text-2xl text-white/90 mb-2 font-medium">
-              5 - 8 de Marzo, 2026
+              30 Abr – 3 May, 2026
             </p>
             <p className="text-lg text-white/70 mb-6">
               Morelos, México
@@ -157,14 +144,13 @@ export default function PreciosMarzo2026() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-coral"></span>
               </span>
-              <span className="text-sm font-semibold tracking-wide">15 lugares disponibles</span>
+              <span className="text-sm font-semibold tracking-wide">{encuentroAbril2026.spotsRemaining} lugares disponibles</span>
             </div>
           </div>
         </section>
 
         {/* Pricing Section */}
         <section className="relative py-24 px-4 overflow-hidden bg-warm-white">
-          {/* Decorative orbs - light theme adapted */}
           <div className="absolute top-40 -left-40 w-80 h-80 bg-coral/5 rounded-full blur-3xl" />
           <div className="absolute bottom-40 -right-40 w-80 h-80 bg-burgundy/5 rounded-full blur-3xl" />
 
@@ -178,7 +164,7 @@ export default function PreciosMarzo2026() {
               </p>
             </div>
 
-            {/* Deposit Notice */}
+            {/* Deposit */}
             <div className="relative mb-20 max-w-2xl mx-auto group">
               <div className="absolute inset-0 bg-gradient-to-r from-gold/10 via-gold/5 to-gold/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
               <div className="relative bg-white rounded-3xl p-8 border border-gold/30 shadow-lg shadow-gold/10">
@@ -192,7 +178,7 @@ export default function PreciosMarzo2026() {
                   <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold to-gold-dark">$3,000 MXN</p>
                   <p className="text-warm-gray-500 mb-8 text-sm mt-2">El resto lo pagas antes del encuentro</p>
                   <button
-                    onClick={() => handlePackageSelect('DEPOSIT', 'Anticipo - Encuentro Marzo 2026', 300000)}
+                    onClick={() => handlePackageSelect('DEPOSIT', 'Anticipo - Encuentro Abril 2026', 300000)}
                     className="px-10 py-4 bg-gradient-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold text-warm-gray-900 font-bold text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-gold/30"
                   >
                     Reservar Ahora
@@ -349,7 +335,6 @@ export default function PreciosMarzo2026() {
         <section className="relative py-24 px-4 overflow-hidden bg-warm-white">
           <div className="relative z-10 max-w-5xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Included */}
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-b from-coral/5 to-transparent rounded-3xl blur-xl opacity-50" />
                 <div className="relative bg-white rounded-3xl p-8 border border-coral/20 h-full shadow-lg">
@@ -362,7 +347,7 @@ export default function PreciosMarzo2026() {
                     <h3 className="text-xl font-bold text-warm-gray-800">Incluido en tu Retiro</h3>
                   </div>
                   <ul className="space-y-4">
-                    {encuentroMarzo2026.included.map((item, i) => (
+                    {encuentroAbril2026.included.map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-warm-gray-700">
                         <span className="text-coral mt-1">•</span>
                         <span>{item}</span>
@@ -372,7 +357,6 @@ export default function PreciosMarzo2026() {
                 </div>
               </div>
 
-              {/* Not Included */}
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-b from-warm-gray-200/30 to-transparent rounded-3xl blur-xl opacity-50" />
                 <div className="relative bg-warm-gray-50 rounded-3xl p-8 border border-warm-gray-200 h-full shadow-md">
@@ -385,7 +369,7 @@ export default function PreciosMarzo2026() {
                     <h3 className="text-xl font-bold text-warm-gray-800">No Incluido</h3>
                   </div>
                   <ul className="space-y-4">
-                    {encuentroMarzo2026.notIncluded.map((item, i) => (
+                    {encuentroAbril2026.notIncluded.map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-warm-gray-500">
                         <span className="text-warm-gray-400 mt-1">•</span>
                         <span>{item}</span>
@@ -477,8 +461,6 @@ export default function PreciosMarzo2026() {
         {/* CTA Section */}
         <section className="relative py-24 px-4 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-coral via-coral-dark to-burgundy" />
-
-          {/* Decorative elements */}
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-coral/20 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-burgundy-light/30 rounded-full blur-3xl" />
 
@@ -487,11 +469,11 @@ export default function PreciosMarzo2026() {
               ¿Listo para Transformar tu Vida?
             </h2>
             <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              Solo 15 lugares disponibles. Reserva ahora y asegura tu espacio en este encuentro transformador.
+              Solo {encuentroAbril2026.spotsRemaining} lugares disponibles. Reserva ahora y asegura tu espacio en este encuentro transformador.
             </p>
 
             <a
-              href="https://wa.me/526182301481?text=Hola%20Ramón,%20me%20interesa%20el%20Encuentro%20de%20Marzo%202026.%20¿Podrías%20darme%20más%20información?"
+              href="https://wa.me/526182301481?text=Hola%20Ramón,%20me%20interesa%20el%20Encuentro%20de%20Abril%202026.%20¿Podrías%20darme%20más%20información?"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-white/90 text-burgundy font-bold text-xl rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all duration-300"
@@ -511,21 +493,16 @@ export default function PreciosMarzo2026() {
           </div>
         </section>
 
-        {/* Site Footer - Consistent with rest of site */}
         <SiteFooter />
 
         {/* Payment Modal */}
         {showPaymentModal && selectedPayment && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
             <div
               className="absolute inset-0 bg-warm-gray-800/80 backdrop-blur-md"
               onClick={closePaymentModal}
             />
-
-            {/* Modal Content */}
             <div className="relative bg-gradient-to-b from-burgundy to-burgundy-dark rounded-3xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl animate-scale-in">
-              {/* Close Button */}
               <button
                 onClick={closePaymentModal}
                 className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"

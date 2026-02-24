@@ -99,7 +99,7 @@ export default function PreciosRetiroClean() {
       <SiteHeader />
 
       <FloatingWhatsApp
-        phoneNumber="524427845308"
+        phoneNumber="526182301481"
         message="Hola, me interesa el Retiro de Transformación Personal de Marzo 2026. ¿Podrías darme más información?"
         page="precios-google"
         encuentroSlug="marzo-2026"
@@ -468,7 +468,7 @@ export default function PreciosRetiroClean() {
             </p>
 
             <TrackedWhatsAppLink
-              phone="524427845308"
+              phone="526182301481"
               message={encuentro.whatsappMessage}
               page="retiro-google-precios"
               buttonLocation="cta"
@@ -485,7 +485,7 @@ export default function PreciosRetiroClean() {
             </TrackedWhatsAppLink>
 
             <p className="mt-8 text-white/60">
-              +52 442 784 5308
+              +52 618 230 1481
             </p>
           </div>
         </section>

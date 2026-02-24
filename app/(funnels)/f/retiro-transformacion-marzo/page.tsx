@@ -10,8 +10,9 @@ import { EncuentroTracking } from "@/components/encuentro-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { VideoTestimonialSection } from "@/components/video-testimonial-section";
 import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
+import { ScheduleDisplay } from "@/components/schedule-display";
 
 export const metadata: Metadata = {
   title: "Retiro de Transformación Personal — Marzo 2026 | FloreSiendo",
@@ -53,6 +54,7 @@ export default function RetiroTransformacionMarzo() {
             alt="Retiro de transformación personal en Morelos"
             fill
             priority
+            quality={60}
             sizes="100vw"
             className="object-cover"
           />
@@ -164,7 +166,7 @@ export default function RetiroTransformacionMarzo() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { src: "/images/venue-alberca.webp", alt: "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
+              { src: "/images/venue-habitacion-2.webp", alt: "Habitación doble", span: "md:col-span-2 md:row-span-2" },
               { src: "/images/venue-salon-ceremonias.webp", alt: "Salón de ceremonias", span: "" },
               { src: "/images/venue-jardin.webp", alt: "Jardín", span: "" },
               { src: "/images/venue-sala.webp", alt: "Sala común", span: "" },
@@ -179,6 +181,7 @@ export default function RetiroTransformacionMarzo() {
                   src={image.src}
                   alt={image.alt}
                   fill
+                  quality={60}
                   sizes={index === 0 ? "(max-width: 768px) 50vw, 66vw" : "(max-width: 768px) 50vw, 33vw"}
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -210,6 +213,8 @@ export default function RetiroTransformacionMarzo() {
                     alt={practica.name}
                     width={80}
                     height={80}
+                    quality={60}
+                    sizes="80px"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -222,6 +227,25 @@ export default function RetiroTransformacionMarzo() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Schedule — Programa por Día */}
+      <section id="programa" className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-burgundy mb-3">
+              Tu Viaje de Transformación
+            </h2>
+            <p className="text-lg text-warm-gray-600 max-w-2xl mx-auto">
+              Cuatro días diseñados para reconectarte con tu esencia
+            </p>
+          </div>
+          <ScheduleDisplay
+            schedule={encuentro.schedule}
+            retreatTitle={encuentro.title}
+            retreatYear={parseInt(encuentro.startDate.split("-")[0])}
+          />
         </div>
       </section>
 
@@ -269,7 +293,9 @@ export default function RetiroTransformacionMarzo() {
       </section>
 
       {/* Video Testimonial */}
-      <VideoTestimonialSection funnel="encuentro_marzo-2026-google" />
+      <div id="testimonios">
+        <VideoTestimonialSection funnel="encuentro_marzo-2026-google" />
+      </div>
 
       {/* Investment CTA */}
       <section className="py-16 px-4 bg-gradient-to-br from-burgundy to-burgundy-dark text-white">
@@ -282,7 +308,7 @@ export default function RetiroTransformacionMarzo() {
           </p>
 
           <Link
-            href="/f/retiro-transformacion-marzo/precios"
+            href="/f/retiro-transformacion/precios"
             className="inline-flex items-center gap-3 bg-gold hover:bg-gold-dark text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -294,7 +320,9 @@ export default function RetiroTransformacionMarzo() {
       </section>
 
       {/* Facilitators */}
-      <FacilitadoresCarousel facilitators={encuentro.facilitators} autoPlay={false} />
+      <div id="about">
+        <FacilitadoresCarousel facilitators={encuentro.facilitators} autoPlay={false} />
+      </div>
 
       {/* Screening note (replaces detailed contraindications) */}
       <section className="py-12 px-4 bg-white">
@@ -337,7 +365,7 @@ export default function RetiroTransformacionMarzo() {
               Contáctanos por WhatsApp
             </TrackedWhatsAppLink>
             <Link
-              href="/f/retiro-transformacion-marzo/precios"
+              href="/f/retiro-transformacion/precios"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
             >
               Ver Inversión
@@ -350,7 +378,6 @@ export default function RetiroTransformacionMarzo() {
         </div>
       </section>
 
-      <SiteFooter />
     </main>
   );
 }

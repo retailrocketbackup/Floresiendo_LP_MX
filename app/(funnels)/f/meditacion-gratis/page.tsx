@@ -20,11 +20,11 @@ export default function MeditacionGratisPage() {
   const formRef = useRef<HTMLDivElement>(null);
 
   // Session details - update these for each campaign
-  const sessionDate = "Martes 17 de Febrero";
+  const sessionDate = "Jueves 19 de Marzo";
   const sessionTime = "8:00 PM (Hora CDMX)";
 
-  // Target date for countdown: February 17, 2026 at 8:00 PM CDMX (UTC-6)
-  const eventDate = new Date("2026-02-17T20:00:00-06:00");
+  // Target date for countdown: March 19, 2026 at 8:00 PM CDMX (UTC-6)
+  const eventDate = new Date("2026-03-19T20:00:00-06:00");
 
   // Track page view on mount with funnel-specific event
   useEffect(() => {
@@ -419,6 +419,36 @@ export default function MeditacionGratisPage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Lo que dicen quienes ya vivieron esto</span>
+            <h2 className="text-2xl md:text-3xl font-bold text-burgundy mt-2">
+              Experiencias reales
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            {/* Kary's testimonial */}
+            <div className="bg-warm-gray-50 border border-warm-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-coral/20 flex items-center justify-center text-coral font-bold text-lg shrink-0">
+                  K
+                </div>
+                <div>
+                  <p className="text-warm-gray-700 leading-relaxed italic">
+                    "A mí me mareó, sentí adormecimiento en todo el cuerpo y luego al final me solté a llorar. Me gustó mucho, gracias. Bendiciones, muchas gracias."
+                  </p>
+                  <p className="mt-3 text-burgundy font-semibold text-sm">— Kary</p>
+                  <p className="text-warm-gray-400 text-xs mt-0.5">Participante sesión anterior</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Facilitator */}
       <section className="bg-burgundy/5 py-16 px-4">
         <div className="max-w-4xl mx-auto">
@@ -513,7 +543,7 @@ export default function MeditacionGratisPage() {
                 <span className="text-coral text-xs font-medium">Solo 50 lugares</span>
               </div>
               <p className="text-burgundy font-semibold text-sm truncate">
-                Meditación Gratuita - 17 Feb
+                Meditación Gratuita - 19 Mar
               </p>
             </div>
             <button

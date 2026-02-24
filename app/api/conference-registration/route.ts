@@ -62,11 +62,29 @@ export async function POST(request: Request) {
       if (landingPage) {
         properties.website = landingPage;
       }
-      if (utm_source) properties.utm_source = utm_source;
-      if (utm_medium) properties.utm_medium = utm_medium;
-      if (utm_campaign) properties.utm_campaign = utm_campaign;
-      if (fbclid) properties.hs_facebook_click_id = fbclid;
-      if (gclid) properties.hs_google_click_id = gclid;
+
+      // Attribution — same property names as hubspot-contact route
+      if (fbclid) {
+        properties.floresiendo_source = 'paid_facebook';
+        properties.floresiendo_medium = 'cpc';
+        properties.floresiendo_fbclid = fbclid;
+        if (utm_campaign) properties.floresiendo_campaign = utm_campaign;
+      } else if (gclid) {
+        properties.floresiendo_source = 'paid_google';
+        properties.floresiendo_medium = 'cpc';
+        if (utm_campaign) properties.floresiendo_campaign = utm_campaign;
+      } else if (utm_medium === 'cpc' || utm_medium === 'paid') {
+        properties.floresiendo_source = `paid_${utm_source || 'unknown'}`;
+        properties.floresiendo_medium = utm_medium;
+        if (utm_campaign) properties.floresiendo_campaign = utm_campaign;
+      } else if (utm_source) {
+        properties.floresiendo_source = utm_source;
+        properties.floresiendo_medium = utm_medium || 'referral';
+        if (utm_campaign) properties.floresiendo_campaign = utm_campaign;
+      } else {
+        properties.floresiendo_source = 'direct';
+        properties.floresiendo_medium = 'none';
+      }
 
       console.log("[Conference Registration] Creating contact via Contacts API:", {
         firstName,

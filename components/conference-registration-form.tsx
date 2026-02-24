@@ -128,7 +128,7 @@ export function ConferenceRegistrationForm({
 
   return (
     <div className="w-full max-w-lg mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-5">
+      <form id="floresiendo-conference-registration" name="floresiendo-conference-registration" onSubmit={handleSubmit} className="space-y-3 sm:space-y-5">
         {/* Name Fields */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div>

@@ -1,0 +1,17 @@
+# Large media files
+public/video ads/
+public/copy ads tofu-b/
+public/images/originals/
+public/images/ads/
+public/*.mp4
+
+# Dev artifacts
+screenshots/
+data/analytics/
+docs/*.png
+.next/
+node_modules/
+.git/
+certificates/
+test-results/
+playwright-report/

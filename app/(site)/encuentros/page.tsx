@@ -63,40 +63,7 @@ export default function EncuentrosPage() {
           {/* Events Container */}
           <div className="max-w-2xl mx-auto space-y-6">
 
-            {/* Free Meditation Card - Feb 17 */}
-            <Link
-              href="/f/meditacion-gratis"
-              className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-purple-400/40 hover:border-purple-400 hover:bg-white/15 transition-all duration-300 group"
-            >
-              <div className="flex flex-col md:flex-row gap-6 items-center">
-                {/* Date Box - Purple accent */}
-                <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
-                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Febrero</span>
-                  <div className="text-3xl font-bold text-white my-1">17</div>
-                  <span className="text-white/80 text-xs font-medium">8:00 PM</span>
-                </div>
-
-                {/* Event Details */}
-                <div className="flex-1 text-center md:text-left">
-                  <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 bg-purple-500/30 text-purple-200 font-bold text-xs uppercase tracking-wide rounded-full">
-                      Gratis
-                    </span>
-                    <span className="text-coral-light/80 text-sm">Meditación en Vivo</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-1">Meditación Guiada en Vivo</h3>
-                  <p className="text-coral-light/70 text-sm mb-3">
-                    30 minutos para calmar tu mente y reconectar contigo
-                  </p>
-                  <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
-                    Apartar mi lugar
-                    <ArrowRight size={18} />
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-            {/* Free Conference Card - Feb 18 */}
+            {/* Free Conference Card - Feb 26 */}
             <Link
               href="/f/conferencia-vida-perfecta"
               className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-gold/40 hover:border-gold hover:bg-white/15 transition-all duration-300 group"
@@ -137,35 +104,35 @@ export default function EncuentrosPage() {
             </Link>
 
             {/* Retreat Card - Mar 5-8 */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex flex-col md:flex-row gap-6 items-center">
                 {/* Date Box */}
-                <div className="bg-coral rounded-2xl p-6 text-center min-w-[140px] shadow-lg">
-                  <span className="text-white/80 text-sm font-medium uppercase tracking-wide">Marzo</span>
-                  <div className="text-4xl font-bold text-white my-1">5-8</div>
-                  <span className="text-white/80 text-sm font-medium">2026</span>
+                <div className="bg-coral rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Marzo</span>
+                  <div className="text-3xl font-bold text-white my-1">5-8</div>
+                  <span className="text-white/80 text-xs font-medium">2026</span>
                 </div>
 
                 {/* Event Details */}
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-2xl font-bold text-white mb-2">Encuentro de Marzo</h3>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-4 text-coral-light/90 text-sm mb-4">
+                  <h3 className="text-xl font-bold text-white mb-1">Encuentro de Marzo</h3>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3 text-coral-light/90 text-sm mb-3">
                     <span className="flex items-center gap-1">
-                      <MapPin size={16} />
+                      <MapPin size={14} />
                       Morelos, México
                     </span>
                     <span className="flex items-center gap-1">
-                      <Clock size={16} />
+                      <Clock size={14} />
                       3 noches
                     </span>
                     <span className="flex items-center gap-1">
-                      <Users size={16} />
+                      <Users size={14} />
                       Cupos limitados
                     </span>
                   </div>
                   <Link
                     href="/encuentros/marzo-2026"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300"
                   >
                     Ver detalles
                     <ArrowRight size={18} />
@@ -173,6 +140,65 @@ export default function EncuentrosPage() {
                 </div>
               </div>
             </div>
+
+            {/* Free Meditation Card - Mar 19 */}
+            <Link
+              href="/f/meditacion-gratis"
+              className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-purple-400/40 hover:border-purple-400 hover:bg-white/15 transition-all duration-300 group"
+            >
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                {/* Date Box - Purple accent */}
+                <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Marzo</span>
+                  <div className="text-3xl font-bold text-white my-1">19</div>
+                  <span className="text-white/80 text-xs font-medium">8:00 PM</span>
+                </div>
+
+                {/* Event Details */}
+                <div className="flex-1 text-center md:text-left">
+                  <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-purple-500/30 text-purple-200 font-bold text-xs uppercase tracking-wide rounded-full">
+                      Gratis
+                    </span>
+                    <span className="text-coral-light/80 text-sm">Meditación en Vivo · Online</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-1">Meditación Guiada en Vivo</h3>
+                  <p className="text-coral-light/70 text-sm mb-3">
+                    30 minutos para calmar tu mente y reconectar contigo
+                  </p>
+                  <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
+                    Apartar mi lugar
+                    <ArrowRight size={18} />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            {/* Retreat Card - Apr 30 - May 3 */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                <div className="bg-coral rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Abr–May</span>
+                  <div className="text-3xl font-bold text-white my-1">30–3</div>
+                  <span className="text-white/80 text-xs font-medium">2026</span>
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-xl font-bold text-white mb-1">Encuentro de Abril</h3>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3 text-coral-light/90 text-sm mb-3">
+                    <span className="flex items-center gap-1"><MapPin size={14} />Morelos, México</span>
+                    <span className="flex items-center gap-1"><Clock size={14} />3 noches</span>
+                    <span className="flex items-center gap-1"><Users size={14} />Cupos limitados</span>
+                  </div>
+                  <Link
+                    href="/encuentros/abril-2026"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+                  >
+                    Ver detalles <ArrowRight size={18} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           {/* Additional Info */}
