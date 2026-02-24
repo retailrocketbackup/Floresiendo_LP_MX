@@ -5,7 +5,7 @@ import type { Metadata } from "next"
 import { RocknRoll_One } from "next/font/google"
 import { Suspense } from "react"
 import { Analytics } from "@vercel/analytics/react"
-import "./globals.css"
+
 
 const rocknrollOne = RocknRoll_One({
   subsets: ["latin"],
