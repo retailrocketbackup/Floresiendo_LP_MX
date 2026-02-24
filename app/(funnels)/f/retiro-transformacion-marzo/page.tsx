@@ -4,17 +4,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { encuentroMarzo2026Clean } from "@/lib/encuentros-data-clean";
 import { EncuentroTracking } from "@/components/encuentro-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { SiteHeader } from "@/components/site-header";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
-
-// Lazy load heavy below-fold components to reduce initial JS bundle
-const FacilitadoresCarousel = dynamic(() => import("@/components/facilitadores-carousel").then(mod => mod.FacilitadoresCarousel), { ssr: true });
-const VideoTestimonialSection = dynamic(() => import("@/components/video-testimonial-section").then(mod => mod.VideoTestimonialSection), { ssr: true });
-const ScheduleDisplay = dynamic(() => import("@/components/schedule-display").then(mod => mod.ScheduleDisplay), { ssr: true });
+import { FacilitadoresCarousel } from "@/components/facilitadores-carousel";
+import { VideoTestimonialSection } from "@/components/video-testimonial-section";
+import { ScheduleDisplay } from "@/components/schedule-display";
 
 export const metadata: Metadata = {
   title: "Retiro de Transformación Personal — Marzo 2026 | FloreSiendo",
@@ -62,8 +59,8 @@ export default function RetiroTransformacionMarzo() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />
         </div>
-        <div className="absolute top-20 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl animate-pulse-soft" />
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gold/20 rounded-full blur-3xl animate-pulse-soft" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-20 left-10 w-32 h-32 bg-coral/20 rounded-full blur-3xl animate-pulse-soft hidden md:block" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gold/20 rounded-full blur-3xl animate-pulse-soft hidden md:block" style={{ animationDelay: "1s" }} />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
