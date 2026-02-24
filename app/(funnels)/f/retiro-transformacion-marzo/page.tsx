@@ -4,15 +4,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { encuentroMarzo2026Clean } from "@/lib/encuentros-data-clean";
-import { FacilitadoresCarousel } from "@/components/facilitadores-carousel";
 import { EncuentroTracking } from "@/components/encuentro-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
-import { VideoTestimonialSection } from "@/components/video-testimonial-section";
 import { SiteHeader } from "@/components/site-header";
-
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
-import { ScheduleDisplay } from "@/components/schedule-display";
+
+// Lazy load heavy below-fold components to reduce initial JS bundle
+const FacilitadoresCarousel = dynamic(() => import("@/components/facilitadores-carousel").then(mod => mod.FacilitadoresCarousel), { ssr: true });
+const VideoTestimonialSection = dynamic(() => import("@/components/video-testimonial-section").then(mod => mod.VideoTestimonialSection), { ssr: true });
+const ScheduleDisplay = dynamic(() => import("@/components/schedule-display").then(mod => mod.ScheduleDisplay), { ssr: true });
 
 export const metadata: Metadata = {
   title: "Retiro de Transformación Personal — Marzo 2026 | FloreSiendo",
@@ -54,8 +56,8 @@ export default function RetiroTransformacionMarzo() {
             alt="Retiro de transformación personal en Morelos"
             fill
             priority
-            quality={60}
-            sizes="100vw"
+            quality={45}
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />
