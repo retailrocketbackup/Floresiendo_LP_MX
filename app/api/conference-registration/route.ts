@@ -43,6 +43,15 @@ export async function POST(request: Request) {
       );
     }
 
+    // Validate phone format: must be country code + 9-10 digits only
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10 || phoneDigits.length > 15) {
+      return NextResponse.json(
+        { error: "Número de teléfono inválido. Verifica que tenga los dígitos correctos." },
+        { status: 400 }
+      );
+    }
+
     const hubspotToken = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
     if (!hubspotToken) {
       console.error("[Conference Registration] HUBSPOT_PRIVATE_APP_TOKEN not configured");

@@ -36,17 +36,70 @@ export function ConferenceRegistrationForm({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+
+  // Expected digit counts per country code
+  const PHONE_LENGTHS: Record<string, number> = {
+    "+52": 10, // Mexico
+    "+1": 10,  // US/Canada
+    "+34": 9,  // Spain
+    "+54": 10, // Argentina
+    "+57": 10, // Colombia
+    "+51": 9,  // Peru
+    "+56": 9,  // Chile
+  };
+
+  const validatePhone = (digits: string, countryCode: string): string | null => {
+    if (!digits) return null; // Don't show error on empty (required handles it)
+    const expected = PHONE_LENGTHS[countryCode] || 10;
+    if (digits.length < expected) {
+      return `Ingresa ${expected} dígitos (faltan ${expected - digits.length})`;
+    }
+    if (digits.length > expected) {
+      return `Máximo ${expected} dígitos`;
+    }
+    return null;
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
+    if (name === "phoneNumber") {
+      // Only allow digits
+      const digitsOnly = value.replace(/\D/g, "");
+      const expected = PHONE_LENGTHS[formData.countryCode] || 10;
+      // Cap at expected length
+      const capped = digitsOnly.slice(0, expected);
+      setFormData((prev) => ({ ...prev, phoneNumber: capped }));
+      setPhoneError(validatePhone(capped, formData.countryCode));
+      setError(null);
+      return;
+    }
+
+    if (name === "countryCode") {
+      // Re-validate phone when country changes
+      setFormData((prev) => ({ ...prev, countryCode: value }));
+      setPhoneError(validatePhone(formData.phoneNumber, value));
+      setError(null);
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
     setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate phone before submit
+    const phoneValidation = validatePhone(formData.phoneNumber, formData.countryCode);
+    if (phoneValidation) {
+      setPhoneError(phoneValidation);
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
 
@@ -218,15 +271,23 @@ export function ConferenceRegistrationForm({
               id="phoneNumber"
               name="phoneNumber"
               required
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              className="flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base"
-              placeholder="10 dígitos"
+              className={`flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 border rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base ${phoneError ? "border-red-400" : "border-warm-gray-200"}`}
+              placeholder={`${PHONE_LENGTHS[formData.countryCode] || 10} dígitos`}
             />
           </div>
-          <p className="text-[10px] sm:text-xs text-warm-gray-500 mt-1">
-            Te enviaremos recordatorios por WhatsApp
-          </p>
+          {phoneError ? (
+            <p className="text-[10px] sm:text-xs text-red-500 mt-1">
+              {phoneError}
+            </p>
+          ) : (
+            <p className="text-[10px] sm:text-xs text-warm-gray-500 mt-1">
+              Te enviaremos recordatorios por WhatsApp
+            </p>
+          )}
         </div>
 
         {/* Pain Point (Optional) - Hidden on very small screens for cleaner form */}
