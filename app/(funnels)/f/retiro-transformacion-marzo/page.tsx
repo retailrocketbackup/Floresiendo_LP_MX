@@ -53,8 +53,9 @@ export default function RetiroTransformacionMarzo() {
             alt="Retiro de transformación personal en Morelos"
             fill
             priority
+            fetchPriority="high"
             quality={45}
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-burgundy/80 via-burgundy/70 to-burgundy" />

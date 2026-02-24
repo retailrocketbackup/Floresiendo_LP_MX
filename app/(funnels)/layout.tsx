@@ -2,6 +2,7 @@
 // This keeps funnel pages distraction-free for conversions
 
 import { FunnelFooter } from "@/components/funnel-footer";
+import { TrackingScripts } from "@/components/tracking-scripts";
 
 export default function FunnelLayout({
   children,
@@ -10,6 +11,7 @@ export default function FunnelLayout({
 }) {
   return (
     <>
+      <TrackingScripts strategy="lazyOnload" includeHubspot={false} />
       {children}
       <FunnelFooter />
     </>

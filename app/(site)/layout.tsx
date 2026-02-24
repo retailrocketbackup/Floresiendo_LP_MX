@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { BackToTop } from "@/components/back-to-top";
+import { TrackingScripts } from "@/components/tracking-scripts";
 
 export default function SiteLayout({
   children,
@@ -11,6 +12,7 @@ export default function SiteLayout({
 }) {
   return (
     <>
+      <TrackingScripts strategy="afterInteractive" includeHubspot={true} />
       <SiteHeader />
       {children}
       <SiteFooter />
