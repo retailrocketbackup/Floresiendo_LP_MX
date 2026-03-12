@@ -20,7 +20,7 @@ import { trackEvent } from "@/lib/meta-tracking";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { CountdownTimer } from "@/components/countdown-timer";
 
-const FUNNEL_NAME = "conferencia_vida_perfecta";
+const FUNNEL_NAME = "conferencia-vida-perfecta";
 const EVENT_PREFIX = "Conferencia_VidaPerfecta";
 
 // Target date for countdown: February 26, 2026 at 7:00 PM CDMX (UTC-6)

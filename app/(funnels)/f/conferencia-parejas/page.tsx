@@ -23,7 +23,7 @@ import { trackEvent } from "@/lib/meta-tracking";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { CountdownTimer } from "@/components/countdown-timer";
 
-const FUNNEL_NAME = "conferencia_parejas";
+const FUNNEL_NAME = "conferencia-parejas";
 const EVENT_PREFIX = "Conferencia_Parejas";
 
 // April 19, 2026 at 4:00 PM CDMX (UTC-6)

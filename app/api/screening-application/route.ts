@@ -167,7 +167,7 @@ export async function POST(request: Request) {
       ) ? "true" : "false",
 
       // Source tracking
-      funnel_source: "screening_application",
+      funnel_source: "screening-application",
       landing_page: "escuelafloresiendomexico.com/aplicar",
 
       // Non-sensitive intentions (required by HubSpot form)

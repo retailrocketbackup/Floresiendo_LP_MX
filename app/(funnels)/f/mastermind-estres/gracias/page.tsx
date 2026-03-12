@@ -26,9 +26,9 @@ function generateGoogleCalendarLink() {
   const details = encodeURIComponent(
     `Mastermind interactivo gratuito sobre estrés laboral.\n\nEnlace de Google Meet: ${MEET_URL}\n\nDuración: ${EVENT_DURATION}.\n\nTe recomendamos conectarte 5 minutos antes para probar tu audio.`
   );
-  // March 26, 2026, 8:00 PM - 9:00 PM Mexico City (UTC-6) = Mar 27, 2:00 AM - 3:00 AM UTC
+  // March 26, 2026, 8:00 PM - 9:30 PM Mexico City (UTC-6) = Mar 27, 2:00 AM - 3:30 AM UTC
   const startDate = "20260327T020000Z";
-  const endDate = "20260327T030000Z";
+  const endDate = "20260327T033000Z";
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${startDate}/${endDate}`;
 }
@@ -42,7 +42,7 @@ function generateOutlookCalendarLink() {
     `Mastermind interactivo gratuito sobre estrés laboral.\n\nEnlace de Google Meet: ${MEET_URL}\n\nTe recomendamos conectarte 5 minutos antes.`
   );
   const startDate = "2026-03-26T20:00:00";
-  const endDate = "2026-03-26T21:00:00";
+  const endDate = "2026-03-26T21:30:00";
 
   return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&startdt=${startDate}&enddt=${endDate}&path=/calendar/action/compose`;
 }

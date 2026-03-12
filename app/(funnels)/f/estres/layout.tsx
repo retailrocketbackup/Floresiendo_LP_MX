@@ -1,19 +1,14 @@
-// Custom layout for stress funnel - No footer, no floating WhatsApp
-// WhatsApp CTA is embedded in the page itself
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liberate del Estres y la Rutina | FloreSiendo",
+  title: "¿El estrés te está consumiendo? | FloreSiendo",
   description:
-    "Si sientes que tu rutina te consume, el trabajo te agota y la vida te pesa, te acompanamos a encontrar paz interior a traves de practicas ancestrales.",
+    "Descubre cómo el estrés crónico afecta tu cuerpo y tu mente. Video gratuito + acceso al Mastermind interactivo sobre estrés laboral.",
   openGraph: {
-    title: "Liberate del Estres y la Rutina | FloreSiendo",
+    title: "¿El estrés te está consumiendo? | FloreSiendo",
     description:
-      "Si sientes que tu rutina te consume y la vida te pesa, te acompanamos a encontrar paz interior.",
+      "Descubre cómo el estrés crónico afecta tu cuerpo y tu mente. Video gratuito de Rodrigo Roble.",
     type: "website",
-    locale: "es_MX",
-    siteName: "FloreSiendo",
   },
 };
 
@@ -22,5 +17,5 @@ export default function EstresLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return children;
 }
