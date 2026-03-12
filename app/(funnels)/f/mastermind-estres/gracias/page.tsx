@@ -13,8 +13,8 @@ import {
 } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
 
-const MEET_URL = "https://meet.google.com/vom-orye-woa";
-const EVENT_DATE = "Miércoles 19 de Marzo 2026";
+const MEET_URL = "https://meet.google.com/zpt-wrxs-mvr";
+const EVENT_DATE = "Jueves 26 de Marzo 2026";
 const EVENT_TIME = "8:00 PM (hora Ciudad de México)";
 const EVENT_DURATION = "60 minutos";
 
@@ -26,9 +26,9 @@ function generateGoogleCalendarLink() {
   const details = encodeURIComponent(
     `Mastermind interactivo gratuito sobre estrés laboral.\n\nEnlace de Google Meet: ${MEET_URL}\n\nDuración: ${EVENT_DURATION}.\n\nTe recomendamos conectarte 5 minutos antes para probar tu audio.`
   );
-  // March 19, 2026, 8:00 PM - 9:00 PM Mexico City (UTC-6) = Mar 20, 2:00 AM - 3:00 AM UTC
-  const startDate = "20260320T020000Z";
-  const endDate = "20260320T030000Z";
+  // March 26, 2026, 8:00 PM - 9:00 PM Mexico City (UTC-6) = Mar 27, 2:00 AM - 3:00 AM UTC
+  const startDate = "20260327T020000Z";
+  const endDate = "20260327T030000Z";
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${startDate}/${endDate}`;
 }
@@ -41,8 +41,8 @@ function generateOutlookCalendarLink() {
   const details = encodeURIComponent(
     `Mastermind interactivo gratuito sobre estrés laboral.\n\nEnlace de Google Meet: ${MEET_URL}\n\nTe recomendamos conectarte 5 minutos antes.`
   );
-  const startDate = "2026-03-19T20:00:00";
-  const endDate = "2026-03-19T21:00:00";
+  const startDate = "2026-03-26T20:00:00";
+  const endDate = "2026-03-26T21:00:00";
 
   return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&startdt=${startDate}&enddt=${endDate}&path=/calendar/action/compose`;
 }
@@ -76,7 +76,7 @@ export default function MastermindGraciasPage() {
             ¡Tu lugar está reservado!
           </h1>
           <p className="text-xl text-gray-600">
-            Te esperamos el 19 de marzo para el Mastermind.
+            Te esperamos el 26 de marzo para el Mastermind.
           </p>
         </div>
 

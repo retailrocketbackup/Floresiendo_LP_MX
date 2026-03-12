@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Video, Copy, Check, Calendar, Clock } from "lucide-react";
 
-const MEET_URL = "https://meet.google.com/vom-orye-woa";
+const MEET_URL = "https://meet.google.com/jyr-fvys-acm";
 
 export default function EnlaceMeditacionPage() {
   const [copied, setCopied] = useState(false);
@@ -29,7 +29,7 @@ export default function EnlaceMeditacionPage() {
         <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-8">
           <span className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
-            Jue 19 Mar
+            Jue 3 Abr
           </span>
           <span className="flex items-center gap-1">
             <Clock className="w-4 h-4" />

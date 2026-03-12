@@ -65,7 +65,7 @@ export async function POST(request: Request) {
         lastname: lastName,
         email,
         phone,
-        funnel_source: "conferencia-vida-perfecta",
+        funnel_source: funnelSource || "conferencia",
       };
 
       if (landingPage) {
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
         lastName,
         email,
         phone,
-        funnel_source: "conferencia-vida-perfecta",
+        funnel_source: funnelSource || "conferencia",
         landingPage,
       });
 

@@ -21,9 +21,9 @@ import { trackEvent } from "@/lib/meta-tracking";
 import { CountdownTimer } from "@/components/countdown-timer";
 
 // Session details
-const SESSION_DATE = "Miércoles 19 de Marzo";
+const SESSION_DATE = "Jueves 26 de Marzo";
 const SESSION_TIME = "8:00 PM (Hora CDMX)";
-const EVENT_DATE = new Date("2026-03-19T20:00:00-06:00");
+const EVENT_DATE = new Date("2026-03-26T20:00:00-06:00");
 
 // FAQ Accordion Item
 function FAQItem({ question, answer }: { question: string; answer: string }) {
@@ -209,7 +209,7 @@ export default function MastermindEstresPage() {
         "Solo un dispositivo con internet y Google Meet. Te enviaremos el enlace después de registrarte. Cámara opcional pero recomendada para conectar mejor.",
     },
     {
-      question: "¿Qué pasa si no puedo asistir el 19 de marzo?",
+      question: "¿Qué pasa si no puedo asistir el 26 de marzo?",
       answer:
         "No hay problema. Regístrate y te avisaremos de próximas sesiones. También tenemos una meditación guiada el 3 de abril.",
     },
@@ -727,7 +727,7 @@ export default function MastermindEstresPage() {
                 </span>
               </div>
               <p className="text-gray-900 font-semibold text-sm truncate">
-                Mastermind Gratuito - 19 Mar
+                Mastermind Gratuito - 26 Mar
               </p>
             </div>
             <button

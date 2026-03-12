@@ -4,15 +4,17 @@ import type React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/meta-tracking";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight, CheckCircle, ShieldCheck } from "lucide-react";
 
 interface ConferenceRegistrationFormProps {
   funnelName: string;
   eventNamePrefix: string; // e.g., "Conferencia_VidaPerfecta"
   redirectPath: string; // e.g., "/f/conferencia-vida-perfecta/gracias"
+  painPointOptions?: string[]; // Custom pain points per funnel
+  requirePhoneVerification?: boolean; // When true, sends SMS OTP before allowing submit
 }
 
-const PAIN_POINTS = [
+const DEFAULT_PAIN_POINTS = [
   "Mi vida se ve bien pero me siento vacío/a",
   "Siento que construí la vida equivocada",
   "Estoy agotado/a y desconectado/a de mí mismo/a",
@@ -24,12 +26,14 @@ export function ConferenceRegistrationForm({
   funnelName,
   eventNamePrefix,
   redirectPath,
+  painPointOptions,
+  requirePhoneVerification = false,
 }: ConferenceRegistrationFormProps) {
+  const PAIN_POINTS = painPointOptions || DEFAULT_PAIN_POINTS;
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    email: "",
     countryCode: "+52",
     phoneNumber: "",
     painPoint: "",
@@ -37,6 +41,13 @@ export function ConferenceRegistrationForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
+
+  // Phone verification state
+  const [verificationStep, setVerificationStep] = useState<
+    "idle" | "sending" | "code_sent" | "verifying" | "verified"
+  >("idle");
+  const [otpCode, setOtpCode] = useState("");
+  const [verifyError, setVerifyError] = useState<string | null>(null);
 
   // Expected digit counts per country code
   const PHONE_LENGTHS: Record<string, number> = {
@@ -50,7 +61,7 @@ export function ConferenceRegistrationForm({
   };
 
   const validatePhone = (digits: string, countryCode: string): string | null => {
-    if (!digits) return null; // Don't show error on empty (required handles it)
+    if (!digits) return null;
     const expected = PHONE_LENGTHS[countryCode] || 10;
     if (digits.length < expected) {
       return `Ingresa ${expected} dígitos (faltan ${expected - digits.length})`;
@@ -67,27 +78,102 @@ export function ConferenceRegistrationForm({
     const { name, value } = e.target;
 
     if (name === "phoneNumber") {
-      // Only allow digits
       const digitsOnly = value.replace(/\D/g, "");
       const expected = PHONE_LENGTHS[formData.countryCode] || 10;
-      // Cap at expected length
       const capped = digitsOnly.slice(0, expected);
       setFormData((prev) => ({ ...prev, phoneNumber: capped }));
       setPhoneError(validatePhone(capped, formData.countryCode));
       setError(null);
+      // Reset verification if phone changes
+      if (verificationStep === "code_sent" || verificationStep === "verified") {
+        setVerificationStep("idle");
+        setOtpCode("");
+        setVerifyError(null);
+      }
       return;
     }
 
     if (name === "countryCode") {
-      // Re-validate phone when country changes
       setFormData((prev) => ({ ...prev, countryCode: value }));
       setPhoneError(validatePhone(formData.phoneNumber, value));
       setError(null);
+      // Reset verification if country changes
+      if (verificationStep !== "idle") {
+        setVerificationStep("idle");
+        setOtpCode("");
+        setVerifyError(null);
+      }
       return;
     }
 
     setFormData((prev) => ({ ...prev, [name]: value }));
     setError(null);
+  };
+
+  // Send OTP code
+  const handleSendOTP = async () => {
+    const phoneValidation = validatePhone(formData.phoneNumber, formData.countryCode);
+    if (phoneValidation) {
+      setPhoneError(phoneValidation);
+      return;
+    }
+
+    setVerificationStep("sending");
+    setVerifyError(null);
+
+    try {
+      const fullPhone = `${formData.countryCode}${formData.phoneNumber}`;
+      const res = await fetch("/api/twilio-verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: fullPhone, action: "send" }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Error al enviar código");
+      }
+
+      setVerificationStep("code_sent");
+    } catch (err) {
+      setVerifyError(
+        err instanceof Error ? err.message : "Error al enviar código. Intenta de nuevo."
+      );
+      setVerificationStep("idle");
+    }
+  };
+
+  // Verify OTP code
+  const handleVerifyOTP = async () => {
+    if (otpCode.length !== 6) {
+      setVerifyError("Ingresa el código de 6 dígitos");
+      return;
+    }
+
+    setVerificationStep("verifying");
+    setVerifyError(null);
+
+    try {
+      const fullPhone = `${formData.countryCode}${formData.phoneNumber}`;
+      const res = await fetch("/api/twilio-verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: fullPhone, action: "verify", code: otpCode }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Código incorrecto. Intenta de nuevo.");
+      }
+
+      setVerificationStep("verified");
+      setVerifyError(null);
+    } catch (err) {
+      setVerifyError(
+        err instanceof Error ? err.message : "Error al verificar. Intenta de nuevo."
+      );
+      setVerificationStep("code_sent");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,10 +186,18 @@ export function ConferenceRegistrationForm({
       return;
     }
 
+    // Block submit if phone verification required but not completed
+    if (requirePhoneVerification && verificationStep !== "verified") {
+      setError("Por favor verifica tu número de teléfono antes de continuar.");
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
 
     const fullPhoneNumber = `${formData.countryCode}${formData.phoneNumber}`;
+    // Generate synthetic email from phone for HubSpot deduplication
+    const syntheticEmail = `${formData.phoneNumber}@wa.floresiendo.mx`;
 
     try {
       // 1. Track Lead event (form interaction)
@@ -115,7 +209,6 @@ export function ConferenceRegistrationForm({
           content_name: `conference_${funnelName}`,
           first_name: formData.firstName,
           last_name: formData.lastName,
-          email: formData.email,
           phone: fullPhoneNumber,
         },
         { enableCAPI: true }
@@ -131,11 +224,12 @@ export function ConferenceRegistrationForm({
         body: JSON.stringify({
           firstName: formData.firstName,
           lastName: formData.lastName,
-          email: formData.email,
+          email: syntheticEmail,
           phone: fullPhoneNumber,
           painPoint: formData.painPoint,
           funnelSource: funnelName,
           landingPage: window.location.href,
+          phoneVerified: requirePhoneVerification ? verificationStep === "verified" : undefined,
           utm_source: urlParams.get("utm_source") || undefined,
           utm_medium: urlParams.get("utm_medium") || undefined,
           utm_campaign: urlParams.get("utm_campaign") || undefined,
@@ -151,7 +245,7 @@ export function ConferenceRegistrationForm({
 
       // 4. Track CompleteRegistration event
       await trackEvent(
-        `CompleteRegistration_Conferencia`,
+        `CompleteRegistration_${eventNamePrefix}`,
         {
           funnel: funnelName,
           content_type: "conference_registration",
@@ -160,7 +254,6 @@ export function ConferenceRegistrationForm({
           currency: "MXN",
           first_name: formData.firstName,
           last_name: formData.lastName,
-          email: formData.email,
           phone: fullPhoneNumber,
         },
         { enableCAPI: true }
@@ -178,6 +271,9 @@ export function ConferenceRegistrationForm({
       setIsSubmitting(false);
     }
   };
+
+  const isPhoneComplete =
+    formData.phoneNumber.length === (PHONE_LENGTHS[formData.countryCode] || 10);
 
   return (
     <div className="w-full max-w-lg mx-auto">
@@ -198,7 +294,7 @@ export function ConferenceRegistrationForm({
               required
               value={formData.firstName}
               onChange={handleInputChange}
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-warm-gray-800 placeholder:text-warm-gray-400 text-sm sm:text-base"
               placeholder="Tu nombre"
             />
           </div>
@@ -216,30 +312,10 @@ export function ConferenceRegistrationForm({
               required
               value={formData.lastName}
               onChange={handleInputChange}
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-warm-gray-800 placeholder:text-warm-gray-400 text-sm sm:text-base"
               placeholder="Tu apellido"
             />
           </div>
-        </div>
-
-        {/* Email */}
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-xs sm:text-sm font-medium text-warm-gray-700 mb-1 sm:mb-1.5"
-          >
-            Correo electrónico *
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base"
-            placeholder="tu@email.com"
-          />
         </div>
 
         {/* Phone */}
@@ -256,7 +332,8 @@ export function ConferenceRegistrationForm({
               id="countryCode"
               value={formData.countryCode}
               onChange={handleInputChange}
-              className="flex-shrink-0 w-16 sm:w-auto px-1.5 sm:px-3 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-xs sm:text-sm"
+              disabled={verificationStep === "verified"}
+              className="flex-shrink-0 w-16 sm:w-auto px-1.5 sm:px-3 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-warm-gray-800 text-xs sm:text-sm disabled:bg-warm-gray-100 disabled:cursor-not-allowed"
             >
               <option value="+52">+52</option>
               <option value="+1">+1</option>
@@ -275,13 +352,19 @@ export function ConferenceRegistrationForm({
               pattern="[0-9]*"
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              className={`flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 border rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm sm:text-base ${phoneError ? "border-red-400" : "border-warm-gray-200"}`}
+              disabled={verificationStep === "verified"}
+              className={`flex-1 min-w-0 px-3 sm:px-4 py-2.5 sm:py-3 border rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-warm-gray-800 placeholder:text-warm-gray-400 text-sm sm:text-base disabled:bg-warm-gray-100 disabled:cursor-not-allowed ${phoneError ? "border-red-400" : verificationStep === "verified" ? "border-green-400" : "border-warm-gray-200"}`}
               placeholder={`${PHONE_LENGTHS[formData.countryCode] || 10} dígitos`}
             />
           </div>
           {phoneError ? (
             <p className="text-[10px] sm:text-xs text-red-500 mt-1">
               {phoneError}
+            </p>
+          ) : verificationStep === "verified" ? (
+            <p className="text-[10px] sm:text-xs text-green-600 mt-1 flex items-center gap-1">
+              <CheckCircle className="w-3 h-3" />
+              Número verificado
             </p>
           ) : (
             <p className="text-[10px] sm:text-xs text-warm-gray-500 mt-1">
@@ -290,8 +373,82 @@ export function ConferenceRegistrationForm({
           )}
         </div>
 
-        {/* Pain Point (Optional) - Hidden on very small screens for cleaner form */}
-        <div className="hidden sm:block">
+        {/* Phone Verification Flow */}
+        {requirePhoneVerification && verificationStep !== "verified" && (
+          <div className="bg-warm-gray-50 rounded-xl p-3 sm:p-4 border border-warm-gray-200">
+            {verificationStep === "idle" || verificationStep === "sending" ? (
+              <>
+                <p className="text-xs sm:text-sm text-warm-gray-600 mb-2 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-coral" />
+                  Verifica tu número para completar el registro
+                </p>
+                <button
+                  type="button"
+                  onClick={handleSendOTP}
+                  disabled={!isPhoneComplete || verificationStep === "sending"}
+                  className="w-full bg-warm-gray-800 hover:bg-warm-gray-900 disabled:bg-warm-gray-400 text-white font-semibold py-2.5 px-4 rounded-lg transition-all text-sm disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {verificationStep === "sending" ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Enviando código...
+                    </>
+                  ) : (
+                    "Enviar código por SMS"
+                  )}
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="text-xs sm:text-sm text-warm-gray-600 mb-2">
+                  Ingresa el código de 6 dígitos que recibiste por SMS:
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                      setOtpCode(val);
+                      setVerifyError(null);
+                    }}
+                    className="flex-1 px-3 py-2.5 border border-warm-gray-200 rounded-lg focus:ring-2 focus:ring-coral focus:border-transparent text-center text-lg tracking-[0.3em] font-mono"
+                    placeholder="000000"
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={handleVerifyOTP}
+                    disabled={otpCode.length !== 6 || verificationStep === "verifying"}
+                    className="bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-semibold py-2.5 px-4 rounded-lg transition-all text-sm disabled:cursor-not-allowed flex items-center gap-1.5"
+                  >
+                    {verificationStep === "verifying" ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      "Verificar"
+                    )}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSendOTP}
+                  className="text-xs text-warm-gray-500 hover:text-coral mt-2 transition-colors"
+                >
+                  Reenviar código
+                </button>
+              </>
+            )}
+            {verifyError && (
+              <p className="text-xs text-red-500 mt-2">{verifyError}</p>
+            )}
+          </div>
+        )}
+
+        {/* Pain Point (Optional) */}
+        <div>
           <label
             htmlFor="painPoint"
             className="block text-xs sm:text-sm font-medium text-warm-gray-700 mb-1 sm:mb-1.5"
@@ -303,11 +460,11 @@ export function ConferenceRegistrationForm({
             id="painPoint"
             value={formData.painPoint}
             onChange={handleInputChange}
-            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-sm"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-warm-gray-200 rounded-xl focus:ring-2 focus:ring-coral focus:border-transparent transition-all bg-white text-warm-gray-800 text-sm"
           >
-            <option value="">Selecciona una opción...</option>
+            <option value="" className="text-warm-gray-400">Selecciona una opción...</option>
             {PAIN_POINTS.map((point) => (
-              <option key={point} value={point}>
+              <option key={point} value={point} className="text-warm-gray-800">
                 {point}
               </option>
             ))}
@@ -324,7 +481,7 @@ export function ConferenceRegistrationForm({
         {/* Submit Button - Coral primary style */}
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || (requirePhoneVerification && verificationStep !== "verified")}
           className="w-full bg-coral hover:bg-coral-dark disabled:bg-coral/50 text-white font-bold py-4 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:hover:scale-100 text-base group text-shadow-sm"
         >
           {isSubmitting ? (

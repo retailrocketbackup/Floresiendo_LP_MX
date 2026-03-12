@@ -35,6 +35,20 @@ const practicasClean = [
 export default function RetiroTransformacionMarzo() {
   return (
     <main className="min-h-screen bg-warm-gray-50">
+      {/* Banner: Este retiro ya pasó */}
+      <div className="bg-burgundy text-white py-4 px-4 text-center">
+        <p className="text-lg font-semibold mb-1">Este retiro ya pasó.</p>
+        <p className="text-white/80 text-sm mb-3">
+          El próximo encuentro es del <strong>30 de abril al 3 de mayo 2026</strong> en Morelos.
+        </p>
+        <Link
+          href="/encuentros/abril-2026"
+          className="inline-flex items-center gap-2 px-6 py-2 bg-coral hover:bg-coral-dark text-white font-bold rounded-full transition-all"
+        >
+          Ver Retiro de Abril
+        </Link>
+      </div>
+
       <SiteHeader />
       <EncuentroTracking slug="marzo-2026-google" />
 
