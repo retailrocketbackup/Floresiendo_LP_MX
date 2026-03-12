@@ -265,7 +265,7 @@ export const encuentroMarzo2026: Encuentro = {
     "Hipertensión no controlada",
   ],
 
-  whatsappNumber: "524427845308",
+  whatsappNumber: "526182301481",
   whatsappMessage: "Hola, me interesa el Encuentro de Marzo 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
 };
 
@@ -425,7 +425,7 @@ export const encuentroAbril2026: Encuentro = {
     "Hipertensión no controlada",
   ],
 
-  whatsappNumber: "524427845308",
+  whatsappNumber: "526182301481",
   whatsappMessage: "Hola, me interesa el Encuentro de Abril 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
 };
 

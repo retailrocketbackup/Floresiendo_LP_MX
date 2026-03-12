@@ -162,7 +162,7 @@ export const encuentroMarzo2026Clean: Encuentro = {
     "Hipertensión no controlada",
   ],
 
-  whatsappNumber: "524427845308",
+  whatsappNumber: "526182301481",
   whatsappMessage: "Hola, me interesa el Retiro de Transformación Personal de Marzo 2026. Me gustaría recibir más información.",
 };
 
@@ -324,6 +324,6 @@ export const encuentroAbril2026Clean: Encuentro = {
     "Hipertensión no controlada",
   ],
 
-  whatsappNumber: "524427845308",
+  whatsappNumber: "526182301481",
   whatsappMessage: "Hola, me interesa el Retiro de Transformación Personal de Abril 2026. Me gustaría recibir más información.",
 };
