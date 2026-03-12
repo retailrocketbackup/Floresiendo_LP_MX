@@ -89,7 +89,7 @@ export default function EncuentrosPage() {
                   </div>
                   <h3 className="text-xl font-bold text-white mb-1">Mastermind: Estrés Laboral y Burnout</h3>
                   <p className="text-coral-light/70 text-sm mb-3">
-                    60 minutos de herramientas tácticas para recuperar tu energía y claridad mental
+                    ¿El trabajo te consume? 60 minutos para recuperar tu energía y dejar de vivir en piloto automático.
                   </p>
                   <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
                     Apartar mi lugar
@@ -142,7 +142,7 @@ export default function EncuentrosPage() {
                 <div className="bg-gradient-to-br from-gold to-gold-dark rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
                   <span className="text-white/80 text-xs font-medium uppercase tracking-wide">Abril</span>
                   <div className="text-3xl font-bold text-white my-1">19</div>
-                  <span className="text-white/80 text-xs font-medium">2:00 PM</span>
+                  <span className="text-white/80 text-xs font-medium">4:00 PM</span>
                 </div>
 
                 {/* Event Details */}
@@ -157,6 +157,9 @@ export default function EncuentrosPage() {
                     <span className="text-coral-light/80 text-sm">Conferencia · CDMX</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-1">Conferencia: Relaciones de Pareja</h3>
+                  <p className="text-coral-light/70 text-sm mb-2">
+                    Lo amas pero ya no lo deseas. Descubre por qué — y qué hacer al respecto.
+                  </p>
                   <div className="flex flex-wrap justify-center md:justify-start gap-3 text-coral-light/70 text-sm mb-3">
                     <span className="flex items-center gap-1">
                       <MapPin size={14} />
@@ -185,6 +188,9 @@ export default function EncuentrosPage() {
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <h3 className="text-xl font-bold text-white mb-1">Encuentro de Abril</h3>
+                  <p className="text-coral-light/70 text-sm mb-2">
+                    4 días de inmersión profunda para reconectarte contigo y transformar lo que ya no funciona.
+                  </p>
                   <div className="flex flex-wrap justify-center md:justify-start gap-3 text-coral-light/90 text-sm mb-3">
                     <span className="flex items-center gap-1"><MapPin size={14} />Morelos, México</span>
                     <span className="flex items-center gap-1"><Clock size={14} />3 noches</span>

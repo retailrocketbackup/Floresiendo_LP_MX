@@ -16,8 +16,8 @@ import { trackEvent } from "@/lib/meta-tracking";
 const VENUE_ADDRESS = "Filadelfia 128, piso 3, Colonia Nápoles, CDMX";
 const GOOGLE_MAPS_URL =
   "https://maps.google.com/?q=Filadelfia+128+Colonia+Napoles+CDMX";
-const CONFERENCE_DATE = "Sábado 19 de Abril 2026";
-const CONFERENCE_TIME = "2:00 PM (hora Ciudad de México)";
+const CONFERENCE_DATE = "Domingo 19 de Abril 2026";
+const CONFERENCE_TIME = "4:00 PM (hora Ciudad de México)";
 
 // Google Calendar link
 function generateGoogleCalendarLink() {
@@ -28,9 +28,9 @@ function generateGoogleCalendarLink() {
     `Conferencia presencial gratuita sobre relaciones de pareja.\n\nDirección: ${VENUE_ADDRESS}\n\nBasada en la ciencia de John Gottman y Esther Perel.\n\nTe recomendamos llegar 10-15 minutos antes.`
   );
   const location = encodeURIComponent(VENUE_ADDRESS);
-  // April 19, 2026, 2:00 PM - 4:00 PM Mexico City (UTC-6) = Apr 19, 8:00 PM - 10:00 PM UTC
-  const startDate = "20260419T200000Z";
-  const endDate = "20260419T220000Z";
+  // April 19, 2026, 4:00 PM - 6:00 PM Mexico City (UTC-6) = Apr 19, 10:00 PM - Apr 20, 12:00 AM UTC
+  const startDate = "20260419T220000Z";
+  const endDate = "20260420T000000Z";
 
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
 }
@@ -43,8 +43,8 @@ function generateOutlookCalendarLink() {
   const details = encodeURIComponent(
     `Conferencia presencial gratuita sobre relaciones de pareja.\n\nDirección: ${VENUE_ADDRESS}\n\nTe recomendamos llegar 10-15 minutos antes.`
   );
-  const startDate = "2026-04-19T14:00:00";
-  const endDate = "2026-04-19T16:00:00";
+  const startDate = "2026-04-19T16:00:00";
+  const endDate = "2026-04-19T18:00:00";
 
   return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&startdt=${startDate}&enddt=${endDate}&path=/calendar/action/compose&location=${encodeURIComponent(VENUE_ADDRESS)}`;
 }

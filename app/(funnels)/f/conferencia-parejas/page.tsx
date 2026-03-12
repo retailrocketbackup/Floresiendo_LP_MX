@@ -26,8 +26,8 @@ import { CountdownTimer } from "@/components/countdown-timer";
 const FUNNEL_NAME = "conferencia_parejas";
 const EVENT_PREFIX = "Conferencia_Parejas";
 
-// April 19, 2026 at 2:00 PM CDMX (UTC-6)
-const EVENT_DATE = new Date("2026-04-19T14:00:00-06:00");
+// April 19, 2026 at 4:00 PM CDMX (UTC-6)
+const EVENT_DATE = new Date("2026-04-19T16:00:00-06:00");
 
 const PAIN_POINTS_PAREJAS = [
   "Siento que mi relación perdió la chispa",
@@ -174,7 +174,7 @@ export default function ConferenciaParejasPage() {
                 <span>19 Abr</span>
                 <span className="text-white/40">&bull;</span>
                 <Clock className="w-3.5 h-3.5 text-gold" />
-                <span>2PM</span>
+                <span>4PM</span>
                 <span className="text-white/40">&bull;</span>
                 <MapPin className="w-3.5 h-3.5 text-gold" />
                 <span>CDMX</span>
@@ -197,11 +197,11 @@ export default function ConferenciaParejasPage() {
           >
             <span className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
               <Calendar className="w-4 h-4 text-gold" />
-              Sábado 19 de Abril 2026
+              Domingo 19 de Abril 2026
             </span>
             <span className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
               <Clock className="w-4 h-4 text-gold" />
-              2:00 PM &ndash; 4:00 PM
+              4:00 PM &ndash; 6:00 PM
             </span>
             <span className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
               <MapPin className="w-4 h-4 text-gold" />
@@ -652,7 +652,7 @@ export default function ConferenciaParejasPage() {
               Tu relación merece más que sobrevivir en piloto automático
             </h2>
             <p className="text-white/90 mb-10 text-lg max-w-2xl mx-auto">
-              Sábado 19 de abril a las 2:00 PM en Col. Nápoles, CDMX. Dos horas
+              Domingo 19 de abril a las 4:00 PM en Col. Nápoles, CDMX. Dos horas
               que pueden transformar la dinámica de tu relación.
             </p>
 
