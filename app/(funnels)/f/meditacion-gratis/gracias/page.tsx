@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { trackEvent } from "@/lib/meta-tracking";
 
-const MEET_URL = "https://meet.google.com/jyr-fvys-acm";
+const MEET_URL = "https://meet.google.com/ogg-bvvn-ruf";
 const EVENT_DATE = "Jueves 3 de Abril 2026";
 const EVENT_TIME = "8:00 PM (hora Ciudad de México)";
 

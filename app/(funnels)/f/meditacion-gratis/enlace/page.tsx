@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Video, Copy, Check, Calendar, Clock } from "lucide-react";
 
-const MEET_URL = "https://meet.google.com/jyr-fvys-acm";
+const MEET_URL = "https://meet.google.com/ogg-bvvn-ruf";
 
 export default function EnlaceMeditacionPage() {
   const [copied, setCopied] = useState(false);
