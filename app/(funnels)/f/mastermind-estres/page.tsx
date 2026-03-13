@@ -247,14 +247,17 @@ export default function MastermindEstresPage() {
               </div>
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight break-words">
-                Llegas a casa.{" "}
-                <span className="text-orange-400">Pero sigues en la oficina.</span>
+                Tu carrera va bien.{" "}
+                <span className="text-orange-400">Tú no.</span>
               </h1>
 
               <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-4 sm:mb-6 break-words">
-                Tu cuerpo está en el sillón pero tu mente sigue en la junta de
-                las 5. El domingo ya piensas en el lunes. Hay una razón — y
-                tiene solución.
+                Todos te ven productivo, comprometido, trabajador.
+                <br />
+                Nadie ve el insomnio en las madrugadas, el domingo con sabor a
+                lunes, el estrés crónico.
+                <br />
+                Hay una razón — y tiene solución.
               </p>
 
               {/* Countdown Timer */}
