@@ -201,7 +201,7 @@ export default function MastermindEstresPage() {
     {
       question: "¿Necesito experiencia en meditación o desarrollo personal?",
       answer:
-        "No. El Mastermind está diseñado para cualquier profesional que sienta estrés laboral, sin importar su experiencia previa. Todo se explica paso a paso.",
+        "Para nada. Esto está diseñado para personas que nunca han meditado y que les parece raro todo eso de 'respirar profundo'. Si tienes estrés, ya tienes todo lo que necesitas para estar aquí.",
     },
     {
       question: "¿Qué necesito para conectarme?",
@@ -216,7 +216,7 @@ export default function MastermindEstresPage() {
     {
       question: "¿Es un webinar donde solo escucho?",
       answer:
-        "No. Es una sesión interactiva con formato Mastermind: participación activa, preguntas en vivo y herramientas que puedes aplicar desde el día siguiente.",
+        "No. Vas a hablar, vas a practicar, y vas a salir con herramientas que puedes usar al día siguiente. No es una charla — es una experiencia.",
     },
   ];
 
@@ -243,17 +243,18 @@ export default function MastermindEstresPage() {
             <div className="text-white text-center lg:text-left overflow-hidden max-w-full min-w-0">
               <div className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500/20 backdrop-blur-sm rounded-full text-orange-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-orange-500/30">
                 <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
-                SESIÓN INTERACTIVA GRATUITA
+                SESIÓN GRATUITA — ESTRÉS LABORAL
               </div>
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight break-words">
-                Cuando el trabajo consume todo el día y queda{" "}
-                <span className="text-orange-400">cero energía para vivir</span>
+                Llegas a casa.{" "}
+                <span className="text-orange-400">Pero sigues en la oficina.</span>
               </h1>
 
               <p className="text-sm sm:text-lg md:text-xl text-white/80 mb-4 sm:mb-6 break-words">
-                Herramientas tácticas para profesionales que quieren recuperar el
-                control de su carrera y su bienestar — en 60 minutos.
+                Tu cuerpo está en el sillón pero tu mente sigue en la junta de
+                las 5. El domingo ya piensas en el lunes. Hay una razón — y
+                tiene solución.
               </p>
 
               {/* Countdown Timer */}
@@ -331,7 +332,7 @@ export default function MastermindEstresPage() {
                     Ramón Henríquez
                   </p>
                   <p className="text-xs sm:text-sm text-orange-300/80">
-                    10+ años en bienestar y alto rendimiento
+                    +10 años acompañando transformaciones
                   </p>
                 </div>
               </div>
@@ -469,51 +470,81 @@ export default function MastermindEstresPage() {
       {/* Pain Validation Section */}
       <section className="py-16 sm:py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
-            El costo oculto de estar &ldquo;siempre disponible&rdquo;
-          </h2>
-          <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Muchos profesionales experimentan estos patrones sin darse cuenta de
-            que hay formas concretas de cambiarlos.
+          <p className="text-orange-600 font-semibold text-center mb-3 uppercase tracking-wide text-sm">
+            ¿Reconoces alguno?
           </p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
+            5 Señales de que el Trabajo te Está Consumiendo por Dentro
+          </h2>
 
           <div className="space-y-4">
-            {[
-              {
-                icon: Brain,
-                text: "La mente sigue procesando problemas del trabajo incluso en momentos de descanso con familia o amigos",
-              },
-              {
-                icon: Target,
-                text: "Cuando las urgencias de otros dictan la agenda, es fácil perder la soberanía sobre el propio tiempo",
-              },
-              {
-                icon: Flame,
-                text: "Un solo correo fuera de horario puede detonar frustración o cuestionar decisiones de carrera",
-              },
-              {
-                icon: Heart,
-                text: "Ese cansancio que no se quita con un fin de semana libre es más común de lo que parece",
-              },
-              {
-                icon: Shield,
-                text: "A veces lo que se necesita no es otro consejo de 'respira profundo', sino herramientas reales",
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-4 p-4 bg-orange-50/60 rounded-xl"
-              >
-                <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <item.icon className="w-4 h-4 text-orange-600" />
+            {(() => {
+              const painCards = [
+                {
+                  Icon: Brain,
+                  title: "La Mente que No Se Apaga",
+                  description:
+                    "Estás cenando con tu familia, pero tu cabeza sigue redactando el correo que no mandaste. Tus hijos te hablan y asientes sin escuchar.",
+                  internal:
+                    "Estoy aquí pero no estoy. Y ellos se dan cuenta.",
+                },
+                {
+                  Icon: Target,
+                  title: "La Agenda Secuestrada",
+                  description:
+                    "Tu día lo deciden las urgencias de otros. Llegas a las 7am con un plan y para las 9am ya se fue al diablo. Todos te necesitan. Menos tú.",
+                  internal:
+                    "No tengo un solo minuto que sea realmente mío.",
+                },
+                {
+                  Icon: Flame,
+                  title: "El Correo de las 10pm",
+                  description:
+                    "Un solo mensaje fuera de horario y el estómago se te cierra. La noche se arruina. El descanso se evapora.",
+                  internal:
+                    "Ni siquiera puedo cenar sin revisar el teléfono.",
+                },
+                {
+                  Icon: Heart,
+                  title: "El Cansancio que No Se Quita",
+                  description:
+                    "Duermes 8 horas y despiertas agotado. Sales de vacaciones y al tercer día ya estás pensando en lo que se acumula. No es flojera. Es desgaste profundo.",
+                  internal:
+                    "Ya no recuerdo cómo se siente descansar de verdad.",
+                },
+                {
+                  Icon: Shield,
+                  title: "El Consejo que Ya No Funciona",
+                  description:
+                    "Te dicen 'respira profundo', 'pon límites', 'desconéctate'. Como si fuera tan fácil. Como si no lo hubieras intentado cien veces.",
+                  internal:
+                    "Si fuera tan simple como 'respirar', ya estaría bien.",
+                },
+              ];
+              return painCards.map((item, index) => (
+                <div
+                  key={index}
+                  className="rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-orange-200 bg-orange-50/40"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                      <item.Icon className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
+                      <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+                      <p className="text-gray-500 text-sm italic border-l-2 border-orange-300 pl-3">
+                        &ldquo;{item.internal}&rdquo;
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-gray-700">{item.text}</p>
-              </div>
-            ))}
+              ));
+            })()}
           </div>
 
-          <p className="text-center text-orange-700 font-medium mt-10 text-lg">
-            La buena noticia: nadie tiene que enfrentar este desgaste en soledad.
+          <p className="text-center text-orange-700 font-semibold mt-10 text-lg">
+            Si algo de esto resuena contigo, esta sesión es tu primer paso para salir del ciclo.
           </p>
         </div>
       </section>
@@ -523,14 +554,14 @@ export default function MastermindEstresPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <span className="text-orange-600 font-semibold uppercase tracking-wide text-sm">
-              Tu nueva red de apoyo estratégico
+              Lo que vas a vivir en 60 minutos
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-4">
-              Esto NO es un webinar donde solo escuchas
+              3 Llaves Para Recuperar tu Calma y tu Energía
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Es una mesa redonda virtual de alto rendimiento. El antídoto
-              contra la soledad del profesional abrumado.
+              No es una charla donde tomas notas. Es una sesión donde practicas
+              herramientas reales que puedes usar desde el día siguiente.
             </p>
           </div>
 
@@ -538,21 +569,21 @@ export default function MastermindEstresPage() {
             {[
               {
                 icon: Users,
-                title: "Hot Seat Interactivo",
+                title: "Frena el ruido mental antes de que te consuma",
                 description:
-                  "Escucha cómo otros profesionales de tu nivel resuelven los mismos cuellos de botella que te quitan el sueño.",
+                  "Cuando la presión escala, tu cuerpo entra en modo de emergencia y deja de pensar con claridad. Te enseñamos una técnica simple para calmarte en menos de 3 minutos — y responder en vez de reaccionar.",
               },
               {
                 icon: Shield,
-                title: "Límites Digitales",
+                title: "Pon límites sin culpa (y sin parecer 'poco comprometido')",
                 description:
-                  "Herramientas conversacionales para establecer límites de desconexión sin parecer poco comprometido.",
+                  "¿Por qué sientes que si dices 'no' te van a juzgar? Hay una explicación real. Vas a practicar una forma de establecer límites que proteja tu energía sin dañar tus relaciones laborales.",
               },
               {
                 icon: Target,
-                title: "Gestión de Sobrecarga",
+                title: "Recupera la sensación de que el día te alcanza",
                 description:
-                  "Estrategias reales para descomponer proyectos imposibles y recuperar la tracción operativa.",
+                  "No necesitas más productividad. Necesitas dejar de cargar lo que no te toca. Vas a aprender a soltar la sobrecarga mental con una técnica que funciona desde el escritorio.",
               },
             ].map((item, index) => (
               <div
@@ -577,14 +608,15 @@ export default function MastermindEstresPage() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <span className="text-orange-600 font-semibold uppercase tracking-wide text-sm">
-              Incluido en la sesión
+              La tensión que nadie te explicó
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2 mb-4">
-              Herramientas Prácticas de Calma en Vivo
+              ¿Por Qué Descansas y Sigues Agotado?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Olvídate de &ldquo;poner la mente en blanco&rdquo;. Estas son
-              técnicas prácticas diseñadas para mentes que no paran.
+              Lo que te agota no es el trabajo. Es que tu sistema nervioso se
+              quedó atorado en modo de emergencia — y nunca aprendiste a
+              apagarlo. No es un defecto tuyo. Es biología.
             </p>
           </div>
 
@@ -592,21 +624,21 @@ export default function MastermindEstresPage() {
             {[
               {
                 icon: "1",
-                title: "Anclaje Corporal (Grounding)",
+                title: "Salir de la cabeza y volver al cuerpo",
                 description:
-                  "Una técnica para redirigir la atención del ruido mental hacia sensaciones físicas concretas. Ayuda a encontrar calma en momentos de presión.",
+                  "Cuando llevas horas en piloto automático, tu cuerpo se desconecta. Esta técnica te regresa al presente en menos de 2 minutos — sin cerrar los ojos ni 'meditar'.",
               },
               {
                 icon: "2",
-                title: "Respiración Guiada",
+                title: "Desactivar la alarma interna",
                 description:
-                  "Una técnica de respiración profunda diseñada para ayudar a regresar a un estado de calma y sentir más claridad en pocos minutos.",
+                  "Esa sensación de pecho apretado y mandíbula tensa tiene nombre: tu sistema nervioso gritando. Una respiración específica puede calmarlo — y vas a practicarla en vivo.",
               },
               {
                 icon: "3",
-                title: "Observación de Pensamientos",
+                title: "Soltar el pensamiento sin pelear con él",
                 description:
-                  "Aprende a observar los pensamientos que generan presión sin engancharte. Una herramienta para tomar distancia y responder con más claridad.",
+                  "No se trata de 'poner la mente en blanco'. Se trata de aprender a ver un pensamiento tóxico y dejarlo pasar — como un carro que pasa por tu calle y no te subes.",
               },
             ].map((item, index) => (
               <div
@@ -626,9 +658,20 @@ export default function MastermindEstresPage() {
             ))}
           </div>
 
+          <div className="bg-gradient-to-r from-orange-50 to-white rounded-2xl p-6 sm:p-8 border border-orange-100 mt-10">
+            <div className="border-l-4 border-orange-500 pl-4">
+              <p className="text-gray-800 italic text-lg font-medium">
+                &ldquo;Tu cuerpo lleva la cuenta de todo lo que tu mente ignora.&rdquo;
+              </p>
+              <p className="text-gray-500 text-sm mt-2">
+                &mdash; Bessel van der Kolk
+              </p>
+            </div>
+          </div>
+
           <p className="text-center text-gray-500 text-sm mt-8">
-            Te llevarás una herramienta que puedes ejecutar en tu escritorio
-            antes de cualquier junta.
+            Estas 3 herramientas las vas a practicar en vivo. Y las puedes usar
+            desde tu escritorio al día siguiente.
           </p>
         </div>
       </section>
@@ -677,12 +720,13 @@ export default function MastermindEstresPage() {
       <section className="py-16 sm:py-20 px-4 bg-gradient-to-b from-[#1a1a2e] to-[#0f0f1a] text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
-            El siguiente paso hacia{" "}
-            <span className="text-orange-400">una carrera más sostenible</span>
+            Mereces más que{" "}
+            <span className="text-orange-400">sobrevivir de lunes a viernes</span>
           </h2>
           <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-            Muchos profesionales descubren que rodearse de personas con retos
-            similares es el primer paso para encontrar nuevas soluciones.
+            Una hora. 30 personas. Herramientas reales. El jueves 26 de marzo a
+            las 8PM puede ser el momento en que dejas de aguantar y empiezas a
+            cambiar.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
@@ -704,7 +748,8 @@ export default function MastermindEstresPage() {
           </button>
 
           <p className="text-white/50 text-sm mt-4">
-            Máximo 30 personas por sesión. 100% gratis.
+            Sin costo. Sin compromiso. Solo tú y 29 personas que entienden
+            exactamente por lo que estás pasando.
           </p>
         </div>
       </section>
@@ -727,7 +772,7 @@ export default function MastermindEstresPage() {
                 </span>
               </div>
               <p className="text-gray-900 font-semibold text-sm truncate">
-                Mastermind Gratuito - 26 Mar
+                Sesión Gratuita - 26 Mar 8PM
               </p>
             </div>
             <button
