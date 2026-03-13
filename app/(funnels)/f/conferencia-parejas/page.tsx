@@ -227,8 +227,11 @@ export default function ConferenciaParejasPage() {
             className="text-sm sm:text-xl md:text-2xl text-white/80 text-center mb-3 sm:mb-6 max-w-2xl mx-auto animate-slide-up px-2"
             style={{ animationDelay: "0.3s" }}
           >
-            La chispa se apagó y no sabes cuándo. Hoy viven juntos pero como
-            compañeros de cuarto. Hay una razón científica — y tiene solución.
+            La chispa se apagó y no sabes cuándo.
+            <br />
+            Hoy viven juntos pero como compañeros de cuarto.
+            <br />
+            Hay una razón científica — y tiene solución.
           </p>
 
           {/* Countdown Timer */}
