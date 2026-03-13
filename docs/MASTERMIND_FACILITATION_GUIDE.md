@@ -1,5 +1,5 @@
 # Guía de Facilitación: Mastermind Estrés Laboral y Burnout
-## Miércoles 19 de Marzo 2026 · 8:00 PM · Google Meet
+## Jueves 26 de Marzo 2026 · 8:00 PM · Google Meet
 ## Facilitador: Ramón Henríquez
 
 ---
@@ -7,7 +7,7 @@
 ## ANTES DE LA SESIÓN
 
 ### Setup técnico (7:45 PM)
-- Abrir Google Meet 15 min antes: https://meet.google.com/vom-orye-woa
+- Abrir Google Meet 15 min antes: https://meet.google.com/zpt-wrxs-mvr
 - Verificar audio, cámara, iluminación
 - Pantalla compartida lista con timer visible (usar reloj del teléfono)
 - Tener agua a la mano
