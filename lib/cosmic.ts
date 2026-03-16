@@ -262,6 +262,21 @@ export async function getFAQs(
   }
 }
 
+// ─── Helper: Decode HTML Entities ────────────────────────────────────────────
+
+export function decodeHtmlEntities(text: string): string {
+  if (!text) return "";
+  // If content looks like escaped HTML (contains &lt; or &gt;), decode it
+  if (!text.includes("&lt;") && !text.includes("&gt;")) return text;
+  return text
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, " ");
+}
+
 // ─── Helper: Reading Time ───────────────────────────────────────────────────
 
 export function getReadingTime(text: string): number {

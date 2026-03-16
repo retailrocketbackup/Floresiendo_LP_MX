@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
-import { getBlogPost, getBlogPostSlugs, getReadingTime, formatDate } from "@/lib/cosmic";
+import { getBlogPost, getBlogPostSlugs, getReadingTime, formatDate, decodeHtmlEntities } from "@/lib/cosmic";
 import { JsonLd, getArticleSchema, getBreadcrumbSchema } from "@/lib/structured-data";
 
 const BASE_URL = "https://escuelafloresiendomexico.com";
@@ -185,7 +185,7 @@ export default async function BlogPostPage({
               prose-blockquote:border-l-coral prose-blockquote:bg-warm-gray-50 prose-blockquote:py-1 prose-blockquote:px-6 prose-blockquote:rounded-r-xl
               prose-strong:text-warm-gray-800
               prose-li:marker:text-coral"
-            dangerouslySetInnerHTML={{ __html: post.metadata.body || "" }}
+            dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(post.metadata.body || "") }}
           />
 
           {/* Key Statistics (GEO) */}
@@ -197,7 +197,7 @@ export default async function BlogPostPage({
               <div
                 className="text-warm-gray-700 prose prose-sm"
                 dangerouslySetInnerHTML={{
-                  __html: post.metadata.key_statistics,
+                  __html: decodeHtmlEntities(post.metadata.key_statistics),
                 }}
               />
             </div>
@@ -212,7 +212,7 @@ export default async function BlogPostPage({
               <div
                 className="text-warm-gray-700 prose prose-sm"
                 dangerouslySetInnerHTML={{
-                  __html: post.metadata.expert_quotes,
+                  __html: decodeHtmlEntities(post.metadata.expert_quotes),
                 }}
               />
             </div>
