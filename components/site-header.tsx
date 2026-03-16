@@ -10,7 +10,7 @@ const navItems = [
   { href: "/escuela", label: "Escuela" },
   { href: "/encuentros", label: "Encuentros" },
   { href: "/practicas-ancestrales", label: "Prácticas Ancestrales" },
-  { href: "https://www.escuelafloresiendo.com/blog", label: "Blog", external: true },
+  { href: "/blog", label: "Blog" },
   { href: "/contacto", label: "Contacto" },
 ];
 
