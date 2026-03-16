@@ -226,11 +226,11 @@ export default async function BlogPostPage({
       </section>
 
       {/* Author Bio */}
-      {post.metadata.author && (
+      {post.metadata.author && post.metadata.author.title && (
         <section className="py-12 px-4 bg-warm-white">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-start gap-5 bg-white p-6 rounded-2xl shadow-sm border border-warm-gray-100">
-              {post.metadata.author.metadata.avatar?.imgix_url && (
+              {post.metadata.author.metadata?.avatar?.imgix_url && (
                 <Image
                   src={post.metadata.author.metadata.avatar.imgix_url}
                   alt={post.metadata.author.title}
@@ -246,12 +246,12 @@ export default async function BlogPostPage({
                 <h3 className="text-lg font-bold text-burgundy">
                   {post.metadata.author.title}
                 </h3>
-                {post.metadata.author.metadata.credentials && (
+                {post.metadata.author.metadata?.credentials && (
                   <p className="text-sm text-coral font-medium">
                     {post.metadata.author.metadata.credentials}
                   </p>
                 )}
-                {post.metadata.author.metadata.bio && (
+                {post.metadata.author.metadata?.bio && (
                   <p className="text-warm-gray-600 text-sm mt-2">
                     {post.metadata.author.metadata.bio}
                   </p>
