@@ -180,7 +180,7 @@ export default async function BlogPostPage({
           <article
             className="prose prose-lg prose-warm-gray max-w-none
               prose-headings:text-burgundy prose-headings:font-bold
-              prose-a:text-coral prose-a:underline prose-a:underline-offset-2 prose-a:decoration-coral/40 hover:prose-a:decoration-coral
+              prose-a:text-burgundy prose-a:font-semibold prose-a:underline prose-a:underline-offset-2 prose-a:decoration-coral hover:prose-a:text-coral hover:prose-a:decoration-coral
               prose-img:rounded-2xl prose-img:shadow-lg
               prose-blockquote:border-l-coral prose-blockquote:bg-warm-gray-50 prose-blockquote:py-1 prose-blockquote:px-6 prose-blockquote:rounded-r-xl
               prose-strong:text-warm-gray-800
