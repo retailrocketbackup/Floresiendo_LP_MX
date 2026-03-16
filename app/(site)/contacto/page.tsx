@@ -2,9 +2,36 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Clock, ArrowRight, MessageSquare } from "lucide-react";
 
-export const metadata = {
-  title: "Contacto | FloreSiendo México",
-  description: "Contáctanos por WhatsApp para conocer más sobre nuestros encuentros y retiros en México.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contacto — Hablemos sobre tu Proceso",
+  description:
+    "Contáctanos por WhatsApp para conocer más sobre nuestros encuentros y retiros de transformación personal en Morelos, México. Respuesta en menos de 24 horas.",
+  alternates: {
+    canonical: "https://escuelafloresiendomexico.com/contacto",
+  },
+  openGraph: {
+    title: "Contacto | FloreSiendo México",
+    description:
+      "Contáctanos por WhatsApp para conocer más sobre nuestros retiros en México.",
+    url: "https://escuelafloresiendomexico.com/contacto",
+    images: [
+      {
+        url: "/images/cosmic-spiritual-background.webp",
+        width: 1200,
+        height: 630,
+        alt: "Contacto FloreSiendo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contacto | FloreSiendo México",
+    description:
+      "Contáctanos por WhatsApp. Respuesta en menos de 24 horas.",
+    images: ["/images/cosmic-spiritual-background.webp"],
+  },
 };
 
 export default function ContactoPage() {

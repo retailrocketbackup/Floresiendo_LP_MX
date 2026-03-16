@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Users, Leaf, Calendar, ArrowRight, Star, Shield, Clock, Sparkles } from "lucide-react";
@@ -7,10 +8,51 @@ import { TeamCarousel } from "@/components/team-carousel";
 import { ScrollAnimate } from "@/components/scroll-animate";
 import { CommunityCarousel } from "@/components/community-carousel";
 import { TrackedCTAButton } from "@/components/TrackedCTAButton";
+import { JsonLd, getFAQSchema, getBreadcrumbSchema } from "@/lib/structured-data";
+
+const homeFAQs = [
+  {
+    question: "¿Es seguro participar en un encuentro?",
+    answer: "Sí, nuestros encuentros son completamente seguros. Contamos con un equipo profesional certificado, realizamos una evaluación previa, y mantenemos un entorno controlado y sagrado. La seguridad física y emocional de los participantes es nuestra prioridad absoluta.",
+  },
+  {
+    question: "¿Cuánto dura un encuentro?",
+    answer: "Nuestros encuentros principales son de 3 noches y 4 días. Este tiempo permite una inmersión profunda en el proceso de crecimiento personal, integrando ceremonias, talleres terapéuticos, momentos de reflexión y acompañamiento personalizado.",
+  },
+  {
+    question: "¿Necesito experiencia previa con prácticas ancestrales?",
+    answer: "No es necesario tener experiencia previa. Recibimos tanto a personas que nunca han tenido contacto con prácticas ancestrales como a aquellas con experiencia. Cada participante recibe un acompañamiento personalizado según su situación.",
+  },
+  {
+    question: "¿Cómo me preparo para un encuentro?",
+    answer: "Una vez confirmada tu participación, te enviamos una guía completa de preparación que incluye recomendaciones alimenticias, emocionales y prácticas. También realizamos una llamada de orientación para resolver todas tus dudas.",
+  },
+  {
+    question: "¿Dónde se realizan los encuentros?",
+    answer: "Nuestros encuentros se realizan en un hermoso espacio en Morelos, México. El lugar está especialmente diseñado para crear un ambiente de conexión con la naturaleza, seguro y propicio para la introspección y el bienestar.",
+  },
+];
+
+export const metadata: Metadata = {
+  title: "FloreSiendo — Retiros de Transformación Personal en México",
+  description:
+    "Retiros de transformación personal con prácticas ancestrales en Morelos, México. +10 años de experiencia, +1,000 participantes. Grupos íntimos de máximo 15 personas.",
+  alternates: {
+    canonical: "https://escuelafloresiendomexico.com",
+  },
+};
 
 export default function HomePage() {
   return (
     <main>
+      {/* Structured Data */}
+      <JsonLd data={getFAQSchema(homeFAQs)} />
+      <JsonLd
+        data={getBreadcrumbSchema([
+          { name: "Inicio", url: "https://escuelafloresiendomexico.com" },
+        ])}
+      />
+
       {/* Hero Section - Full screen with overlay */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
@@ -244,28 +286,7 @@ export default function HomePage() {
           <FAQAccordion
             title="Preguntas Frecuentes"
             subtitle="Resolvemos tus dudas más comunes sobre nuestras experiencias y acompañamiento."
-            items={[
-              {
-                question: "¿Es seguro participar en un encuentro?",
-                answer: "Sí, nuestros encuentros son completamente seguros. Contamos con un equipo profesional certificado, realizamos una evaluación previa, y mantenemos un entorno controlado y sagrado. La seguridad física y emocional de los participantes es nuestra prioridad absoluta.",
-              },
-              {
-                question: "¿Cuánto dura un encuentro?",
-                answer: "Nuestros encuentros principales son de 3 noches y 4 días. Este tiempo permite una inmersión profunda en el proceso de crecimiento personal, integrando ceremonias, talleres terapéuticos, momentos de reflexión y acompañamiento personalizado.",
-              },
-              {
-                question: "¿Necesito experiencia previa con prácticas ancestrales?",
-                answer: "No es necesario tener experiencia previa. Recibimos tanto a personas que nunca han tenido contacto con prácticas ancestrales como a aquellas con experiencia. Cada participante recibe un acompañamiento personalizado según su situación.",
-              },
-              {
-                question: "¿Cómo me preparo para un encuentro?",
-                answer: "Una vez confirmada tu participación, te enviamos una guía completa de preparación que incluye recomendaciones alimenticias, emocionales y prácticas. También realizamos una llamada de orientación para resolver todas tus dudas.",
-              },
-              {
-                question: "¿Dónde se realizan los encuentros?",
-                answer: "Nuestros encuentros se realizan en un hermoso espacio en Morelos, México. El lugar está especialmente diseñado para crear un ambiente de conexión con la naturaleza, seguro y propicio para la introspección y el bienestar.",
-              },
-            ]}
+            items={homeFAQs}
           />
         </div>
       </section>

@@ -14,6 +14,9 @@ import { EncuentroTracking } from "@/components/encuentro-tracking";
 import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { VideoTestimonialSection } from "@/components/video-testimonial-section";
 import { ScheduleDisplay } from "@/components/schedule-display";
+import { JsonLd, getEventSchema, getBreadcrumbSchema } from "@/lib/structured-data";
+
+const BASE_URL = "https://escuelafloresiendomexico.com";
 
 // Generate static params for all encuentros
 export async function generateStaticParams() {
@@ -35,9 +38,35 @@ export async function generateMetadata({
     return { title: "Encuentro no encontrado" };
   }
 
+  const title = `${encuentro.title} — Retiro de Transformación Personal`;
+  const description = `Retiro de ${encuentro.displayDates} en ${encuentro.location}. ${encuentro.spotsRemaining} lugares disponibles. 3 noches de inmersión con prácticas ancestrales, ceremonias e integración terapéutica.`;
+
   return {
-    title: `${encuentro.title} | FloreSiendo`,
-    description: encuentro.description.slice(0, 160),
+    title,
+    description,
+    alternates: {
+      canonical: `${BASE_URL}/encuentros/${encuentro.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${BASE_URL}/encuentros/${encuentro.slug}`,
+      type: "website",
+      images: [
+        {
+          url: "/images/venue-alberca.webp",
+          width: 1200,
+          height: 630,
+          alt: `Retiro FloreSiendo — ${encuentro.displayDates}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/venue-alberca.webp"],
+    },
   };
 }
 
@@ -55,6 +84,16 @@ export default async function EncuentroPage({
 
   return (
     <main className="min-h-screen bg-warm-gray-50">
+      {/* Structured Data */}
+      <JsonLd data={getEventSchema(encuentro)} />
+      <JsonLd
+        data={getBreadcrumbSchema([
+          { name: "Inicio", url: BASE_URL },
+          { name: "Encuentros", url: `${BASE_URL}/encuentros` },
+          { name: encuentro.title, url: `${BASE_URL}/encuentros/${encuentro.slug}` },
+        ])}
+      />
+
       {/* Meta Tracking */}
       <EncuentroTracking slug={encuentro.slug} />
       {/* Hero Section */}

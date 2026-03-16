@@ -25,9 +25,36 @@ const WhatsAppIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
   </svg>
 );
 
-export const metadata = {
-  title: "Formación de Facilitadores | Escuela FloreSiendo",
-  description: "Inicia tu formación como Facilitador de Remedios Ancestrales. Programa híbrido: formación online + intensivo presencial. Únete a +50 facilitadores en nuestra red.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Formación de Facilitadores — Escuela FloreSiendo",
+  description:
+    "Inicia tu formación como Facilitador de Remedios Ancestrales. Programa híbrido: formación online + intensivo presencial. Únete a +50 facilitadores en nuestra red.",
+  alternates: {
+    canonical: "https://escuelafloresiendomexico.com/escuela",
+  },
+  openGraph: {
+    title: "Formación de Facilitadores | Escuela FloreSiendo",
+    description:
+      "Programa de formación híbrido para facilitadores de prácticas ancestrales. +50 facilitadores en nuestra red.",
+    url: "https://escuelafloresiendomexico.com/escuela",
+    images: [
+      {
+        url: "/images/cosmic-spiritual-background.webp",
+        width: 1200,
+        height: 630,
+        alt: "Escuela FloreSiendo — Formación de Facilitadores",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Escuela FloreSiendo — Formación de Facilitadores",
+    description:
+      "Programa híbrido de formación en prácticas ancestrales.",
+    images: ["/images/cosmic-spiritual-background.webp"],
+  },
 };
 
 export default function EscuelaPage() {

@@ -3,9 +3,36 @@ import Link from "next/link";
 import { ArrowRight, Leaf, Shield, Heart, AlertTriangle } from "lucide-react";
 import { practicas } from "@/lib/practicas-data";
 
-export const metadata = {
-  title: "Prácticas Ancestrales | FloreSiendo México",
-  description: "Conoce las prácticas tradicionales y ceremonias ancestrales con las que trabajamos. Enfoque integrativo y seguro.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Prácticas Ancestrales — Ceremonias y Tradiciones",
+  description:
+    "Conoce las prácticas tradicionales y ceremonias ancestrales con las que trabajamos en FloreSiendo. Enfoque integrativo, seguro y respetuoso en Morelos, México.",
+  alternates: {
+    canonical: "https://escuelafloresiendomexico.com/practicas-ancestrales",
+  },
+  openGraph: {
+    title: "Prácticas Ancestrales | FloreSiendo México",
+    description:
+      "Ceremonias tradicionales que facilitan la conexión con nuestro ser auténtico y el bienestar integral.",
+    url: "https://escuelafloresiendomexico.com/practicas-ancestrales",
+    images: [
+      {
+        url: "/images/elementos-naturales.webp",
+        width: 1200,
+        height: 630,
+        alt: "Prácticas ancestrales FloreSiendo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Prácticas Ancestrales | FloreSiendo México",
+    description:
+      "Ceremonias tradicionales con enfoque integrativo y seguro.",
+    images: ["/images/elementos-naturales.webp"],
+  },
 };
 
 export default function MedicinasPage() {

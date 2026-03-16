@@ -5,9 +5,36 @@ import { FAQAccordion } from "@/components/faq-accordion";
 import { PageTracking } from "@/components/page-tracking";
 import { retreatInclusions } from "@/lib/encuentros-data";
 
-export const metadata = {
-  title: "Encuentros y Retiros | FloreSiendo México",
-  description: "Descubre nuestros retiros de 3 noches con prácticas ancestrales y ceremonias tradicionales en Morelos, México.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Encuentros y Retiros de Transformación Personal",
+  description:
+    "Descubre nuestros retiros de 3 noches con prácticas ancestrales y ceremonias tradicionales en Morelos, México. Próximas fechas, precios e información completa.",
+  alternates: {
+    canonical: "https://escuelafloresiendomexico.com/encuentros",
+  },
+  openGraph: {
+    title: "Encuentros y Retiros | FloreSiendo México",
+    description:
+      "Retiros de 3 noches con prácticas ancestrales y ceremonias tradicionales en Morelos, México. Cupo limitado a 15 personas.",
+    url: "https://escuelafloresiendomexico.com/encuentros",
+    images: [
+      {
+        url: "/images/venue-alberca.webp",
+        width: 1200,
+        height: 630,
+        alt: "Retiros FloreSiendo en Morelos, México",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Encuentros y Retiros | FloreSiendo México",
+    description:
+      "Retiros de 3 noches con prácticas ancestrales y ceremonias en Morelos, México.",
+    images: ["/images/venue-alberca.webp"],
+  },
 };
 
 export default function EncuentrosPage() {
