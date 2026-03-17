@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { encuentros } from "@/lib/encuentros-data";
+import { getBlogPosts } from "@/lib/cosmic";
 
 const BASE_URL = "https://escuelafloresiendomexico.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // Static pages
@@ -68,5 +69,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     }));
 
-  return [...staticPages, ...encuentroPages];
+  // Dynamic blog posts from CosmicJS
+  let blogPages: MetadataRoute.Sitemap = [];
+  try {
+    const { posts } = await getBlogPosts({ limit: 100 });
+    blogPages = posts.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.modified_at || post.created_at),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // Graceful degradation if CosmicJS is unavailable
+  }
+
+  return [...staticPages, ...encuentroPages, ...blogPages];
 }
