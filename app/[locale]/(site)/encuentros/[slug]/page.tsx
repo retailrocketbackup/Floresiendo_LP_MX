@@ -73,14 +73,19 @@ export async function generateMetadata({
 export default async function EncuentroPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const isEn = locale === "en";
   const encuentro = getEncuentroBySlug(slug);
 
   if (!encuentro) {
     notFound();
   }
+
+  const whatsappMsg = isEn
+    ? `Hi, I'm interested in the ${encuentro.title}. I'd like to receive more information about the retreat and enrollment process.`
+    : encuentro.whatsappMessage;
 
   return (
     <main className="min-h-screen bg-warm-gray-50">
@@ -354,7 +359,7 @@ export default async function EncuentroPage({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <TrackedWhatsAppLink
               phone={encuentro.whatsappNumber}
-              message={encuentro.whatsappMessage}
+              message={whatsappMsg}
               page="encuentro"
               buttonLocation="footer"
               encuentroSlug={encuentro.slug}
