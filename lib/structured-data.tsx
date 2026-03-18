@@ -6,23 +6,25 @@ import type { Encuentro } from "./encuentros-data";
 const BASE_URL = "https://escuelafloresiendomexico.com";
 
 // ─── Organization Schema (site-wide) ────────────────────────────────────────
-export function getOrganizationSchema() {
+export function getOrganizationSchema(locale?: string) {
+  const isEn = locale === "en";
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "FloreSiendo",
-    alternateName: "Escuela FloreSiendo México",
+    alternateName: isEn ? "FloreSiendo Mexico School" : "Escuela FloreSiendo México",
     url: BASE_URL,
     logo: `${BASE_URL}/images/logo-floresiendo.webp`,
-    description:
-      "Escuela y centro de retiros de transformación personal con prácticas ancestrales en Morelos, México. Más de 10 años de experiencia.",
+    description: isEn
+      ? "Personal transformation retreat center and facilitator school with ancestral practices in Morelos, Mexico. Over 10 years of experience."
+      : "Escuela y centro de retiros de transformación personal con prácticas ancestrales en Morelos, México. Más de 10 años de experiencia.",
     foundingDate: "2015",
     contactPoint: {
       "@type": "ContactPoint",
       telephone: "+52-618-230-1481",
       contactType: "customer service",
-      availableLanguage: ["Spanish"],
-      areaServed: "MX",
+      availableLanguage: ["Spanish", "English"],
+      areaServed: ["MX", "US"],
     },
     sameAs: [
       "https://www.facebook.com/FloreSiendoMexico",
@@ -32,15 +34,19 @@ export function getOrganizationSchema() {
 }
 
 // ─── LocalBusiness Schema (wellness retreat center) ─────────────────────────
-export function getLocalBusinessSchema() {
+export function getLocalBusinessSchema(locale?: string) {
+  const isEn = locale === "en";
   return {
     "@context": "https://schema.org",
     "@type": "HealthAndBeautyBusiness",
     "@id": `${BASE_URL}/#localbusiness`,
-    name: "FloreSiendo — Retiros de Transformación Personal",
-    description:
-      "Centro de retiros de transformación personal y escuela de facilitadores. Ofrecemos retiros de 3 noches con prácticas ancestrales, ceremonias tradicionales e integración terapéutica en Morelos, México.",
-    url: BASE_URL,
+    name: isEn
+      ? "FloreSiendo — Personal Transformation Retreats"
+      : "FloreSiendo — Retiros de Transformación Personal",
+    description: isEn
+      ? "Personal transformation retreat center and facilitator school. We offer 3-night retreats with ancestral practices, traditional ceremonies, and therapeutic integration in Morelos, Mexico."
+      : "Centro de retiros de transformación personal y escuela de facilitadores. Ofrecemos retiros de 3 noches con prácticas ancestrales, ceremonias tradicionales e integración terapéutica en Morelos, México.",
+    url: isEn ? `${BASE_URL}/en` : BASE_URL,
     telephone: "+52-618-230-1481",
     image: `${BASE_URL}/images/venue-alberca.webp`,
     priceRange: "$$$",

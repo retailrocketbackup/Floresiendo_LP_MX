@@ -24,7 +24,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ category: string; locale: string }>;
 }): Promise<Metadata> {
   const { category } = await params;
   const displayCategory =
@@ -43,16 +43,16 @@ export async function generateMetadata({
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{ category: string; locale: string }>;
 }) {
-  const { category } = await params;
+  const { category, locale } = await params;
   const decodedCategory = decodeURIComponent(category);
   const displayCategory =
     decodedCategory.charAt(0).toUpperCase() + decodedCategory.slice(1);
 
   const [{ posts }, categories] = await Promise.all([
-    getBlogPostsByCategory(decodedCategory, { limit: 20 }),
-    getBlogCategories(),
+    getBlogPostsByCategory(decodedCategory, { limit: 20, locale }),
+    getBlogCategories(locale),
   ]);
 
   return (

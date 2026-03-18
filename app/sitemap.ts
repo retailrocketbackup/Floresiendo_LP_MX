@@ -55,17 +55,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     );
 
-  // Dynamic blog posts from CosmicJS (bilingual)
+  // Dynamic blog posts from CosmicJS (per locale)
   let blogPages: MetadataRoute.Sitemap = [];
   try {
-    const { posts } = await getBlogPosts({ limit: 100 });
-    blogPages = posts.map((post) =>
-      bilingualEntry(`/blog/${post.slug}`, {
-        lastModified: new Date(post.modified_at || post.created_at),
-        changeFrequency: "monthly",
-        priority: 0.7,
-      })
-    );
+    const [{ posts: esPosts }, { posts: enPosts }] = await Promise.all([
+      getBlogPosts({ limit: 100, locale: "es" }),
+      getBlogPosts({ limit: 100, locale: "en" }),
+    ]);
+    const esEntries = esPosts.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.modified_at || post.created_at),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+    const enEntries = enPosts.map((post) => ({
+      url: `${BASE_URL}/en/blog/${post.slug}`,
+      lastModified: new Date(post.modified_at || post.created_at),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+    blogPages = [...esEntries, ...enEntries];
   } catch {
     // Graceful degradation if CosmicJS is unavailable
   }

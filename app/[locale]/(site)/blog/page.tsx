@@ -62,8 +62,8 @@ export default async function BlogPage({
   ]);
 
   const [{ posts, total }, categories] = await Promise.all([
-    getBlogPosts({ limit: 12 }),
-    getBlogCategories(),
+    getBlogPosts({ limit: 12, locale }),
+    getBlogCategories(locale),
   ]);
 
   return (

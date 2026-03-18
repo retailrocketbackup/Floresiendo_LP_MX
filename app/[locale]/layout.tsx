@@ -145,8 +145,8 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <head>
         {/* Structured Data (JSON-LD) */}
-        <JsonLd data={getOrganizationSchema()} />
-        <JsonLd data={getLocalBusinessSchema()} />
+        <JsonLd data={getOrganizationSchema(locale)} />
+        <JsonLd data={getLocalBusinessSchema(locale)} />
         <JsonLd data={getWebSiteSchema(locale)} />
 
         {/* Facebook Domain Verification */}

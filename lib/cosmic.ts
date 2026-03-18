@@ -31,6 +31,7 @@ export interface CosmicBlogPost {
     };
     category?: string;
     tags?: string;
+    locale?: string;
     // SEO fields
     meta_title?: string;
     meta_description?: string;
@@ -112,6 +113,7 @@ export async function getBlogPosts(options?: {
   limit?: number;
   skip?: number;
   category?: string;
+  locale?: string;
 }): Promise<{ posts: CosmicBlogPost[]; total: number }> {
   const cosmic = getCosmicClient();
   if (!cosmic) {
@@ -123,6 +125,10 @@ export async function getBlogPosts(options?: {
       type: "blog-posts",
       status: "published",
     };
+
+    if (options?.locale) {
+      query["metadata.locale"] = options.locale;
+    }
 
     if (options?.category) {
       query["metadata.category"] = options.category;
@@ -168,15 +174,19 @@ export async function getBlogPost(
   }
 }
 
-export async function getBlogPostSlugs(): Promise<string[]> {
+export async function getBlogPostSlugs(locale?: string): Promise<string[]> {
   const cosmic = getCosmicClient();
   if (!cosmic) {
     return [];
   }
 
   try {
+    const query: Record<string, unknown> = { type: "blog-posts", status: "published" };
+    if (locale) {
+      query["metadata.locale"] = locale;
+    }
     const data = await cosmic.objects
-      .find({ type: "blog-posts", status: "published" })
+      .find(query)
       .props("slug")
       .limit(100);
 
@@ -191,8 +201,8 @@ export async function getBlogPostSlugs(): Promise<string[]> {
 
 // ─── Blog Categories ────────────────────────────────────────────────────────
 
-export async function getBlogCategories(): Promise<string[]> {
-  const { posts } = await getBlogPosts({ limit: 100 });
+export async function getBlogCategories(locale?: string): Promise<string[]> {
+  const { posts } = await getBlogPosts({ limit: 100, locale });
   const categories = new Set<string>();
   posts.forEach((post) => {
     if (post.metadata.category) {
@@ -204,7 +214,7 @@ export async function getBlogCategories(): Promise<string[]> {
 
 export async function getBlogPostsByCategory(
   category: string,
-  options?: { limit?: number; skip?: number }
+  options?: { limit?: number; skip?: number; locale?: string }
 ): Promise<{ posts: CosmicBlogPost[]; total: number }> {
   return getBlogPosts({ ...options, category });
 }

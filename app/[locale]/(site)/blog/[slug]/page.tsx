@@ -18,13 +18,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const isEn = locale === "en";
   const post = await getBlogPost(slug);
 
   if (!post) {
-    return { title: "Artículo no encontrado" };
+    return { title: isEn ? "Article not found" : "Artículo no encontrado" };
   }
 
   const title = post.metadata.meta_title || post.title;
@@ -73,9 +74,9 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const post = await getBlogPost(slug);
 
   if (!post) {
@@ -100,11 +101,12 @@ export default async function BlogPostPage({
           image:
             post.metadata.featured_image?.imgix_url ||
             `${BASE_URL}/images/cosmic-spiritual-background.webp`,
+          locale,
         })}
       />
       <JsonLd
         data={getBreadcrumbSchema([
-          { name: "Inicio", url: BASE_URL },
+          { name: locale === "en" ? "Home" : "Inicio", url: BASE_URL },
           { name: "Blog", url: `${BASE_URL}/blog` },
           { name: post.title, url: `${BASE_URL}/blog/${post.slug}` },
         ])}
@@ -134,7 +136,7 @@ export default async function BlogPostPage({
             className="inline-flex items-center gap-2 text-coral-light hover:text-white transition-colors mb-6"
           >
             <ArrowLeft size={18} />
-            Volver al blog
+            {locale === "en" ? "Back to blog" : "Volver al blog"}
           </Link>
 
           {post.metadata.category && (
@@ -154,11 +156,11 @@ export default async function BlogPostPage({
             </span>
             <span className="flex items-center gap-1.5">
               <Calendar size={16} />
-              {formatDate(publishedDate)}
+              {formatDate(publishedDate, locale)}
             </span>
             <span className="flex items-center gap-1.5">
               <Clock size={16} />
-              {readingTime} min de lectura
+              {readingTime} {locale === "en" ? "min read" : "min de lectura"}
             </span>
           </div>
         </div>
@@ -192,7 +194,7 @@ export default async function BlogPostPage({
           {post.metadata.key_statistics && (
             <div className="mt-10 bg-burgundy/5 p-6 rounded-2xl border border-burgundy/10">
               <h3 className="text-lg font-bold text-burgundy mb-3">
-                Datos clave
+                {locale === "en" ? "Key Data" : "Datos clave"}
               </h3>
               <div
                 className="text-warm-gray-700 prose prose-sm"
@@ -207,7 +209,7 @@ export default async function BlogPostPage({
           {post.metadata.expert_quotes && (
             <div className="mt-8 bg-gold/5 p-6 rounded-2xl border border-gold/10">
               <h3 className="text-lg font-bold text-burgundy mb-3">
-                Opinión experta
+                {locale === "en" ? "Expert Opinion" : "Opinión experta"}
               </h3>
               <div
                 className="text-warm-gray-700 prose prose-sm"
@@ -220,7 +222,7 @@ export default async function BlogPostPage({
 
           {/* Last Updated */}
           <p className="text-warm-gray-400 text-sm mt-10 pt-6 border-t border-warm-gray-200">
-            Última actualización: {formatDate(post.modified_at)}
+            {locale === "en" ? "Last updated" : "Última actualización"}: {formatDate(post.modified_at, locale)}
           </p>
         </div>
       </section>
@@ -241,7 +243,7 @@ export default async function BlogPostPage({
               )}
               <div>
                 <p className="text-sm text-warm-gray-500 font-medium">
-                  Escrito por
+                  {locale === "en" ? "Written by" : "Escrito por"}
                 </p>
                 <h3 className="text-lg font-bold text-burgundy">
                   {post.metadata.author.title}
@@ -266,24 +268,23 @@ export default async function BlogPostPage({
       <section className="py-16 px-4 bg-gradient-to-b from-coral via-coral-dark to-burgundy text-white -mb-px">
         <div className="section-container text-center">
           <h2 className="text-white mb-6">
-            ¿Quieres vivir la experiencia?
+            {locale === "en" ? "Ready to live the experience?" : "¿Quieres vivir la experiencia?"}
           </h2>
           <p className="text-white/90 mb-10 max-w-2xl mx-auto text-lg">
-            La transformación comienza cuando decides dar el primer paso.
-            Conoce nuestros próximos retiros.
+            {locale === "en" ? "Transformation begins when you decide to take the first step. Discover our upcoming retreats." : "La transformación comienza cuando decides dar el primer paso. Conoce nuestros próximos retiros."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/encuentros"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold bg-white text-coral hover:bg-warm-gray-50 rounded-full shadow-xl hover:scale-105 transition-all duration-300"
             >
-              Ver próximos encuentros
+              {locale === "en" ? "View upcoming retreats" : "Ver próximos encuentros"}
             </Link>
             <Link
               href="/blog"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold bg-white/20 hover:bg-white/30 text-white border border-white/40 rounded-full transition-all duration-300 hover:scale-105"
             >
-              Más artículos
+              {locale === "en" ? "More articles" : "Más artículos"}
             </Link>
           </div>
         </div>
