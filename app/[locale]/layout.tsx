@@ -1,12 +1,10 @@
-// app/[locale]/layout.tsx — Locale-aware root layout
+// app/[locale]/layout.tsx — Locale-aware nested layout (i18n provider + metadata)
+// HTML shell (<html>, <body>) is provided by root layout.tsx
 
 import type React from "react"
 import type { Metadata } from "next"
-import localFont from "next/font/local"
-import { Suspense } from "react"
-import { Analytics } from "@vercel/analytics/react"
 import { NextIntlClientProvider } from "next-intl"
-import { getMessages, getTranslations } from "next-intl/server"
+import { getMessages } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { routing } from "@/i18n/routing"
 import {
@@ -15,14 +13,6 @@ import {
   getWebSiteSchema,
   JsonLd,
 } from "@/lib/structured-data"
-
-const rocknrollOne = localFont({
-  src: "../../public/fonts/rocknroll-one-latin-400.woff2",
-  weight: "400",
-  style: "normal",
-  display: "swap",
-  variable: "--font-rocknroll-one",
-})
 
 export async function generateMetadata({
   params,
@@ -33,16 +23,15 @@ export async function generateMetadata({
   const isEn = locale === 'en'
 
   return {
-    metadataBase: new URL("https://escuelafloresiendomexico.com"),
     title: {
       default: isEn
         ? "FloreSiendo — Personal Transformation Retreats in Mexico"
-        : "FloreSiendo — Retiros de Transformaci\u00f3n Personal en M\u00e9xico",
-      template: isEn ? "%s | FloreSiendo Mexico" : "%s | FloreSiendo M\u00e9xico",
+        : "FloreSiendo — Retiros de Transformación Personal en México",
+      template: isEn ? "%s | FloreSiendo Mexico" : "%s | FloreSiendo México",
     },
     description: isEn
       ? "Personal transformation retreats with ancestral practices in Morelos, Mexico. 10+ years of experience, 1,000+ participants. Intimate groups of 15 people max."
-      : "Retiros de transformaci\u00f3n personal con pr\u00e1cticas ancestrales en Morelos, M\u00e9xico. +10 a\u00f1os de experiencia, +1,000 participantes. Grupos de m\u00e1ximo 15 personas.",
+      : "Retiros de transformación personal con prácticas ancestrales en Morelos, México. +10 años de experiencia, +1,000 participantes. Grupos de máximo 15 personas.",
     keywords: isEn
       ? [
           "transformation retreat Mexico",
@@ -55,13 +44,13 @@ export async function generateMetadata({
           "spiritual retreat 2026",
         ]
       : [
-          "retiro de transformaci\u00f3n M\u00e9xico",
+          "retiro de transformación México",
           "retiro espiritual Morelos",
-          "retiro de meditaci\u00f3n M\u00e9xico",
-          "retiro transformaci\u00f3n personal",
-          "ceremonias ancestrales M\u00e9xico",
+          "retiro de meditación México",
+          "retiro transformación personal",
+          "ceremonias ancestrales México",
           "retiro cerca de CDMX",
-          "escuela de facilitadores M\u00e9xico",
+          "escuela de facilitadores México",
           "retiro espiritual 2026",
         ],
     authors: [{ name: "FloreSiendo" }],
@@ -77,10 +66,10 @@ export async function generateMetadata({
       siteName: "FloreSiendo",
       title: isEn
         ? "FloreSiendo — Personal Transformation Retreats in Mexico"
-        : "FloreSiendo — Retiros de Transformaci\u00f3n Personal en M\u00e9xico",
+        : "FloreSiendo — Retiros de Transformación Personal en México",
       description: isEn
         ? "Personal transformation retreats with ancestral practices in Morelos, Mexico. 10+ years of experience, 1,000+ participants."
-        : "Retiros de transformaci\u00f3n personal con pr\u00e1cticas ancestrales en Morelos, M\u00e9xico. +10 a\u00f1os de experiencia, +1,000 participantes.",
+        : "Retiros de transformación personal con prácticas ancestrales en Morelos, México. +10 años de experiencia, +1,000 participantes.",
       images: [
         {
           url: "/images/venue-alberca.webp",
@@ -88,7 +77,7 @@ export async function generateMetadata({
           height: 630,
           alt: isEn
             ? "FloreSiendo Sanctuary in Morelos, Mexico"
-            : "Santuario FloreSiendo en Morelos, M\u00e9xico",
+            : "Santuario FloreSiendo en Morelos, México",
         },
       ],
     },
@@ -96,10 +85,10 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: isEn
         ? "FloreSiendo — Personal Transformation Retreats in Mexico"
-        : "FloreSiendo — Retiros de Transformaci\u00f3n Personal en M\u00e9xico",
+        : "FloreSiendo — Retiros de Transformación Personal en México",
       description: isEn
         ? "Personal transformation retreats with ancestral practices in Morelos, Mexico."
-        : "Retiros de transformaci\u00f3n personal con pr\u00e1cticas ancestrales en Morelos, M\u00e9xico.",
+        : "Retiros de transformación personal con prácticas ancestrales en Morelos, México.",
       images: ["/images/venue-alberca.webp"],
     },
     alternates: {
@@ -142,32 +131,12 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale}>
-      <head>
-        {/* Structured Data (JSON-LD) */}
-        <JsonLd data={getOrganizationSchema(locale)} />
-        <JsonLd data={getLocalBusinessSchema(locale)} />
-        <JsonLd data={getWebSiteSchema(locale)} />
-
-        {/* Facebook Domain Verification */}
-        <meta name="facebook-domain-verification" content="mmdw3nkuclo02a7bnon1g57cmuco52" />
-
-        {/* Meta Pixel noscript fallback */}
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
-          />
-        </noscript>
-      </head>
-      <body className={`font-sans ${rocknrollOne.className}`}>
-        <NextIntlClientProvider messages={messages}>
-          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        </NextIntlClientProvider>
-        <Analytics />
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      {/* Structured Data (JSON-LD) */}
+      <JsonLd data={getOrganizationSchema(locale)} />
+      <JsonLd data={getLocalBusinessSchema(locale)} />
+      <JsonLd data={getWebSiteSchema(locale)} />
+      {children}
+    </NextIntlClientProvider>
   )
 }
