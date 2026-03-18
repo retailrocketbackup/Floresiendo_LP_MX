@@ -76,13 +76,15 @@ export function getLocalBusinessSchema() {
 }
 
 // ─── Event Schema (per retreat/encuentro) ───────────────────────────────────
-export function getEventSchema(encuentro: Encuentro) {
+export function getEventSchema(encuentro: Encuentro, locale?: string) {
+  const isEn = locale === 'en';
+  const prefix = isEn ? '/en' : '';
   return {
     "@context": "https://schema.org",
     "@type": "Event",
     name: `${encuentro.title} — FloreSiendo`,
     description: encuentro.description,
-    url: `${BASE_URL}/encuentros/${encuentro.slug}`,
+    url: `${BASE_URL}${prefix}/encuentros/${encuentro.slug}`,
     image: `${BASE_URL}/images/venue-alberca.webp`,
     startDate: encuentro.startDate,
     endDate: encuentro.endDate,
@@ -122,11 +124,11 @@ export function getEventSchema(encuentro: Encuentro) {
       lowPrice: "7100",
       highPrice: "10200",
       offerCount: encuentro.spotsRemaining,
-      url: `${BASE_URL}/encuentros/${encuentro.slug}`,
+      url: `${BASE_URL}${prefix}/encuentros/${encuentro.slug}`,
     },
     maximumAttendeeCapacity: encuentro.spotsTotal,
     remainingAttendeeCapacity: encuentro.spotsRemaining,
-    inLanguage: "es",
+    inLanguage: isEn ? "en-US" : "es-MX",
     typicalAgeRange: "18+",
   };
 }
@@ -172,16 +174,18 @@ export function getBreadcrumbSchema(items: BreadcrumbItem[]) {
 }
 
 // ─── WebSite Schema (for sitelinks search box) ─────────────────────────────
-export function getWebSiteSchema() {
+export function getWebSiteSchema(locale?: string) {
+  const isEn = locale === 'en';
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "FloreSiendo",
-    alternateName: "Escuela FloreSiendo México",
+    alternateName: isEn ? "FloreSiendo Mexico School" : "Escuela FloreSiendo México",
     url: BASE_URL,
-    inLanguage: "es",
-    description:
-      "Retiros de transformación personal y escuela de facilitadores con prácticas ancestrales en Morelos, México.",
+    inLanguage: isEn ? "en-US" : "es-MX",
+    description: isEn
+      ? "Personal transformation retreats and facilitator school with ancestral practices in Morelos, Mexico."
+      : "Retiros de transformación personal y escuela de facilitadores con prácticas ancestrales en Morelos, México.",
   };
 }
 
@@ -194,15 +198,18 @@ export interface ArticleSchemaProps {
   dateModified: string;
   authorName: string;
   image?: string;
+  locale?: string;
 }
 
 export function getArticleSchema(article: ArticleSchemaProps) {
+  const isEn = article.locale === 'en';
+  const prefix = isEn ? '/en' : '';
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.description,
-    url: `${BASE_URL}/blog/${article.slug}`,
+    url: `${BASE_URL}${prefix}/blog/${article.slug}`,
     image: article.image || `${BASE_URL}/images/cosmic-spiritual-background.webp`,
     datePublished: article.datePublished,
     dateModified: article.dateModified,
@@ -218,10 +225,10 @@ export function getArticleSchema(article: ArticleSchemaProps) {
         url: `${BASE_URL}/images/logo-floresiendo.webp`,
       },
     },
-    inLanguage: "es",
+    inLanguage: isEn ? "en-US" : "es-MX",
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${BASE_URL}/blog/${article.slug}`,
+      "@id": `${BASE_URL}${prefix}/blog/${article.slug}`,
     },
   };
 }

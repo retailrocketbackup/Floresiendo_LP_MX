@@ -237,7 +237,7 @@ export const encuentroMarzo2026: Encuentro = {
       Cuenta con más de 10 años de experiencia en acompañamiento de procesos de expansión de consciencia.
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas para trabajar la mente con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
-      image: "/images/ramon-henriquez.png",
+      image: "/images/ramon-henriquez.webp",
     },
     {
       name: "Karla Nava",
@@ -397,7 +397,7 @@ export const encuentroAbril2026: Encuentro = {
       Cuenta con más de 10 años de experiencia en acompañamiento de procesos de expansión de consciencia.
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas para trabajar la mente con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
-      image: "/images/ramon-henriquez.png",
+      image: "/images/ramon-henriquez.webp",
     },
     {
       name: "Karla Nava",

@@ -3,20 +3,21 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { useLocale } from "next-intl";
 
 interface TeamMember {
   id: number;
   name: string;
   role: string;
+  roleEn: string;
   image: string;
-  imagePosition?: string; // CSS object-position value for face centering
-  imageScale?: number; // Scale factor for zooming into face (default 1)
+  imagePosition?: string;
+  imageScale?: number;
   quote: string;
+  quoteEn: string;
 }
 
 interface TeamCarouselProps {
-  title?: string;
-  subtitle?: string;
   autoPlay?: boolean;
   autoPlayInterval?: number;
 }
@@ -26,46 +27,61 @@ const teamMembers: TeamMember[] = [
     id: 1,
     name: "Rodrigo Roble",
     role: "Facilitador Egresado de Escuela FloreSiendo",
+    roleEn: "Certified Facilitator, FloreSiendo School Graduate",
     image: "/images/Roble.webp",
     quote: "La naturaleza nos enseña que todo proceso de bienestar requiere tiempo, presencia y amor.",
+    quoteEn: "Nature teaches us that every wellbeing process requires time, presence, and love.",
   },
   {
     id: 2,
     name: "Sergio Sanz",
     role: "Fundador & Facilitador & Psicólogo Clínico",
+    roleEn: "Founder & Facilitator & Clinical Psychologist",
     image: "/images/sergio.webp",
     quote: "Mi propósito es acompañar a otros con amor mientras me acompañaba a mí mismo por todo aquello que nos tocaba atravesar en la vida.",
+    quoteEn: "My purpose is to accompany others with love while accompanying myself through everything life brings us.",
   },
   {
     id: 3,
     name: "Flor Soeiro",
     role: "Fundadora & Facilitadora",
+    roleEn: "Co-Founder & Facilitator",
     image: "/images/Flor.webp",
     quote: "El amor es la medicina más poderosa. Acompañamos desde el corazón cada proceso de crecimiento.",
+    quoteEn: "Love is the most powerful medicine. We accompany every growth process from the heart.",
   },
   {
     id: 4,
     name: "Karla Nava",
     role: "Facilitadora en Formación",
+    roleEn: "Facilitator in Training",
     image: "",
     quote: "Crear espacios seguros donde cada persona pueda reconectarse con su luz interior es mi mayor regalo.",
+    quoteEn: "Creating safe spaces where each person can reconnect with their inner light is my greatest gift.",
   },
   {
     id: 5,
     name: "Ramon Henriquez",
     role: "Cofundador & Facilitador & Psicoterapeuta",
+    roleEn: "Co-Founder & Facilitator & Psychotherapist",
     image: "",
     quote: "Cada ceremonia es un encuentro sagrado con lo más profundo de nuestro ser.",
+    quoteEn: "Every ceremony is a sacred encounter with the deepest part of our being.",
   },
 ];
 
 export function TeamCarousel({
-  title = "Nuestro Equipo",
-  subtitle = "Un equipo multidisciplinario de facilitadores con más de una década de experiencia en acompañamiento terapéutico y espiritual.",
   autoPlay = true,
   autoPlayInterval = 5000,
 }: TeamCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(1); // Start with Sergio centered
+  const locale = useLocale();
+  const isEn = locale === "en";
+  const title = isEn ? "Our Team" : "Nuestro Equipo";
+  const subtitle = isEn
+    ? "A multidisciplinary team of facilitators with over a decade of experience in therapeutic and spiritual accompaniment."
+    : "Un equipo multidisciplinario de facilitadores con más de una década de experiencia en acompañamiento terapéutico y espiritual.";
+
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -112,7 +128,7 @@ export function TeamCarousel({
       <div className="section-container">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-coral font-semibold uppercase tracking-wide text-sm">Sobre nosotros</span>
+          <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "About Us" : "Sobre nosotros"}</span>
           <h2 className="text-burgundy mt-3 mb-4">{title}</h2>
           <p className="text-warm-gray-600 max-w-2xl mx-auto">{subtitle}</p>
         </div>
@@ -169,13 +185,13 @@ export function TeamCarousel({
                         {member.name}
                       </h3>
                       <p className="text-coral text-sm font-medium mb-4">
-                        {member.role}
+                        {isEn ? member.roleEn : member.role}
                       </p>
                       {member.position === 0 && (
                         <p className={`text-warm-gray-600 text-sm italic leading-relaxed transition-opacity duration-500 ${
                           isAnimating ? "opacity-0" : "opacity-100"
                         }`}>
-                          "{member.quote}"
+                          "{isEn ? member.quoteEn : member.quote}"
                         </p>
                       )}
                     </div>
@@ -188,14 +204,14 @@ export function TeamCarousel({
             <button
               onClick={prevSlide}
               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-warm-gray-600 hover:text-coral hover:scale-110 transition-all z-20"
-              aria-label="Anterior"
+              aria-label={isEn ? "Previous" : "Anterior"}
             >
               <ChevronLeft size={24} />
             </button>
             <button
               onClick={nextSlide}
               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-warm-gray-600 hover:text-coral hover:scale-110 transition-all z-20"
-              aria-label="Siguiente"
+              aria-label={isEn ? "Next" : "Siguiente"}
             >
               <ChevronRight size={24} />
             </button>
@@ -245,7 +261,7 @@ export function TeamCarousel({
                   {currentMember.role}
                 </p>
                 <p className="text-warm-gray-600 text-sm italic leading-relaxed">
-                  "{currentMember.quote}"
+                  "{isEn ? currentMember.quoteEn : currentMember.quote}"
                 </p>
               </div>
             </div>
@@ -254,14 +270,14 @@ export function TeamCarousel({
             <button
               onClick={prevSlide}
               className="absolute left-0 top-1/3 -translate-y-1/2 -translate-x-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-warm-gray-600 hover:text-coral transition-all"
-              aria-label="Anterior"
+              aria-label={isEn ? "Previous" : "Anterior"}
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={nextSlide}
               className="absolute right-0 top-1/3 -translate-y-1/2 translate-x-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-warm-gray-600 hover:text-coral transition-all"
-              aria-label="Siguiente"
+              aria-label={isEn ? "Next" : "Siguiente"}
             >
               <ChevronRight size={20} />
             </button>
@@ -285,7 +301,7 @@ export function TeamCarousel({
                   ? "bg-coral w-8"
                   : "bg-warm-gray-300 hover:bg-warm-gray-400"
               }`}
-              aria-label={`Ver ${teamMembers[index].name}`}
+              aria-label={isEn ? `View ${teamMembers[index].name}` : `Ver ${teamMembers[index].name}`}
             />
           ))}
         </div>

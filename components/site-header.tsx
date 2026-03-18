@@ -1,29 +1,32 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronRight } from "lucide-react";
-
-const navItems = [
-  { href: "/", label: "Inicio" },
-  { href: "/escuela", label: "Escuela" },
-  { href: "/encuentros", label: "Encuentros" },
-  { href: "/practicas-ancestrales", label: "Prácticas Ancestrales" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contacto", label: "Contacto" },
-];
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 interface SiteHeaderProps {
   alwaysSolid?: boolean;
 }
 
 export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
+  const t = useTranslations("nav");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(alwaysSolid);
 
+  const navItems = [
+    { href: "/" as const, label: t("home") },
+    { href: "/escuela" as const, label: t("school") },
+    { href: "/encuentros" as const, label: t("encounters") },
+    { href: "/practicas-ancestrales" as const, label: t("practices") },
+    { href: "/blog" as const, label: t("blog") },
+    { href: "/contacto" as const, label: t("contact") },
+  ];
+
   useEffect(() => {
-    if (alwaysSolid) return; // Skip scroll listener if always solid
+    if (alwaysSolid) return;
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -31,7 +34,6 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [alwaysSolid]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -76,8 +78,6 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 focus-ring relative group ${
                     scrolled
                       ? "text-warm-gray-700 hover:text-coral hover:bg-warm-gray-50"
@@ -90,8 +90,9 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
               ))}
             </nav>
 
-            {/* CTA Button - Desktop */}
-            <div className="hidden lg:flex items-center">
+            {/* CTA + Language Switcher - Desktop */}
+            <div className="hidden lg:flex items-center gap-3">
+              <LanguageSwitcher />
               <Link
                 href="/contacto"
                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold rounded-full shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus-ring ${
@@ -100,7 +101,7 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
                     : "bg-white text-burgundy hover:bg-warm-gray-50"
                 }`}
               >
-                Contáctanos
+                {t("contact")}
               </Link>
             </div>
 
@@ -112,7 +113,7 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
                   : "text-white hover:bg-white/10"
               }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-label={mobileMenuOpen ? t("close_menu") : t("open_menu")}
               aria-expanded={mobileMenuOpen}
             >
               <div className="relative w-6 h-6">
@@ -148,7 +149,7 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
         className={`fixed top-20 left-0 right-0 bottom-0 z-40 lg:hidden bg-white overflow-y-auto transition-all duration-300 ease-out ${
           mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"
         }`}
-        aria-label="Navegación móvil"
+        aria-label="Mobile navigation"
       >
         <div className="section-container py-6">
           <div className="space-y-2">
@@ -156,8 +157,6 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
                 className="flex items-center justify-between px-4 py-4 rounded-xl text-warm-gray-700 hover:text-coral hover:bg-warm-gray-50 font-medium transition-all duration-200 group focus-ring"
                 onClick={() => setMobileMenuOpen(false)}
                 style={{ animationDelay: `${index * 50}ms` }}
@@ -171,19 +170,23 @@ export function SiteHeader({ alwaysSolid = false }: SiteHeaderProps) {
             ))}
           </div>
 
-          <div className="mt-8 pt-6 border-t border-warm-gray-100">
+          {/* Language Switcher - Mobile */}
+          <div className="mt-6 pt-4 border-t border-warm-gray-100 flex justify-center">
+            <LanguageSwitcher />
+          </div>
+
+          <div className="mt-6">
             <Link
               href="/contacto"
               className="btn-primary w-full justify-center text-lg"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Contáctanos
+              {t("contact")}
             </Link>
           </div>
 
-          {/* Additional info */}
           <div className="mt-8 text-center text-warm-gray-500 text-sm">
-            <p>Una escuela donde la maestra es el Amor</p>
+            <p>{t("mobile_tagline")}</p>
           </div>
         </div>
       </nav>

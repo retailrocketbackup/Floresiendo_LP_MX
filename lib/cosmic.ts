@@ -287,9 +287,9 @@ export function getReadingTime(text: string): number {
 
 // ─── Helper: Format Date ────────────────────────────────────────────────────
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string, locale?: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString("es-MX", {
+  return date.toLocaleDateString(locale === "en" ? "en-US" : "es-MX", {
     year: "numeric",
     month: "long",
     day: "numeric",

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { trackEvent } from "@/lib/meta-tracking";
 
 interface TrackedCTAButtonProps {
@@ -34,7 +34,7 @@ export function TrackedCTAButton({
   };
 
   return (
-    <Link href={href} className={className} onClick={handleClick}>
+    <Link href={href as any} className={className} onClick={handleClick}>
       {children}
     </Link>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { ArrowRight, Clock, Calendar } from "lucide-react";
 import { getBlogPosts, getBlogCategories, getReadingTime, formatDate } from "@/lib/cosmic";
@@ -9,37 +10,57 @@ const BASE_URL = "https://escuelafloresiendomexico.com";
 
 export const revalidate = 3600; // ISR: revalidate every hour
 
-export const metadata: Metadata = {
-  title: "Blog — Bienestar, Meditación y Transformación Personal",
-  description:
-    "Artículos sobre retiros espirituales, meditación, prácticas ancestrales y transformación personal en México. Guías, consejos y experiencias.",
-  alternates: {
-    canonical: `${BASE_URL}/blog`,
-  },
-  openGraph: {
-    title: "Blog | FloreSiendo México",
-    description:
-      "Artículos sobre retiros, meditación, prácticas ancestrales y transformación personal.",
-    url: `${BASE_URL}/blog`,
-    images: [
-      {
-        url: "/images/cosmic-spiritual-background.webp",
-        width: 1200,
-        height: 630,
-        alt: "Blog FloreSiendo",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Blog | FloreSiendo México",
-    description:
-      "Artículos sobre retiros, meditación y transformación personal.",
-    images: ["/images/cosmic-spiritual-background.webp"],
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "blog" });
 
-export default async function BlogPage() {
+  return {
+    title: t("hero_title_start") + " " + t("hero_title_highlight") + " — " + t("hero_description"),
+    description: t("hero_description"),
+    alternates: {
+      canonical: `${BASE_URL}/${locale === "es" ? "" : locale + "/"}blog`,
+      languages: {
+        es: `${BASE_URL}/blog`,
+        en: `${BASE_URL}/en/blog`,
+      },
+    },
+    openGraph: {
+      title: `Blog | FloreSiendo México`,
+      description: t("hero_description"),
+      url: `${BASE_URL}/${locale === "es" ? "" : locale + "/"}blog`,
+      images: [
+        {
+          url: "/images/cosmic-spiritual-background.webp",
+          width: 1200,
+          height: 630,
+          alt: "Blog FloreSiendo",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Blog | FloreSiendo México",
+      description: t("hero_description"),
+      images: ["/images/cosmic-spiritual-background.webp"],
+    },
+  };
+}
+
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const [t, tCommon] = await Promise.all([
+    getTranslations({ locale, namespace: "blog" }),
+    getTranslations({ locale, namespace: "common" }),
+  ]);
+
   const [{ posts, total }, categories] = await Promise.all([
     getBlogPosts({ limit: 12 }),
     getBlogCategories(),
@@ -50,8 +71,8 @@ export default async function BlogPage() {
       {/* Structured Data */}
       <JsonLd
         data={getBreadcrumbSchema([
-          { name: "Inicio", url: BASE_URL },
-          { name: "Blog", url: `${BASE_URL}/blog` },
+          { name: t("breadcrumb_home"), url: BASE_URL },
+          { name: t("breadcrumb_blog"), url: `${BASE_URL}/blog` },
         ])}
       />
 
@@ -62,10 +83,10 @@ export default async function BlogPage() {
 
         <div className="relative z-10 section-container text-center text-white">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-slide-up">
-            Blog <span className="text-coral">FloreSiendo</span>
+            {t("hero_title_start")} <span className="text-coral">{t("hero_title_highlight")}</span>
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Artículos sobre bienestar, meditación, prácticas ancestrales y transformación personal.
+            {t("hero_description")}
           </p>
         </div>
       </section>
@@ -79,7 +100,7 @@ export default async function BlogPage() {
                 href="/blog"
                 className="px-4 py-2 bg-burgundy text-white rounded-full text-sm font-medium"
               >
-                Todos
+                {tCommon("all")}
               </Link>
               {categories.map((category) => (
                 <Link
@@ -101,17 +122,16 @@ export default async function BlogPage() {
           {posts.length === 0 ? (
             <div className="text-center py-20">
               <h2 className="text-2xl font-bold text-burgundy mb-4">
-                Próximamente
+                {t("coming_soon_title")}
               </h2>
               <p className="text-warm-gray-600 max-w-lg mx-auto mb-8">
-                Estamos preparando artículos sobre bienestar, meditación, retiros
-                espirituales y transformación personal. Vuelve pronto.
+                {t("coming_soon_description")}
               </p>
               <Link
                 href="/encuentros"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-coral text-white rounded-full font-semibold hover:bg-coral-dark transition-colors"
               >
-                Ver próximos encuentros
+                {tCommon("view_upcoming")}
                 <ArrowRight size={18} />
               </Link>
             </div>
@@ -154,11 +174,11 @@ export default async function BlogPage() {
                     <div className="flex items-center gap-4 text-warm-gray-400 text-xs">
                       <span className="flex items-center gap-1">
                         <Calendar size={14} />
-                        {formatDate(post.published_at || post.created_at)}
+                        {formatDate(post.published_at || post.created_at, locale)}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock size={14} />
-                        {getReadingTime(post.metadata.body || "")} min
+                        {getReadingTime(post.metadata.body || "")} {tCommon("min_read")}
                       </span>
                     </div>
                   </div>
@@ -173,17 +193,16 @@ export default async function BlogPage() {
       <section className="section-padding bg-gradient-to-b from-coral via-coral-dark to-burgundy text-white -mb-px">
         <div className="section-container text-center">
           <h2 className="text-white mb-6">
-            ¿Listo para vivir la experiencia?
+            {t("cta_title")}
           </h2>
           <p className="text-white/90 mb-10 max-w-2xl mx-auto text-lg">
-            Los artículos inspiran, pero la transformación sucede en la experiencia.
-            Conoce nuestros próximos retiros.
+            {t("cta_description")}
           </p>
           <Link
             href="/encuentros"
             className="inline-flex items-center gap-2 px-8 py-4 text-lg font-bold bg-white text-coral hover:bg-warm-gray-50 rounded-full shadow-xl hover:scale-105 transition-all duration-300"
           >
-            Ver próximos encuentros
+            {tCommon("view_upcoming")}
             <ArrowRight size={20} />
           </Link>
         </div>

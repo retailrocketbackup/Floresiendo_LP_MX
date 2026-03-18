@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import {
   Heart,
   Users,
@@ -27,39 +27,75 @@ const WhatsAppIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
 
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Formación de Facilitadores — Escuela FloreSiendo",
-  description:
-    "Inicia tu formación como Facilitador de Remedios Ancestrales. Programa híbrido: formación online + intensivo presencial. Únete a +50 facilitadores en nuestra red.",
-  alternates: {
-    canonical: "https://escuelafloresiendomexico.com/escuela",
-  },
-  openGraph: {
-    title: "Formación de Facilitadores | Escuela FloreSiendo",
-    description:
-      "Programa de formación híbrido para facilitadores de prácticas ancestrales. +50 facilitadores en nuestra red.",
-    url: "https://escuelafloresiendomexico.com/escuela",
-    images: [
-      {
-        url: "/images/cosmic-spiritual-background.webp",
-        width: 1200,
-        height: 630,
-        alt: "Escuela FloreSiendo — Formación de Facilitadores",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Escuela FloreSiendo — Formación de Facilitadores",
-    description:
-      "Programa híbrido de formación en prácticas ancestrales.",
-    images: ["/images/cosmic-spiritual-background.webp"],
-  },
-};
+const BASE_URL = "https://escuelafloresiendomexico.com";
 
-export default function EscuelaPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === "en";
+  const prefix = isEn ? "/en" : "";
+
+  return {
+    title: isEn
+      ? "Facilitator Training — FloreSiendo School"
+      : "Formación de Facilitadores — Escuela FloreSiendo",
+    description: isEn
+      ? "Start your training as an Ancestral Remedies Facilitator. Hybrid program: online training + in-person intensive. Join 50+ facilitators in our network."
+      : "Inicia tu formación como Facilitador de Remedios Ancestrales. Programa híbrido: formación online + intensivo presencial. Únete a +50 facilitadores en nuestra red.",
+    alternates: {
+      canonical: `${BASE_URL}${prefix}/escuela`,
+      languages: {
+        es: `${BASE_URL}/escuela`,
+        en: `${BASE_URL}/en/escuela`,
+        "x-default": `${BASE_URL}/escuela`,
+      },
+    },
+    openGraph: {
+      title: isEn
+        ? "Facilitator Training | FloreSiendo School"
+        : "Formación de Facilitadores | Escuela FloreSiendo",
+      description: isEn
+        ? "Hybrid facilitator training program for ancestral practices. 50+ facilitators in our network."
+        : "Programa de formación híbrido para facilitadores de prácticas ancestrales. +50 facilitadores en nuestra red.",
+      url: `${BASE_URL}${prefix}/escuela`,
+      images: [
+        {
+          url: "/images/cosmic-spiritual-background.webp",
+          width: 1200,
+          height: 630,
+          alt: isEn
+            ? "FloreSiendo School — Facilitator Training"
+            : "Escuela FloreSiendo — Formación de Facilitadores",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: isEn
+        ? "FloreSiendo School — Facilitator Training"
+        : "Escuela FloreSiendo — Formación de Facilitadores",
+      description: isEn
+        ? "Hybrid training program in ancestral practices."
+        : "Programa híbrido de formación en prácticas ancestrales.",
+      images: ["/images/cosmic-spiritual-background.webp"],
+    },
+  };
+}
+
+export default async function EscuelaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const isEn = locale === "en";
   const whatsappNumber = "526182301481";
-  const whatsappMessage = "Hola, me interesa la Formación de Facilitadores de Escuela FloreSiendo. Me gustaría recibir más información.";
+  const whatsappMessage = isEn
+    ? "Hi, I'm interested in the FloreSiendo Facilitator Training Program. I'd like to receive more information."
+    : "Hola, me interesa la Formación de Facilitadores de Escuela FloreSiendo. Me gustaría recibir más información.";
 
   return (
     <main>
@@ -88,31 +124,29 @@ export default function EscuelaPage() {
           {/* Trust Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
             <GraduationCap size={16} className="text-gold" />
-            <span className="text-sm font-medium">+50 facilitadores en nuestra red</span>
+            <span className="text-sm font-medium">{isEn ? "50+ facilitators in our network" : "+50 facilitadores en nuestra red"}</span>
           </div>
 
-          {/* Headline - Transformation Promise */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 max-w-5xl mx-auto animate-slide-up leading-tight">
-            Inicia tu Formación como Facilitador de{" "}
-            <span className="text-coral">Remedios Ancestrales</span>
+            {isEn ? "Start Your Training as an " : "Inicia tu Formación como Facilitador de "}
+            <span className="text-coral">{isEn ? "Ancestral Remedies Facilitator" : "Remedios Ancestrales"}</span>
           </h1>
 
-          {/* Subheadline - Who This Is For */}
           <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Domina el arte de acompañar procesos de transformación con prácticas ancestrales
-            y construye una práctica profesional alineada con tu propósito.
+            {isEn
+              ? "Master the art of guiding transformation processes with ancestral practices and build a professional practice aligned with your purpose."
+              : "Domina el arte de acompañar procesos de transformación con prácticas ancestrales y construye una práctica profesional alineada con tu propósito."}
           </p>
 
-          {/* Key Benefits Pills */}
           <div className="flex flex-wrap justify-center gap-3 mb-10 animate-slide-up" style={{ animationDelay: "0.2s" }}>
             <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm">
-              Formación Online + Presencial
+              {isEn ? "Online + In-Person Training" : "Formación Online + Presencial"}
             </span>
             <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm">
-              Facilitación Internacional
+              {isEn ? "International Facilitation" : "Facilitación Internacional"}
             </span>
             <span className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm">
-              Comunidad de Egresados
+              {isEn ? "Alumni Community" : "Comunidad de Egresados"}
             </span>
           </div>
 
@@ -127,23 +161,22 @@ export default function EscuelaPage() {
               className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-xl"
             >
               <WhatsAppIcon className="w-6 h-6" />
-              Solicitar Información
+              {isEn ? "Request Information" : "Solicitar Información"}
             </TrackedWhatsAppLink>
             <a
               href="#programa"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
             >
-              Ver Programa
+              {isEn ? "View Program" : "Ver Programa"}
               <ChevronDown size={20} />
             </a>
           </div>
 
-          {/* Urgency Micro-copy */}
           <p className="mt-6 text-white/60 text-sm animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            Próxima generación: Marzo 2026 · Cupos limitados a 12 participantes
+            {isEn ? "Next cohort: March 2026 · Limited to 12 participants" : "Próxima generación: Marzo 2026 · Cupos limitados a 12 participantes"}
           </p>
           <p className="mt-2 text-white/50 text-xs animate-fade-in" style={{ animationDelay: "0.5s" }}>
-            Requisito: Haber participado en al menos 2 encuentros con FloreSiendo
+            {isEn ? "Requirement: At least 2 previous retreats with FloreSiendo" : "Requisito: Haber participado en al menos 2 encuentros con FloreSiendo"}
           </p>
         </div>
       </section>
@@ -153,19 +186,26 @@ export default function EscuelaPage() {
         <div className="section-container">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <span className="text-coral font-semibold uppercase tracking-wide text-sm">El desafío</span>
-              <h2 className="text-burgundy mt-3 mb-6">¿Te identificas con esto?</h2>
+              <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "The Challenge" : "El desafío"}</span>
+              <h2 className="text-burgundy mt-3 mb-6">{isEn ? "Do you identify with this?" : "¿Te identificas con esto?"}</h2>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-12">
-              {[
+              {(isEn ? [
+                "You feel the calling to guide transformation processes but don't know how to start",
+                "You've had profound experiences with ancestral practices and want to share them safely",
+                "You're a therapist or coach and want to integrate ancestral tools into your practice",
+                "You lack the structure, methodology, and support to facilitate with confidence",
+                "You want to build a professional practice aligned with your life purpose",
+                "You're looking for a community of facilitators to grow and learn with",
+              ] : [
                 "Sientes el llamado a acompañar procesos de transformación pero no sabes cómo empezar",
                 "Has tenido experiencias profundas con prácticas ancestrales y quieres compartirlas de forma segura",
                 "Eres terapeuta o coach y quieres integrar herramientas ancestrales en tu práctica",
                 "Te falta estructura, metodología y respaldo para facilitar con confianza",
                 "Quieres construir una práctica profesional alineada con tu propósito de vida",
                 "Buscas una comunidad de facilitadores con quienes crecer y aprender",
-              ].map((item, index) => (
+              ]).map((item, index) => (
                 <div
                   key={index}
                   className="flex items-start gap-4 p-5 bg-white rounded-2xl shadow-sm border border-warm-gray-100"
@@ -181,10 +221,17 @@ export default function EscuelaPage() {
             {/* Agitation */}
             <div className="bg-gradient-to-r from-burgundy/5 to-coral/5 rounded-3xl p-8 md:p-10 border border-burgundy/10">
               <p className="text-lg text-warm-gray-700 leading-relaxed text-center">
-                Sin la formación adecuada, facilitar prácticas ancestrales puede ser{" "}
-                <strong className="text-burgundy">riesgoso para ti y para quienes acompañas</strong>.
-                La diferencia entre una experiencia transformadora y una traumática está en{" "}
-                <strong className="text-burgundy">la preparación del facilitador</strong>.
+                {isEn ? (
+                  <>Without proper training, facilitating ancestral practices can be{" "}
+                  <strong className="text-burgundy">risky for you and those you accompany</strong>.
+                  The difference between a transformative and a traumatic experience lies in{" "}
+                  <strong className="text-burgundy">the facilitator&apos;s preparation</strong>.</>
+                ) : (
+                  <>Sin la formación adecuada, facilitar prácticas ancestrales puede ser{" "}
+                  <strong className="text-burgundy">riesgoso para ti y para quienes acompañas</strong>.
+                  La diferencia entre una experiencia transformadora y una traumática está en{" "}
+                  <strong className="text-burgundy">la preparación del facilitador</strong>.</>
+                )}
               </p>
             </div>
           </div>
@@ -195,10 +242,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">La solución</span>
-            <h2 className="text-burgundy mt-3 mb-4">Lo que lograrás con esta formación</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "The Solution" : "La solución"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "What you'll achieve with this training" : "Lo que lograrás con esta formación"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Una formación integral que te prepara para facilitar con seguridad, ética y profesionalismo.
+              {isEn ? "Comprehensive training that prepares you to facilitate with safety, ethics, and professionalism." : "Una formación integral que te prepara para facilitar con seguridad, ética y profesionalismo."}
             </p>
           </div>
 
@@ -206,43 +253,43 @@ export default function EscuelaPage() {
             {[
               {
                 icon: Shield,
-                title: "Facilitar con Seguridad",
-                description: "Domina protocolos de seguridad, evaluación previa y manejo de situaciones de crisis.",
+                title: isEn ? "Facilitate Safely" : "Facilitar con Seguridad",
+                description: isEn ? "Master safety protocols, prior evaluation, and crisis management." : "Domina protocolos de seguridad, evaluación previa y manejo de situaciones de crisis.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
               },
               {
                 icon: Heart,
-                title: "Crear Espacios Sagrados",
-                description: "Aprende a diseñar y sostener contenedores seguros para procesos profundos de transformación.",
+                title: isEn ? "Create Sacred Spaces" : "Crear Espacios Sagrados",
+                description: isEn ? "Learn to design and hold safe containers for deep transformation processes." : "Aprende a diseñar y sostener contenedores seguros para procesos profundos de transformación.",
                 bgColor: "bg-burgundy/10",
                 textColor: "text-burgundy",
               },
               {
                 icon: Users,
-                title: "Liderar Grupos",
-                description: "Desarrolla habilidades de facilitación grupal, manejo de dinámicas y acompañamiento colectivo.",
+                title: isEn ? "Lead Groups" : "Liderar Grupos",
+                description: isEn ? "Develop group facilitation skills, dynamics management, and collective accompaniment." : "Desarrolla habilidades de facilitación grupal, manejo de dinámicas y acompañamiento colectivo.",
                 bgColor: "bg-gold/10",
                 textColor: "text-gold-dark",
               },
               {
                 icon: BookOpen,
-                title: "Integrar Conocimientos",
-                description: "Combina sabiduría ancestral con psicoterapia moderna para un enfoque integrativo único.",
+                title: isEn ? "Integrate Knowledge" : "Integrar Conocimientos",
+                description: isEn ? "Combine ancestral wisdom with modern psychotherapy for a unique integrative approach." : "Combina sabiduría ancestral con psicoterapia moderna para un enfoque integrativo único.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
               },
               {
                 icon: Globe,
-                title: "Facilita Globalmente",
-                description: "Como egresado, si quieres organizar retiros en otro país, te brindamos respaldo y acompañamiento. Facilita en México, Portugal, España, Rumania y Uruguay.",
+                title: isEn ? "Facilitate Globally" : "Facilita Globalmente",
+                description: isEn ? "As a graduate, if you want to organize retreats in another country, we provide support and guidance. Facilitate in Mexico, Portugal, Spain, Romania, and Uruguay." : "Como egresado, si quieres organizar retiros en otro país, te brindamos respaldo y acompañamiento. Facilita en México, Portugal, España, Rumania y Uruguay.",
                 bgColor: "bg-burgundy/10",
                 textColor: "text-burgundy",
               },
               {
                 icon: Sparkles,
-                title: "Construir tu Práctica",
-                description: "Recibe mentoría para desarrollar tu práctica profesional ética y sustentable.",
+                title: isEn ? "Build Your Practice" : "Construir tu Práctica",
+                description: isEn ? "Receive mentorship to develop your ethical and sustainable professional practice." : "Recibe mentoría para desarrollar tu práctica profesional ética y sustentable.",
                 bgColor: "bg-gold/10",
                 textColor: "text-gold-dark",
               },
@@ -263,11 +310,12 @@ export default function EscuelaPage() {
       <section id="programa" className="section-padding bg-warm-white scroll-mt-20">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">El programa</span>
-            <h2 className="text-burgundy mt-3 mb-4">Formación Progresiva: De Aprendiz a Facilitador</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "The Program" : "El programa"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Progressive Training: From Apprentice to Facilitator" : "Formación Progresiva: De Aprendiz a Facilitador"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              7 ciclos de inmersión (Ciclo 0 al Ciclo 6) con un sistema progresivo de prácticas supervisadas.
-              Cada ciclo te acerca más a facilitar con autonomía y seguridad.
+              {isEn
+                ? "7 immersion cycles (Cycle 0 to Cycle 6) with a progressive system of supervised practices. Each cycle brings you closer to facilitating with autonomy and safety."
+                : "7 ciclos de inmersión (Ciclo 0 al Ciclo 6) con un sistema progresivo de prácticas supervisadas. Cada ciclo te acerca más a facilitar con autonomía y seguridad."}
             </p>
           </div>
 
@@ -275,19 +323,19 @@ export default function EscuelaPage() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12">
             <div className="text-center">
               <div className="text-4xl font-bold text-burgundy">0-6</div>
-              <div className="text-warm-gray-600 text-sm">Ciclos</div>
+              <div className="text-warm-gray-600 text-sm">{isEn ? "Cycles" : "Ciclos"}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-coral">4</div>
-              <div className="text-warm-gray-600 text-sm">Días por ciclo</div>
+              <div className="text-warm-gray-600 text-sm">{isEn ? "Days per cycle" : "Días por ciclo"}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-gold-dark">28</div>
-              <div className="text-warm-gray-600 text-sm">Días presenciales</div>
+              <div className="text-warm-gray-600 text-sm">{isEn ? "In-person days" : "Días presenciales"}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-burgundy">140+</div>
-              <div className="text-warm-gray-600 text-sm">Horas contacto</div>
+              <div className="text-warm-gray-600 text-sm">{isEn ? "Contact hours" : "Horas contacto"}</div>
             </div>
           </div>
 
@@ -295,19 +343,19 @@ export default function EscuelaPage() {
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             <div className="flex items-center gap-2 text-sm">
               <span className="w-3 h-3 bg-warm-gray-300 rounded-full"></span>
-              <span className="text-warm-gray-600">Teoría</span>
+              <span className="text-warm-gray-600">{isEn ? "Theory" : "Teoría"}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className="w-3 h-3 bg-gold rounded-full"></span>
-              <span className="text-warm-gray-600">Apoyo</span>
+              <span className="text-warm-gray-600">{isEn ? "Support" : "Apoyo"}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className="w-3 h-3 bg-coral rounded-full"></span>
-              <span className="text-warm-gray-600">Autoaplicación</span>
+              <span className="text-warm-gray-600">{isEn ? "Self-application" : "Autoaplicación"}</span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className="w-3 h-3 bg-burgundy rounded-full"></span>
-              <span className="text-warm-gray-600">Responsable</span>
+              <span className="text-warm-gray-600">{isEn ? "Lead" : "Responsable"}</span>
             </div>
           </div>
 
@@ -316,94 +364,94 @@ export default function EscuelaPage() {
             {[
               {
                 cycle: 0,
-                title: "Fundamentos",
-                subtitle: "Solo teoría",
-                classes: "4 clases teóricas",
-                classTopics: ["Aplicación Sapo de Sonora", "Aplicación Rana Mono", "Facilitación Planta Amazónica", "Fundamentos de Integración"],
+                title: isEn ? "Foundations" : "Fundamentos",
+                subtitle: isEn ? "Theory only" : "Solo teoría",
+                classes: isEn ? "4 theory classes" : "4 clases teóricas",
+                classTopics: isEn ? ["Sonoran Toad Application", "Monkey Frog Application", "Amazonian Plant Facilitation", "Integration Fundamentals"] : ["Aplicación Sapo de Sonora", "Aplicación Rana Mono", "Facilitación Planta Amazónica", "Fundamentos de Integración"],
                 practices: [],
                 gradient: "from-warm-gray-600 to-warm-gray-700",
                 border: "border-warm-gray-300",
               },
               {
                 cycle: 1,
-                title: "Facilitación Básica",
-                subtitle: "Primera práctica",
-                classes: "3 clases",
-                classTopics: ["Rana Mono (profundización)", "Técnicas de Facilitación", "Métodos de Integración"],
-                practices: [{ name: "Apoyo Sapo", level: "apoyo" }],
+                title: isEn ? "Basic Facilitation" : "Facilitación Básica",
+                subtitle: isEn ? "First practice" : "Primera práctica",
+                classes: isEn ? "3 classes" : "3 clases",
+                classTopics: isEn ? ["Monkey Frog (deep dive)", "Facilitation Techniques", "Integration Methods"] : ["Rana Mono (profundización)", "Técnicas de Facilitación", "Métodos de Integración"],
+                practices: [{ name: isEn ? "Support Toad" : "Apoyo Sapo", level: "apoyo" }],
                 gradient: "from-coral to-coral-dark",
                 border: "border-coral",
               },
               {
                 cycle: 2,
-                title: "Primeras Prácticas",
-                subtitle: "Transición a la acción",
-                classes: "2 clases integración",
-                classTopics: ["Manejo de crisis", "Contención emocional"],
+                title: isEn ? "First Practices" : "Primeras Prácticas",
+                subtitle: isEn ? "Transition to action" : "Transición a la acción",
+                classes: isEn ? "2 integration classes" : "2 clases integración",
+                classTopics: isEn ? ["Crisis management", "Emotional containment"] : ["Manejo de crisis", "Contención emocional"],
                 practices: [
-                  { name: "Autoaplicación Rana", level: "auto" },
-                  { name: "Responsable Sapo", level: "responsable" },
-                  { name: "Apoyo Planta", level: "apoyo" },
+                  { name: isEn ? "Self-application Frog" : "Autoaplicación Rana", level: "auto" },
+                  { name: isEn ? "Lead Toad" : "Responsable Sapo", level: "responsable" },
+                  { name: isEn ? "Support Plant" : "Apoyo Planta", level: "apoyo" },
                 ],
                 gradient: "from-burgundy to-burgundy-dark",
                 border: "border-burgundy",
               },
               {
                 cycle: 3,
-                title: "Responsable Individual",
-                subtitle: "Liderazgo supervisado",
-                classes: "1 clase integración",
-                classTopics: ["Supervisión y casos complejos"],
+                title: isEn ? "Individual Lead" : "Responsable Individual",
+                subtitle: isEn ? "Supervised leadership" : "Liderazgo supervisado",
+                classes: isEn ? "1 integration class" : "1 clase integración",
+                classTopics: isEn ? ["Supervision and complex cases"] : ["Supervisión y casos complejos"],
                 practices: [
-                  { name: "Responsable Rana", level: "responsable" },
-                  { name: "Responsable Sapo", level: "responsable" },
-                  { name: "Responsable Planta", level: "responsable" },
-                  { name: "Conferencia 15 min", level: "responsable" },
+                  { name: isEn ? "Lead Frog" : "Responsable Rana", level: "responsable" },
+                  { name: isEn ? "Lead Toad" : "Responsable Sapo", level: "responsable" },
+                  { name: isEn ? "Lead Plant" : "Responsable Planta", level: "responsable" },
+                  { name: isEn ? "15-min Talk" : "Conferencia 15 min", level: "responsable" },
                 ],
                 gradient: "from-gold to-gold-dark",
                 border: "border-gold",
               },
               {
                 cycle: 4,
-                title: "Responsable Grupal",
-                subtitle: "Facilitación colectiva",
-                classes: "2 clases integración",
-                classTopics: ["Dinámicas grupales", "Conflicto y transformación"],
+                title: isEn ? "Group Lead" : "Responsable Grupal",
+                subtitle: isEn ? "Collective facilitation" : "Facilitación colectiva",
+                classes: isEn ? "2 integration classes" : "2 clases integración",
+                classTopics: isEn ? ["Group dynamics", "Conflict and transformation"] : ["Dinámicas grupales", "Conflicto y transformación"],
                 practices: [
-                  { name: "Responsable Rana", level: "responsable" },
-                  { name: "Responsable Sapo", level: "responsable" },
-                  { name: "Responsable Planta", level: "responsable" },
-                  { name: "Apoyo Integración", level: "apoyo" },
+                  { name: isEn ? "Lead Frog" : "Responsable Rana", level: "responsable" },
+                  { name: isEn ? "Lead Toad" : "Responsable Sapo", level: "responsable" },
+                  { name: isEn ? "Lead Plant" : "Responsable Planta", level: "responsable" },
+                  { name: isEn ? "Support Integration" : "Apoyo Integración", level: "apoyo" },
                 ],
                 gradient: "from-coral-dark to-burgundy",
                 border: "border-coral-dark",
               },
               {
                 cycle: 5,
-                title: "Integración Avanzada",
-                subtitle: "Autonomía completa",
-                classes: "2 clases integración",
-                classTopics: ["Mentoría y enseñanza", "Ética profesional"],
+                title: isEn ? "Advanced Integration" : "Integración Avanzada",
+                subtitle: isEn ? "Full autonomy" : "Autonomía completa",
+                classes: isEn ? "2 integration classes" : "2 clases integración",
+                classTopics: isEn ? ["Mentoring and teaching", "Professional ethics"] : ["Mentoría y enseñanza", "Ética profesional"],
                 practices: [
-                  { name: "Responsable Rana", level: "responsable" },
-                  { name: "Responsable Sapo", level: "responsable" },
-                  { name: "Responsable Planta", level: "responsable" },
-                  { name: "Responsable Integración", level: "responsable" },
+                  { name: isEn ? "Lead Frog" : "Responsable Rana", level: "responsable" },
+                  { name: isEn ? "Lead Toad" : "Responsable Sapo", level: "responsable" },
+                  { name: isEn ? "Lead Plant" : "Responsable Planta", level: "responsable" },
+                  { name: isEn ? "Lead Integration" : "Responsable Integración", level: "responsable" },
                 ],
                 gradient: "from-burgundy to-burgundy-dark",
                 border: "border-burgundy",
               },
               {
                 cycle: 6,
-                title: "Integración a la Red",
-                subtitle: "Tu camino profesional",
-                classes: "2 clases",
-                classTopics: ["Desarrollo profesional", "Integración a comunidad"],
+                title: isEn ? "Network Integration" : "Integración a la Red",
+                subtitle: isEn ? "Your professional path" : "Tu camino profesional",
+                classes: isEn ? "2 classes" : "2 clases",
+                classTopics: isEn ? ["Professional development", "Community integration"] : ["Desarrollo profesional", "Integración a comunidad"],
                 practices: [
-                  { name: "Evaluación de casos", level: "responsable" },
-                  { name: "Proyecto personal", level: "responsable" },
+                  { name: isEn ? "Case evaluation" : "Evaluación de casos", level: "responsable" },
+                  { name: isEn ? "Personal project" : "Proyecto personal", level: "responsable" },
                 ],
-                extras: ["Reconocimiento como Facilitador", "Acceso a Red FloreSiendo", "Oportunidades de co-facilitación"],
+                extras: isEn ? ["Recognition as Facilitator", "Access to FloreSiendo Network", "Co-facilitation opportunities"] : ["Reconocimiento como Facilitador", "Acceso a Red FloreSiendo", "Oportunidades de co-facilitación"],
                 gradient: "from-gold-dark to-burgundy",
                 border: "border-gold-dark",
               },
@@ -413,7 +461,7 @@ export default function EscuelaPage() {
                 className={`bg-white rounded-3xl shadow-xl overflow-hidden border ${item.border} hover:shadow-2xl transition-shadow`}
               >
                 <div className={`bg-gradient-to-r ${item.gradient} p-5 text-white`}>
-                  <span className="text-sm font-medium uppercase tracking-wide opacity-80">Ciclo {item.cycle}</span>
+                  <span className="text-sm font-medium uppercase tracking-wide opacity-80">{isEn ? "Cycle" : "Ciclo"} {item.cycle}</span>
                   <h3 className="text-xl font-bold mt-1">{item.title}</h3>
                   <p className="text-white/70 text-sm mt-1">{item.subtitle}</p>
                 </div>
@@ -434,7 +482,7 @@ export default function EscuelaPage() {
                   {/* Practices */}
                   {item.practices.length > 0 && (
                     <div className="mb-4">
-                      <p className="text-warm-gray-500 text-xs uppercase tracking-wide mb-2">Prácticas</p>
+                      <p className="text-warm-gray-500 text-xs uppercase tracking-wide mb-2">{isEn ? "Practices" : "Prácticas"}</p>
                       <ul className="space-y-1">
                         {item.practices.map((practice, i) => (
                           <li key={i} className="flex items-center gap-2 text-sm">
@@ -469,7 +517,7 @@ export default function EscuelaPage() {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span>4 días de inmersión</span>
+                    <span>{isEn ? "4 days of immersion" : "4 días de inmersión"}</span>
                   </div>
                 </div>
               </div>
@@ -479,12 +527,12 @@ export default function EscuelaPage() {
           {/* Progression Summary Table */}
           <div className="mt-12 max-w-4xl mx-auto">
             <div className="bg-gradient-to-r from-burgundy/5 to-coral/5 rounded-3xl p-8 border border-burgundy/10">
-              <h4 className="font-bold text-burgundy text-lg mb-6 text-center">Tu Progresión en Cada Práctica</h4>
+              <h4 className="font-bold text-burgundy text-lg mb-6 text-center">{isEn ? "Your Progression in Each Practice" : "Tu Progresión en Cada Práctica"}</h4>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-burgundy/10">
-                      <th className="text-left py-3 text-warm-gray-600 font-medium">Práctica</th>
+                      <th className="text-left py-3 text-warm-gray-600 font-medium">{isEn ? "Practice" : "Práctica"}</th>
                       <th className="text-center py-3 text-warm-gray-600 font-medium">C0</th>
                       <th className="text-center py-3 text-warm-gray-600 font-medium">C1</th>
                       <th className="text-center py-3 text-warm-gray-600 font-medium">C2</th>
@@ -496,7 +544,7 @@ export default function EscuelaPage() {
                   </thead>
                   <tbody>
                     <tr className="border-b border-warm-gray-100">
-                      <td className="py-3 font-medium text-warm-gray-700">Sapo de Sonora</td>
+                      <td className="py-3 font-medium text-warm-gray-700">{isEn ? "Sonoran Toad" : "Sapo de Sonora"}</td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-gold rounded-full inline-block" title="Apoyo"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-burgundy rounded-full inline-block" title="Responsable"></span></td>
@@ -506,7 +554,7 @@ export default function EscuelaPage() {
                       <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
                     </tr>
                     <tr className="border-b border-warm-gray-100">
-                      <td className="py-3 font-medium text-warm-gray-700">Rana Mono Gigante</td>
+                      <td className="py-3 font-medium text-warm-gray-700">{isEn ? "Giant Monkey Frog" : "Rana Mono Gigante"}</td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-coral rounded-full inline-block" title="Autoaplicación"></span></td>
@@ -516,7 +564,7 @@ export default function EscuelaPage() {
                       <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
                     </tr>
                     <tr className="border-b border-warm-gray-100">
-                      <td className="py-3 font-medium text-warm-gray-700">Planta Amazónica</td>
+                      <td className="py-3 font-medium text-warm-gray-700">{isEn ? "Amazonian Plant" : "Planta Amazónica"}</td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-gold rounded-full inline-block" title="Apoyo"></span></td>
@@ -526,7 +574,7 @@ export default function EscuelaPage() {
                       <td className="text-center py-3"><span className="text-green-500 text-lg">✓</span></td>
                     </tr>
                     <tr>
-                      <td className="py-3 font-medium text-warm-gray-700">Integración</td>
+                      <td className="py-3 font-medium text-warm-gray-700">{isEn ? "Integration" : "Integración"}</td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
                       <td className="text-center py-3"><span className="w-3 h-3 bg-warm-gray-300 rounded-full inline-block" title="Teoría"></span></td>
@@ -539,7 +587,7 @@ export default function EscuelaPage() {
                 </table>
               </div>
               <p className="text-center text-warm-gray-500 text-xs mt-4">
-                Cada práctica tiene su propia progresión: Teoría → Apoyo → Autoaplicación → Responsable
+{isEn ? "Each practice has its own progression: Theory → Support → Self-application → Lead" : "Cada práctica tiene su propia progresión: Teoría → Apoyo → Autoaplicación → Responsable"}
               </p>
             </div>
           </div>
@@ -550,10 +598,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-12">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Acompañamiento online</span>
-            <h2 className="text-burgundy mt-3 mb-4">Entre Ciclos</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "Online Support" : "Acompañamiento online"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Between Cycles" : "Entre Ciclos"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              El aprendizaje no se detiene entre intensivos presenciales. Mantén tu progreso con sesiones online estructuradas.
+              {isEn ? "Learning doesn't stop between in-person intensives. Maintain your progress with structured online sessions." : "El aprendizaje no se detiene entre intensivos presenciales. Mantén tu progreso con sesiones online estructuradas."}
             </p>
           </div>
 
@@ -562,11 +610,11 @@ export default function EscuelaPage() {
               <div className="w-16 h-16 bg-coral/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Video className="w-8 h-8 text-coral" />
               </div>
-              <h3 className="font-bold text-burgundy text-xl mb-3">Seguimiento Online</h3>
+              <h3 className="font-bold text-burgundy text-xl mb-3">{isEn ? "Online Follow-up" : "Seguimiento Online"}</h3>
               <p className="text-warm-gray-600 text-sm mb-4">
-                Sesiones quincenales de 90 minutos con 7-9 compañeros y un mentor para práctica, retroalimentación y apoyo mutuo.
+                {isEn ? "Biweekly 90-minute sessions with 7-9 peers and a mentor for practice, feedback, and mutual support." : "Sesiones quincenales de 90 minutos con 7-9 compañeros y un mentor para práctica, retroalimentación y apoyo mutuo."}
               </p>
-              <div className="text-coral font-semibold text-sm">12+ horas totales</div>
+              <div className="text-coral font-semibold text-sm">{isEn ? "12+ total hours" : "12+ horas totales"}</div>
             </div>
 
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-warm-gray-100 text-center">
@@ -575,20 +623,20 @@ export default function EscuelaPage() {
               </div>
               <h3 className="font-bold text-burgundy text-xl mb-3">Role-Play Online</h3>
               <p className="text-warm-gray-600 text-sm mb-4">
-                Simulaciones de facilitación entre compañeros con retroalimentación de mentores para desarrollar competencias.
+                {isEn ? "Facilitation simulations between peers with mentor feedback to develop competencies." : "Simulaciones de facilitación entre compañeros con retroalimentación de mentores para desarrollar competencias."}
               </p>
-              <div className="text-burgundy font-semibold text-sm">Práctica entre pares</div>
+              <div className="text-burgundy font-semibold text-sm">{isEn ? "Peer practice" : "Práctica entre pares"}</div>
             </div>
 
             <div className="bg-white rounded-3xl p-8 shadow-lg border border-warm-gray-100 text-center">
               <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Users className="w-8 h-8 text-gold-dark" />
               </div>
-              <h3 className="font-bold text-burgundy text-xl mb-3">Supervisión de Casos</h3>
+              <h3 className="font-bold text-burgundy text-xl mb-3">{isEn ? "Case Supervision" : "Supervisión de Casos"}</h3>
               <p className="text-warm-gray-600 text-sm mb-4">
-                Sesiones online con formadores para revisar casos difíciles, resolver dudas y profundizar en situaciones específicas.
+                {isEn ? "Online sessions with trainers to review difficult cases, resolve questions, and dive deeper into specific situations." : "Sesiones online con formadores para revisar casos difíciles, resolver dudas y profundizar en situaciones específicas."}
               </p>
-              <div className="text-gold-dark font-semibold text-sm">10+ horas de supervisión</div>
+              <div className="text-gold-dark font-semibold text-sm">{isEn ? "10+ supervision hours" : "10+ horas de supervisión"}</div>
             </div>
           </div>
         </div>
@@ -598,11 +646,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-warm-white">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Metodología</span>
-            <h2 className="text-burgundy mt-3 mb-4">Las 6 Competencias del Facilitador</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "Methodology" : "Metodología"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "The 6 Facilitator Competencies" : "Las 6 Competencias del Facilitador"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Nuestro marco integra estándares internacionales de facilitación (IAF) con
-              competencias específicas para el acompañamiento de prácticas ancestrales.
+              {isEn ? "Our framework integrates international facilitation standards (IAF) with specific competencies for accompanying ancestral practices." : "Nuestro marco integra estándares internacionales de facilitación (IAF) con competencias específicas para el acompañamiento de prácticas ancestrales."}
             </p>
           </div>
 
@@ -613,22 +660,22 @@ export default function EscuelaPage() {
                 <Heart className="w-6 h-6 text-coral" />
               </div>
               <div>
-                <h3 className="font-bold text-burgundy text-lg">SER</h3>
-                <p className="text-warm-gray-500 text-sm">Quién eres es más importante que lo que haces</p>
+                <h3 className="font-bold text-burgundy text-lg">{isEn ? "BEING" : "SER"}</h3>
+                <p className="text-warm-gray-500 text-sm">{isEn ? "Who you are matters more than what you do" : "Quién eres es más importante que lo que haces"}</p>
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
                   number: "01",
-                  title: "Presencia y Autoconciencia",
-                  description: "Cultivar calma, ecuanimidad y escucha sin juicio. Trabajo personal profundo, claridad emocional en el acompañamiento y límites éticos claros.",
+                  title: isEn ? "Presence & Self-Awareness" : "Presencia y Autoconciencia",
+                  description: isEn ? "Cultivating calm, equanimity, and non-judgmental listening. Deep personal work, emotional clarity in accompaniment, and clear ethical boundaries." : "Cultivar calma, ecuanimidad y escucha sin juicio. Trabajo personal profundo, claridad emocional en el acompañamiento y límites éticos claros.",
                   color: "coral",
                 },
                 {
                   number: "02",
-                  title: "Inteligencia Espiritual",
-                  description: "Comodidad con dimensiones transpersonales y existenciales. Integrar diversos marcos espirituales y de sentido sin dogma.",
+                  title: isEn ? "Spiritual Intelligence" : "Inteligencia Espiritual",
+                  description: isEn ? "Comfort with transpersonal and existential dimensions. Integrating diverse spiritual and meaning-making frameworks without dogma." : "Comodidad con dimensiones transpersonales y existenciales. Integrar diversos marcos espirituales y de sentido sin dogma.",
                   color: "burgundy",
                 },
               ].map((competency, index) => (
@@ -653,22 +700,22 @@ export default function EscuelaPage() {
                 <BookOpen className="w-6 h-6 text-gold-dark" />
               </div>
               <div>
-                <h3 className="font-bold text-burgundy text-lg">SABER</h3>
-                <p className="text-warm-gray-500 text-sm">La seguridad requiere conocimiento</p>
+                <h3 className="font-bold text-burgundy text-lg">{isEn ? "KNOWING" : "SABER"}</h3>
+                <p className="text-warm-gray-500 text-sm">{isEn ? "Safety requires knowledge" : "La seguridad requiere conocimiento"}</p>
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
                   number: "03",
-                  title: "Conocimiento Técnico",
-                  description: "Farmacología, efectos físicos y psicológicos, contraindicaciones, interacciones y protocolos de seguridad y emergencia.",
+                  title: isEn ? "Technical Knowledge" : "Conocimiento Técnico",
+                  description: isEn ? "Pharmacology, physical and psychological effects, contraindications, interactions, and safety and emergency protocols." : "Farmacología, efectos físicos y psicológicos, contraindicaciones, interacciones y protocolos de seguridad y emergencia.",
                   color: "gold",
                 },
                 {
                   number: "04",
-                  title: "Creación de Espacio Seguro",
-                  description: "Generar confianza y seguridad. Preparar el entorno físico y emocional. Clima de inclusión y respeto a la diversidad.",
+                  title: isEn ? "Creating Safe Space" : "Creación de Espacio Seguro",
+                  description: isEn ? "Building trust and safety. Preparing the physical and emotional environment. Fostering inclusion and respect for diversity." : "Generar confianza y seguridad. Preparar el entorno físico y emocional. Clima de inclusión y respeto a la diversidad.",
                   color: "coral",
                 },
               ].map((competency, index) => (
@@ -693,22 +740,22 @@ export default function EscuelaPage() {
                 <Users className="w-6 h-6 text-burgundy" />
               </div>
               <div>
-                <h3 className="font-bold text-burgundy text-lg">HACER</h3>
-                <p className="text-warm-gray-500 text-sm">El arte de guiar procesos de transformación</p>
+                <h3 className="font-bold text-burgundy text-lg">{isEn ? "DOING" : "HACER"}</h3>
+                <p className="text-warm-gray-500 text-sm">{isEn ? "The art of guiding transformation processes" : "El arte de guiar procesos de transformación"}</p>
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
                   number: "05",
-                  title: "Facilitación de Procesos",
-                  description: "Guiar dinámicas grupales, manejar conflictos y situaciones de crisis, técnicas de integración y co-facilitación efectiva.",
+                  title: isEn ? "Process Facilitation" : "Facilitación de Procesos",
+                  description: isEn ? "Guiding group dynamics, managing conflicts and crisis situations, integration techniques, and effective co-facilitation." : "Guiar dinámicas grupales, manejar conflictos y situaciones de crisis, técnicas de integración y co-facilitación efectiva.",
                   color: "burgundy",
                 },
                 {
                   number: "06",
-                  title: "Desarrollo Profesional",
-                  description: "Supervisión activa, educación continua y red de pares. El facilitador nunca deja de crecer y aprender.",
+                  title: isEn ? "Professional Development" : "Desarrollo Profesional",
+                  description: isEn ? "Active supervision, continuing education, and peer network. A facilitator never stops growing and learning." : "Supervisión activa, educación continua y red de pares. El facilitador nunca deja de crecer y aprender.",
                   color: "gold",
                 },
               ].map((competency, index) => (
@@ -731,11 +778,9 @@ export default function EscuelaPage() {
             <div className="bg-burgundy/5 rounded-2xl p-6 border border-burgundy/10 flex items-start gap-4">
               <Brain className="w-8 h-8 text-burgundy flex-shrink-0 mt-1" />
               <div>
-                <h4 className="font-bold text-burgundy mb-2">Evaluación basada en competencias</h4>
+                <h4 className="font-bold text-burgundy mb-2">{isEn ? "Competency-Based Assessment" : "Evaluación basada en competencias"}</h4>
                 <p className="text-warm-gray-600 text-sm">
-                  A diferencia de programas basados solo en asistencia, evaluamos tu desarrollo real en cada competencia
-                  con retroalimentación estructurada, role-play y práctica supervisada. El reconocimiento como facilitador
-                  formado requiere demostrar dominio en al menos 5 de las 6 competencias.
+                  {isEn ? "Unlike attendance-only programs, we assess your real development in each competency through structured feedback, role-play, and supervised practice. Recognition as a trained facilitator requires demonstrating mastery in at least 5 of the 6 competencies." : "A diferencia de programas basados solo en asistencia, evaluamos tu desarrollo real en cada competencia con retroalimentación estructurada, role-play y práctica supervisada. El reconocimiento como facilitador formado requiere demostrar dominio en al menos 5 de las 6 competencias."}
                 </p>
               </div>
             </div>
@@ -747,10 +792,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-gradient-burgundy text-white">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral-light font-semibold uppercase tracking-wide text-sm">Testimonios</span>
-            <h2 className="text-white mt-3 mb-4">Lo que dicen nuestros egresados</h2>
+            <span className="text-coral-light font-semibold uppercase tracking-wide text-sm">{isEn ? "Testimonials" : "Testimonios"}</span>
+            <h2 className="text-white mt-3 mb-4">{isEn ? "What Our Graduates Say" : "Lo que dicen nuestros egresados"}</h2>
             <p className="text-coral-light/80 max-w-2xl mx-auto">
-              Más de 50 facilitadores formados en diferentes países.
+              {isEn ? "Over 50 trained facilitators across multiple countries." : "Más de 50 facilitadores formados en diferentes países."}
             </p>
           </div>
 
@@ -758,24 +803,24 @@ export default function EscuelaPage() {
             {[
               {
                 name: "María González",
-                role: "Psicóloga, Guadalajara",
-                quote: "Esta formación transformó mi práctica terapéutica. Ahora integro herramientas ancestrales con total seguridad y mis pacientes experimentan cambios más profundos.",
-                before: "Psicóloga clínica buscando herramientas complementarias",
-                after: "Facilitadora con práctica híbrida y lista de espera de 3 meses",
+                role: isEn ? "Psychologist, Guadalajara" : "Psicóloga, Guadalajara",
+                quote: isEn ? "This training transformed my therapeutic practice. I now integrate ancestral tools with complete confidence and my patients experience deeper changes." : "Esta formación transformó mi práctica terapéutica. Ahora integro herramientas ancestrales con total seguridad y mis pacientes experimentan cambios más profundos.",
+                before: isEn ? "Clinical psychologist seeking complementary tools" : "Psicóloga clínica buscando herramientas complementarias",
+                after: isEn ? "Facilitator with hybrid practice and 3-month waitlist" : "Facilitadora con práctica híbrida y lista de espera de 3 meses",
               },
               {
                 name: "Carlos Ramírez",
-                role: "Coach, CDMX",
-                quote: "Lo que más valoro es la comunidad. No estás solo después de graduarte. Tienes supervisión, apoyo y colegas con quienes consultar casos difíciles.",
-                before: "Coach de vida sin herramientas para trabajo profundo",
-                after: "Facilitador de retiros grupales con 8 encuentros anuales",
+                role: isEn ? "Coach, Mexico City" : "Coach, CDMX",
+                quote: isEn ? "What I value most is the community. You're not alone after graduating. You have supervision, support, and colleagues to consult on difficult cases." : "Lo que más valoro es la comunidad. No estás solo después de graduarte. Tienes supervisión, apoyo y colegas con quienes consultar casos difíciles.",
+                before: isEn ? "Life coach without tools for deep work" : "Coach de vida sin herramientas para trabajo profundo",
+                after: isEn ? "Group retreat facilitator with 8 annual retreats" : "Facilitador de retiros grupales con 8 encuentros anuales",
               },
               {
                 name: "Ana Martínez",
-                role: "Facilitadora, Monterrey",
-                quote: "La ética y seguridad que enseñan es impecable. Me siento preparada para cualquier situación y mis participantes confían completamente en mi guía.",
-                before: "Interesada en prácticas ancestrales sin formación formal",
-                after: "Facilitadora formada con práctica propia en Monterrey",
+                role: isEn ? "Facilitator, Monterrey" : "Facilitadora, Monterrey",
+                quote: isEn ? "The ethics and safety they teach are impeccable. I feel prepared for any situation and my participants completely trust my guidance." : "La ética y seguridad que enseñan es impecable. Me siento preparada para cualquier situación y mis participantes confían completamente en mi guía.",
+                before: isEn ? "Interested in ancestral practices without formal training" : "Interesada en prácticas ancestrales sin formación formal",
+                after: isEn ? "Trained facilitator with her own practice in Monterrey" : "Facilitadora formada con práctica propia en Monterrey",
               },
             ].map((testimonial, index) => (
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/10">
@@ -792,8 +837,8 @@ export default function EscuelaPage() {
                   &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
-                  <p className="text-white/60"><strong className="text-white/80">Antes:</strong> {testimonial.before}</p>
-                  <p className="text-coral-light"><strong className="text-coral">Después:</strong> {testimonial.after}</p>
+                  <p className="text-white/60"><strong className="text-white/80">{isEn ? "Before:" : "Antes:"}</strong> {testimonial.before}</p>
+                  <p className="text-coral-light"><strong className="text-coral">{isEn ? "After:" : "Después:"}</strong> {testimonial.after}</p>
                 </div>
               </div>
             ))}
@@ -805,11 +850,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-warm-white">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Después de la formación</span>
-            <h2 className="text-burgundy mt-3 mb-4">Tu Camino Profesional con FloreSiendo</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "After Training" : "Después de la formación"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Your Professional Path with FloreSiendo" : "Tu Camino Profesional con FloreSiendo"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Completar la formación es solo el inicio. Te integramos a una red activa de facilitadores
-              con oportunidades reales de práctica y crecimiento continuo.
+              {isEn ? "Completing the training is just the beginning. We integrate you into an active facilitator network with real opportunities for practice and continuous growth." : "Completar la formación es solo el inicio. Te integramos a una red activa de facilitadores con oportunidades reales de práctica y crecimiento continuo."}
             </p>
           </div>
 
@@ -817,29 +861,29 @@ export default function EscuelaPage() {
             {[
               {
                 icon: Users,
-                title: "Red de Facilitadores",
-                description: "Acceso a comunidad privada de +50 facilitadores activos en México, España, Portugal, Rumania y Uruguay.",
+                title: isEn ? "Facilitator Network" : "Red de Facilitadores",
+                description: isEn ? "Access to a private community of 50+ active facilitators in Mexico, Spain, Portugal, Romania, and Uruguay." : "Acceso a comunidad privada de +50 facilitadores activos en México, España, Portugal, Rumania y Uruguay.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
               },
               {
                 icon: UserCheck,
-                title: "Co-facilitación",
-                description: "Oportunidades de acompañar encuentros como co-facilitador con mentores experimentados. Primeras experiencias pagadas.",
+                title: isEn ? "Co-Facilitation" : "Co-facilitación",
+                description: isEn ? "Opportunities to accompany retreats as a co-facilitator with experienced mentors. First paid experiences." : "Oportunidades de acompañar encuentros como co-facilitador con mentores experimentados. Primeras experiencias pagadas.",
                 bgColor: "bg-burgundy/10",
                 textColor: "text-burgundy",
               },
               {
                 icon: Video,
-                title: "Supervisión Continua",
-                description: "Círculos mensuales de supervisión grupal para revisar casos, resolver dudas y seguir creciendo como facilitador.",
+                title: isEn ? "Ongoing Supervision" : "Supervisión Continua",
+                description: isEn ? "Monthly group supervision circles to review cases, resolve questions, and continue growing as a facilitator." : "Círculos mensuales de supervisión grupal para revisar casos, resolver dudas y seguir creciendo como facilitador.",
                 bgColor: "bg-gold/10",
                 textColor: "text-gold-dark",
               },
               {
                 icon: Globe,
-                title: "Respaldo Internacional",
-                description: "Si quieres organizar encuentros en otro país, te brindamos acompañamiento, protocolos y conexión con la red local.",
+                title: isEn ? "International Support" : "Respaldo Internacional",
+                description: isEn ? "If you want to organize retreats in another country, we provide accompaniment, protocols, and connection with the local network." : "Si quieres organizar encuentros en otro país, te brindamos acompañamiento, protocolos y conexión con la red local.",
                 bgColor: "bg-coral/10",
                 textColor: "text-coral",
               },
@@ -862,20 +906,19 @@ export default function EscuelaPage() {
                   <Sparkles className="w-10 h-10 text-gold-dark" />
                 </div>
                 <div className="text-center md:text-left">
-                  <h4 className="font-bold text-burgundy text-xl mb-2">¿No estás seguro de comprometerte con el programa completo?</h4>
+                  <h4 className="font-bold text-burgundy text-xl mb-2">{isEn ? "Not sure about committing to the full program?" : "¿No estás seguro de comprometerte con el programa completo?"}</h4>
                   <p className="text-warm-gray-600 mb-4">
-                    Puedes comenzar con el Ciclo 0 para conocer nuestra metodología y decidir si es para ti.
-                    Si continúas, tu inversión inicial se aplica al programa completo.
+                    {isEn ? "You can start with Cycle 0 to experience our methodology and decide if it's right for you. If you continue, your initial investment applies to the full program." : "Puedes comenzar con el Ciclo 0 para conocer nuestra metodología y decidir si es para ti. Si continúas, tu inversión inicial se aplica al programa completo."}
                   </p>
                   <TrackedWhatsAppLink
                     phone={whatsappNumber}
-                    message="Hola, me interesa probar el Ciclo 0 de la Formación de Facilitadores antes de comprometerme con el programa completo. ¿Podrían darme más información?"
+                    message={isEn ? "Hi, I'm interested in trying Cycle 0 of the Facilitator Training before committing to the full program. Could you give me more information?" : "Hola, me interesa probar el Ciclo 0 de la Formación de Facilitadores antes de comprometerme con el programa completo. ¿Podrían darme más información?"}
                     page="escuela"
                     buttonLocation="try-one-cycle"
                     value={180000}
                     className="inline-flex items-center justify-center gap-2 bg-burgundy hover:bg-burgundy-dark text-white font-semibold py-3 px-6 rounded-full transition-all hover:scale-105"
                   >
-                    Consultar sobre el Ciclo 0
+                    {isEn ? "Ask About Cycle 0" : "Consultar sobre el Ciclo 0"}
                   </TrackedWhatsAppLink>
                 </div>
               </div>
@@ -888,10 +931,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Quiénes te forman</span>
-            <h2 className="text-burgundy mt-3 mb-4">Nuestros Formadores</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "Who Trains You" : "Quiénes te forman"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Our Trainers" : "Nuestros Formadores"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Un equipo con más de una década de experiencia en facilitación y formación de facilitadores.
+              {isEn ? "A team with over a decade of experience in facilitation and facilitator training." : "Un equipo con más de una década de experiencia en facilitación y formación de facilitadores."}
             </p>
           </div>
 
@@ -909,13 +952,12 @@ export default function EscuelaPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-burgundy/80 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="text-xl font-bold">Sergio Sanz</h3>
-                  <p className="text-coral-light text-sm">Fundador & Psicólogo Clínico</p>
+                  <p className="text-coral-light text-sm">{isEn ? "Founder & Clinical Psychologist" : "Fundador & Psicólogo Clínico"}</p>
                 </div>
               </div>
               <div className="p-6">
                 <p className="text-warm-gray-600 text-sm leading-relaxed">
-                  Psicólogo clínico con más de 10 años formando facilitadores en Latinoamérica y Europa.
-                  Creador del modelo integrativo FloreSiendo que combina psicoterapia con prácticas ancestrales.
+                  {isEn ? "Clinical psychologist with over 10 years training facilitators across Latin America and Europe. Creator of the FloreSiendo integrative model combining psychotherapy with ancestral practices." : "Psicólogo clínico con más de 10 años formando facilitadores en Latinoamérica y Europa. Creador del modelo integrativo FloreSiendo que combina psicoterapia con prácticas ancestrales."}
                 </p>
               </div>
             </div>
@@ -933,13 +975,12 @@ export default function EscuelaPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-burgundy/80 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <h3 className="text-xl font-bold">Flor Soeiro</h3>
-                  <p className="text-coral-light text-sm">Fundadora & Facilitadora</p>
+                  <p className="text-coral-light text-sm">{isEn ? "Co-Founder & Facilitator" : "Fundadora & Facilitadora"}</p>
                 </div>
               </div>
               <div className="p-6">
                 <p className="text-warm-gray-600 text-sm leading-relaxed">
-                  Facilitadora con amplia experiencia en acompañamiento de procesos de transformación personal.
-                  Su enfoque combina la calidez del corazón con la estructura necesaria para espacios seguros.
+                  {isEn ? "Facilitator with extensive experience accompanying personal transformation processes. Her approach combines heartfelt warmth with the structure needed for safe spaces." : "Facilitadora con amplia experiencia en acompañamiento de procesos de transformación personal. Su enfoque combina la calidez del corazón con la estructura necesaria para espacios seguros."}
                 </p>
               </div>
             </div>
@@ -951,10 +992,10 @@ export default function EscuelaPage() {
       <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-12">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Antes de aplicar</span>
-            <h2 className="text-burgundy mt-3 mb-4">Requisitos de Admisión</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "Before Applying" : "Antes de aplicar"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Admission Requirements" : "Requisitos de Admisión"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Para garantizar la seguridad y calidad de la formación, requerimos experiencia previa con nuestro enfoque.
+              {isEn ? "To ensure training safety and quality, we require prior experience with our approach." : "Para garantizar la seguridad y calidad de la formación, requerimos experiencia previa con nuestro enfoque."}
             </p>
           </div>
 
@@ -966,30 +1007,34 @@ export default function EscuelaPage() {
                 </div>
                 <div>
                   <h3 className="font-bold text-burgundy text-xl mb-3">
-                    Participación en al menos 2 encuentros con FloreSiendo
+                    {isEn ? "Participation in at least 2 FloreSiendo retreats" : "Participación en al menos 2 encuentros con FloreSiendo"}
                   </h3>
                   <p className="text-warm-gray-600 mb-4">
-                    Antes de iniciar la formación, necesitas haber participado en un mínimo de dos encuentros con nosotros.
-                    Esto nos permite conocerte, evaluar tu preparación y asegurar que comprendes nuestro enfoque integrativo.
+                    {isEn ? "Before starting the training, you need to have participated in a minimum of two retreats with us. This allows us to get to know you, assess your readiness, and ensure you understand our integrative approach." : "Antes de iniciar la formación, necesitas haber participado en un mínimo de dos encuentros con nosotros. Esto nos permite conocerte, evaluar tu preparación y asegurar que comprendes nuestro enfoque integrativo."}
                   </p>
                   <div className="bg-gold/10 rounded-xl p-4 border border-gold/20">
                     <p className="text-warm-gray-700 text-sm">
-                      <strong className="text-gold-dark">¿Tienes experiencia previa con otras organizaciones?</strong>{" "}
-                      Podemos considerar tu trayectoria caso por caso. Contáctanos para una evaluación personalizada.
+                      <strong className="text-gold-dark">{isEn ? "Have prior experience with other organizations?" : "¿Tienes experiencia previa con otras organizaciones?"}</strong>{" "}
+                      {isEn ? "We can consider your background on a case-by-case basis. Contact us for a personalized assessment." : "Podemos considerar tu trayectoria caso por caso. Contáctanos para una evaluación personalizada."}
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-8 pt-6 border-t border-warm-gray-100">
-                <h4 className="font-semibold text-warm-gray-800 mb-4">También valoramos:</h4>
+                <h4 className="font-semibold text-warm-gray-800 mb-4">{isEn ? "We also value:" : "También valoramos:"}</h4>
                 <div className="grid sm:grid-cols-2 gap-3">
-                  {[
+                  {(isEn ? [
+                    "Experience in therapeutic work or coaching",
+                    "Regular contemplative or meditative practice",
+                    "Emotional stability and willingness for personal work",
+                    "Commitment to ethics and service to others",
+                  ] : [
                     "Experiencia en trabajo terapéutico o coaching",
                     "Práctica contemplativa o meditativa regular",
                     "Estabilidad emocional y disposición al trabajo personal",
                     "Compromiso con la ética y el servicio a otros",
-                  ].map((item, i) => (
+                  ]).map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <CheckCircle2 className="w-5 h-5 text-coral flex-shrink-0" />
                       <span className="text-warm-gray-600 text-sm">{item}</span>
@@ -1003,7 +1048,7 @@ export default function EscuelaPage() {
                   href="/encuentros"
                   className="inline-flex items-center justify-center gap-2 bg-burgundy hover:bg-burgundy-dark text-white font-semibold py-3 px-6 rounded-full transition-all hover:scale-105"
                 >
-                  Ver próximos encuentros
+                  {isEn ? "See Upcoming Retreats" : "Ver próximos encuentros"}
                 </Link>
               </div>
             </div>
@@ -1015,26 +1060,36 @@ export default function EscuelaPage() {
       <section className="section-padding bg-warm-white">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Inversión</span>
-            <h2 className="text-burgundy mt-3 mb-4">Tu Inversión en esta Formación</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "Investment" : "Inversión"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Your Investment in This Training" : "Tu Inversión en esta Formación"}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Una inversión en ti mismo que te acompañará toda la vida profesional.
+              {isEn ? "An investment in yourself that will accompany you throughout your professional life." : "Una inversión en ti mismo que te acompañará toda la vida profesional."}
             </p>
           </div>
 
           <div className="max-w-lg mx-auto">
             <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-warm-gray-100">
               <div className="bg-gradient-to-r from-burgundy to-burgundy-dark p-8 text-white text-center">
-                <h3 className="text-2xl font-bold mb-2">Formación Completa</h3>
-                <p className="text-coral-light">Online + Presencial + Integración</p>
+                <h3 className="text-2xl font-bold mb-2">{isEn ? "Complete Training" : "Formación Completa"}</h3>
+                <p className="text-coral-light">{isEn ? "Online + In-Person + Integration" : "Online + Presencial + Integración"}</p>
               </div>
 
               <div className="p-8">
                 {/* What's Included */}
                 <div className="mb-8">
-                  <h4 className="font-bold text-warm-gray-800 mb-4">Incluye:</h4>
+                  <h4 className="font-bold text-warm-gray-800 mb-4">{isEn ? "Includes:" : "Incluye:"}</h4>
                   <ul className="space-y-3">
-                    {[
+                    {(isEn ? [
+                      "28 days of in-person training (Cycles 0-6)",
+                      "140+ hours of direct contact",
+                      "Accommodation and meals for each cycle",
+                      "Online follow-up sessions between cycles",
+                      "Role-play and online peer practice",
+                      "Case supervision with trainers",
+                      "Lifetime materials and resources",
+                      "Recognition as a trained facilitator",
+                      "Access to international alumni network",
+                    ] : [
                       "28 días de formación presencial (Ciclos 0-6)",
                       "140+ horas de contacto directo",
                       "Alojamiento y alimentación en cada ciclo",
@@ -1044,7 +1099,7 @@ export default function EscuelaPage() {
                       "Materiales y recursos de por vida",
                       "Reconocimiento como facilitador formado",
                       "Acceso a red internacional de egresados",
-                    ].map((item, i) => (
+                    ]).map((item, i) => (
                       <li key={i} className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-green-500" />
                         <span className="text-warm-gray-600">{item}</span>
@@ -1056,11 +1111,10 @@ export default function EscuelaPage() {
                 {/* Investment Info */}
                 <div className="bg-warm-gray-50 rounded-2xl p-6 mb-8">
                   <p className="text-warm-gray-600 text-center mb-4">
-                    La inversión se determina de forma personalizada según tu situación.
-                    Ofrecemos planes de pago flexibles de 3 a 6 meses.
+                    {isEn ? "The investment is determined on a personalized basis according to your situation. We offer flexible payment plans from 3 to 6 months." : "La inversión se determina de forma personalizada según tu situación. Ofrecemos planes de pago flexibles de 3 a 6 meses."}
                   </p>
                   <p className="text-center text-sm text-warm-gray-500">
-                    Solicita información para conocer opciones de inversión y facilidades de pago.
+                    {isEn ? "Request information to learn about investment options and payment plans." : "Solicita información para conocer opciones de inversión y facilidades de pago."}
                   </p>
                 </div>
 
@@ -1074,7 +1128,7 @@ export default function EscuelaPage() {
                   className="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-lg"
                 >
                   <WhatsAppIcon className="w-6 h-6" />
-                  Solicitar Información
+                  {isEn ? "Request Information" : "Solicitar Información"}
                 </TrackedWhatsAppLink>
               </div>
             </div>
@@ -1084,7 +1138,7 @@ export default function EscuelaPage() {
               <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-full shadow-sm border border-warm-gray-100">
                 <Shield className="w-5 h-5 text-green-500" />
                 <span className="text-warm-gray-600 text-sm">
-                  Garantía de satisfacción en la fase online
+                  {isEn ? "Satisfaction guarantee on the online phase" : "Garantía de satisfacción en la fase online"}
                 </span>
               </div>
             </div>
@@ -1096,39 +1150,39 @@ export default function EscuelaPage() {
       <section className="section-padding bg-warm-white">
         <div className="section-container">
           <div className="text-center mb-16">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Preguntas frecuentes</span>
-            <h2 className="text-burgundy mt-3 mb-4">Resuelve tus dudas</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{isEn ? "FAQ" : "Preguntas frecuentes"}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{isEn ? "Common Questions" : "Resuelve tus dudas"}</h2>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
             {[
               {
-                question: "¿Cuáles son los requisitos para entrar al programa?",
-                answer: "El requisito principal es haber participado en al menos 2 encuentros con FloreSiendo antes de iniciar la formación. Esto nos permite conocerte, evaluar tu preparación y asegurar que comprendes nuestro enfoque. Si tienes experiencia previa con otras organizaciones, podemos considerarla caso por caso.",
+                question: isEn ? "What are the requirements to enter the program?" : "¿Cuáles son los requisitos para entrar al programa?",
+                answer: isEn ? "The main requirement is having participated in at least 2 FloreSiendo retreats before starting the training. This allows us to get to know you, assess your readiness, and ensure you understand our approach. If you have prior experience with other organizations, we can consider it on a case-by-case basis." : "El requisito principal es haber participado en al menos 2 encuentros con FloreSiendo antes de iniciar la formación. Esto nos permite conocerte, evaluar tu preparación y asegurar que comprendes nuestro enfoque. Si tienes experiencia previa con otras organizaciones, podemos considerarla caso por caso.",
               },
               {
-                question: "¿Cómo se evalúa el progreso en la formación?",
-                answer: "A diferencia de programas basados solo en asistencia, utilizamos evaluación por competencias. Medimos tu desarrollo en las 6 competencias del facilitador mediante role-play, práctica supervisada progresiva (de apoyo a responsable) y retroalimentación estructurada. El reconocimiento como facilitador formado requiere demostrar dominio en al menos 5 de las 6 competencias.",
+                question: isEn ? "How is progress evaluated in the training?" : "¿Cómo se evalúa el progreso en la formación?",
+                answer: isEn ? "Unlike attendance-only programs, we use competency-based assessment. We measure your development across the 6 facilitator competencies through role-play, progressive supervised practice (from support to lead), and structured feedback. Recognition as a trained facilitator requires demonstrating mastery in at least 5 of the 6 competencies." : "A diferencia de programas basados solo en asistencia, utilizamos evaluación por competencias. Medimos tu desarrollo en las 6 competencias del facilitador mediante role-play, práctica supervisada progresiva (de apoyo a responsable) y retroalimentación estructurada. El reconocimiento como facilitador formado requiere demostrar dominio en al menos 5 de las 6 competencias.",
               },
               {
-                question: "¿Qué pasa si no estoy listo para facilitar al final?",
-                answer: "La seguridad es nuestra prioridad. Si identificamos áreas que requieren más desarrollo, ofrecemos ciclos adicionales de práctica supervisada y mentoría personalizada. No reconocemos como facilitador formado a nadie que no demuestre las competencias necesarias para facilitar con seguridad.",
+                question: isEn ? "What happens if I'm not ready to facilitate by the end?" : "¿Qué pasa si no estoy listo para facilitar al final?",
+                answer: isEn ? "Safety is our priority. If we identify areas that need more development, we offer additional supervised practice cycles and personalized mentoring. We do not recognize anyone as a trained facilitator who has not demonstrated the competencies needed to facilitate safely." : "La seguridad es nuestra prioridad. Si identificamos áreas que requieren más desarrollo, ofrecemos ciclos adicionales de práctica supervisada y mentoría personalizada. No reconocemos como facilitador formado a nadie que no demuestre las competencias necesarias para facilitar con seguridad.",
               },
               {
-                question: "¿Cuánto dura la formación completa?",
-                answer: "Los 7 ciclos (del 0 al 6) se distribuyen a lo largo de 12-18 meses, con 2-4 semanas de integración entre cada ciclo. Este espaciado permite la práctica personal, sesiones de seguimiento online quincenales y asimilación profunda del aprendizaje.",
+                question: isEn ? "How long is the complete training?" : "¿Cuánto dura la formación completa?",
+                answer: isEn ? "The 7 cycles (0 through 6) are spread over 12-18 months, with 2-4 weeks of integration between each cycle. This spacing allows for personal practice, biweekly online follow-up sessions, and deep assimilation of learning." : "Los 7 ciclos (del 0 al 6) se distribuyen a lo largo de 12-18 meses, con 2-4 semanas de integración entre cada ciclo. Este espaciado permite la práctica personal, sesiones de seguimiento online quincenales y asimilación profunda del aprendizaje.",
               },
               {
-                question: "¿Cuál es el tamaño del grupo?",
-                answer: "Mantenemos cohortes de máximo 10-12 participantes para garantizar atención personalizada y seguridad. Las sesiones de seguimiento online entre ciclos son de 7-9 personas con un mentor asignado.",
+                question: isEn ? "What is the group size?" : "¿Cuál es el tamaño del grupo?",
+                answer: isEn ? "We maintain cohorts of maximum 10-12 participants to ensure personalized attention and safety. Online follow-up sessions between cycles have 7-9 people with an assigned mentor." : "Mantenemos cohortes de máximo 10-12 participantes para garantizar atención personalizada y seguridad. Las sesiones de seguimiento online entre ciclos son de 7-9 personas con un mentor asignado.",
               },
               {
-                question: "¿Hay requisitos de educación continua?",
-                answer: "Sí, como parte de nuestra red de egresados, recomendamos 16 horas anuales de educación continua. Ofrecemos talleres avanzados, supervisión de pares y especializaciones opcionales para mantener y profundizar tus competencias.",
+                question: isEn ? "Are there continuing education requirements?" : "¿Hay requisitos de educación continua?",
+                answer: isEn ? "Yes, as part of our alumni network, we recommend 16 annual hours of continuing education. We offer advanced workshops, peer supervision, and optional specializations to maintain and deepen your competencies." : "Sí, como parte de nuestra red de egresados, recomendamos 16 horas anuales de educación continua. Ofrecemos talleres avanzados, supervisión de pares y especializaciones opcionales para mantener y profundizar tus competencias.",
               },
               {
-                question: "¿Hay opciones de pago?",
-                answer: "Sí, ofrecemos planes de pago flexibles de 3 a 12 meses. También tenemos un número limitado de becas parciales para personas comprometidas que lo necesiten. Consulta las opciones disponibles.",
+                question: isEn ? "Are there payment options?" : "¿Hay opciones de pago?",
+                answer: isEn ? "Yes, we offer flexible payment plans from 3 to 12 months. We also have a limited number of partial scholarships for committed individuals who need them. Ask about available options." : "Sí, ofrecemos planes de pago flexibles de 3 a 12 meses. También tenemos un número limitado de becas parciales para personas comprometidas que lo necesiten. Consulta las opciones disponibles.",
               },
             ].map((faq, index) => (
               <details
@@ -1156,11 +1210,10 @@ export default function EscuelaPage() {
 
         <div className="section-container relative z-10 text-center">
           <h2 className="text-white mb-6 text-3xl md:text-4xl">
-            ¿Listo para dar el siguiente paso?
+            {isEn ? "Ready to Take the Next Step?" : "¿Listo para dar el siguiente paso?"}
           </h2>
           <p className="text-coral-light/80 mb-10 max-w-2xl mx-auto text-lg">
-            Únete a más de 50 facilitadores que han transformado su vida y la de otros
-            a través de esta formación. Tu camino como facilitador comienza aquí.
+            {isEn ? "Join over 50 facilitators who have transformed their lives and the lives of others through this training. Your path as a facilitator begins here." : "Únete a más de 50 facilitadores que han transformado su vida y la de otros a través de esta formación. Tu camino como facilitador comienza aquí."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1173,18 +1226,18 @@ export default function EscuelaPage() {
               className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-4 px-8 rounded-full text-lg transition-all hover:scale-105 shadow-xl"
             >
               <WhatsAppIcon className="w-6 h-6" />
-              Solicitar Información
+              {isEn ? "Request Information" : "Solicitar Información"}
             </TrackedWhatsAppLink>
             <Link
               href="/encuentros"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
             >
-              Conocer Encuentros Primero
+              {isEn ? "Explore Retreats First" : "Conocer Encuentros Primero"}
             </Link>
           </div>
 
           <p className="mt-8 text-white/60 text-sm">
-            Próxima generación: Marzo 2026 · Solo 12 lugares disponibles
+            {isEn ? "Next cohort: March 2026 · Only 12 spots available" : "Próxima generación: Marzo 2026 · Solo 12 lugares disponibles"}
           </p>
         </div>
       </section>

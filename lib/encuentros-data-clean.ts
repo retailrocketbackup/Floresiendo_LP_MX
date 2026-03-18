@@ -126,7 +126,7 @@ export const encuentroMarzo2026Clean: Encuentro = {
       Cuenta con más de 10 años de experiencia en acompañamiento de procesos de crecimiento personal.
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
-      image: "/images/ramon-henriquez.png",
+      image: "/images/ramon-henriquez.webp",
     },
     {
       name: "Rodrigo Roble",
@@ -288,7 +288,7 @@ export const encuentroAbril2026Clean: Encuentro = {
       Cuenta con más de 10 años de experiencia en acompañamiento de procesos de crecimiento personal.
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
-      image: "/images/ramon-henriquez.png",
+      image: "/images/ramon-henriquez.webp",
     },
     {
       name: "Rodrigo Roble",

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { trackWhatsAppLead } from "@/lib/meta-tracking";
 
 interface FloatingWhatsAppProps {
@@ -13,10 +14,15 @@ interface FloatingWhatsAppProps {
 
 export function FloatingWhatsApp({
   phoneNumber = "526182301481",
-  message = "Hola, me gustaría saber más sobre los encuentros de FloreSiendo México",
+  message,
   page = "general",
   encuentroSlug,
 }: FloatingWhatsAppProps) {
+  const locale = useLocale();
+  const defaultMessage = locale === "en"
+    ? "Hi, I'd like to learn more about FloreSiendo retreats in Mexico"
+    : "Hola, me gustar\u00eda saber m\u00e1s sobre los encuentros de FloreSiendo M\u00e9xico";
+  const finalMessage = message || defaultMessage;
   const [isVisible, setIsVisible] = useState(false);
 
   // Show button after 3 seconds
@@ -36,7 +42,7 @@ export function FloatingWhatsApp({
       eventName: "Lead_WhatsApp_Sticky",
     });
 
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(finalMessage)}`;
     window.open(url, "_blank");
   };
 
@@ -48,7 +54,7 @@ export function FloatingWhatsApp({
       <button
         onClick={handleClick}
         className="group relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 overflow-hidden"
-        aria-label="Contactar por WhatsApp"
+        aria-label={locale === "en" ? "Contact via WhatsApp" : "Contactar por WhatsApp"}
       >
         {/* Pulse animation */}
         <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-25" />

@@ -50,7 +50,7 @@ export function CountdownTimer({
 
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    }, 60000);
 
     return () => clearInterval(timer);
   }, [targetDate]);
@@ -103,7 +103,6 @@ export function CountdownTimer({
     { value: timeLeft.days, label: "Días" },
     { value: timeLeft.hours, label: "Horas" },
     { value: timeLeft.minutes, label: "Min" },
-    { value: timeLeft.seconds, label: "Seg" },
   ];
 
   return (

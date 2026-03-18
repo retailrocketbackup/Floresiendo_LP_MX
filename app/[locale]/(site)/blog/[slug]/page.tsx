@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 import { getBlogPost, getBlogPostSlugs, getReadingTime, formatDate, decodeHtmlEntities } from "@/lib/cosmic";

@@ -1,40 +1,81 @@
-import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Clock, ArrowRight, MessageSquare } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/routing";
 
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Contacto — Hablemos sobre tu Proceso",
-  description:
-    "Contáctanos por WhatsApp para conocer más sobre nuestros encuentros y retiros de transformación personal en Morelos, México. Respuesta en menos de 24 horas.",
-  alternates: {
-    canonical: "https://escuelafloresiendomexico.com/contacto",
-  },
-  openGraph: {
-    title: "Contacto | FloreSiendo México",
-    description:
-      "Contáctanos por WhatsApp para conocer más sobre nuestros retiros en México.",
-    url: "https://escuelafloresiendomexico.com/contacto",
-    images: [
-      {
-        url: "/images/cosmic-spiritual-background.webp",
-        width: 1200,
-        height: 630,
-        alt: "Contacto FloreSiendo",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Contacto | FloreSiendo México",
-    description:
-      "Contáctanos por WhatsApp. Respuesta en menos de 24 horas.",
-    images: ["/images/cosmic-spiritual-background.webp"],
-  },
-};
+const BASE_URL = "https://escuelafloresiendomexico.com";
 
-export default function ContactoPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  const isEn = locale === "en";
+  const prefix = isEn ? "/en" : "";
+
+  return {
+    title: t("hero_title") + " — FloreSiendo",
+    description: t("hero_description"),
+    alternates: {
+      canonical: `${BASE_URL}${prefix}/contacto`,
+      languages: {
+        es: `${BASE_URL}/contacto`,
+        en: `${BASE_URL}/en/contacto`,
+        "x-default": `${BASE_URL}/contacto`,
+      },
+    },
+    openGraph: {
+      title: `${t("hero_title")} | FloreSiendo México`,
+      description: t("whatsapp_description"),
+      url: `${BASE_URL}${prefix}/contacto`,
+      images: [
+        {
+          url: "/images/cosmic-spiritual-background.webp",
+          width: 1200,
+          height: 630,
+          alt: `${t("hero_title")} FloreSiendo`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${t("hero_title")} | FloreSiendo México`,
+      description: t("hero_description"),
+      images: ["/images/cosmic-spiritual-background.webp"],
+    },
+  };
+}
+
+export default async function ContactoPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  const tc = await getTranslations({ locale, namespace: "common" });
+
+  const whatsappMessage =
+    locale === "en"
+      ? "Hello, I'd like to know more about FloreSiendo México encounters"
+      : "Hola, me gustaría saber más sobre los encuentros de FloreSiendo México";
+
+  const whatsappCallMessage =
+    locale === "en"
+      ? "Hello, I'd like to schedule a call to learn more about the encounters"
+      : "Hola, me gustaría agendar una llamada para conocer más sobre los encuentros";
+
+  const faqs = [
+    { question: t("faq_1_q"), answer: t("faq_1_a") },
+    { question: t("faq_2_q"), answer: t("faq_2_a") },
+    { question: t("faq_3_q"), answer: t("faq_3_a") },
+    { question: t("faq_4_q"), answer: t("faq_4_a") },
+  ];
+
   return (
     <main>
       {/* Hero */}
@@ -42,7 +83,7 @@ export default function ContactoPage() {
         <div className="absolute inset-0">
           <Image
             src="/images/cosmic-spiritual-background.webp"
-            alt="Contacto FloreSiendo"
+            alt={`${t("hero_title")} FloreSiendo`}
             fill
             priority
             sizes="100vw"
@@ -58,13 +99,13 @@ export default function ContactoPage() {
         <div className="relative z-10 section-container text-center text-white">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 animate-fade-in">
             <MessageSquare size={16} className="text-coral" />
-            <span className="text-sm font-medium">Respuesta en menos de 24 hrs</span>
+            <span className="text-sm font-medium">{t("hero_badge")}</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto animate-slide-up">
-            Hablemos
+            {t("hero_title")}
           </h1>
           <p className="text-xl text-coral-light/90 max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Cada proceso es único. Platiquemos sobre el tuyo.
+            {t("hero_description")}
           </p>
         </div>
       </section>
@@ -84,17 +125,16 @@ export default function ContactoPage() {
                 />
               </div>
               <h2 className="text-2xl font-bold text-warm-gray-800 mb-4">
-                Escríbenos por WhatsApp
+                {t("whatsapp_title")}
               </h2>
               <p className="text-warm-gray-600 mb-6">
-                La manera más directa de conectar. Cuéntanos qué estás buscando
-                y te orientamos sin compromiso.
+                {t("whatsapp_description")}
               </p>
               <p className="text-2xl font-bold text-green-600 mb-6">
-                +52 618 230 1481
+                {tc("phone")}
               </p>
               <a
-                href="https://wa.me/526182301481?text=Hola,%20me%20gustaría%20saber%20más%20sobre%20los%20encuentros%20de%20FloreSiendo%20México"
+                href={`https://wa.me/526182301481?text=${encodeURIComponent(whatsappMessage)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 w-full px-6 py-4 text-lg font-bold bg-green-500 hover:bg-green-600 text-white rounded-full transition-all duration-300 hover:scale-105 shadow-lg"
@@ -105,7 +145,7 @@ export default function ContactoPage() {
                   width={24}
                   height={24}
                 />
-                Iniciar conversación
+                {t("whatsapp_cta")}
               </a>
             </div>
 
@@ -115,20 +155,19 @@ export default function ContactoPage() {
                 <MapPin className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-warm-gray-800 mb-4">
-                Nuestro Espacio
+                {t("space_title")}
               </h2>
               <p className="text-warm-gray-600 mb-6">
-                Un refugio rodeado de naturaleza donde facilitamos
-                encuentros de 3 noches.
+                {t("space_description")}
               </p>
               <div className="space-y-4 text-warm-gray-700">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-coral flex-shrink-0 mt-1" />
-                  <span>Morelos, México<br /><span className="text-warm-gray-500 text-sm">(Ubicación exacta al confirmar asistencia)</span></span>
+                  <span>Morelos, México<br /><span className="text-warm-gray-500 text-sm">({t("space_location_note")})</span></span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-coral flex-shrink-0 mt-1" />
-                  <span>Retiros de 3 noches<br /><span className="text-warm-gray-500 text-sm">Jueves a Domingo</span></span>
+                  <span>{t("space_schedule")}<br /><span className="text-warm-gray-500 text-sm">{t("space_days")}</span></span>
                 </div>
               </div>
             </div>
@@ -140,32 +179,15 @@ export default function ContactoPage() {
       <section className="section-padding bg-gradient-warm">
         <div className="section-container">
           <div className="text-center mb-12">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">Resolvemos tus dudas</span>
-            <h2 className="text-burgundy mt-3 mb-4">Preguntas frecuentes</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{t("faq_label")}</span>
+            <h2 className="text-burgundy mt-3 mb-4">{t("faq_title")}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Las preguntas más comunes sobre nuestros encuentros y proceso.
+              {t("faq_description")}
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
-            {[
-              {
-                question: "¿Cómo sé si estoy listo para un encuentro?",
-                answer: "Agenda una llamada sin compromiso. Conversaremos sobre tu situación, expectativas y resolveremos todas tus dudas para determinar juntos si es el momento adecuado.",
-              },
-              {
-                question: "¿Es seguro?",
-                answer: "La seguridad es nuestra prioridad. Realizamos evaluación previa, tenemos protocolos establecidos y facilitadores con más de 10 años de experiencia.",
-              },
-              {
-                question: "¿Qué incluye el costo del encuentro?",
-                answer: "Hospedaje, alimentación, ceremonias, sesiones de integración, acompañamiento de facilitadores y seguimiento post-retiro.",
-              },
-              {
-                question: "¿Cuánto tiempo dura el encuentro?",
-                answer: "Los encuentros son de 3 noches (jueves a domingo), aunque también ofrecemos opciones más largas para procesos de formación.",
-              },
-            ].map((item, index) => (
+            {faqs.map((item, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-burgundy mb-2 text-lg">{item.question}</h3>
                 <p className="text-warm-gray-600 leading-relaxed">{item.answer}</p>
@@ -178,14 +200,13 @@ export default function ContactoPage() {
       {/* CTA */}
       <section className="section-padding bg-gradient-to-b from-coral via-coral-dark to-burgundy text-white -mb-px">
         <div className="section-container text-center">
-          <h2 className="text-white mb-6">¿Prefieres una llamada?</h2>
+          <h2 className="text-white mb-6">{t("call_cta_title")}</h2>
           <p className="text-white/90 mb-10 max-w-2xl mx-auto text-lg">
-            Podemos agendar una conversación telefónica si te resulta más cómodo.
-            Escríbenos por WhatsApp y coordinamos.
+            {t("call_cta_description")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/526182301481?text=Hola,%20me%20gustaría%20agendar%20una%20llamada%20para%20conocer%20más%20sobre%20los%20encuentros"
+              href={`https://wa.me/526182301481?text=${encodeURIComponent(whatsappCallMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold bg-white text-coral hover:bg-warm-gray-50 rounded-full shadow-xl hover:scale-105 transition-all duration-300"
@@ -196,13 +217,13 @@ export default function ContactoPage() {
                 width={24}
                 height={24}
               />
-              Agendar llamada
+              {t("call_cta_button")}
             </a>
             <Link
               href="/encuentros"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold bg-white/20 hover:bg-white/30 text-white border border-white/40 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-105"
             >
-              Ver encuentros
+              {tc("view_encounters")}
               <ArrowRight size={20} />
             </Link>
           </div>

@@ -4,6 +4,8 @@
 import "./funnel.css";
 import { FunnelFooter } from "@/components/funnel-footer";
 import { TrackingScripts } from "@/components/tracking-scripts";
+import { NextIntlClientProvider } from "next-intl";
+import messages from "@/messages/es.json";
 
 export default function FunnelLayout({
   children,
@@ -11,10 +13,10 @@ export default function FunnelLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <NextIntlClientProvider locale="es" messages={messages}>
       <TrackingScripts strategy="lazyOnload" includeHubspot={false} />
       {children}
       <FunnelFooter />
-    </>
+    </NextIntlClientProvider>
   );
 }

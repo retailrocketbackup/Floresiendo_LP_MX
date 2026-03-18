@@ -2,20 +2,22 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Users, Heart, Calendar, Award } from "lucide-react";
+import { useLocale } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 interface Stat {
   value: number;
   suffix?: string;
   prefix?: string;
   label: string;
+  labelEn: string;
   icon: React.ElementType;
   description?: string;
+  descriptionEn?: string;
 }
 
 interface AnimatedStatsProps {
   stats?: Stat[];
-  title?: string;
-  subtitle?: string;
 }
 
 const defaultStats: Stat[] = [
@@ -23,29 +25,37 @@ const defaultStats: Stat[] = [
     value: 1000,
     suffix: "+",
     label: "Participantes",
+    labelEn: "Participants",
     icon: Users,
     description: "Personas que han encontrado su camino",
+    descriptionEn: "People who have found their path",
   },
   {
     value: 10,
     suffix: "+",
     label: "Años de Experiencia",
+    labelEn: "Years of Experience",
     icon: Calendar,
     description: "Acompañando procesos de bienestar",
+    descriptionEn: "Accompanying wellbeing journeys",
   },
   {
     value: 91,
     suffix: "%",
     label: "Satisfacción",
+    labelEn: "Satisfaction",
     icon: Heart,
     description: "Recomendarían la experiencia",
+    descriptionEn: "Would recommend the experience",
   },
   {
     value: 100,
     suffix: "+",
     label: "Retiros Realizados",
+    labelEn: "Retreats Completed",
     icon: Award,
     description: "Ceremonias y encuentros sagrados",
+    descriptionEn: "Sacred ceremonies and retreats",
   },
 ];
 
@@ -92,7 +102,7 @@ function useCountUp(end: number, duration: number = 2000, start: boolean = false
   return count;
 }
 
-function StatCard({ stat, isVisible, delay }: { stat: Stat; isVisible: boolean; delay: number }) {
+function StatCard({ stat, isVisible, delay, isEn }: { stat: Stat; isVisible: boolean; delay: number; isEn: boolean }) {
   const count = useCountUp(stat.value, 2000, isVisible);
   const Icon = stat.icon;
 
@@ -116,11 +126,11 @@ function StatCard({ stat, isVisible, delay }: { stat: Stat; isVisible: boolean; 
       </div>
 
       {/* Label */}
-      <h3 className="text-xl font-semibold text-white mb-1">{stat.label}</h3>
+      <h3 className="text-xl font-semibold text-white mb-1">{isEn ? stat.labelEn : stat.label}</h3>
 
       {/* Description */}
       {stat.description && (
-        <p className="text-coral-light/70 text-sm">{stat.description}</p>
+        <p className="text-coral-light/70 text-sm">{isEn ? stat.descriptionEn : stat.description}</p>
       )}
     </div>
   );
@@ -128,9 +138,11 @@ function StatCard({ stat, isVisible, delay }: { stat: Stat; isVisible: boolean; 
 
 export function AnimatedStats({
   stats = defaultStats,
-  title = "Nuestra Comunidad en Números",
-  subtitle = "Cada número representa una historia de crecimiento y renacimiento",
 }: AnimatedStatsProps) {
+  const locale = useLocale();
+  const isEn = locale === "en";
+  const title = isEn ? "Our Community in Numbers" : "Nuestra Comunidad en Números";
+  const subtitle = isEn ? "Every number represents a story of growth and renewal" : "Cada número representa una historia de crecimiento y renacimiento";
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -168,7 +180,7 @@ export function AnimatedStats({
           }`}
         >
           <span className="inline-block px-4 py-2 bg-white/10 text-coral-light rounded-full text-sm font-semibold mb-4">
-            Impacto
+            {isEn ? "Impact" : "Impacto"}
           </span>
           <h2 className="text-white mb-4">{title}</h2>
           <p className="text-coral-light/80 max-w-2xl mx-auto">{subtitle}</p>
@@ -182,6 +194,7 @@ export function AnimatedStats({
               stat={stat}
               isVisible={isVisible}
               delay={index * 150}
+              isEn={isEn}
             />
           ))}
         </div>
@@ -193,14 +206,14 @@ export function AnimatedStats({
           }`}
         >
           <p className="text-coral-light/60 text-sm mb-4">
-            ¿Listo para escribir tu propia historia?
+            {isEn ? "Ready to write your own story?" : "¿Listo para escribir tu propia historia?"}
           </p>
-          <a
+          <Link
             href="/contacto"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold bg-coral hover:bg-coral-dark text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
-            Comienza Tu Proceso
-          </a>
+            {isEn ? "Begin Your Journey" : "Comienza Tu Proceso"}
+          </Link>
         </div>
       </div>
     </section>
