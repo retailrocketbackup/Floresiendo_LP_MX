@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Leaf } from "lucide-react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
 import { practicas, defaultEncuentroPracticas, type Practica } from "@/lib/practicas-data";
 import { PracticaModal } from "./practica-modal";
+import { useTranslations } from "next-intl";
 
 interface PracticasGridProps {
   practicaSlugs?: string[];
@@ -13,10 +15,15 @@ interface PracticasGridProps {
 
 export function PracticasGrid({
   practicaSlugs = defaultEncuentroPracticas,
-  title = "Prácticas del Encuentro",
+  title,
 }: PracticasGridProps) {
   const [selectedPractica, setSelectedPractica] = useState<Practica | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const t = useTranslations("encounters");
+  const locale = useLocale();
+  const isEn = locale === "en";
+
+  const displayTitle = title || t("detail_practices_title");
 
   // Get practices based on slugs
   const practicasToShow = practicaSlugs
@@ -33,12 +40,15 @@ export function PracticasGrid({
     setSelectedPractica(null);
   };
 
+  const getName = (p: Practica) => isEn ? (p.nameEn || p.name) : p.name;
+  const getSessions = (p: Practica) => isEn ? (p.sessionsEn || p.sessions) : p.sessions;
+
   return (
     <>
       <section className="py-12 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-[#8b2a4a] text-center mb-8">
-            {title}
+            {displayTitle}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {practicasToShow.map((practica) => (
@@ -51,7 +61,7 @@ export function PracticasGrid({
                   {practica.image ? (
                     <Image
                       src={practica.image}
-                      alt={practica.name}
+                      alt={getName(practica)}
                       width={80}
                       height={80}
                       className="w-full h-full object-cover"
@@ -63,23 +73,23 @@ export function PracticasGrid({
                   )}
                 </div>
                 <p className={`text-sm md:text-lg font-medium ${practica.textColor}`}>
-                  {practica.name}
+                  {getName(practica)}
                 </p>
                 {practica.sessions && (
                   <p className="text-xs md:text-sm text-warm-gray-500 mt-1">
-                    {practica.sessions}
+                    {getSessions(practica)}
                   </p>
                 )}
                 {practica.optional && (
                   <span className="inline-block mt-2 px-2 py-0.5 text-xs bg-warm-gray-200 text-warm-gray-600 rounded-full">
-                    Opcional
+                    {t("detail_optional")}
                   </span>
                 )}
               </button>
             ))}
           </div>
           <p className="text-center text-warm-gray-500 text-sm mt-6">
-            Haz clic en cada práctica para conocer más detalles
+            {t("detail_click_hint")}
           </p>
         </div>
       </section>

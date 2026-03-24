@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   categoryConfig,
   type DaySchedule,
@@ -119,6 +120,7 @@ export function ScheduleDisplay({
   retreatTitle = "Encuentro FloreSiendo",
   retreatYear = 2026
 }: ScheduleDisplayProps) {
+  const t = useTranslations("encounters");
   // Start with all days collapsed
   const [expandedDays, setExpandedDays] = useState<number[]>([]);
   const [showCalendarMenu, setShowCalendarMenu] = useState(false);
@@ -178,8 +180,8 @@ export function ScheduleDisplay({
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <span className="hidden sm:inline">Agregar al Calendario</span>
-              <span className="sm:hidden">Calendario</span>
+              <span className="hidden sm:inline">{t("schedule_add_calendar")}</span>
+              <span className="sm:hidden">{t("schedule_calendar")}</span>
               <svg className={`w-4 h-4 transition-transform ${showCalendarMenu ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -207,7 +209,7 @@ export function ScheduleDisplay({
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  Descargar .ics (Apple/Outlook)
+                  {t("schedule_download_ics")}
                 </button>
               </div>
             )}
@@ -358,7 +360,7 @@ export function ScheduleDisplay({
                     {/* Collapsed Summary */}
                     {!isExpanded && (
                       <div className="flex items-center gap-3 mt-2 text-white/70 text-sm">
-                        <span>{summary.count} actividades</span>
+                        <span>{summary.count} {t("schedule_activities")}</span>
                         <span>·</span>
                         <span>{summary.startTime} - {summary.endTime}</span>
                         {summary.ceremonyCount > 0 && (
@@ -366,7 +368,7 @@ export function ScheduleDisplay({
                             <span>·</span>
                             <span className="flex items-center gap-1">
                               <span>🌙</span>
-                              {summary.ceremonyCount} ceremonia{summary.ceremonyCount > 1 ? "s" : ""}
+                              {summary.ceremonyCount} {summary.ceremonyCount > 1 ? t("schedule_ceremonies") : t("schedule_ceremony")}
                             </span>
                           </>
                         )}
@@ -442,7 +444,7 @@ export function ScheduleDisplay({
                               {/* Optional Badge */}
                               {isOptional && (
                                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                                  Opcional
+                                  {t("detail_optional")}
                                 </span>
                               )}
                             </div>

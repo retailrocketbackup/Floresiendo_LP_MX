@@ -77,6 +77,8 @@ export interface Facilitator {
   image?: string;
   imagePosition?: string; // CSS object-position for face centering
   imageScale?: number; // Scale factor for zooming into face
+  roleEn?: string;
+  bioEn?: string;
 }
 
 export interface Encuentro {
@@ -234,27 +236,41 @@ export const encuentroMarzo2026: Encuentro = {
     {
       name: "Rodrigo Roble",
       role: "Facilitador Egresado de Escuela FloreSiendo",
+      roleEn: "Graduate Facilitator, FloreSiendo School",
       bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
       Su enfoque integra la conexión con la naturaleza y las prácticas ancestrales para guiar
       experiencias profundas de bienestar y autodescubrimiento.`,
+      bioEn: `Facilitator with extensive experience guiding transformation processes.
+      His approach integrates connection with nature and ancestral practices to guide
+      profound experiences of wellbeing and self-discovery.`,
       image: "/images/Roble.jpg",
     },
     {
       name: "Ramon Henriquez",
       role: "Terapeuta Holistico",
+      roleEn: "Holistic Therapist",
       bio: `Terapeuta psicoemocional con formación en Programación Neurolingüística (PNL) y psicoterapia integrativa.
 
       Cuenta con más de 10 años de experiencia en acompañamiento de procesos de expansión de consciencia.
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas para trabajar la mente con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
+      bioEn: `Psycho-emotional therapist with training in Neuro-Linguistic Programming (NLP) and integrative psychotherapy.
+
+      Over 10 years of experience guiding consciousness expansion processes.
+
+      Brings an integrative perspective combining modern psychotherapeutic tools for the mind with ancestral wisdom, creating a safe space for inner exploration.`,
       image: "/images/ramon-henriquez.webp",
     },
     {
       name: "Karla Nava",
       role: "Facilitadora en Formación",
+      roleEn: "Facilitator in Training",
       bio: `Facilitadora con experiencia en crear espacios seguros y amorosos para el trabajo interior.
       Su presencia cálida y su capacidad de escucha profunda acompañan a cada participante
       en su proceso único de reconexión.`,
+      bioEn: `Facilitator experienced in creating safe and loving spaces for inner work.
+      Her warm presence and deep listening ability accompany each participant
+      in their unique process of reconnection.`,
       image: "",
     },
   ],
@@ -433,27 +449,41 @@ export const encuentroAbril2026: Encuentro = {
     {
       name: "Rodrigo Roble",
       role: "Facilitador Egresado de Escuela FloreSiendo",
+      roleEn: "Graduate Facilitator, FloreSiendo School",
       bio: `Facilitador con amplia experiencia en acompañamiento de procesos de transformación.
       Su enfoque integra la conexión con la naturaleza y las prácticas ancestrales para guiar
       experiencias profundas de bienestar y autodescubrimiento.`,
+      bioEn: `Facilitator with extensive experience guiding transformation processes.
+      His approach integrates connection with nature and ancestral practices to guide
+      profound experiences of wellbeing and self-discovery.`,
       image: "/images/Roble.jpg",
     },
     {
       name: "Ramon Henriquez",
       role: "Terapeuta Holistico",
+      roleEn: "Holistic Therapist",
       bio: `Terapeuta psicoemocional con formación en Programación Neurolingüística (PNL) y psicoterapia integrativa.
 
       Cuenta con más de 10 años de experiencia en acompañamiento de procesos de expansión de consciencia.
 
       Aporta una perspectiva integrativa que combina herramientas psicoterapéuticas modernas para trabajar la mente con la sabiduría ancestral, creando un espacio seguro para la exploración interior.`,
+      bioEn: `Psycho-emotional therapist with training in Neuro-Linguistic Programming (NLP) and integrative psychotherapy.
+
+      Over 10 years of experience guiding consciousness expansion processes.
+
+      Brings an integrative perspective combining modern psychotherapeutic tools for the mind with ancestral wisdom, creating a safe space for inner exploration.`,
       image: "/images/ramon-henriquez.webp",
     },
     {
       name: "Karla Nava",
       role: "Facilitadora en Formación",
+      roleEn: "Facilitator in Training",
       bio: `Facilitadora con experiencia en crear espacios seguros y amorosos para el trabajo interior.
       Su presencia cálida y su capacidad de escucha profunda acompañan a cada participante
       en su proceso único de reconexión.`,
+      bioEn: `Facilitator experienced in creating safe and loving spaces for inner work.
+      Her warm presence and deep listening ability accompany each participant
+      in their unique process of reconnection.`,
       image: "",
     },
   ],

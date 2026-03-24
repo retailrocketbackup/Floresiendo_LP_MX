@@ -3,12 +3,15 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Facilitator {
   name: string;
   role: string;
   bio: string;
   image: string;
+  roleEn?: string;
+  bioEn?: string;
 }
 
 interface FacilitadoresCarouselProps {
@@ -26,6 +29,9 @@ export function FacilitadoresCarousel({
   autoPlay = true,
   autoPlayInterval = 5000,
 }: FacilitadoresCarouselProps) {
+  const t = useTranslations("encounters");
+  const locale = useLocale();
+  const isEn = locale === "en";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -160,14 +166,14 @@ export function FacilitadoresCarousel({
                     {currentFacilitator.name}
                   </h3>
                   <p className="text-[#d4a853] font-semibold mb-6">
-                    {currentFacilitator.role}
+                    {isEn ? (currentFacilitator.roleEn || currentFacilitator.role) : currentFacilitator.role}
                   </p>
 
                   {/* Bio with quote icon */}
                   <div className="relative">
                     <Quote className="absolute -top-2 -left-2 w-8 h-8 text-[#8b2a4a]/10" />
                     <p className="text-warm-gray-600 leading-relaxed pl-6">
-                      {currentFacilitator.bio}
+                      {isEn ? (currentFacilitator.bioEn || currentFacilitator.bio) : currentFacilitator.bio}
                     </p>
                   </div>
                 </div>
@@ -181,14 +187,14 @@ export function FacilitadoresCarousel({
               <button
                 onClick={goToPrevious}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 md:-translate-x-full md:-left-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#8b2a4a] hover:bg-[#8b2a4a] hover:text-white transition-all duration-300 z-20"
-                aria-label="Facilitador anterior"
+                aria-label={t("facilitator_prev")}
               >
                 <ChevronLeft size={24} />
               </button>
               <button
                 onClick={goToNext}
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 md:translate-x-full md:-right-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#8b2a4a] hover:bg-[#8b2a4a] hover:text-white transition-all duration-300 z-20"
-                aria-label="Siguiente facilitador"
+                aria-label={t("facilitator_next")}
               >
                 <ChevronRight size={24} />
               </button>
@@ -208,7 +214,7 @@ export function FacilitadoresCarousel({
                     ? "bg-[#8b2a4a] w-8"
                     : "bg-[#8b2a4a]/20 hover:bg-[#8b2a4a]/40"
                 }`}
-                aria-label={`Ver ${facilitators[index].name}`}
+                aria-label={t("facilitator_view", { name: facilitators[index].name })}
               />
             ))}
           </div>

@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { X, Leaf } from "lucide-react";
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import type { Practica } from "@/lib/practicas-data";
 
 interface PracticaModalProps {
@@ -12,6 +13,10 @@ interface PracticaModalProps {
 }
 
 export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps) {
+  const t = useTranslations("encounters");
+  const locale = useLocale();
+  const isEn = locale === "en";
+
   // Handle escape key
   const handleEscape = useCallback(
     (e: KeyboardEvent) => {
@@ -35,6 +40,12 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
 
   if (!isOpen || !practica) return null;
 
+  const name = isEn ? (practica.nameEn || practica.name) : practica.name;
+  const subtitle = isEn ? (practica.subtitleEn || practica.subtitle) : practica.subtitle;
+  const sessions = isEn ? (practica.sessionsEn || practica.sessions) : practica.sessions;
+  const description = isEn ? (practica.descriptionEn || practica.description) : practica.description;
+  const details = isEn ? (practica.detailsEn || practica.details) : practica.details;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -49,7 +60,7 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-warm-gray-600 hover:text-burgundy hover:scale-110 transition-all"
-          aria-label="Cerrar"
+          aria-label={t("detail_close")}
         >
           <X size={20} />
         </button>
@@ -59,7 +70,7 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
           {practica.image ? (
             <Image
               src={practica.image}
-              alt={practica.name}
+              alt={name}
               fill
               sizes="(max-width: 768px) 100vw, 512px"
               className="object-cover"
@@ -80,21 +91,21 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
           {/* Title */}
           <div className="mb-4">
             <h3 className={`text-2xl font-bold ${practica.textColor} mb-1`}>
-              {practica.name}
+              {name}
             </h3>
-            {practica.subtitle && (
-              <p className="text-warm-gray-500 text-sm">{practica.subtitle}</p>
+            {subtitle && (
+              <p className="text-warm-gray-500 text-sm">{subtitle}</p>
             )}
             {/* Tags */}
             <div className="flex gap-2 mt-3">
-              {practica.sessions && (
+              {sessions && (
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${practica.bgColor} ${practica.textColor}`}>
-                  {practica.sessions}
+                  {sessions}
                 </span>
               )}
               {practica.optional && (
                 <span className="px-3 py-1 rounded-full text-xs font-medium bg-warm-gray-100 text-warm-gray-600">
-                  Opcional
+                  {t("detail_optional")}
                 </span>
               )}
             </div>
@@ -102,12 +113,12 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
 
           {/* Description */}
           <p className="text-warm-gray-600 leading-relaxed mb-4">
-            {practica.description}
+            {description}
           </p>
 
           {/* Details */}
           <p className="text-warm-gray-500 text-sm leading-relaxed">
-            {practica.details}
+            {details}
           </p>
 
           {/* CTA */}
@@ -116,8 +127,8 @@ export function PracticaModal({ practica, isOpen, onClose }: PracticaModalProps)
               href="/practicas-ancestrales"
               className={`inline-flex items-center text-sm font-medium ${practica.textColor} hover:underline`}
             >
-              Ver todas las prácticas
-              <span className="ml-1">→</span>
+              {t("detail_view_all_practices")}
+              <span className="ml-1">&rarr;</span>
             </a>
           </div>
         </div>

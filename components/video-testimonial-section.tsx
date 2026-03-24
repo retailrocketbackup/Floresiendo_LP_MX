@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Play, Quote, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // Lazy load Vimeo player - only loads ~150KB when user clicks play
 const TrackedVimeoPlayer = dynamic(
@@ -20,6 +21,7 @@ const VIMEO_VIDEO_ID = "1126936015";
 
 export function VideoTestimonialSection({ className = "", funnel = "encuentro" }: VideoTestimonialSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const t = useTranslations("encounters");
 
   return (
     <section className={`py-16 px-4 bg-white ${className}`}>
@@ -27,13 +29,13 @@ export function VideoTestimonialSection({ className = "", funnel = "encuentro" }
         {/* Header */}
         <div className="text-center mb-10">
           <span className="inline-block px-4 py-2 bg-[#f78080]/10 text-[#f78080] rounded-full text-sm font-semibold mb-4">
-            Testimonio Real
+            {t("testimonial_badge")}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-[#8b2a4a] mb-4">
-            Historias de Transformación
+            {t("testimonial_title")}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Escucha de primera mano cómo nuestras experiencias han transformado vidas.
+            {t("testimonial_subtitle")}
           </p>
         </div>
 
@@ -67,7 +69,7 @@ export function VideoTestimonialSection({ className = "", funnel = "encuentro" }
                     </div>
                   </div>
                   <div className="absolute top-4 left-4 px-3 py-1 bg-[#f78080] rounded-full text-white text-sm font-medium">
-                    Video Testimonio
+                    {t("testimonial_video_label")}
                   </div>
                 </>
               )}
@@ -86,10 +88,7 @@ export function VideoTestimonialSection({ className = "", funnel = "encuentro" }
 
               {/* Quote */}
               <blockquote className="text-lg md:text-xl text-gray-700 leading-relaxed mb-8 italic">
-                "Quise conocerlo para poder cerrar un ciclo que tenía pendiente con mi padre,
-                el cual falleció hace 18 años. Sentía que nunca nos habíamos despedido.
-                Y también quería encontrar una mejor versión de mí, ser un mejor papá,
-                una mejor persona en todos los aspectos."
+                &ldquo;{t("testimonial_quote")}&rdquo;
               </blockquote>
 
               {/* Author */}
@@ -112,7 +111,7 @@ export function VideoTestimonialSection({ className = "", funnel = "encuentro" }
               {/* Experience tag */}
               <div className="mt-6">
                 <span className="inline-block px-4 py-2 bg-[#f78080]/10 text-[#f78080] text-sm rounded-full font-medium">
-                  Ceremonia de Bienestar
+                  {t("testimonial_experience")}
                 </span>
               </div>
             </div>
