@@ -1,4 +1,4 @@
-// app/(site)/encuentros/[slug]/page.tsx
+// app/[locale]/(site)/encuentros/[slug]/page.tsx
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
@@ -15,6 +15,7 @@ import { TrackedWhatsAppLink } from "@/components/tracked-whatsapp-link";
 import { VideoTestimonialSection } from "@/components/video-testimonial-section";
 import { ScheduleDisplay } from "@/components/schedule-display";
 import { JsonLd, getEventSchema, getBreadcrumbSchema } from "@/lib/structured-data";
+import { getTranslations } from "next-intl/server";
 
 const BASE_URL = "https://escuelafloresiendomexico.com";
 
@@ -29,35 +30,48 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  const isEn = locale === "en";
+  const prefix = isEn ? "/en" : "";
   const encuentro = getEncuentroBySlug(slug);
 
   if (!encuentro) {
-    return { title: "Encuentro no encontrado" };
+    return { title: isEn ? "Retreat not found" : "Encuentro no encontrado" };
   }
 
-  const title = `${encuentro.title} — Retiro de Transformación Personal`;
-  const description = `Retiro de ${encuentro.displayDates} en ${encuentro.location}. ${encuentro.spotsRemaining} lugares disponibles. 3 noches de inmersión con prácticas ancestrales, ceremonias e integración terapéutica.`;
+  const title = isEn
+    ? `${encuentro.titleEn || encuentro.title} — Personal Transformation Retreat`
+    : `${encuentro.title} — Retiro de Transformación Personal`;
+  const description = isEn
+    ? `Retreat ${encuentro.displayDatesEn || encuentro.displayDates} in ${encuentro.location}. ${encuentro.spotsRemaining} spots available. 3 nights of immersion with ancestral practices, ceremonies, and therapeutic integration.`
+    : `Retiro de ${encuentro.displayDates} en ${encuentro.location}. ${encuentro.spotsRemaining} lugares disponibles. 3 noches de inmersión con prácticas ancestrales, ceremonias e integración terapéutica.`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: `${BASE_URL}/encuentros/${encuentro.slug}`,
+      canonical: `${BASE_URL}${prefix}/encuentros/${encuentro.slug}`,
+      languages: {
+        es: `${BASE_URL}/encuentros/${encuentro.slug}`,
+        en: `${BASE_URL}/en/encuentros/${encuentro.slug}`,
+        "x-default": `${BASE_URL}/encuentros/${encuentro.slug}`,
+      },
     },
     openGraph: {
       title,
       description,
-      url: `${BASE_URL}/encuentros/${encuentro.slug}`,
+      url: `${BASE_URL}${prefix}/encuentros/${encuentro.slug}`,
       type: "website",
       images: [
         {
           url: "/images/venue-alberca.webp",
           width: 1200,
           height: 630,
-          alt: `Retiro FloreSiendo — ${encuentro.displayDates}`,
+          alt: isEn
+            ? `FloreSiendo Retreat — ${encuentro.displayDatesEn || encuentro.displayDates}`
+            : `Retiro FloreSiendo — ${encuentro.displayDates}`,
         },
       ],
     },
@@ -70,6 +84,23 @@ export async function generateMetadata({
   };
 }
 
+// Helper to get localized field
+function loc(encuentro: Encuentro, isEn: boolean, field: keyof Encuentro): string {
+  if (isEn) {
+    const enField = `${String(field)}En` as keyof Encuentro;
+    return (encuentro[enField] as string) || (encuentro[field] as string);
+  }
+  return encuentro[field] as string;
+}
+
+function locArr(encuentro: Encuentro, isEn: boolean, field: keyof Encuentro): string[] {
+  if (isEn) {
+    const enField = `${String(field)}En` as keyof Encuentro;
+    return (encuentro[enField] as string[]) || (encuentro[field] as string[]);
+  }
+  return encuentro[field] as string[];
+}
+
 export default async function EncuentroPage({
   params,
 }: {
@@ -77,6 +108,7 @@ export default async function EncuentroPage({
 }) {
   const { slug, locale } = await params;
   const isEn = locale === "en";
+  const t = await getTranslations({ locale, namespace: "encounters" });
   const encuentro = getEncuentroBySlug(slug);
 
   if (!encuentro) {
@@ -84,8 +116,17 @@ export default async function EncuentroPage({
   }
 
   const whatsappMsg = isEn
-    ? `Hi, I'm interested in the ${encuentro.title}. I'd like to receive more information about the retreat and enrollment process.`
+    ? `Hi, I'm interested in the ${encuentro.titleEn || encuentro.title}. I'd like to receive more information about the retreat and enrollment process.`
     : encuentro.whatsappMessage;
+
+  const displayTitle = loc(encuentro, isEn, "title");
+  const displaySubtitle = loc(encuentro, isEn, "subtitle");
+  const displayDates = loc(encuentro, isEn, "displayDates");
+  const displayDescription = loc(encuentro, isEn, "description");
+  const includedItems = locArr(encuentro, isEn, "included");
+  const notIncludedItems = locArr(encuentro, isEn, "notIncluded");
+  const preparationItems = locArr(encuentro, isEn, "preparation");
+  const contraindicationItems = locArr(encuentro, isEn, "contraindications");
 
   return (
     <main className="min-h-screen bg-warm-gray-50">
@@ -93,9 +134,9 @@ export default async function EncuentroPage({
       <JsonLd data={getEventSchema(encuentro)} />
       <JsonLd
         data={getBreadcrumbSchema([
-          { name: "Inicio", url: BASE_URL },
-          { name: "Encuentros", url: `${BASE_URL}/encuentros` },
-          { name: encuentro.title, url: `${BASE_URL}/encuentros/${encuentro.slug}` },
+          { name: isEn ? "Home" : "Inicio", url: BASE_URL },
+          { name: isEn ? "Retreats" : "Encuentros", url: `${BASE_URL}/encuentros` },
+          { name: displayTitle, url: `${BASE_URL}/encuentros/${encuentro.slug}` },
         ])}
       />
 
@@ -106,7 +147,7 @@ export default async function EncuentroPage({
         <div className="absolute inset-0">
           <Image
             src="/images/venue-alberca.webp"
-            alt="Retiro FloreSiendo en Morelos"
+            alt={isEn ? "FloreSiendo Retreat in Morelos" : "Retiro FloreSiendo en Morelos"}
             fill
             priority
             sizes="100vw"
@@ -126,25 +167,25 @@ export default async function EncuentroPage({
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
-            Volver a Encuentros
+            {t("detail_back")}
           </Link>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-            {encuentro.title}
+            {displayTitle}
           </h1>
           <p className="text-xl md:text-2xl text-white/80 mb-6">
-            {encuentro.subtitle}
+            {displaySubtitle}
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 text-lg">
             <span className="bg-white/10 px-4 py-2 rounded-full">
-              📅 {encuentro.displayDates}
+              📅 {displayDates}
             </span>
             <span className="bg-white/10 px-4 py-2 rounded-full">
               📍 {encuentro.location}
             </span>
             <span className="bg-gold/20 text-gold px-4 py-2 rounded-full border border-gold/30">
-              {encuentro.spotsRemaining} lugares disponibles
+              {encuentro.spotsRemaining} {t("detail_spots_available")}
             </span>
           </div>
         </div>
@@ -154,7 +195,7 @@ export default async function EncuentroPage({
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl text-warm-gray-700 leading-relaxed">
-            {encuentro.description}
+            {displayDescription}
           </p>
         </div>
       </section>
@@ -163,21 +204,21 @@ export default async function EncuentroPage({
       <section className="py-16 px-4 bg-warm-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-coral font-semibold uppercase tracking-wide text-sm">El espacio</span>
-            <h2 className="text-burgundy mt-3 mb-4 text-3xl md:text-4xl font-bold">Conoce tu refugio</h2>
+            <span className="text-coral font-semibold uppercase tracking-wide text-sm">{t("venue_label")}</span>
+            <h2 className="text-burgundy mt-3 mb-4 text-3xl md:text-4xl font-bold">{t("venue_title")}</h2>
             <p className="text-warm-gray-600 max-w-2xl mx-auto">
-              Un espacio diseñado para tu proceso, rodeado de naturaleza y con todas las comodidades.
+              {t("detail_venue_subtitle")}
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { src: "/images/venue-alberca.webp", alt: "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
-              { src: "/images/venue-salon-ceremonias.webp", alt: "Salón de ceremonias", span: "" },
-              { src: "/images/venue-jardin.webp", alt: "Jardín", span: "" },
-              { src: "/images/venue-sala.webp", alt: "Sala común", span: "" },
-              { src: "/images/venue-terraza.webp", alt: "Terraza", span: "" },
-              { src: "/images/venue-habitacion-1.webp", alt: "Habitación", span: "" },
+              { src: "/images/venue-alberca.webp", alt: isEn ? "Pool and garden" : "Alberca y jardín", span: "md:col-span-2 md:row-span-2" },
+              { src: "/images/venue-salon-ceremonias.webp", alt: isEn ? "Ceremony hall" : "Salón de ceremonias", span: "" },
+              { src: "/images/venue-jardin.webp", alt: isEn ? "Garden" : "Jardín", span: "" },
+              { src: "/images/venue-sala.webp", alt: isEn ? "Common room" : "Sala común", span: "" },
+              { src: "/images/venue-terraza.webp", alt: isEn ? "Terrace" : "Terraza", span: "" },
+              { src: "/images/venue-habitacion-1.webp", alt: isEn ? "Room" : "Habitación", span: "" },
             ].map((image, index) => (
               <div
                 key={index}
@@ -201,7 +242,7 @@ export default async function EncuentroPage({
       </section>
 
       {/* Practices */}
-      <PracticasGrid />
+      <PracticasGrid title={t("detail_practices_title")} />
 
       {/* Schedule */}
       <section className="py-16 px-4">
@@ -209,17 +250,17 @@ export default async function EncuentroPage({
           {/* Section Header with Subtitle */}
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-burgundy mb-3">
-              Tu Viaje de Transformación
+              {t("detail_journey_title")}
             </h2>
             <p className="text-lg text-warm-gray-600 max-w-2xl mx-auto">
-              Cuatro días diseñados para reconectarte con tu esencia
+              {t("detail_journey_subtitle")}
             </p>
           </div>
 
           {/* Interactive Schedule with Accordion */}
           <ScheduleDisplay
             schedule={encuentro.schedule}
-            retreatTitle={encuentro.title}
+            retreatTitle={displayTitle}
             retreatYear={parseInt(encuentro.startDate.split("-")[0])}
           />
         </div>
@@ -229,17 +270,17 @@ export default async function EncuentroPage({
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-burgundy text-center mb-12">
-            ¿Qué Incluye?
+            {t("detail_whats_included")}
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Included */}
             <div className="bg-warm-gray-50 p-8 rounded-2xl">
               <h3 className="text-xl font-bold text-burgundy mb-6 flex items-center gap-2">
-                <span className="text-green-500">✓</span> Incluido
+                <span className="text-green-500">✓</span> {t("detail_included")}
               </h3>
               <ul className="space-y-3">
-                {encuentro.included.map((item, index) => (
+                {includedItems.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
@@ -253,10 +294,10 @@ export default async function EncuentroPage({
             {/* Not Included */}
             <div className="bg-warm-gray-50 p-8 rounded-2xl">
               <h3 className="text-xl font-bold text-warm-gray-600 mb-6 flex items-center gap-2">
-                <span className="text-warm-gray-400">○</span> No Incluido
+                <span className="text-warm-gray-400">○</span> {t("detail_not_included")}
               </h3>
               <ul className="space-y-3">
-                {encuentro.notIncluded.map((item, index) => (
+                {notIncludedItems.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <svg className="w-5 h-5 text-warm-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
@@ -277,10 +318,10 @@ export default async function EncuentroPage({
       <section className="py-16 px-4 bg-gradient-to-br from-burgundy to-burgundy-dark text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Reserva Tu Lugar
+            {t("detail_reserve_title")}
           </h2>
           <p className="text-xl text-white/80 mb-8">
-            Conoce las opciones de inversión y asegura tu espacio en este encuentro transformador.
+            {t("detail_reserve_desc")}
           </p>
 
           <Link
@@ -290,24 +331,24 @@ export default async function EncuentroPage({
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Inversión
+            {t("detail_investment")}
           </Link>
         </div>
       </section>
 
       {/* Facilitators Carousel */}
-      <FacilitadoresCarousel facilitators={encuentro.facilitators} />
+      <FacilitadoresCarousel facilitators={encuentro.facilitators} title={t("detail_facilitators_title")} />
 
       {/* Preparation */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-burgundy text-center mb-12">
-            Preparación para el Encuentro
+            {t("detail_preparation_title")}
           </h2>
 
           <div className="bg-warm-gray-50 p-8 rounded-2xl">
             <ul className="space-y-4">
-              {encuentro.preparation.map((item, index) => (
+              {preparationItems.map((item, index) => (
                 <li key={index} className="flex items-start gap-4">
                   <span className="flex-shrink-0 w-8 h-8 bg-burgundy text-white rounded-full flex items-center justify-center font-bold text-sm">
                     {index + 1}
@@ -324,16 +365,15 @@ export default async function EncuentroPage({
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-burgundy text-center mb-4">
-            Contraindicaciones
+            {t("detail_contraindications_title")}
           </h2>
           <p className="text-center text-warm-gray-600 mb-12 max-w-2xl mx-auto">
-            Por tu seguridad, es importante que revises estas condiciones antes de aplicar.
-            Si tienes dudas, consúltanos.
+            {t("detail_contraindications_desc")}
           </p>
 
           <div className="bg-red-50 border border-red-200 p-8 rounded-2xl">
             <ul className="space-y-3">
-              {encuentro.contraindications.map((item, index) => (
+              {contraindicationItems.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -350,10 +390,10 @@ export default async function EncuentroPage({
       <section className="py-20 px-4 bg-burgundy text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            ¿Listo para tu Transformación?
+            {t("detail_ready_title")}
           </h2>
           <p className="text-xl text-white/80 mb-8">
-            Da el primer paso hacia una versión más consciente y plena de ti mismo.
+            {t("detail_ready_desc")}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -369,18 +409,18 @@ export default async function EncuentroPage({
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
-              Reservar mi Lugar
+              {t("detail_reserve_whatsapp")}
             </TrackedWhatsAppLink>
             <Link
               href="/encuentros"
               className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-full text-lg transition-all border border-white/30"
             >
-              Ver Otros Encuentros
+              {t("detail_view_others")}
             </Link>
           </div>
 
           <p className="mt-8 text-white/60 text-sm">
-            Solo {encuentro.spotsRemaining} lugares disponibles para {encuentro.displayDates}
+            {t("detail_only_spots", { spots: encuentro.spotsRemaining.toString(), dates: displayDates })}
           </p>
         </div>
       </section>

@@ -1,19 +1,19 @@
-// Funnel layout - No navigation header, minimal footer
-// This keeps funnel pages distraction-free for conversions
+// app/(funnels)/layout.tsx — Funnel pages with Spanish-only i18n context
 
 import "./funnel.css";
 import { FunnelFooter } from "@/components/funnel-footer";
 import { TrackingScripts } from "@/components/tracking-scripts";
+import type React from "react";
 import { NextIntlClientProvider } from "next-intl";
-import messages from "@/messages/es.json";
+import esMessages from "@/messages/es.json";
 
-export default function FunnelLayout({
+export default function FunnelsLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <NextIntlClientProvider locale="es" messages={messages}>
+    <NextIntlClientProvider messages={esMessages} locale="es">
       <TrackingScripts strategy="lazyOnload" includeHubspot={false} />
       {children}
       <FunnelFooter />

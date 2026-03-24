@@ -107,6 +107,16 @@ export interface Encuentro {
   // CTA
   whatsappNumber: string;
   whatsappMessage: string;
+
+  // English translations (optional)
+  titleEn?: string;
+  subtitleEn?: string;
+  descriptionEn?: string;
+  displayDatesEn?: string;
+  includedEn?: string[];
+  notIncludedEn?: string[];
+  preparationEn?: string[];
+  contraindicationsEn?: string[];
 }
 
 // March 2026 Encuentro Data
@@ -267,6 +277,45 @@ export const encuentroMarzo2026: Encuentro = {
 
   whatsappNumber: "526182301481",
   whatsappMessage: "Hola, me interesa el Encuentro de Marzo 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
+
+  // English
+  titleEn: "March Retreat",
+  subtitleEn: "4 days of personal growth",
+  displayDatesEn: "Mar 5–8, 2026",
+  descriptionEn: `An intimate 4-day retreat designed to facilitate a process of holistic wellbeing
+  and reconnection with your essence. In a privileged natural setting, we accompany you on a journey
+  of self-discovery with ancestral practices under the guidance of experienced facilitators.`,
+  includedEn: [
+    "3-night accommodation (or 2 nights for short option)",
+    "Full meals (preparation diet)",
+    "2-3 ceremonies with Amazonian Plant",
+    "Therapeutic integration circles",
+    "'Find Your Purpose' workshop (daily journaling)",
+    "Breathwork and meditation sessions",
+    "Personalized facilitator accompaniment",
+    "1 post-retreat integration session",
+    "Access to participant community",
+  ],
+  notIncludedEn: [
+    "Air/ground transportation to Morelos",
+    "Optional practices (Kambo, Bufo, Yopo)",
+    "Personal expenses",
+    "Writing materials (bring your own notebook and pen)",
+  ],
+  preparationEn: [
+    "Preparation diet 7 days before (no red meat, alcohol, recreational drugs)",
+    "Suspend indicated medications (consult with facilitator)",
+    "Avoid sexual relations 3 days before",
+    "Arrive with a clear intention for the work",
+    "Mandatory health form completion",
+  ],
+  contraindicationsEn: [
+    "Psychotic disorders or schizophrenia",
+    "Use of SSRI/MAOI antidepressants (requires supervised discontinuation)",
+    "Severe heart problems",
+    "Pregnancy or breastfeeding",
+    "Uncontrolled hypertension",
+  ],
 };
 
 // April 2026 Encuentro Data
@@ -427,6 +476,45 @@ export const encuentroAbril2026: Encuentro = {
 
   whatsappNumber: "526182301481",
   whatsappMessage: "Hola, me interesa el Encuentro de Abril 2026. Me gustaría recibir más información sobre el proceso de inversión personalizada.",
+
+  // English
+  titleEn: "April Retreat",
+  subtitleEn: "4 days of personal growth",
+  displayDatesEn: "Apr 30 – May 3, 2026",
+  descriptionEn: `An intimate 4-day retreat designed to facilitate a process of holistic wellbeing
+  and reconnection with your essence. In a privileged natural setting, we accompany you on a journey
+  of self-discovery with ancestral practices under the guidance of experienced facilitators.`,
+  includedEn: [
+    "3-night accommodation (or 2 nights for short option)",
+    "Full meals (preparation diet)",
+    "2-3 ceremonies with Amazonian Plant",
+    "Therapeutic integration circles",
+    "'Find Your Purpose' workshop (daily journaling)",
+    "Breathwork and meditation sessions",
+    "Personalized facilitator accompaniment",
+    "1 post-retreat integration session",
+    "Access to participant community",
+  ],
+  notIncludedEn: [
+    "Air/ground transportation to Morelos",
+    "Optional practices (Kambo, Bufo, Yopo)",
+    "Personal expenses",
+    "Writing materials (bring your own notebook and pen)",
+  ],
+  preparationEn: [
+    "Preparation diet 7 days before (no red meat, alcohol, recreational drugs)",
+    "Suspend indicated medications (consult with facilitator)",
+    "Avoid sexual relations 3 days before",
+    "Arrive with a clear intention for the work",
+    "Mandatory health form completion",
+  ],
+  contraindicationsEn: [
+    "Psychotic disorders or schizophrenia",
+    "Use of SSRI/MAOI antidepressants (requires supervised discontinuation)",
+    "Severe heart problems",
+    "Pregnancy or breastfeeding",
+    "Uncontrolled hypertension",
+  ],
 };
 
 // All encuentros
