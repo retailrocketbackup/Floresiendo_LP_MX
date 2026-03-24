@@ -36,6 +36,10 @@ export interface ScheduledPost {
   retry_count: number;
   event_id: string;
   created_by: string;
+  // Reel support
+  media_type: 'image' | 'reel' | 'carousel';
+  video_url: string | null;
+  virality_score: number | null;
 }
 
 export interface CreatePostInput {
@@ -518,6 +522,212 @@ export async function publishToFacebook(
       error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
+}
+
+// =============================================================================
+// FACEBOOK REEL PUBLISHING
+// =============================================================================
+
+export async function publishFacebookReel(
+  videoUrl: string,
+  description: string
+): Promise<{ success: boolean; postId?: string; error?: string }> {
+  const pageId = getPageId();
+  const token = getMetaToken();
+
+  // Strip hashtags for Facebook
+  const fbDescription = stripHashtagsForFacebook(description);
+
+  try {
+    // Step 1: Initialize upload
+    const initResponse = await fetch(
+      `${META_API_BASE}/${pageId}/video_reels`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          upload_phase: 'start',
+          access_token: token
+        })
+      }
+    );
+
+    if (!initResponse.ok) {
+      const error = await initResponse.json();
+      console.error('[FB Reel] Init error:', error);
+      return { success: false, error: error.error?.message || 'FB reel init failed' };
+    }
+
+    const { video_id } = await initResponse.json();
+
+    // Step 2: Upload the video binary
+    const videoResponse = await fetch(videoUrl);
+    if (!videoResponse.ok) {
+      return { success: false, error: `Failed to fetch video from ${videoUrl}` };
+    }
+    const videoBuffer = await videoResponse.arrayBuffer();
+    const videoSize = videoBuffer.byteLength;
+
+    const uploadResponse = await fetch(
+      `https://rupload.facebook.com/video-upload/${META_API_VERSION}/${video_id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `OAuth ${token}`,
+          'offset': '0',
+          'file_size': videoSize.toString(),
+          'Content-Type': 'application/octet-stream',
+        },
+        body: videoBuffer
+      }
+    );
+
+    if (!uploadResponse.ok) {
+      const error = await uploadResponse.json();
+      console.error('[FB Reel] Upload error:', error);
+      return { success: false, error: error.error?.message || 'FB reel upload failed' };
+    }
+
+    // Step 3: Publish the reel
+    const publishResponse = await fetch(
+      `${META_API_BASE}/${pageId}/video_reels`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          upload_phase: 'finish',
+          video_id,
+          title: fbDescription.substring(0, 100),
+          description: fbDescription,
+          access_token: token
+        })
+      }
+    );
+
+    if (!publishResponse.ok) {
+      const error = await publishResponse.json();
+      console.error('[FB Reel] Publish error:', error);
+      return { success: false, error: error.error?.message || 'FB reel publish failed' };
+    }
+
+    const result = await publishResponse.json();
+    return { success: true, postId: result.video_id || video_id };
+  } catch (error) {
+    console.error('[FB Reel] Error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// =============================================================================
+// INSTAGRAM REEL PUBLISHING
+// =============================================================================
+
+export async function publishInstagramReel(
+  videoUrl: string,
+  caption: string
+): Promise<{ success: boolean; postId?: string; error?: string }> {
+  const igUserId = getIgUserId();
+  const token = getMetaToken();
+
+  try {
+    // Step 1: Create reel container
+    const containerResponse = await fetch(
+      `${META_API_BASE}/${igUserId}/media`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          media_type: 'REELS',
+          video_url: videoUrl,
+          caption,
+          access_token: token
+        })
+      }
+    );
+
+    if (!containerResponse.ok) {
+      const error = await containerResponse.json();
+      console.error('[IG Reel] Container error:', error);
+      return { success: false, error: error.error?.message || 'IG reel container failed' };
+    }
+
+    const { id: containerId } = await containerResponse.json();
+
+    // Step 2: Poll for container readiness (video processing takes longer)
+    await waitForContainerReady(containerId, token, 30); // 30 attempts for video
+
+    // Step 3: Publish
+    const publishResponse = await fetch(
+      `${META_API_BASE}/${igUserId}/media_publish`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          creation_id: containerId,
+          access_token: token
+        })
+      }
+    );
+
+    if (!publishResponse.ok) {
+      const error = await publishResponse.json();
+      console.error('[IG Reel] Publish error:', error);
+      return { success: false, error: error.error?.message || 'IG reel publish failed' };
+    }
+
+    const { id: mediaId } = await publishResponse.json();
+    return { success: true, postId: mediaId };
+  } catch (error) {
+    console.error('[IG Reel] Error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+// =============================================================================
+// UNIFIED REEL PUBLISHING
+// =============================================================================
+
+export async function publishReel(
+  videoUrl: string,
+  caption: string,
+  platforms: ('facebook' | 'instagram')[]
+): Promise<PublishResult> {
+  const platformPostIds: Record<string, string> = {};
+  const errors: string[] = [];
+
+  for (const platform of platforms) {
+    try {
+      if (platform === 'facebook') {
+        const result = await publishFacebookReel(videoUrl, caption);
+        if (result.success && result.postId) {
+          platformPostIds.facebook = result.postId;
+        } else {
+          errors.push(`Facebook: ${result.error}`);
+        }
+      } else if (platform === 'instagram') {
+        const result = await publishInstagramReel(videoUrl, caption);
+        if (result.success && result.postId) {
+          platformPostIds.instagram = result.postId;
+        } else {
+          errors.push(`Instagram: ${result.error}`);
+        }
+      }
+    } catch (error) {
+      errors.push(`${platform}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  return {
+    success: errors.length === 0,
+    platform_post_ids: Object.keys(platformPostIds).length > 0 ? platformPostIds : undefined,
+    errors: errors.length > 0 ? errors : undefined
+  };
 }
 
 function stripHashtagsForFacebook(caption: string): string {

@@ -6,9 +6,10 @@ import { ContentCalendar } from '@/components/admin/social-media/ContentCalendar
 import { PostCreator } from '@/components/admin/social-media/PostCreator';
 import { ApprovalQueue } from '@/components/admin/social-media/ApprovalQueue';
 import { Analytics } from '@/components/admin/social-media/Analytics';
+import { ReelUploader } from '@/components/admin/social-media/ReelUploader';
 import type { ScheduledPost } from '@/lib/social-publisher';
 
-type Tab = 'calendar' | 'create' | 'queue' | 'analytics';
+type Tab = 'calendar' | 'create' | 'queue' | 'reels' | 'analytics';
 
 export default function SocialMediaDashboardPage() {
   // Auth state
@@ -157,6 +158,15 @@ export default function SocialMediaDashboardPage() {
       ),
     },
     {
+      id: 'reels',
+      label: 'Reels',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      ),
+    },
+    {
       id: 'calendar',
       label: 'Calendario',
       icon: (
@@ -233,8 +243,8 @@ export default function SocialMediaDashboardPage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-xl font-bold text-warm-gray-800">Social Media</h1>
-                  <span className="px-2 py-0.5 text-xs font-medium bg-gradient-to-r from-blue-500 to-pink-500 text-white rounded-full">
-                    FB + IG
+                  <span className="px-2 py-0.5 text-xs font-medium bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-full">
+                    FB + IG + Reels
                   </span>
                 </div>
                 <p className="text-sm text-warm-gray-500">
@@ -323,6 +333,15 @@ export default function SocialMediaDashboardPage() {
         {activeTab === 'create' && (
           <PostCreator
             onPostCreated={() => {
+              setActiveTab('queue');
+              fetchPosts();
+            }}
+          />
+        )}
+
+        {activeTab === 'reels' && (
+          <ReelUploader
+            onReelUploaded={() => {
               setActiveTab('queue');
               fetchPosts();
             }}

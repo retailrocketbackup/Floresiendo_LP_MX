@@ -159,7 +159,31 @@ export function ApprovalQueue({
           <div className="p-6">
             <div className="flex gap-6">
               {/* Media Preview */}
-              {post.media_urls && post.media_urls.length > 0 && (
+              {post.media_type === 'reel' && post.video_url ? (
+                <div className="w-32 h-48 flex-shrink-0 relative rounded-lg overflow-hidden bg-black">
+                  <video
+                    src={post.video_url}
+                    className="w-full h-full object-cover"
+                    muted
+                    playsInline
+                    preload="metadata"
+                    onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
+                    onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                  />
+                  <div className="absolute top-1 right-1 px-1.5 py-0.5 bg-black/70 text-white text-[10px] font-bold rounded">
+                    REEL
+                  </div>
+                  {post.virality_score != null && (
+                    <div className={`absolute bottom-1 left-1 px-1.5 py-0.5 text-[10px] font-bold rounded ${
+                      post.virality_score >= 85 ? 'bg-green-500 text-white' :
+                      post.virality_score >= 70 ? 'bg-yellow-500 text-black' :
+                      'bg-red-500 text-white'
+                    }`}>
+                      {post.virality_score}
+                    </div>
+                  )}
+                </div>
+              ) : post.media_urls && post.media_urls.length > 0 ? (
                 <div className="w-32 h-32 flex-shrink-0 relative rounded-lg overflow-hidden bg-warm-gray-100">
                   <Image
                     src={post.media_urls[0]}
@@ -168,7 +192,7 @@ export function ApprovalQueue({
                     className="object-cover"
                   />
                 </div>
-              )}
+              ) : null}
 
               {/* Content */}
               <div className="flex-1 min-w-0">
@@ -176,6 +200,11 @@ export function ApprovalQueue({
                   <div className="flex items-center gap-3">
                     {getPlatformIcon(post.platforms)}
                     {getComplianceStatus(post.compliance_status)}
+                    {post.media_type === 'reel' && (
+                      <span className="px-2 py-1 text-xs font-medium bg-indigo-100 text-indigo-700 rounded-full">
+                        Reel
+                      </span>
+                    )}
                     {post.image_source === 'ai_generated' && (
                       <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
                         AI Generado

@@ -243,7 +243,7 @@ export default function MastermindEstresPage() {
             <div className="text-white text-center lg:text-left overflow-hidden max-w-full min-w-0">
               <div className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-500/20 backdrop-blur-sm rounded-full text-orange-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-orange-500/30">
                 <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
-                SESIÓN GRATUITA — ESTRÉS LABORAL
+                SESIÓN GRATUITA ONLINE — ESTRÉS LABORAL
               </div>
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight break-words">
@@ -323,7 +323,7 @@ export default function MastermindEstresPage() {
               <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-orange-400/50">
                   <Image
-                    src="/images/ramon-henriquez.png"
+                    src="/images/ramon-henriquez.webp"
                     alt="Ramón Henríquez"
                     width={56}
                     height={56}

@@ -28,64 +28,56 @@ export async function POST(request: Request) {
     const cleanPhone = phone.replace(/\D/g, '') // Remove non-digits
     const generatedEmail = email || `lead-${cleanPhone}@escuelafloresiendomexico.com`
 
-    // Build contact properties
-    const properties: Record<string, string> = {
+    // Step 1: Core properties only (these always exist in HubSpot)
+    const coreProperties: Record<string, string> = {
       firstname,
       phone,
       email: generatedEmail,
     }
 
     if (lastname) {
-      properties.lastname = lastname
+      coreProperties.lastname = lastname
     }
 
-    // IMPORTANT: hs_analytics_source is READ-ONLY via API - HubSpot ignores these values.
-    // Instead, we store tracking data in CUSTOM properties for attribution.
-    // These custom properties must be created in HubSpot first (single-line text):
-    // - floresiendo_source: 'paid_facebook', 'paid_google', 'organic', 'direct', etc.
-    // - floresiendo_medium: 'cpc', 'organic', 'referral', etc.
-    // - floresiendo_campaign: UTM campaign name
-    // - floresiendo_fbclid: Facebook click ID for attribution
+    if (pageUri) {
+      coreProperties.website = pageUri
+    }
+
+    // Step 2: Attribution properties (custom — may not exist in portal)
+    const attributionProperties: Record<string, string> = {}
+
+    if (funnel_source) {
+      attributionProperties.funnel_source = funnel_source
+    }
 
     if (fbclid) {
-      properties.floresiendo_source = 'paid_facebook'
-      properties.floresiendo_medium = 'cpc'
-      properties.floresiendo_fbclid = fbclid
+      attributionProperties.floresiendo_source = 'paid_facebook'
+      attributionProperties.floresiendo_medium = 'cpc'
+      attributionProperties.floresiendo_fbclid = fbclid
       if (utm_campaign) {
-        properties.floresiendo_campaign = utm_campaign
+        attributionProperties.floresiendo_campaign = utm_campaign
       }
     } else if (gclid) {
-      properties.floresiendo_source = 'paid_google'
-      properties.floresiendo_medium = 'cpc'
+      attributionProperties.floresiendo_source = 'paid_google'
+      attributionProperties.floresiendo_medium = 'cpc'
       if (utm_campaign) {
-        properties.floresiendo_campaign = utm_campaign
+        attributionProperties.floresiendo_campaign = utm_campaign
       }
     } else if (utm_medium === 'cpc' || utm_medium === 'paid') {
-      properties.floresiendo_source = `paid_${utm_source || 'unknown'}`
-      properties.floresiendo_medium = utm_medium
+      attributionProperties.floresiendo_source = `paid_${utm_source || 'unknown'}`
+      attributionProperties.floresiendo_medium = utm_medium
       if (utm_campaign) {
-        properties.floresiendo_campaign = utm_campaign
+        attributionProperties.floresiendo_campaign = utm_campaign
       }
     } else if (utm_source) {
-      // Has UTM but not paid - likely organic or referral
-      properties.floresiendo_source = utm_source
-      properties.floresiendo_medium = utm_medium || 'referral'
+      attributionProperties.floresiendo_source = utm_source
+      attributionProperties.floresiendo_medium = utm_medium || 'referral'
       if (utm_campaign) {
-        properties.floresiendo_campaign = utm_campaign
+        attributionProperties.floresiendo_campaign = utm_campaign
       }
     } else {
-      properties.floresiendo_source = 'direct'
-      properties.floresiendo_medium = 'none'
-    }
-
-    // Store the landing page URL (hs_analytics_first_url is READ-ONLY — do NOT set it)
-    if (pageUri) {
-      properties.website = pageUri
-    }
-
-    // Track which funnel/form the lead came from
-    if (funnel_source) {
-      properties.funnel_source = funnel_source
+      attributionProperties.floresiendo_source = 'direct'
+      attributionProperties.floresiendo_medium = 'none'
     }
 
     console.log("[HubSpot] Creating contact via Contacts API:", {
@@ -116,43 +108,85 @@ export async function POST(request: Request) {
 
     const searchData = await searchResponse.json()
 
-    let response
+    let contactId: string
     if (searchData.total > 0) {
-      // Contact exists, update it
-      const contactId = searchData.results[0].id
+      // Contact exists, update with core properties
+      contactId = searchData.results[0].id
       console.log("[HubSpot] Updating existing contact:", contactId)
 
-      response = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}`, {
+      const updateResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}`, {
         method: "PATCH",
         headers: {
           "Authorization": `Bearer ${hubspotToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ properties }),
+        body: JSON.stringify({ properties: coreProperties }),
       })
-    } else {
-      // Create new contact
-      console.log("[HubSpot] Creating new contact")
 
-      response = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts`, {
+      if (!updateResponse.ok) {
+        const errorBody = await updateResponse.text()
+        console.error("[HubSpot] Core update failed:", updateResponse.status, errorBody)
+        return NextResponse.json(
+          { message: `Error al guardar contacto: ${updateResponse.status}`, details: errorBody },
+          { status: 500 }
+        )
+      }
+    } else {
+      // Create new contact with core properties only
+      console.log("[HubSpot] Creating new contact with core fields")
+
+      const createResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${hubspotToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ properties }),
+        body: JSON.stringify({ properties: coreProperties }),
       })
+
+      if (!createResponse.ok) {
+        const errorBody = await createResponse.text()
+        console.error("[HubSpot] Core create failed:", createResponse.status, errorBody)
+        return NextResponse.json(
+          { message: `Error al crear contacto: ${createResponse.status}`, details: errorBody },
+          { status: 500 }
+        )
+      }
+
+      const createData = await createResponse.json()
+      contactId = createData.id
     }
 
-    if (!response.ok) {
-      const errorBody = await response.text()
-      console.error("HubSpot API Error:", errorBody)
-      throw new Error(`HubSpot submission failed with status: ${response.status}`)
+    // Step 2: Try to add attribution properties separately — if they fail, the lead is already saved
+    if (Object.keys(attributionProperties).length > 0) {
+      try {
+        const attrResponse = await fetch(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${contactId}`, {
+          method: "PATCH",
+          headers: {
+            "Authorization": `Bearer ${hubspotToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ properties: attributionProperties }),
+        })
+
+        if (!attrResponse.ok) {
+          const attrError = await attrResponse.text()
+          console.warn("[HubSpot] Attribution properties failed (contact was still saved):", attrResponse.status, attrError)
+          // Don't fail the request — the lead is already saved with core data
+        } else {
+          console.log("[HubSpot] Attribution properties saved successfully")
+        }
+      } catch (attrErr) {
+        console.warn("[HubSpot] Attribution properties error (contact was still saved):", attrErr)
+      }
     }
 
     return NextResponse.json({ message: "Contact created successfully" }, { status: 200 })
   } catch (error) {
     console.error("[API HubSpot Error]", error)
-    return NextResponse.json({ message: "An error occurred" }, { status: 500 })
+    return NextResponse.json(
+      { message: "Error interno del servidor. Por favor intenta de nuevo." },
+      { status: 500 }
+    )
   }
 }

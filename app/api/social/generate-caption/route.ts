@@ -84,6 +84,90 @@ const hashtagSuggestions = {
   general: ['retiroespiritual', 'bienestar', 'crecimientopersonal', 'saludmental', 'mexico', 'transformacion', 'autoconocimiento', 'mindfulness'],
 };
 
+// Reel-specific caption templates (short-form, hook-heavy)
+const reelCaptionTemplates = {
+  duelo: {
+    hooks: [
+      'Esto es lo que nadie te dice sobre el duelo...',
+      'Perder a alguien no se supera. Se aprende a vivir con ello.',
+      'El dolor no tiene fecha de caducidad.',
+      'Si estás pasando por un duelo, necesitas escuchar esto.',
+    ],
+    bodies: [
+      'Un espacio seguro para procesar lo que cargas. Sin prisa, sin juicio.',
+      'A veces, solo necesitas un lugar donde puedas sentir sin explicar.',
+      'Tu proceso es válido. Tu tiempo es tuyo.',
+    ],
+    ctas: [
+      'Link en bio para conocer nuestros retiros',
+      'Comparte con alguien que necesite escuchar esto',
+      'Guarda este reel para cuando lo necesites',
+    ],
+  },
+  proposito: {
+    hooks: [
+      '¿Sientes que algo falta en tu vida pero no sabes qué es?',
+      'Deja de buscar tu propósito. Empieza a escucharte.',
+      '3 señales de que necesitas una pausa para reconectarte.',
+      'Tu siguiente capítulo empieza con una decisión.',
+    ],
+    bodies: [
+      'La claridad no llega en el ruido. Llega cuando te das permiso de pausar.',
+      'Reconectar con tu propósito no es un lujo. Es una necesidad.',
+      'A veces necesitas alejarte de todo para ver con claridad.',
+    ],
+    ctas: [
+      'Conoce nuestros retiros de reconexión — link en bio',
+      'Etiqueta a alguien que necesita este mensaje',
+      'Síguenos para más contenido de bienestar',
+    ],
+  },
+  estres: {
+    hooks: [
+      'Tu cuerpo lleva la cuenta aunque tú no lo hagas.',
+      '¿Burnout? Estas 3 señales no mienten.',
+      'Parar NO es rendirse. Es la decisión más valiente.',
+      'Lo que el estrés crónico le hace a tu cuerpo...',
+    ],
+    bodies: [
+      'Descansar es un acto revolucionario en un mundo que premia el agotamiento.',
+      'Tu cuerpo no necesita más productividad. Necesita presencia.',
+      'Un retiro puede ser el reset que tu sistema nervioso necesita.',
+    ],
+    ctas: [
+      'Tu bienestar importa — link en bio',
+      'Guarda este reel como recordatorio',
+      'Comparte con alguien que necesite parar',
+    ],
+  },
+  general: {
+    hooks: [
+      'Esto es lo que pasa cuando te das permiso de parar...',
+      'Un fin de semana puede cambiarlo todo.',
+      '¿Y si el cambio que buscas empieza con una pausa?',
+      'No es un retiro. Es una invitación a volver a ti.',
+    ],
+    bodies: [
+      'FloreSiendo es un espacio donde puedes soltar, respirar y reconectarte.',
+      'Prácticas guiadas, naturaleza y acompañamiento profesional en un solo lugar.',
+      'Más que un retiro, es una experiencia de reconexión contigo mismo.',
+    ],
+    ctas: [
+      'Descubre más en el link de bio',
+      'Guarda y comparte si esto resuena contigo',
+      'Síguenos para más contenido de bienestar',
+    ],
+  },
+};
+
+// Reel-specific hashtags (optimized for Reels discovery)
+const reelHashtagSuggestions = {
+  duelo: ['duelo', 'saludmental', 'bienestaremocional', 'retiromexico', 'procesodevida', 'reelsviral', 'retiroespiritual', 'floresiendo'],
+  proposito: ['propositodevida', 'crecimientopersonal', 'reconexion', 'retiromexico', 'claridad', 'reelsviral', 'bienestar', 'floresiendo'],
+  estres: ['burnout', 'antiestrés', 'saludmental', 'bienestar', 'retiromexico', 'pausanecesaria', 'reelsviral', 'floresiendo'],
+  general: ['retiroespiritual', 'bienestar', 'crecimientopersonal', 'retiromexico', 'autoconocimiento', 'reelsviral', 'mindfulness', 'floresiendo'],
+};
+
 // Image prompt suggestions by funnel
 const imagePromptSuggestions = {
   duelo: [
@@ -125,13 +209,36 @@ export async function POST(request: Request) {
       }
     }
 
-    const { theme, funnel = 'general', platforms = ['facebook', 'instagram'] } = body;
+    const { theme, funnel = 'general', platforms = ['facebook', 'instagram'], format = 'image' } = body;
 
     if (!theme || theme.trim().length === 0) {
       return NextResponse.json({ error: 'Theme is required' }, { status: 400 });
     }
 
-    // Get templates for this funnel
+    // Choose template set based on format (reel vs image)
+    if (format === 'reel') {
+      const templates = reelCaptionTemplates[funnel as keyof typeof reelCaptionTemplates] || reelCaptionTemplates.general;
+
+      const hook = templates.hooks[Math.floor(Math.random() * templates.hooks.length)];
+      const bodyText = templates.bodies[Math.floor(Math.random() * templates.bodies.length)];
+      const cta = templates.ctas[Math.floor(Math.random() * templates.ctas.length)];
+
+      // Reel captions are shorter and punchier
+      const caption = `${hook}\n\n${bodyText}\n\n${cta}`;
+
+      const hashtags = reelHashtagSuggestions[funnel as keyof typeof reelHashtagSuggestions] || reelHashtagSuggestions.general;
+
+      return NextResponse.json({
+        success: true,
+        caption,
+        hashtags,
+        format: 'reel',
+        funnel,
+        theme,
+      });
+    }
+
+    // Default: image post format
     const templates = captionTemplates[funnel as keyof typeof captionTemplates] || captionTemplates.general;
 
     // Select random elements
@@ -160,6 +267,7 @@ ${cta}`;
       caption,
       hashtags,
       imagePrompt,
+      format: 'image',
       funnel,
       theme,
     });

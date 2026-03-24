@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { publishToFacebook, publishToInstagram, type ScheduledPost } from '@/lib/social-publisher';
+import { publishToFacebook, publishToInstagram, publishFacebookReel, publishInstagramReel, type ScheduledPost } from '@/lib/social-publisher';
 
 // Force dynamic rendering to prevent build-time initialization
 export const dynamic = 'force-dynamic';
@@ -75,24 +75,33 @@ export async function GET(request: Request) {
 
       const platformResults: Record<string, { success: boolean; postId?: string; error?: string }> = {};
 
+      // Determine if this is a reel or image post
+      const isReel = post.media_type === 'reel';
+      const fullCaptionFb = buildFullCaption(post, 'facebook');
+      const fullCaptionIg = buildFullCaption(post, 'instagram');
+
       // Publish to each platform
       for (const platform of post.platforms as string[]) {
         try {
           if (platform === 'facebook') {
-            const result = await publishToFacebook({
-              caption: buildFullCaption(post, 'facebook'),
-              imageUrl: post.media_urls?.[0],
-            });
+            const result = isReel && post.video_url
+              ? await publishFacebookReel(post.video_url, fullCaptionFb)
+              : await publishToFacebook({
+                  caption: fullCaptionFb,
+                  imageUrl: post.media_urls?.[0],
+                } as any);
             platformResults.facebook = {
               success: result.success,
               postId: result.postId,
               error: result.error,
             };
           } else if (platform === 'instagram') {
-            const result = await publishToInstagram({
-              caption: buildFullCaption(post, 'instagram'),
-              imageUrl: post.media_urls?.[0],
-            });
+            const result = isReel && post.video_url
+              ? await publishInstagramReel(post.video_url, fullCaptionIg)
+              : await publishToInstagram({
+                  caption: fullCaptionIg,
+                  imageUrl: post.media_urls?.[0],
+                } as any);
             platformResults.instagram = {
               success: result.success,
               postId: result.postId,
