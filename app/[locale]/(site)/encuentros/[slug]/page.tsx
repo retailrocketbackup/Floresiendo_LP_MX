@@ -19,12 +19,8 @@ import { getTranslations } from "next-intl/server";
 
 const BASE_URL = "https://escuelafloresiendomexico.com";
 
-// Generate static params for all encuentros
-export async function generateStaticParams() {
-  return encuentros.map((encuentro) => ({
-    slug: encuentro.slug,
-  }));
-}
+// Force dynamic rendering — getTranslations needs locale context at runtime
+export const dynamic = "force-dynamic";
 
 // Dynamic metadata
 export async function generateMetadata({
