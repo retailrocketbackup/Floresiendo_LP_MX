@@ -8,6 +8,7 @@
 body {
   overflow-x: hidden;
   max-width: 100vw;
+  touch-action: manipulation;
 }
 
 :root {
