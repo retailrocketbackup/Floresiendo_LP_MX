@@ -168,48 +168,7 @@ export default async function EncuentrosPage({
               </div>
             </Link>
 
-            {/* 2. Free Meditation Card - Apr 20 */}
-            <Link
-              href="/f/meditacion-gratis-2"
-              className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-purple-400/40 hover:border-purple-400 hover:bg-white/15 transition-all duration-300 group"
-            >
-              <div className="flex flex-col md:flex-row gap-6 items-center">
-                {/* Date Box - Purple accent */}
-                <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
-                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">
-                    {isEn ? "April" : "Abril"}
-                  </span>
-                  <div className="text-3xl font-bold text-white my-1">20</div>
-                  <span className="text-white/80 text-xs font-medium">8:00 PM</span>
-                </div>
-
-                {/* Event Details */}
-                <div className="flex-1 text-center md:text-left">
-                  <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 bg-purple-500/30 text-purple-200 font-bold text-xs uppercase tracking-wide rounded-full">
-                      {t("free")}
-                    </span>
-                    <span className="text-coral-light/80 text-sm">
-                      {isEn ? "Live Meditation \u00b7 Online" : "Meditaci\u00f3n en Vivo \u00b7 Online"}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-1">
-                    {isEn ? "Live Guided Meditation" : "Meditaci\u00f3n Guiada en Vivo"}
-                  </h3>
-                  <p className="text-coral-light/70 text-sm mb-3">
-                    {isEn
-                      ? "30 minutes to calm your mind and reconnect with yourself"
-                      : "30 minutos para calmar tu mente y reconectar contigo"}
-                  </p>
-                  <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
-                    {isEn ? "Reserve my spot" : "Apartar mi lugar"}
-                    <ArrowRight size={18} />
-                  </span>
-                </div>
-              </div>
-            </Link>
-
-            {/* 3. Conference Card - Apr 19 */}
+            {/* 2. Conference Card - Apr 19 */}
             <Link
               href="/f/conferencia-parejas"
               className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-gold/40 hover:border-gold hover:bg-white/15 transition-all duration-300 group"
@@ -257,6 +216,47 @@ export default async function EncuentrosPage({
                   </div>
                   <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-gold hover:bg-gold-dark text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
                     {isEn ? "Reserve my spot" : "Reservar mi lugar"}
+                    <ArrowRight size={18} />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            {/* 3. Free Meditation Card - Apr 20 */}
+            <Link
+              href="/f/meditacion-gratis-2"
+              className="block bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-purple-400/40 hover:border-purple-400 hover:bg-white/15 transition-all duration-300 group"
+            >
+              <div className="flex flex-col md:flex-row gap-6 items-center">
+                {/* Date Box - Purple accent */}
+                <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-5 text-center min-w-[120px] shadow-lg">
+                  <span className="text-white/80 text-xs font-medium uppercase tracking-wide">
+                    {isEn ? "April" : "Abril"}
+                  </span>
+                  <div className="text-3xl font-bold text-white my-1">20</div>
+                  <span className="text-white/80 text-xs font-medium">8:00 PM</span>
+                </div>
+
+                {/* Event Details */}
+                <div className="flex-1 text-center md:text-left">
+                  <div className="flex flex-wrap justify-center md:justify-start items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-purple-500/30 text-purple-200 font-bold text-xs uppercase tracking-wide rounded-full">
+                      {t("free")}
+                    </span>
+                    <span className="text-coral-light/80 text-sm">
+                      {isEn ? "Live Meditation \u00b7 Online" : "Meditaci\u00f3n en Vivo \u00b7 Online"}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-1">
+                    {isEn ? "Live Guided Meditation" : "Meditaci\u00f3n Guiada en Vivo"}
+                  </h3>
+                  <p className="text-coral-light/70 text-sm mb-3">
+                    {isEn
+                      ? "30 minutes to calm your mind and reconnect with yourself"
+                      : "30 minutos para calmar tu mente y reconectar contigo"}
+                  </p>
+                  <span className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg group-hover:scale-105 transition-all duration-300">
+                    {isEn ? "Reserve my spot" : "Apartar mi lugar"}
                     <ArrowRight size={18} />
                   </span>
                 </div>
