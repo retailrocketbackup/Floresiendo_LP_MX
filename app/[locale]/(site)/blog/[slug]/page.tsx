@@ -8,7 +8,7 @@ import { JsonLd, getArticleSchema, getBreadcrumbSchema } from "@/lib/structured-
 
 const BASE_URL = "https://escuelafloresiendomexico.com";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const slugs = await getBlogPostSlugs();

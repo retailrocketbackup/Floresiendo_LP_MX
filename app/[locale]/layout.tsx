@@ -128,10 +128,10 @@ export default async function LocaleLayout({
     notFound()
   }
 
-  const messages = await getMessages()
+  const messages = await getMessages({ locale })
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       {/* Structured Data (JSON-LD) */}
       <JsonLd data={getOrganizationSchema(locale)} />
       <JsonLd data={getLocalBusinessSchema(locale)} />
