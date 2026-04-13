@@ -1,6 +1,7 @@
 // Meta Ads API Client for Floresiendo Dashboard
 // Server-side only - never import in client components
 
+import { revalidateTag } from 'next/cache';
 import {
   MetaAccount,
   MetaCampaign,
@@ -15,26 +16,13 @@ import {
 const META_API_VERSION = 'v21.0';
 const META_API_BASE = `https://graph.facebook.com/${META_API_VERSION}`;
 
-// Cache for API responses (5 minute TTL)
-const cache = new Map<string, { data: unknown; timestamp: number }>();
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+// Cache TTL for Next.js Data Cache (persists across serverless invocations)
+const CACHE_TTL_SECONDS = 5 * 60; // 5 minutes
+const CACHE_TAG = 'meta-ads';
 
-function getCached<T>(key: string): T | null {
-  const cached = cache.get(key);
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-    return cached.data as T;
-  }
-  cache.delete(key);
-  return null;
-}
-
-function setCache(key: string, data: unknown): void {
-  cache.set(key, { data, timestamp: Date.now() });
-}
-
-// Clear all cached data
+// Invalidate all cached Meta Ads fetches via Next.js Data Cache.
 export function clearCache(): void {
-  cache.clear();
+  revalidateTag(CACHE_TAG);
 }
 
 // Get access token from environment
@@ -56,7 +44,8 @@ export function getAccountId(): string {
   return accountId;
 }
 
-// Generic Meta API fetch wrapper
+// Generic Meta API fetch wrapper. Relies on Next.js Data Cache (tag-based),
+// which persists across serverless invocations unlike an in-process Map.
 async function metaFetch<T>(
   endpoint: string,
   params: Record<string, string> = {}
@@ -69,28 +58,27 @@ async function metaFetch<T>(
     url.searchParams.set(key, value);
   });
 
-  const cacheKey = url.toString();
-  const cached = getCached<T>(cacheKey);
-  if (cached) {
-    return cached;
-  }
-
   const response = await fetch(url.toString(), {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    next: { revalidate: CACHE_TTL_SECONDS, tags: [CACHE_TAG] },
   });
 
   if (!response.ok) {
-    const error = await response.json();
+    const error = await response.json().catch(() => ({}));
     console.error('[Meta API Error]', error);
-    throw new Error(error.error?.message || 'Meta API request failed');
+    const code = error?.error?.code;
+    const subcode = error?.error?.error_subcode;
+    const message = error?.error?.message || 'Meta API request failed';
+    // Codes 4 (app rate limit), 17 (user request limit), 32 (page rate limit),
+    // 613 (ads insights throttle). Normalize so the route handler maps to 429.
+    if (code === 4 || code === 17 || code === 32 || code === 613 || subcode === 2446079) {
+      throw new Error(`Meta API request limit reached: ${message}`);
+    }
+    throw new Error(message);
   }
 
-  const data = await response.json();
-  setCache(cacheKey, data);
-  return data;
+  return response.json();
 }
 
 // Convert TimeRange to Meta API date_preset or time_range
@@ -152,6 +140,56 @@ export async function getAds(adsetId?: string, limit = 100): Promise<MetaAd[]> {
     limit: String(limit),
   });
   return data.data || [];
+}
+
+// Fetch insights for EVERY entity at a given level in a single account-scoped
+// /insights call. Replaces N+M+K per-entity fan-out. Each response row carries
+// campaign_id / adset_id / ad_id so the caller can build lookup maps.
+export async function getAllInsights(
+  timeRange: TimeRange,
+  level: 'campaign' | 'adset' | 'ad'
+): Promise<MetaInsights[]> {
+  const accountId = getAccountId();
+  const timeParams = getTimeRangeParams(timeRange);
+
+  const results: MetaInsights[] = [];
+  let endpoint: string | null = `/${accountId}/insights`;
+  let params: Record<string, string> | null = {
+    fields:
+      'spend,impressions,clicks,ctr,cpc,cpm,reach,frequency,actions,conversions,cost_per_action_type,date_start,date_stop,campaign_id,adset_id,ad_id',
+    level,
+    limit: '500',
+    ...timeParams,
+  };
+
+  try {
+    while (endpoint) {
+      const data: { data: MetaInsights[]; paging?: { next?: string } } =
+        await metaFetch(endpoint, params || {});
+      results.push(...(data.data || []));
+
+      // Follow cursor-based pagination if present
+      const nextUrl = data.paging?.next;
+      if (nextUrl) {
+        const parsed = new URL(nextUrl);
+        endpoint = parsed.pathname.replace(/^\/v\d+\.\d+/, '');
+        params = null;
+        // Preserve the querystring exactly as Meta returned it
+        const nextParams: Record<string, string> = {};
+        parsed.searchParams.forEach((v, k) => {
+          if (k !== 'access_token') nextParams[k] = v;
+        });
+        params = nextParams;
+      } else {
+        endpoint = null;
+      }
+    }
+  } catch (error) {
+    console.error(`[Meta getAllInsights Error] level=${level}:`, error);
+    throw error;
+  }
+
+  return results;
 }
 
 export async function getInsights(

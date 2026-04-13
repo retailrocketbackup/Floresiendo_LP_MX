@@ -9,10 +9,12 @@ import {
   getAdSets,
   getAds,
   getInsights,
+  getAllInsights,
   clearCache,
 } from '@/lib/meta-ads';
 import type {
   MetaAdsOverviewResponse,
+  MetaInsights,
   TimeRange,
   CampaignWithInsights,
   AdSetWithInsights,
@@ -61,37 +63,44 @@ export async function GET(request: Request) {
       ? allCampaigns
       : allCampaigns.filter(c => c.status !== 'DELETED' && c.status !== 'ARCHIVED');
 
-    // Fetch account-level insights
     const accountId = getAccountId();
-    const accountInsights = await getInsights(accountId, timeRange, 'account');
 
-    // Fetch ad sets and ads for all campaigns in parallel
-    const [allAdSets, allAds] = await Promise.all([
-      getAdSets(undefined, 100), // Get all ad sets for the account
-      getAds(undefined, 100),    // Get all ads for the account
+    // Fetch ad sets, ads, and ALL insights (per level, single call each) in parallel.
+    // Replaces the old N+M+K /insights fan-out that blew Meta's rate limit.
+    const [
+      allAdSets,
+      allAds,
+      accountInsights,
+      campaignInsightsList,
+      adSetInsightsList,
+      adInsightsList,
+    ] = await Promise.all([
+      getAdSets(undefined, 100),
+      getAds(undefined, 100),
+      getInsights(accountId, timeRange, 'account'),
+      getAllInsights(timeRange, 'campaign'),
+      getAllInsights(timeRange, 'adset'),
+      getAllInsights(timeRange, 'ad'),
     ]);
 
-    // Fetch insights for campaigns, ad sets, and ads in parallel
-    const campaignInsightsPromises = campaigns.map((c) =>
-      getInsights(c.id, timeRange, 'campaign')
-    );
-    const adSetInsightsPromises = allAdSets.map((a) =>
-      getInsights(a.id, timeRange, 'adset')
-    );
-    const adInsightsPromises = allAds.map((a) =>
-      getInsights(a.id, timeRange, 'ad')
-    );
-
-    const [campaignInsights, adSetInsights, adInsights] = await Promise.all([
-      Promise.all(campaignInsightsPromises),
-      Promise.all(adSetInsightsPromises),
-      Promise.all(adInsightsPromises),
-    ]);
+    // Index insights by entity id for O(1) attach
+    const campaignInsightsById = new Map<string, MetaInsights>();
+    for (const row of campaignInsightsList) {
+      if (row.campaign_id) campaignInsightsById.set(row.campaign_id, row);
+    }
+    const adSetInsightsById = new Map<string, MetaInsights>();
+    for (const row of adSetInsightsList) {
+      if (row.adset_id) adSetInsightsById.set(row.adset_id, row);
+    }
+    const adInsightsById = new Map<string, MetaInsights>();
+    for (const row of adInsightsList) {
+      if (row.ad_id) adInsightsById.set(row.ad_id, row);
+    }
 
     // Build ads with insights map (by ad set id)
-    const adsWithInsights: AdWithInsights[] = allAds.map((ad, index) => ({
+    const adsWithInsights: AdWithInsights[] = allAds.map((ad) => ({
       ...ad,
-      insights: adInsights[index] || undefined,
+      insights: adInsightsById.get(ad.id) || undefined,
     }));
 
     // Group ads by ad set id
@@ -103,9 +112,9 @@ export async function GET(request: Request) {
     });
 
     // Build ad sets with insights and their ads
-    const adSetsWithInsights: AdSetWithInsights[] = allAdSets.map((adset, index) => ({
+    const adSetsWithInsights: AdSetWithInsights[] = allAdSets.map((adset) => ({
       ...adset,
-      insights: adSetInsights[index] || undefined,
+      insights: adSetInsightsById.get(adset.id) || undefined,
       ads: adsByAdSetId.get(adset.id) || [],
     }));
 
@@ -118,9 +127,9 @@ export async function GET(request: Request) {
     });
 
     // Build campaigns with insights and their ad sets
-    const campaignsWithInsights: CampaignWithInsights[] = campaigns.map((campaign, index) => ({
+    const campaignsWithInsights: CampaignWithInsights[] = campaigns.map((campaign) => ({
       ...campaign,
-      insights: campaignInsights[index] || undefined,
+      insights: campaignInsightsById.get(campaign.id) || undefined,
       adsets: adSetsByCampaignId.get(campaign.id) || [],
     }));
 

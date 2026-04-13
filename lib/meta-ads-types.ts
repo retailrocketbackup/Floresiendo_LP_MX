@@ -76,6 +76,10 @@ export interface MetaInsights {
   cost_per_action_type?: MetaAction[];
   date_start: string;
   date_stop: string;
+  // Present when fetched at level=campaign|adset|ad from the account endpoint
+  campaign_id?: string;
+  adset_id?: string;
+  ad_id?: string;
 }
 
 // ============ Dashboard Display Types ============

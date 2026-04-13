@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import {
   KPICard,
@@ -53,6 +53,7 @@ export default function MetaAdsDashboardPage() {
   const [loading, setLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const rateLimitRetriesRef = useRef(0);
   const [timeRange, setTimeRange] = useState<TimeRange>('last_30d');
   const [overview, setOverview] = useState<MetaAdsOverviewResponse | null>(null);
   const [dailyData, setDailyData] = useState<DailyDataPoint[]>([]);
@@ -153,6 +154,20 @@ export default function MetaAdsDashboardPage() {
           localStorage.removeItem('admin_password');
           return;
         }
+        if (res.status === 429) {
+          // Backoff-and-retry up to twice, then surface the error
+          if (rateLimitRetriesRef.current < 2) {
+            rateLimitRetriesRef.current += 1;
+            const delayMs = 60_000 * rateLimitRetriesRef.current;
+            setError(
+              `Meta API saturada. Reintentando en ${delayMs / 1000}s… (${rateLimitRetriesRef.current}/2)`
+            );
+            setTimeout(() => fetchOverview(false), delayMs);
+            return;
+          }
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || 'Meta API saturada. Espera 2–3 min y recarga.');
+        }
         throw new Error('Error al obtener datos');
       }
 
@@ -160,6 +175,7 @@ export default function MetaAdsDashboardPage() {
       setOverview(data);
       setLastRefresh(new Date());
       setRefreshCountdown(300);
+      rateLimitRetriesRef.current = 0;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
