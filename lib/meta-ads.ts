@@ -11,6 +11,9 @@ import {
   TimeRange,
   DailyDataPoint,
   ConversionRow,
+  CampaignWithInsights,
+  AdSetWithInsights,
+  AdWithInsights,
 } from './meta-ads-types';
 
 const META_API_VERSION = 'v21.0';
@@ -381,4 +384,104 @@ export function getStatusLabel(status: string): string {
     default:
       return status;
   }
+}
+
+// ============ On-demand composed helpers (Miniplan 1) ============
+// These compose the primitives above to power the v2 dashboard's granular
+// endpoints. Each call is designed to minimize Meta Graph API traffic.
+
+// Account info + account-level insights for the header KPIs. 2 Graph calls.
+export async function getAccountSummary(timeRange: TimeRange): Promise<{
+  account: MetaAccount;
+  summary: MetaInsights | null;
+}> {
+  const accountId = getAccountId();
+  const [account, summary] = await Promise.all([
+    getAccountInfo(),
+    getInsights(accountId, timeRange, 'account'),
+  ]);
+  return { account, summary };
+}
+
+// Campaigns list with optional insights attached.
+// Without insights: 1 Graph call. With insights: 2 calls.
+export async function getCampaignsWithInsights(
+  timeRange: TimeRange,
+  options: { withInsights?: boolean } = {}
+): Promise<CampaignWithInsights[]> {
+  const { withInsights = false } = options;
+  if (!withInsights) {
+    const campaigns = await getCampaigns();
+    return campaigns.map((c) => ({ ...c }));
+  }
+  const [campaigns, insightsList] = await Promise.all([
+    getCampaigns(),
+    getAllInsights(timeRange, 'campaign'),
+  ]);
+  const byId = new Map<string, MetaInsights>();
+  for (const row of insightsList) {
+    if (row.campaign_id) byId.set(row.campaign_id, row);
+  }
+  return campaigns.map((c) => ({ ...c, insights: byId.get(c.id) || undefined }));
+}
+
+// Adsets for ONE campaign with insights attached. Uses Meta's `filtering`
+// param so insights are scoped server-side instead of pulling account-wide.
+export async function getCampaignAdSets(
+  campaignId: string,
+  timeRange: TimeRange
+): Promise<AdSetWithInsights[]> {
+  const accountId = getAccountId();
+  const timeParams = getTimeRangeParams(timeRange);
+  const filtering = JSON.stringify([
+    { field: 'campaign.id', operator: 'IN', value: [campaignId] },
+  ]);
+  const [adsets, insightsResp] = await Promise.all([
+    getAdSets(campaignId, 100),
+    metaFetch<{ data: MetaInsights[] }>(`/${accountId}/insights`, {
+      fields:
+        'spend,impressions,clicks,ctr,cpc,cpm,reach,frequency,actions,conversions,cost_per_action_type,date_start,date_stop,adset_id',
+      level: 'adset',
+      limit: '500',
+      filtering,
+      ...timeParams,
+    }),
+  ]);
+  const byId = new Map<string, MetaInsights>();
+  for (const row of insightsResp.data || []) {
+    if (row.adset_id) byId.set(row.adset_id, row);
+  }
+  return adsets.map((a) => ({
+    ...a,
+    insights: byId.get(a.id) || undefined,
+    ads: [],
+  }));
+}
+
+// Ads for ONE adset with insights attached. Same filtering trick.
+export async function getAdSetAds(
+  adsetId: string,
+  timeRange: TimeRange
+): Promise<AdWithInsights[]> {
+  const accountId = getAccountId();
+  const timeParams = getTimeRangeParams(timeRange);
+  const filtering = JSON.stringify([
+    { field: 'adset.id', operator: 'IN', value: [adsetId] },
+  ]);
+  const [ads, insightsResp] = await Promise.all([
+    getAds(adsetId, 100),
+    metaFetch<{ data: MetaInsights[] }>(`/${accountId}/insights`, {
+      fields:
+        'spend,impressions,clicks,ctr,cpc,cpm,reach,frequency,actions,conversions,cost_per_action_type,date_start,date_stop,ad_id',
+      level: 'ad',
+      limit: '500',
+      filtering,
+      ...timeParams,
+    }),
+  ]);
+  const byId = new Map<string, MetaInsights>();
+  for (const row of insightsResp.data || []) {
+    if (row.ad_id) byId.set(row.ad_id, row);
+  }
+  return ads.map((a) => ({ ...a, insights: byId.get(a.id) || undefined }));
 }

@@ -2,6 +2,7 @@
 // Main Meta Ads overview endpoint with full hierarchy (Campaign → Ad Sets → Ads)
 
 import { NextResponse } from 'next/server';
+import { requireAdminPassword } from '@/lib/admin-auth';
 import {
   getAccountInfo,
   getAccountId,
@@ -22,25 +23,11 @@ import type {
 } from '@/lib/meta-ads-types';
 
 export async function GET(request: Request) {
+  const auth = requireAdminPassword(request);
+  if (!auth.ok) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
-
-    // Skip auth in development
-    const isDev = process.env.NODE_ENV === 'development';
-    if (!isDev) {
-      const adminPassword = process.env.ADMIN_PASSWORD;
-      const authHeader = request.headers.get('x-admin-password');
-      const queryPassword = searchParams.get('password');
-
-      if (!adminPassword) {
-        return NextResponse.json({ error: 'Admin not configured' }, { status: 500 });
-      }
-
-      if (authHeader !== adminPassword && queryPassword !== adminPassword) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-    }
-
     const timeRange = (searchParams.get('timeRange') as TimeRange) || 'maximum';
     const includeArchived = searchParams.get('includeArchived') === 'true';
     const bustCache = searchParams.get('bustCache') === 'true';

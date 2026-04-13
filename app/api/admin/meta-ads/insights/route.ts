@@ -2,6 +2,7 @@
 // Detailed insights endpoint with time series data
 
 import { NextResponse } from 'next/server';
+import { requireAdminPassword } from '@/lib/admin-auth';
 import {
   getAccountId,
   getInsights,
@@ -39,25 +40,11 @@ function aggregateDailyData(allData: DailyDataPoint[][]): DailyDataPoint[] {
 }
 
 export async function GET(request: Request) {
+  const auth = requireAdminPassword(request);
+  if (!auth.ok) return auth.response;
+
   try {
     const { searchParams } = new URL(request.url);
-
-    // Skip auth in development
-    const isDev = process.env.NODE_ENV === 'development';
-    if (!isDev) {
-      const adminPassword = process.env.ADMIN_PASSWORD;
-      const authHeader = request.headers.get('x-admin-password');
-      const queryPassword = searchParams.get('password');
-
-      if (!adminPassword) {
-        return NextResponse.json({ error: 'Admin not configured' }, { status: 500 });
-      }
-
-      if (authHeader !== adminPassword && queryPassword !== adminPassword) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-      }
-    }
-
     const timeRange = (searchParams.get('timeRange') as TimeRange) || 'last_30d';
     const objectId = searchParams.get('objectId') || getAccountId();
     const level = (searchParams.get('level') as 'account' | 'campaign' | 'adset' | 'ad') || 'account';
